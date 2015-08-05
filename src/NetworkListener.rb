@@ -8,7 +8,7 @@ class NetworkListener
   def listen_for_messages
     while true 
     
-      request , address = @registry_listener_socket.recvfrom()
+      request , address = @registry_listener_socket.recvfrom(32762)
         if check_request(request , address) == true
           request_hash = convert_request_to_hash(request)
           if request_hash.is_a?(Hash)
