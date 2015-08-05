@@ -53,8 +53,7 @@ class NetworkListener
     if check_request_source_address(source_address) == false     
       return false
     end
-    if (request_str.to_hash)
-    end
+   
   end
   
   def convert_request_to_hash(request)
