@@ -57,7 +57,7 @@ class NetworkListener
                  end
         
         catch Errno::ECONNRESET
-          retry
+          
        end
      end
   end
