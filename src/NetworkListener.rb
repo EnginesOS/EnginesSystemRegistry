@@ -54,8 +54,8 @@ class NetworkListener
             return
          rescue Errno::EPIPE
             return 
-#         rescue Errno::EOFError
-#                   return  
+         rescue EOFError
+                   return  
         end
       end 
 
@@ -71,9 +71,9 @@ class NetworkListener
       rescue Errno::ECONNRESET
         return
       rescue Errno::EPIPE
-        return 
-#       rescue Errno::EOFError
-#               return  
+        return
+      rescue EOFError
+               return  
       rescue Errno::EIO
            retry
       rescue IO::EAGAINWaitReadable
