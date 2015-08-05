@@ -1,5 +1,25 @@
-class Protocol
+class ProtocolListener
+  attr_accessor last_error
   
+  def  perform_request(request_hash)
+    if request_hash.has_keys>(:command) == false
+      @last_error = "Error_non_command"
+      return false
+    end
+    
+    command = request_hash[:command]
+    if request_hash == nil
+         @last_error = "nil command"
+         return false
+       end
+    
+    request_hash.delete(:command)
+     p :command     
+       p command
+       p :request_hash
+       p request_hash
+  
+  end
   #requests
   #
   #general Getters
