@@ -36,7 +36,7 @@ class ProtocolListener
        if method_params.length ==0
          response_hash[:object] =  @system_registry.public_send(method_symbol).to_json
        else
-         response_hash[:object] = @system_registry.public_send(method_symbol,request_hash).to_yaml.as_json
+         response_hash[:object] = @system_registry.public_send(method_symbol,request_hash).to_yaml
        end
        
 #       case command
