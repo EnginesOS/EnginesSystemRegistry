@@ -39,8 +39,7 @@ def wait_for_reply(socket)
         retry
      end
   
-       p :got 
-       p messege_response
+     
  
   return messege_response
   
