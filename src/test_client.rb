@@ -2,7 +2,7 @@ require 'json'
 
 def wait_for_reply
   
-  response , address = @registry_listener_socket.recvfrom(32762)
+  response , address = @registry_socket.recvfrom(32762)
   p "Got reply from " + address
   return response
   
