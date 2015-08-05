@@ -120,7 +120,7 @@ p "service_configurations_registry"
 p result[:result]
   p :As_json
   p result[:object].to_s
-config_registry =  JSON.parse( result[:object])
+#config_registry =  JSON.parse( result[:object])
   p :class_name
 p config_registry.class.name
 
