@@ -68,6 +68,7 @@ class NetworkListener
   protected
   def open_socket(host,port)
     require 'socket'
+    BasicSocket.do_not_reverse_lookup = true
     socket = UDPSocket.new(Socket::AF_INET)
     if socket     
       socket.bind(host,port)           

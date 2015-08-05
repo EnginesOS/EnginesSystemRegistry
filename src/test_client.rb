@@ -20,6 +20,7 @@ end
 
 def open_socket(host,port)
    require 'socket.rb' 
+  BasicSocket.do_not_reverse_lookup = true
     socket = UDPSocket.new(Socket::AF_INET)
     if socket     
       socket.bind(host,port)           
