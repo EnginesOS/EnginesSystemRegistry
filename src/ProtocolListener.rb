@@ -30,8 +30,9 @@ class ProtocolListener
        p request_hash
        case command
        when  "list_providers_in_use"
-         
+         p :list_providers_in_use
          response_hash[:object] = @system_registry.list_providers_in_use
+           p response_hash[:object].to_s
        end
    return response_hash
   
