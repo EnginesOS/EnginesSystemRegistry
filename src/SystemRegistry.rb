@@ -1,5 +1,6 @@
+require_relative 'Registry.rb'
 class SystemRegistry < Registry 
-  require_relative 'Registry.rb'
+
   require_relative 'SubRegistry.rb'
   require_relative 'ConfigurationsRegistry.rb'
   require_relative 'ManagedEnginesRegistry.rb'
