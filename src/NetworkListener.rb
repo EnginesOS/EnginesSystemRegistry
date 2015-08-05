@@ -108,10 +108,35 @@ end
   def convert_request_to_hash(request)
     require 'json'
    hash_request = JSON.parse(request)
-    return symbolize_keys(hash_request)
+    return symbolize_top_level_keys(hash_request)
   rescue 
       return nil
   end
+ 
+  def symbolize_top_level_keys(hash)
+      hash.inject({}){|result, (key, value)|
+        new_key = case key
+        when String then key.to_sym
+        else key
+        end
+ #       new_value = case value
+#        when Hash then symbolize_keys(value)
+#        when Array   then
+#          newval=Array.new
+#          value.each do |array_val|
+#            if array_val.is_a?(Hash)
+#              array_val = symbolize_keys(array_val)
+#            end
+#            newval.push(array_val)
+#          end
+#          newval
+#        else value
+#        end
+        
+        result[new_key] = value
+        result
+      }
+    end
   
   def symbolize_keys(hash)
       hash.inject({}){|result, (key, value)|
