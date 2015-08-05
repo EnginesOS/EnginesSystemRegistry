@@ -40,8 +40,8 @@ class NetworkListener
   end
   
   def send_result(reply_hash)
-    str=reply_hash.to_json
-    @registry_listener_socket.send(request_json,0,"127.0.0.1",21028)
+    reply_json=reply_hash.to_json
+    @registry_listener_socket.send(reply_json,0,"127.0.0.1",21028)
         
   end
   
