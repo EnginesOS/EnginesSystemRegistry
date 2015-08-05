@@ -48,6 +48,14 @@ class NetworkListener
        message_request = message_request +more
         rescue IO::EAGAINWaitReadable
                 retry
+          rescue Errno::EIO
+                 retry  
+         rescue Errno::ECONNRESET
+            return
+         rescue Errno::EPIPE
+            return 
+         rescue Errno::EOFError
+                   return  
         end
       end 
 
