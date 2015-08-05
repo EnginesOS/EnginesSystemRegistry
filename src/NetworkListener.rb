@@ -28,16 +28,16 @@ class NetworkListener
       begin
    
       first_bytes = socket.read_nonblock(256)
-      p :first_bytes
-      p first_bytes
+#      p :first_bytes
+#      p first_bytes
       end_tag_indx = first_bytes.index(',')
 
       mesg_lng_str = first_bytes.slice(0,end_tag_indx)
-      p :mesg_lng_str
-      p mesg_lng_str
+#      p :mesg_lng_str
+#      p mesg_lng_str
       mesg_len =  mesg_lng_str.to_i
-      p :mesg_len
-      p mesg_len
+#      p :mesg_len
+#      p mesg_len
       total_length = first_bytes.size
       end_byte =  total_length - end_tag_indx 
       message_request = first_bytes.slice(end_tag_indx+1,end_byte) 
