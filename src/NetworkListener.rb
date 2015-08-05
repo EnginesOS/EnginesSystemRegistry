@@ -26,13 +26,7 @@ class NetworkListener
   def process_messages(socket)
     while true 
       begin
-        
-      # while socket.is_open? ==true 
-    #blocking read
-    #readup to first ,
-    #get count
-    #sub traact bytes already read and read until the rest.
-    #save next segment if there is any (or stay sync)
+   
       first_bytes = socket.gets
       p :first_bytes
       p first_bytes
@@ -52,7 +46,6 @@ class NetworkListener
        more = socket.gets
        message_request = message_request +more
       end 
-     
 
       request_hash = convert_request_to_hash(message_request)
     result = @protocol_listener.perform_request(request_hash)
@@ -62,10 +55,10 @@ class NetworkListener
                  else                
                    send_error(socket,request_hash,result)
                  end
-        end
+        
         catch Errno::ECONNRESET
-          return
-     
+          retry
+       end
      end
   end
   
