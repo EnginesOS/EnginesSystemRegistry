@@ -43,8 +43,11 @@ class NetworkListener
       message_request = first_bytes.slice(end_tag_indx+1,end_byte) 
       
       while message_request.size < mesg_len
+        begin
        more = socket.gets
        message_request = message_request +more
+        rescue IO::EAGAINWaitReadable
+                retry
       end 
 
       request_hash = convert_request_to_hash(message_request)
