@@ -72,7 +72,7 @@ end
     reply_json=reply_hash.to_json
     reply = build_mesg(reply_json)
    # @registry_listener_socket.send(reply_json,0,"127.0.0.1",21028)
-     socket.puts(reply)
+     socket.write(reply)
   end
   
   def build_mesg(mesg_str)
