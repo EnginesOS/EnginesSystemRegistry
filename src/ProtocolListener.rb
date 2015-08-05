@@ -34,11 +34,15 @@ class ProtocolListener
        p method_params
        p "invoking " + command.to_s
        if method_params.length ==0
-         response_hash[:object] =  @system_registry.public_send(method_symbol).to_yaml
+         response_object =  @system_registry.public_send(method_symbol)
        else
-         response_hash[:object] = @system_registry.public_send(method_symbol,request_hash).to_yaml
+         response_object = @system_registry.public_send(method_symbol,request_hash)
        end
-       
+    
+    if response_object.is_a?(Tree::TreeNode)
+      response_object = response_object.detached_subtree_copy
+    end
+    response_hash[:object] =response_object.to_yaml
 #       case command
 #       when  "list_providers_in_use"
 #         p :cmd_list_providers_in_use
