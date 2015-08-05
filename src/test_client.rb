@@ -12,13 +12,11 @@ def wait_for_reply(socket)
       #sub traact bytes already read and read until the rest.
       #save next segment if there is any (or stay sync)
     first_bytes = socket.read_nonblock(32768)
-  p :first_bytes
-  p first_bytes
+
   end_tag_indx = first_bytes.index(',')
 
   mesg_lng_str = first_bytes.slice(0,end_tag_indx)
-  p :mesg_lng_str
-  p mesg_lng_str
+
   mesg_len =  mesg_lng_str.to_i
   p :mesg_len
   p mesg_len
@@ -53,7 +51,7 @@ def send_request(command,params)
   request_hash[:command] = command
    request_json = request_hash.to_json
   mesg_str = build_mesg(request_json)
-  @registry_socket.puts(mesg_str)
+  @registry_socket.write(mesg_str)
   wait_for_reply(@registry_socket)
 end
 
