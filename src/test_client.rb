@@ -35,6 +35,10 @@ end
 
 params=Hash.new
 
+command="list_providers_in_use"
+result = send_request(command,params)
+p "list_providers_in_use"
+p result.to_s
 
 command="system_registry_tree"
 result = send_request(command,params)

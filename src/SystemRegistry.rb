@@ -255,7 +255,9 @@ class SystemRegistry < Registry
    #@return ServiceTree as a [TreeNode]
    def initialize_tree
      
-     if File.exists?(SysConfig.ServiceTreeFile)
+     service_tree_file = "/opt/engines/run/service_manager/services.yaml"
+     
+     if File.exists?(service_tree_file)
        registry = load_tree
      else
        registry = Tree::TreeNode.new("Service Manager", "Managed Services and Engines")
