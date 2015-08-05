@@ -27,8 +27,12 @@ def wait_for_reply(socket)
   messege_response = first_bytes.slice(end_tag_indx+1,end_byte) 
   
         while messege_response.size < mesg_len
-         more = socket.gets
+          begin
+         more = socket.read_nonblock(32768)
           messege_response = messege_response + more
+          rescue IO::EAGAINWaitReadable
+            retry
+         end
         end 
        
       rescue IO::EAGAINWaitReadable
