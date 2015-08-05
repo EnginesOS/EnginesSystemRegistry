@@ -3,7 +3,7 @@ require 'json'
 def convert_json_message_to_hash(request)
     require 'json'
    hash_request = JSON.parse(request)
-    return  hash_request#symbolize_top_level_keys(hash_request)
+    return  symbolize_top_level_keys(hash_request)
   rescue 
       return nil
   end
@@ -27,7 +27,8 @@ def convert_json_message_to_hash(request)
 #          newval
 #        else value
 #        end
-        result[new_key] = new_value
+        
+        result[new_key] = value
         result
       }
     end
@@ -110,7 +111,7 @@ p result.to_s
 command="system_registry_tree"
 result = send_request(command,params)
 p "system_registry_tree"
-p result["result"]
+p result[:result]
 
 command="service_configurations_registry"
 result = send_request(command,params)
