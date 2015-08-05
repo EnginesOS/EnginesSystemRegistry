@@ -10,14 +10,38 @@ class NetworkListener
     
       request , address = @registry_listener_socket.recvfrom()
         if check_request(request , address) == true
-          result = @protocol_listener.perform_request
-          if result.is_a(Hash)
-            send_result
+          request_hash = convert_request_to_hash(request)
+          if request_hash.is_a?(Hash)
+            result = @protocol_listener.perform_request(request_hash)
+          
+              if result.is_a(Hash)
+                send_ok_result(result)
+              else                
+                send_error(request_hash,result)
+              end
           else
+            p :error_decoding_request
             send_error
           end
         end
     end
+  end
+  
+  def send_error(request_hash,result)
+    request_hash[:result] = "Error"
+     request_hash[:error] = result
+      send_result(request_hash) 
+  end
+  def send_ok_result(result)
+    result[:result] = "OK"
+    send_result(result)
+      
+  end
+  
+  def send_result(reply_hash)
+    str=reply_hash.to_json
+    @registry_listener_socket.send(request_json,0,"127.0.0.1",21028)
+        
   end
   
   def check_request_source_address(address)

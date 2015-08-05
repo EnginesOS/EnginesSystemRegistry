@@ -5,9 +5,30 @@
 params=Hash.new
 
 
-command="list"
+command="system_registry_tree"
+result = send_request(command,params)
+p "system_registry_tree"
+p result
 
-send_request(command,params)
+command="service_configurations_registry"
+result = send_request(command,params)
+p "service_configurations_registry"
+p result
+
+command="orphaned_services_registry"
+result send_request(command,params)
+p "orphaned_services_registry"
+p result
+
+command="services_registry"
+result = send_request(command,params)
+p "services_registry"
+p result
+
+command="managed_engines_registry"
+result=send_request(command,params)
+p "managed_engines_registry"
+p result
 
 
 def send_request(command,params)

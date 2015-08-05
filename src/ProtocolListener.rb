@@ -18,6 +18,7 @@ class ProtocolListener
        p command
        p :request_hash
        p request_hash
+   return request_hash
   
   end
   #requests
