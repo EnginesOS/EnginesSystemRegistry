@@ -4,7 +4,7 @@ require 'json'
 
 def wait_for_reply(socket)
 #  def process_messages(socket)
-      
+      begin
         # while socket.is_open? ==true 
       #blocking read
       #readup to first ,
@@ -31,8 +31,9 @@ def wait_for_reply(socket)
           messege_response = messege_response + more
         end 
        
-
-      
+      rescue IO::EAGAINWaitReadable
+        retry
+     end
   
        p :got 
        p messege_response
