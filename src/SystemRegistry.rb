@@ -200,9 +200,10 @@ class SystemRegistry < Registry
   end
   
   def system_registry_tree
+    service_tree_file = "/opt/engines/run/service_manager/services.yaml"
     registry=@system_registry
     if @last_tree_mod_time && @last_tree_mod_time != nil 
-          current_time = File.mtime(SysConfig.ServiceTreeFile)
+          current_time = File.mtime( service_tree_file)
           if  @last_tree_mod_time.eql?(current_time) == false
            registry = load_tree
           end
@@ -233,11 +234,11 @@ class SystemRegistry < Registry
     #@return service_tree [TreeNode]
     def tree_from_yaml()
       begin
-        
-        if File.exist?(SysConfig.ServiceTreeFile)
-          tree_data = File.read(SysConfig.ServiceTreeFile)
-        elsif  File.exist?(SysConfig.ServiceTreeFile + ".bak")
-          tree_data = File.read(SysConfig.ServiceTreeFile + ".bak")
+        service_tree_file = "/opt/engines/run/service_manager/services.yaml"
+        if File.exist?(service_tree_file)
+          tree_data = File.read(service_tree_file)
+        elsif  File.exist?(service_tree_file + ".bak")
+          tree_data = File.read(service_tree_file + ".bak")
         end
         registry =   YAML::load(tree_data)
         return registry
