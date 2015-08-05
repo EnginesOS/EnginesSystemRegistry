@@ -60,6 +60,8 @@ class NetworkListener
         return
           rescue Errno::EIO
             retry
+      rescue IO::EAGAINWaitReadable
+        retry
        end
      end
   end
