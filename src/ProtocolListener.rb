@@ -29,7 +29,7 @@ class ProtocolListener
        p :request_hash
        p request_hash
        case command
-       when  "list"
+       when  "list_providers_in_use"
          
          response_hash[:object] = list_providers_in_use
        end
