@@ -2,7 +2,7 @@ require 'json'
 
 
 
-def wait_for_reply
+def wait_for_reply(socket)
 #  def process_messages(socket)
       
         # while socket.is_open? ==true 
@@ -42,7 +42,7 @@ def send_request(command,params)
    request_json = request_hash.to_json
   mesg_str = build_mesg(request_json)
   @registry_socket.puts(mesg_str)
-  wait_for_reply
+  wait_for_reply(@registry_socket)
 end
 
 
