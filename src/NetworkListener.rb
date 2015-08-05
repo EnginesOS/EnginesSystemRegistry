@@ -9,7 +9,7 @@ class NetworkListener
     while true 
     
       request , address = @registry_listener_socket.recvfrom(32762)
-      p "Request from:"+address + " " + request 
+      p "Request from:"+address + " " + request.to_s
         if check_request(request , address) == true
           request_hash = convert_request_to_hash(request)
           if request_hash.is_a?(Hash)
