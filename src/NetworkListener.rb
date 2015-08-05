@@ -27,7 +27,7 @@ class NetworkListener
     while true 
       begin
    
-      first_bytes = socket.read
+      first_bytes = socket.read_nonblock(256)
       p :first_bytes
       p first_bytes
       end_tag_indx = first_bytes.index(',')
@@ -56,8 +56,10 @@ class NetworkListener
                    send_error(socket,request_hash,result)
                  end
         
-        catch Errno::ECONNRESET
-          
+      rescue Errno::ECONNRESET
+        return
+          rescue Errno::EIO
+            retry
        end
      end
   end

@@ -11,7 +11,7 @@ def wait_for_reply(socket)
       #get count
       #sub traact bytes already read and read until the rest.
       #save next segment if there is any (or stay sync)
-    first_bytes = socket.gets
+    first_bytes = socket.read_nonblock(256)
   p :first_bytes
   p first_bytes
   end_tag_indx = first_bytes.index(',')
