@@ -81,26 +81,26 @@ p result.to_s
 command="system_registry_tree"
 result = send_request(command,params)
 p "system_registry_tree"
-p result.to_s
+p result[:result]
 
 command="service_configurations_registry"
 result = send_request(command,params)
 p "service_configurations_registry"
-p result.to_s
+p result[:result]
 
 command="orphaned_services_registry"
 result = send_request(command,params)
 p "orphaned_services_registry"
-p result.to_s
+p result[:result]
 
 command="services_registry"
 result = send_request(command,params)
 p "services_registry"
-p result.to_s
+p result[:result]
 
 command="managed_engines_registry"
 result = send_request(command,params)
 p "managed_engines_registry"
-p result.to_s
+p result[:result]
 
  
