@@ -1,11 +1,21 @@
 require 'json'
 
+def wait_for_reply
+  
+  response , address = @registry_listener_socket.recvfrom(32762)
+  p "Got reply from " + address
+  return response
+  
+end
+
 def send_request(command,params)
   request_hash = params.dup
   request_hash[:command] = command
    request_json = request_hash.to_json
   @registry_socket.send(request_json,0,"127.0.0.1",21027)
+  wait_for_reply
 end
+
 
 
 def open_socket(host,port)
@@ -44,7 +54,7 @@ p "services_registry"
 p result
 
 command="managed_engines_registry"
-result=send_request(command,params)
+result = send_request(command,params)
 p "managed_engines_registry"
 p result
 
