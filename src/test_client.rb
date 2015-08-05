@@ -3,7 +3,7 @@ require 'json'
 
 
 def wait_for_reply
-  def process_messages(socket)
+#  def process_messages(socket)
       
         # while socket.is_open? ==true 
       #blocking read
@@ -24,7 +24,7 @@ def wait_for_reply
         end 
        
 
-       end
+      
   
        p :got 
        p messege_response
