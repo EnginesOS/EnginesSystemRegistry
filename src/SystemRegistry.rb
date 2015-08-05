@@ -274,9 +274,10 @@ class SystemRegistry < Registry
    
   #@sets the service_tree and loast mod time 
    def load_tree
+     service_tree_file = "/opt/engines/run/service_manager/services.yaml"
       registry = tree_from_yaml()
-     if File.exist?(SysConfig.ServiceTreeFile)
-      @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
+     if File.exist?(service_tree_file)
+      @last_tree_mod_time = File.mtime(service_tree_file)
      else
        @last_tree_mod_time =nil
      end
@@ -291,23 +292,24 @@ class SystemRegistry < Registry
   # calls [log_exception] on error and returns false
     #@return boolean 
     def save_tree
-      if File.exists?(SysConfig.ServiceTreeFile)
-        statefile_bak = SysConfig.ServiceTreeFile + ".bak"
-        FileUtils.copy( SysConfig.ServiceTreeFile,   statefile_bak)
+      service_tree_file = "/opt/engines/run/service_manager/services.yaml"
+      if File.exists?(service_tree_file)
+        statefile_bak = service_tree_file + ".bak"
+        FileUtils.copy( service_tree_file,   statefile_bak)
       end
       serialized_object = YAML::dump(@system_registry)
-      f = File.new(SysConfig.ServiceTreeFile+".tmp",File::CREAT|File::TRUNC|File::RDWR, 0644)
+      f = File.new(service_tree_file+".tmp",File::CREAT|File::TRUNC|File::RDWR, 0644)
       f.puts(serialized_object)
       f.close
       #FIXME do a del a rename as killing copu part way through ...
-      FileUtils.copy(SysConfig.ServiceTreeFile+".tmp", SysConfig.ServiceTreeFile);
-      @last_tree_mod_time = File.mtime(SysConfig.ServiceTreeFile)
+      FileUtils.copy(SysConfig.ServiceTreeFile+".tmp", service_tree_file);
+      @last_tree_mod_time = File.mtime(service_tree_file)
       return true
     rescue Exception=>e
       @last_error=( "save error")
       log_exception(e)
-      if File.exists?(SysConfig.ServiceTreeFile) == false
-        FileUtils.copy(SysConfig.ServiceTreeFile + ".bak", SysConfig.ServiceTreeFile)
+      if File.exists?(service_tree_file) == false
+        FileUtils.copy(service_tree_file + ".bak", service_tree_file)
       end 
       return false
     end
