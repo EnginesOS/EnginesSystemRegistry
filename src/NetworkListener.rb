@@ -25,6 +25,8 @@ class NetworkListener
   
   def process_messages(socket)
     while true 
+      begin
+        
       # while socket.is_open? ==true 
     #blocking read
     #readup to first ,
@@ -60,6 +62,9 @@ class NetworkListener
                  else                
                    send_error(socket,request_hash,result)
                  end
+        catch Errno::ECONNRESET
+          return
+      end
      end
   end
   
