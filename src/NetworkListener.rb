@@ -15,7 +15,7 @@ class NetworkListener
           if request_hash.is_a?(Hash)
             result = @protocol_listener.perform_request(request_hash)
           
-              if result.is_a(Hash)
+              if result.is_a?(Hash)
                 send_ok_result(result)
               else                
                 send_error(request_hash,result)
@@ -54,7 +54,7 @@ class NetworkListener
     if check_request_source_address(source_address) == false     
       return false
     end
-   
+   return true
   end
   
   def convert_request_to_hash(request)
