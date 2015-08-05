@@ -24,10 +24,10 @@ class ProtocolListener
     response_hash[:request]=request_hash
     request_hash.delete(:command)
     
-     p :command     
-       p command
-       p :request_hash
-       p request_hash
+#     p :command     
+#       p command
+#       p :request_hash
+#       p request_hash
        method_symbol = command.to_sym
        request_method = @system_registry.method(method_symbol)
        method_params = request_method.parameters
