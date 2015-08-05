@@ -110,7 +110,7 @@ p result.to_s
 command="system_registry_tree"
 result = send_request(command,params)
 p "system_registry_tree"
-p result[:result]
+p result["result"]
 
 command="service_configurations_registry"
 result = send_request(command,params)
