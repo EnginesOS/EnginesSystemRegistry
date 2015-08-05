@@ -118,7 +118,7 @@ result = send_request(command,params)
 p "service_configurations_registry"
 p result[:result]
   p :As_json
-  p result[:object].to_json
+  p result[:object].to_s
 config_registry =  JSON.parse( result[:object].to_s)
   p :class_name
 p config_registry.class.name
