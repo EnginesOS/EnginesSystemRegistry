@@ -15,7 +15,7 @@ class NetworkListener
           if request_hash.is_a?(Hash)
             result = @protocol_listener.perform_request(request_hash)
           
-              if result.is_a?(Hash)
+              if result  != nil
                 send_ok_result(result)
               else                
                 send_error(request_hash,result)
