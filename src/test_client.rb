@@ -1,4 +1,21 @@
 
+def send_request(command,params)
+  request_hash = params.dup
+  request_hash[:command] = command
+   request_json
+  @registry_socket.send(request_json,0,"127.0.0.1",21027)
+end
+
+
+def open_socket(host,port)
+   require 'socket.rb' 
+  BasicSocket.do_not_reverse_lookup = true
+    socket = UDPSocket.new(Socket::AF_INET)
+    if socket     
+      socket.bind(host,port)           
+      return socket
+    end
+end   
 
 @registry_socket= open_socket("127.0.0.1",21028)
 
@@ -30,21 +47,4 @@ result=send_request(command,params)
 p "managed_engines_registry"
 p result
 
-
-def send_request(command,params)
-  request_hash = params.dup
-  request_hash[:command] = command
-   request_json
-  @registry_socket.send(request_json,0,"127.0.0.1",21027)
-end
-
-
-def open_socket(host,port)
-   require 'socket.rb' 
-  BasicSocket.do_not_reverse_lookup = true
-    socket = UDPSocket.new(Socket::AF_INET)
-    if socket     
-      socket.bind(host,port)           
-      return socket
-    end
-end    
+ 
