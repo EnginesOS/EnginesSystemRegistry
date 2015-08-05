@@ -58,13 +58,15 @@ class NetworkListener
         
       rescue Errno::ECONNRESET
         return
-          rescue Errno::EIO
-            retry
+      rescue Errno::EPIPE
+        return 
+      rescue Errno::EIO
+           retry
       rescue IO::EAGAINWaitReadable
         retry
-       end
-     end
+    end
   end
+end
   
   def send_result(socket,reply_hash)
     reply_json=reply_hash.to_json
