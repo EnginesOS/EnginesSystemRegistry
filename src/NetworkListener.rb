@@ -67,7 +67,7 @@ class NetworkListener
   
   protected
   def open_socket(host,port)
-    
+    require 'socket'
     socket = UDPSocket.new(Socket::AF_INET)
     if socket     
       socket.bind(host,port)           
