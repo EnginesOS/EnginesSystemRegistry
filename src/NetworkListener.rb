@@ -64,6 +64,8 @@ class NetworkListener
         return
       rescue Errno::EPIPE
         return 
+        rescue Errno::EOFError
+               return  
       rescue Errno::EIO
            retry
       rescue IO::EAGAINWaitReadable
