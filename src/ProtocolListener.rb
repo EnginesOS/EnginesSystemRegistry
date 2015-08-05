@@ -28,14 +28,14 @@ class ProtocolListener
        p command
        p :request_hash
        p request_hash
-       
-       request_method = @system_registry.method(command.to_sym)
+       method_symbol = command.to_sym
+       request_method = @system_registry.method(method_symbol)
        method_params = request_method.parameters
        p method_params
        if method_params.length ==0
-         response_hash[:object] =  request_method.send()
+         response_hash[:object] =  @system_registry.send(method_symbol)
        else
-         response_hash[:object] = request_method.send(request_hash)
+         response_hash[:object] = @system_registry.send(method_symbol,request_hash)
        end
        
 #       case command
