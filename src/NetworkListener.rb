@@ -32,9 +32,17 @@ class NetworkListener
     #sub traact bytes already read and read until the rest.
     #save next segment if there is any (or stay sync)
       first_bytes = socket.gets
+      p :first_bytes
+      p first_bytes
       end_tag_indx = first_bytes.index(',')
+
       mesg_lng_str = first_bytes.slice(0,end_tag_indx)
+      p :mesg_lng_str
+      p mesg_lng_str
       mesg_len =  mesg_lng_str.to_i
+      p :mesg_len
+      p mesg_len
+      
       message_request = first_bytes.slice(end_tag_indx+1,-1) 
       
       while message_request.size < mesg_len
