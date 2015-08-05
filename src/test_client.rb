@@ -3,7 +3,8 @@ require 'json'
 def wait_for_reply
   
   response , address = @registry_socket.recvfrom(32762)
-  p "Got reply from " + address
+  p "Got reply from " + address.to_s
+ 
   return response
   
 end
@@ -36,26 +37,26 @@ params=Hash.new
 command="system_registry_tree"
 result = send_request(command,params)
 p "system_registry_tree"
-p result
+p result.to_s
 
 command="service_configurations_registry"
 result = send_request(command,params)
 p "service_configurations_registry"
-p result
+p result.to_s
 
 command="orphaned_services_registry"
 result = send_request(command,params)
 p "orphaned_services_registry"
-p result
+p result.to_s
 
 command="services_registry"
 result = send_request(command,params)
 p "services_registry"
-p result
+p result.to_s
 
 command="managed_engines_registry"
 result = send_request(command,params)
 p "managed_engines_registry"
-p result
+p result.to_s
 
  
