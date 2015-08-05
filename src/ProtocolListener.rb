@@ -1,7 +1,7 @@
 class ProtocolListener
   attr_accessor :last_error
   
-  require './SystemRegistry.rb'
+  require_relative 'SystemRegistry.rb'
   
 
   def initialize()
