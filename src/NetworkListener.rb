@@ -62,9 +62,10 @@ class NetworkListener
                  else                
                    send_error(socket,request_hash,result)
                  end
+        end
         catch Errno::ECONNRESET
           return
-      end
+     
      end
   end
   
