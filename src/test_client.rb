@@ -1,6 +1,37 @@
 require 'json'
 
-
+def convert_json_message_to_hash(request)
+    require 'json'
+   hash_request = JSON.parse(request)
+    return  symbolize_top_level_keys(hash_request)
+  rescue 
+      return nil
+  end
+  
+  def symbolize_top_level_keys(hash)
+      hash.inject({}){|result, (key, value)|
+        new_key = case key
+        when String then key.to_sym
+        else key
+        end
+ #       new_value = case value
+#        when Hash then symbolize_keys(value)
+#        when Array   then
+#          newval=Array.new
+#          value.each do |array_val|
+#            if array_val.is_a?(Hash)
+#              array_val = symbolize_keys(array_val)
+#            end
+#            newval.push(array_val)
+#          end
+#          newval
+#        else value
+#        end
+        result[new_key] = new_value
+        result
+      }
+    end
+  
 
 def wait_for_reply(socket)
 #  def process_messages(socket)
@@ -37,9 +68,9 @@ def wait_for_reply(socket)
         retry
      end
   
-     
+  response_hash = convert_json_message_to_hash(messege_response)
  
-  return messege_response
+  return response_hash
   
 end
 def build_mesg(mesg_str)

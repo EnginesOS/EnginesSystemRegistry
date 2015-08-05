@@ -60,8 +60,7 @@ class NetworkListener
       end 
 
       request_hash = convert_request_to_hash(message_request)
-    result = @protocol_listener.perform_request(request_hash)
-             
+    result = @protocol_listener.perform_request(request_hash)             
                  if result  != nil
                    send_ok_result(socket,result)
                  else                
