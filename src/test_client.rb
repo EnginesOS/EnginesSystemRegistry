@@ -34,7 +34,7 @@ p "service_configurations_registry"
 p result
 
 command="orphaned_services_registry"
-result send_request(command,params)
+result = send_request(command,params)
 p "orphaned_services_registry"
 p result
 
