@@ -101,6 +101,7 @@ end
 
 @registry_socket= open_socket("127.0.0.1",21027)
 require 'yaml'
+require 'rubytree'
 params=Hash.new
 
 command="list_providers_in_use"
