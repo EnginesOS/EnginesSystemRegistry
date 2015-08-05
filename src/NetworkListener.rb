@@ -27,7 +27,7 @@ class NetworkListener
     while true 
       begin
    
-      first_bytes = socket.gets
+      first_bytes = socket.read
       p :first_bytes
       p first_bytes
       end_tag_indx = first_bytes.index(',')
