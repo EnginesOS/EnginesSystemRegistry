@@ -34,7 +34,7 @@ class NetworkListener
       first_bytes = socket.gets
       end_tag_indx = first_bytes.index(',')
       mesg_lng_str = first_bytes.slice(0,end_tag_indx)
-      mesg_len =  Integer.parse(mesg_lng_str)
+      mesg_len =  mesg_lng_str.to_i
       message_request = first_bytes.slice(end_tag_indx+1,-1) 
       
       while message_request.size < mesg_len
