@@ -24,7 +24,8 @@ class NetworkListener
   end
   
   def process_messages(socket)
-    while socket.is_open? == true 
+    while true 
+      # while socket.is_open? ==true 
     #blocking read
     #readup to first ,
     #get count
