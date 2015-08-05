@@ -25,9 +25,9 @@ def wait_for_reply
        end
   
        p :got 
-       p message_response
+       p messege_response
  
-  return message_response
+  return messege_response
   
 end
 def build_mesg(mesg_str)

@@ -31,10 +31,11 @@ class NetworkListener
     #get count
     #sub traact bytes already read and read until the rest.
     #save next segment if there is any (or stay sync)
-      bytes = socket.gets
-      mesg_lng_str = bytes.substring(0,bytes.indexof(','))
+      first_bytes = socket.gets
+      end_tag_indx = first_bytes.index(',')
+      mesg_lng_str = first_bytes.splice(0,end_tag_indx)
       mesg_len =  Integer.parse(mesg_lng_str)
-      message_request = bytes.substring(bytes.indexof(','))
+      message_request = first_bytes.splice(end_tag_indx+1,-1) 
       
       while message_request.size < mesg_len
        more = socket.gets
