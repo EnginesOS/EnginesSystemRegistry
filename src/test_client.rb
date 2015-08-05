@@ -1,8 +1,9 @@
+require 'json'
 
 def send_request(command,params)
   request_hash = params.dup
   request_hash[:command] = command
-   request_json
+   request_json = request_hash.to_json
   @registry_socket.send(request_json,0,"127.0.0.1",21027)
 end
 
