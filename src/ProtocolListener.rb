@@ -30,7 +30,7 @@ class ProtocolListener
        p request_hash
        
        request_method = @system_registry.method(command.to_sym)
-       method_params = request_method.parrameters
+       method_params = request_method.parameters
        p method_params
        if method_params.length ==0
          response_hash[:object] =  request_method.send()
