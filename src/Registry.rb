@@ -1,3 +1,4 @@
+require 'rubytree'
 class Registry
   attr_reader :last_error
   #  # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
