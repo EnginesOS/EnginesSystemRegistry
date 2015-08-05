@@ -4,14 +4,14 @@ require 'json'
 
 def wait_for_reply(socket)
 #  def process_messages(socket)
-      begin
+  begin
         # while socket.is_open? ==true 
       #blocking read
       #readup to first ,
       #get count
       #sub traact bytes already read and read until the rest.
       #save next segment if there is any (or stay sync)
-    first_bytes = socket.read_nonblock(256)
+    first_bytes = socket.read_nonblock(32768)
   p :first_bytes
   p first_bytes
   end_tag_indx = first_bytes.index(',')
