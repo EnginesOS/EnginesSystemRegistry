@@ -14,11 +14,11 @@ def wait_for_reply
         bytes = socket.gets
         mesg_lng_str = bytes.substring(0,bytes.indexof(','))
         mesg_len =  Integer.parse(mesg_lng_str)
-        message_response = bytes.substring(bytes.indexof(','))
+        messege_response = bytes.substring(bytes.indexof(','))
         
-        while message_response.size < mesg_len
+        while messege_response.size < mesg_len
          more = socket.gets
-          message_response = message_response + more
+          messege_response = messege_response + more
         end 
        
 
