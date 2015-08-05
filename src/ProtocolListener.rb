@@ -1,6 +1,13 @@
 class ProtocolListener
   attr_accessor :last_error
   
+  require_relative 'system_registry/SystemRegistry.rb'
+  
+
+  def initialize()
+    @system_registry = SystemRegistry.new
+  end
+  
   def  perform_request(request_hash)
     if request_hash.has_key?(:command) == false
       @last_error="Error_non_command"
@@ -12,13 +19,21 @@ class ProtocolListener
          @last_error = "nil command"
          return false
        end
-    
+    response_hash = Hash.new
+    response_hash[:command]=command
+    response_hash[:request]=request_hash
     request_hash.delete(:command)
+    
      p :command     
        p command
        p :request_hash
        p request_hash
-   return request_hash
+       case command
+       when  "list"
+         
+         response_hash[:object] = list_providers_in_use
+       end
+   return response_hash
   
   end
   #requests

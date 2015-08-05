@@ -1,5 +1,7 @@
 require 'json'
 
+
+
 def wait_for_reply
   
   response , address = @registry_socket.recvfrom(32762)
