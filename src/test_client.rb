@@ -117,7 +117,7 @@ command="service_configurations_registry"
 result = send_request(command,params)
 p "service_configurations_registry"
 p result[:result]
-config_registry =   result[:object]
+config_registry =  JSON.parse( result[:object])
 p config_registry
 command="orphaned_services_registry"
 result = send_request(command,params)
