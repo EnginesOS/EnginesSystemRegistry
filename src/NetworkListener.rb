@@ -1,48 +1,67 @@
 class NetworkListener
   
   def initialize(protocol_listener,ip,socket)
-    @registry_listener_socket = open_socket(ip,socket)
+    @registry_listener = open_socket(ip,socket)
     @protocol_listener = protocol_listener
   end
   
   def listen_for_messages
-    while true 
-    
-      request , address = @registry_listener_socket.recvfrom(32762)
-     # p "Request from:" + address.to_s + " " + request.to_s
-        if check_request(request , address) == true
-          request_hash = convert_request_to_hash(request)
-          if request_hash.is_a?(Hash)
-            result = @protocol_listener.perform_request(request_hash)
-          
-              if result  != nil
-                send_ok_result(result)
-              else                
-                send_error(request_hash,result)
-              end
-          else
-            p :error_decoding_request
-            send_error
-          end
-        end
+    loop do
+      client = @registry_listener.accept 
+      client.process_messages
     end
   end
   
-  def send_error(request_hash,result)
+  def send_error(socket,request_hash,result)
     request_hash[:result] = "Error"
      request_hash[:error] = result
-      send_result(request_hash) 
+      send_result(socket,request_hash) 
   end
-  def send_ok_result(result)
+  def send_ok_result(socket,result)
     result[:result] = "OK"
-    send_result(result)
+    send_result(socket,result)
       
   end
   
-  def send_result(reply_hash)
+  def process_messages(socket)
+    while socket.is_open? == true 
+    #blocking read
+    #readup to first ,
+    #get count
+    #sub traact bytes already read and read until the rest.
+    #save next segment if there is any (or stay sync)
+      bytes = socket.gets
+      mesg_lng_str = bytes.substring(0,bytes.indexof(','))
+      mesg_len =  Integer.parse(mesg_lng_str)
+      message_request = bytes.substring(bytes.indexof(','))
+      
+      while message_request.size < mesg_len
+       more = socket.gets
+       message_request = message_request +more
+      end 
+     
+
+      request_hash = convert_request_to_hash(message_request)
+    result = @protocol_listener.perform_request(request_hash)
+             
+                 if result  != nil
+                   send_ok_result(socket,result)
+                 else                
+                   send_error(socket,request_hash,result)
+                 end
+     end
+  end
+  
+  def send_result(socket,reply_hash)
     reply_json=reply_hash.to_json
-    @registry_listener_socket.send(reply_json,0,"127.0.0.1",21028)
-        
+    reply = build_mesg(reply_json)
+   # @registry_listener_socket.send(reply_json,0,"127.0.0.1",21028)
+     socket.puts(reply)
+  end
+  
+  def build_mesg(mesg_str)
+    header = mesg_str.to_s.length
+    return header.to_s + "," + mesg_str.to_s
   end
   
   def check_request_source_address(address)
@@ -91,13 +110,12 @@ class NetworkListener
   
   protected
   def open_socket(host,port)
+    
     require 'socket'
     BasicSocket.do_not_reverse_lookup = true
-    socket = UDPSocket.new(Socket::AF_INET)
-    if socket     
-      socket.bind(host,port)           
-      return socket
-    end
+    server = TCPServer.new(host,port)
+    return server
+   
     
   end
   
