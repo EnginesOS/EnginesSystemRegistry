@@ -33,9 +33,9 @@ class NetworkListener
     #save next segment if there is any (or stay sync)
       first_bytes = socket.gets
       end_tag_indx = first_bytes.index(',')
-      mesg_lng_str = first_bytes.splice(0,end_tag_indx)
+      mesg_lng_str = first_bytes.slice(0,end_tag_indx)
       mesg_len =  Integer.parse(mesg_lng_str)
-      message_request = first_bytes.splice(end_tag_indx+1,-1) 
+      message_request = first_bytes.slice(end_tag_indx+1,-1) 
       
       while message_request.size < mesg_len
        more = socket.gets
