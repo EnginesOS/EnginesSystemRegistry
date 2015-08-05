@@ -83,7 +83,8 @@ def send_request(command,params)
    request_json = request_hash.to_json
   mesg_str = build_mesg(request_json)
   @registry_socket.write(mesg_str)
-  wait_for_reply(@registry_socket)
+  result_hash = wait_for_reply(@registry_socket)
+  return result_hash
 end
 
 
