@@ -120,8 +120,9 @@ p result[:result]
   p :As_json
   p result[:object].to_json
 config_registry =  JSON.parse( result[:object].to_json)
-  p :as_tree
-p config_registry
+  p :class_name
+p config_registry.class.name
+
 command="orphaned_services_registry"
 result = send_request(command,params)
 p "orphaned_services_registry"
