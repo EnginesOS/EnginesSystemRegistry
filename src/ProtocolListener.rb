@@ -32,10 +32,11 @@ class ProtocolListener
        request_method = @system_registry.method(method_symbol)
        method_params = request_method.parameters
        p method_params
+       p "invoking " + command.to_s
        if method_params.length ==0
-         response_hash[:object] =  @system_registry.send(method_symbol)
+         response_hash[:object] =  @system_registry.public_send(method_symbol)
        else
-         response_hash[:object] = @system_registry.send(method_symbol,request_hash)
+         response_hash[:object] = @system_registry.public_send(method_symbol,request_hash)
        end
        
 #       case command
