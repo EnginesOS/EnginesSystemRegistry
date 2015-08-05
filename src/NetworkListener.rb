@@ -42,8 +42,9 @@ class NetworkListener
       mesg_len =  mesg_lng_str.to_i
       p :mesg_len
       p mesg_len
-      
-      message_request = first_bytes.slice(end_tag_indx+1,-1) 
+      total_length = first_bytes.size
+      end_byte =  total_length - end_tag_indx 
+      message_request = first_bytes.slice(end_tag_indx+1,end_byte) 
       
       while message_request.size < mesg_len
        more = socket.gets
