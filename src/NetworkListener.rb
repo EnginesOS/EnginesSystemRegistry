@@ -48,6 +48,7 @@ class NetworkListener
        message_request = message_request +more
         rescue IO::EAGAINWaitReadable
                 retry
+        end
       end 
 
       request_hash = convert_request_to_hash(message_request)
