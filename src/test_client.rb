@@ -100,7 +100,7 @@ def open_socket(host,port)
 end   
 
 @registry_socket= open_socket("127.0.0.1",21027)
-
+require 'yaml'
 params=Hash.new
 
 command="list_providers_in_use"
@@ -117,7 +117,8 @@ command="service_configurations_registry"
 result = send_request(command,params)
 p "service_configurations_registry"
 p result[:result]
-
+config_registry =   YAML::load(tree_data)
+p config_registry
 command="orphaned_services_registry"
 result = send_request(command,params)
 p "orphaned_services_registry"
