@@ -28,11 +28,22 @@ class ProtocolListener
        p command
        p :request_hash
        p request_hash
-      if command == "list_providers_in_use"
-         p :cmd_list_providers_in_use
-         response_hash[:object] = @system_registry.list_providers_in_use
-           p response_hash[:object].to_s
+       
+       request_method = @system_registry.method(command.to_sym)
+       method_params = request_method.parrameters
+       p method_params
+       if method_params.length ==0
+         response_hash[:object] =  request_method.send()
+       else
+         response_hash[:object] = request_method.send(request_hash)
        end
+       
+#       case command
+#       when  "list_providers_in_use"
+#         p :cmd_list_providers_in_use
+#         response_hash[:object] = @system_registry.list_providers_in_use
+#           p response_hash[:object].to_s
+#       end
    return response_hash
   
   end
