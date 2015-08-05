@@ -9,7 +9,7 @@ class NetworkListener
     while true 
     
       request , address = @registry_listener_socket.recvfrom(32762)
-      p "Request from:" + address.to_s + " " + request.to_s
+  #    p "Request from:" + address.to_s + " " + request.to_s
         if check_request(request , address) == true
           request_hash = convert_request_to_hash(request)
           if request_hash.is_a?(Hash)
@@ -93,7 +93,7 @@ class NetworkListener
   def open_socket(host,port)
     require 'socket'
     BasicSocket.do_not_reverse_lookup = true
-    socket = UDPSocket.new(Socket::AF_INET)
+    socket = Socket.new(Socket::AF_INET)
     if socket     
       socket.bind(host,port)           
       return socket
