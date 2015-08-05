@@ -3,7 +3,7 @@ require 'json'
 def convert_json_message_to_hash(request)
     require 'json'
    hash_request = JSON.parse(request)
-    return  symbolize_top_level_keys(hash_request)
+    return hash_request# symbolize_top_level_keys(hash_request)
   rescue 
       return nil
   end
