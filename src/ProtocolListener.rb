@@ -49,7 +49,7 @@ class ProtocolListener
        end
        rescue Exception=>e
          p e.to_s
-         p "with " + request.to_s + " " +  command + e.backtrace
+         p "with " + request.to_s + " " +  command.to_s + e.backtrace.to_s
          return false
        end
     
