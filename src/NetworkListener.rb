@@ -60,7 +60,7 @@ class NetworkListener
 #        p message_request.size.to_s
           message_request= String.new
           first_bytes=nil
-          
+        mesg_len = 1 #will set on first pass
       while message_request.size < mesg_len
         begin
           p :getting_more
