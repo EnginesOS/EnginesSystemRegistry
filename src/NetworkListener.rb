@@ -43,9 +43,16 @@ class NetworkListener
       
       while message_request.size < mesg_len
         begin
-       more = socket.read_nonblock(150)
+       more = socket.read_nonblock(1500)
+       
        message_request = message_request +more
+       if message_request.size == mesg_len
+          break
+       end
         rescue IO::EAGAINWaitReadable
+          if message_request.size == mesg_len
+             break
+          end
                 retry
           rescue Errno::EIO
                  retry  
