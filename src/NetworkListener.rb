@@ -30,41 +30,53 @@ class NetworkListener
       begin
    
       p "Connection on " + socket.to_s
-       
-      first_bytes = socket.read_nonblock(1500) 
-
-      end_tag_indx = first_bytes.index(',')
-
-      mesg_lng_str = first_bytes.slice(0,end_tag_indx)
-      mesg_len =  mesg_lng_str.to_i
-
-
       
-      total_length = first_bytes.size
-      end_byte =  total_length - end_tag_indx 
-
-        p :first_bytes
-        p first_bytes
-        p :first_bytes_l
-        p first_bytes.size
-        p :end_byte
-        p end_byte
-        p :end_tag_indx
-        p end_tag_indx
-        p :mesg_len
-        p mesg_len
-        
-      message_request = first_bytes.slice(end_tag_indx+1,end_byte+1) 
-      p message_request
-      p :message_request_l
-        p message_request.size.to_s
+#      first_bytes = socket.read_nonblock(1500) 
+#
+#      end_tag_indx = first_bytes.index(',')
+#
+#      mesg_lng_str = first_bytes.slice(0,end_tag_indx)
+#      mesg_len =  mesg_lng_str.to_i
+#
+#
+#      
+#      total_length = first_bytes.size
+#      end_byte =  total_length - end_tag_indx 
+#
+#        p :first_bytes
+#        p first_bytes
+#        p :first_bytes_l
+#        p first_bytes.size
+#        p :end_byte
+#        p end_byte
+#        p :end_tag_indx
+#        p end_tag_indx
+#        p :mesg_len
+#        p mesg_len
+#        
+#      message_request = first_bytes.slice(end_tag_indx+1,end_byte+1) 
+#      p message_request
+#      p :message_request_l
+#        p message_request.size.to_s
+          message_request= String.new
+          first_bytes=nil
+          
       while message_request.size < mesg_len
         begin
           p :getting_more
        more = socket.read_nonblock(1500)
-       p :more
-       p more
-       message_request = message_request +more
+       
+        if first_bytes == nil
+          first_bytes = more
+          end_tag_indx = first_bytes.index(',')
+          mesg_lng_str = first_bytes.slice(0,end_tag_indx)
+          mesg_len =  mesg_lng_str.to_i
+          end_byte =  total_length - end_tag_indx
+          message_request = first_bytes.slice(end_tag_indx+1,end_byte+1)
+        else
+          message_request = message_request +more
+        end
+        
        if message_request.size == mesg_len
           break
        end
