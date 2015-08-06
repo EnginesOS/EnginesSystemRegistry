@@ -33,7 +33,7 @@ class ProtocolListener
      p :command     
        p command
        p :request_hash
-       p request_hash
+       p command_hash
     
     begin 
        method_symbol = command.to_sym
