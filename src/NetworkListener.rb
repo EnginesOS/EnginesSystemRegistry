@@ -37,14 +37,18 @@ class NetworkListener
       mesg_lng_str = first_bytes.slice(0,end_tag_indx)
       mesg_len =  mesg_lng_str.to_i
 
-        p :first_bytes
-        p first_bytes
-        p first_bytes.size
-        
+
       
       total_length = first_bytes.size
       end_byte =  total_length - end_tag_indx 
 
+        p :first_bytes
+        p first_bytes
+        p first_bytes.size
+        p end_byte
+        p end_tag_indx
+        p mesg_len
+        
       message_request = first_bytes.slice(end_tag_indx+1,end_byte) 
       
       while message_request.size < mesg_len
