@@ -25,10 +25,10 @@ class ProtocolListener
      
     response_hash = Hash.new
     response_hash[:command]=command
-    response_hash[:request]=request_hash
-    request_hash.delete(:command)
+    response_hash[:request_value]=command_hash[:value]
 
-      request = request_hash[:single_value]
+
+      request = command_hash[:value]
     end
      p :command     
        p command
