@@ -28,7 +28,9 @@ class NetworkListener
     while true 
       begin
    
-      first_bytes = socket.read_nonblock(256)
+      p "Connection on " + socket.to_s
+       
+      first_bytes = socket.read_nonblock(1500) 
       end_tag_indx = first_bytes.index(',')
 
       mesg_lng_str = first_bytes.slice(0,end_tag_indx)
@@ -41,7 +43,7 @@ class NetworkListener
       
       while message_request.size < mesg_len
         begin
-       more = socket.gets
+       more = socket.read_nonblock(150)
        message_request = message_request +more
         rescue IO::EAGAINWaitReadable
                 retry
