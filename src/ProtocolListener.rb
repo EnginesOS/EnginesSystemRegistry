@@ -47,26 +47,22 @@ class ProtocolListener
        p "invoking " + command.to_s
        begin
        if method_params.length ==0
-         response_object =  @system_registry.public_send(method_symbol)
+         response_object =  @system_registry.public_send(method_symbol,nil)
        else
          response_object = @system_registry.public_send(method_symbol,request)
        end
        rescue Exception=>e
          p e.to_s
-         p "with " + request.to_s + " " +  command
+         p "with " + request.to_s + " " +  command + e.backtrace
          return nil
        end
     
     if response_object.is_a?(Tree::TreeNode)
       response_object = response_object.detached_subtree_copy
     end
-    response_hash[:object] =response_object.to_yaml
-#       case command
-#       when  "list_providers_in_use"
-#         p :cmd_list_providers_in_use
-#         response_hash[:object] = @system_registry.list_providers_in_use
-#           p response_hash[:object].to_s
-#       end
+    
+    response_hash[:object] = response_object.to_yaml
+
    return response_hash
   
   end
