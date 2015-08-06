@@ -17,10 +17,12 @@ class ProtocolListener
     end
     
     command = request_hash[:command]
+      
     if request_hash == nil
          @last_error = "nil command"
          return false
        end
+       
     response_hash = Hash.new
     response_hash[:command]=command
     response_hash[:request]=request_hash
@@ -36,15 +38,23 @@ class ProtocolListener
 #       p command
 #       p :request_hash
 #       p request_hash
+    
+       
        method_symbol = command.to_sym
        request_method = @system_registry.method(method_symbol)
        method_params = request_method.parameters
        p method_params
        p "invoking " + command.to_s
+       begin
        if method_params.length ==0
          response_object =  @system_registry.public_send(method_symbol)
        else
          response_object = @system_registry.public_send(method_symbol,request)
+       end
+       rescue Exception=>e
+         p e.to_s
+         p "with " + request.to_s + " " +  command
+           
        end
     
     if response_object.is_a?(Tree::TreeNode)
