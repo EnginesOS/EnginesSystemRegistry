@@ -54,7 +54,7 @@ class ProtocolListener
        rescue Exception=>e
          p e.to_s
          p "with " + request.to_s + " " +  command
-         return false
+         return nil
        end
     
     if response_object.is_a?(Tree::TreeNode)

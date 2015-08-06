@@ -18,6 +18,7 @@ class NetworkListener
       send_result(socket,request_hash) 
   end
   def send_ok_result(socket,result)
+    
     result[:result] = "OK"
     send_result(socket,result)
       
