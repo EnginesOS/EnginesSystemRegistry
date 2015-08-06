@@ -49,7 +49,7 @@ class NetworkListener
         mesg_len = 1 #will set on first pass
       while message_request.size < mesg_len
         begin
-          p :getting_more
+         # p :getting_more
        more = socket.read_nonblock(1500)
        
         if first_bytes == nil
