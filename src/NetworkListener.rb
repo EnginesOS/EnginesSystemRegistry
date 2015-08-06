@@ -8,7 +8,7 @@ class NetworkListener
   def listen_for_messages
     loop do
       client = @registry_listener.accept 
-    process_messages(client)
+      thr = Thread.new {   process_messages(client) }
     end
   end
   
