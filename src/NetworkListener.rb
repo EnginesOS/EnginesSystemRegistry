@@ -147,7 +147,7 @@ end
   def convert_request_to_hash(request)
     require 'YAML'
    hash_request = YAML::load(request)
-    return symbolize_top_level_keys(hash_request)
+    return hash_request # symbolize_top_level_keys(hash_request)
   rescue 
       return nil
   end
