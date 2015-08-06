@@ -26,6 +26,7 @@ class NetworkListener
   end
   
   def process_messages(socket)
+    
     while true 
       begin
    
@@ -47,20 +48,6 @@ class NetworkListener
           mesg_len =  mesg_lng_str.to_i
           end_byte =  total_length - end_tag_indx
           message_request = first_bytes.slice(end_tag_indx+1,end_byte+1)
-          p :first_bytes
-          p first_bytes
-          p :first_bytes_l
-          p first_bytes.size
-          p :end_byte
-          p end_byte
-          p :end_tag_indx
-          p end_tag_indx
-          p :mesg_len
-          p mesg_len
-  
-        p message_request
-        p :message_request_l
-          p message_request.size.to_s
         else
           message_request = message_request +more
         end
@@ -72,7 +59,6 @@ class NetworkListener
           if message_request.size >= mesg_len
              break
           end
-           #p :EAGAINWaitReadable
                 retry
           rescue Errno::EIO
             p :EIO
@@ -104,8 +90,8 @@ end
   def send_result(socket,reply_hash)
     retry_count=0
     p :sending
-    reply_json=reply_hash.to_json
-    reply = build_mesg(reply_json)
+    reply_yaml=reply_hash.to_yaml
+    reply = build_mesg(reply_yaml)
 
     begin
      socket.write(reply)
