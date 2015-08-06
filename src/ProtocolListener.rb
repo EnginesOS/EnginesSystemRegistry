@@ -54,7 +54,7 @@ class ProtocolListener
        rescue Exception=>e
          p e.to_s
          p "with " + request.to_s + " " +  command + e.backtrace
-         return nil
+         return Hash.new
        end
     
     if response_object.is_a?(Tree::TreeNode)
