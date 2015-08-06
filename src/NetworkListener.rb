@@ -31,6 +31,8 @@ class NetworkListener
       p "Connection on " + socket.to_s
        
       first_bytes = socket.read_nonblock(1500) 
+      p :first_bytes
+      p first_bytes
       end_tag_indx = first_bytes.index(',')
 
       mesg_lng_str = first_bytes.slice(0,end_tag_indx)
@@ -44,7 +46,8 @@ class NetworkListener
       while message_request.size < mesg_len
         begin
        more = socket.read_nonblock(1500)
-       
+       p :more
+       p more
        message_request = message_request +more
        if message_request.size == mesg_len
           break
