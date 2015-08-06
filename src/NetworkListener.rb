@@ -50,7 +50,7 @@ class NetworkListener
       while message_request.size < mesg_len
         begin
           p :getting_more
-       more = socket.read(1500)
+       more = socket.read_nonblock(1500)
        
         if first_bytes == nil
           first_bytes = more
@@ -85,7 +85,7 @@ class NetworkListener
           if message_request.size >= mesg_len
              break
           end
-         
+           #p :EAGAINWaitReadable
                 retry
           rescue Errno::EIO
             p :EIO
