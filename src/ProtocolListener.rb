@@ -11,14 +11,14 @@ class ProtocolListener
   def  perform_request(request_hash)
     if request_hash != nil
     
-    if request_hash.has_key?(:command) == false
+    if request_hash.has_key?(:command) == false 
       @last_error="Error_non_command"
       return false
     end
     
     command = request_hash[:command]
       
-    if request_hash == nil
+    if command == nil
          @last_error = "nil command"
          return false
        end
