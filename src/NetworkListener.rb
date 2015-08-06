@@ -9,7 +9,7 @@ class NetworkListener
   def listen_for_messages
     loop do
       client = @registry_listener.accept 
-      thr = Thread.new {   process_messages(client) }
+      process_messages(client)  #thr = Thread.new {   process_messages(client) }
     end
   end
   
@@ -97,17 +97,6 @@ class NetworkListener
                  else                
                    send_error(socket,request_hash,result)
                  end
-        
-      rescue Errno::ECONNRESET
-        return
-      rescue Errno::EPIPE
-        return
-      rescue EOFError
-               return  
-      rescue Errno::EIO
-           retry
-      rescue IO::EAGAINWaitReadable
-        retry
     end
   end
 end
