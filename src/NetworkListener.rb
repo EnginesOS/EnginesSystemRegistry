@@ -96,7 +96,7 @@ end
     rescue 
       return false
     end
-    p "wrote " + reply.length
+    p "wrote " + reply.length + " " + reply_hash.to_s
     
     return true  
   end
