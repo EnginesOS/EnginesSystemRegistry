@@ -59,6 +59,7 @@ class NetworkListener
         p message_request.size.to_s
       while message_request.size < mesg_len
         begin
+          p :getting_more
        more = socket.read_nonblock(1500)
        p :more
        p more
@@ -146,6 +147,7 @@ end
   
   def convert_request_to_hash(request)
     require 'YAML'
+    p :yamilificat
    hash_request = YAML::load(request)
     return hash_request # symbolize_top_level_keys(hash_request)
   rescue 
