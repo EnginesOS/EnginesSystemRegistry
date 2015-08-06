@@ -30,20 +30,7 @@ class NetworkListener
       begin
    
       p "Connection on " + socket.to_s
-      
-#      first_bytes = socket.read_nonblock(1500) 
-#
-#      end_tag_indx = first_bytes.index(',')
-#
-#      mesg_lng_str = first_bytes.slice(0,end_tag_indx)
-#      mesg_len =  mesg_lng_str.to_i
-#
-#
-#      
-#      total_length = first_bytes.size
-#      end_byte =  total_length - end_tag_indx 
-#
-#
+
           message_request= String.new
           first_bytes=nil
         mesg_len = 1 #will set on first pass
@@ -89,7 +76,7 @@ class NetworkListener
                 retry
           rescue Errno::EIO
             p :EIO
-                 retry  
+          return  
          rescue Errno::ECONNRESET
             return
          rescue Errno::EPIPE
