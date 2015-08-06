@@ -8,31 +8,27 @@ class ProtocolListener
     @system_registry = SystemRegistry.new
   end
   
-  def  perform_request(request_hash)
-    if request_hash != nil
+  def  perform_request(command_hash)
+    if command_hash != nil
     
-    if request_hash.has_key?(:command) == false 
+    if command_hash.has_key?(:command) == false 
       @last_error="Error_non_command"
       return false
     end
     
-    command = request_hash[:command]
+    command = command_hash[:command]
       
     if command == nil
          @last_error = "nil command"
          return false
        end
-       
+     
     response_hash = Hash.new
     response_hash[:command]=command
     response_hash[:request]=request_hash
     request_hash.delete(:command)
-    
-    if request_hash.has_key?(:single_value) == true
+
       request = request_hash[:single_value]
-    else
-      request = request_hash
-    end
     end
 #     p :command     
 #       p command
