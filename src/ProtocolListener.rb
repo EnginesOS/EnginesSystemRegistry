@@ -30,10 +30,10 @@ class ProtocolListener
 
       request = request_hash[:single_value]
     end
-#     p :command     
-#       p command
-#       p :request_hash
-#       p request_hash
+     p :command     
+       p command
+       p :request_hash
+       p request_hash
     
     begin 
        method_symbol = command.to_sym

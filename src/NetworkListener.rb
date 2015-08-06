@@ -85,6 +85,8 @@ class NetworkListener
       end 
 
       request_hash = convert_request_to_hash(message_request)
+      p :request_hash
+      p request_hash
     result = @protocol_listener.perform_request(request_hash)             
                  if result  != false
                    send_ok_result(socket,result)
