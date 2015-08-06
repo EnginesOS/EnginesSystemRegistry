@@ -68,6 +68,7 @@ class NetworkListener
        
         if first_bytes == nil
           first_bytes = more
+          total_length = first_bytes.size
           end_tag_indx = first_bytes.index(',')
           mesg_lng_str = first_bytes.slice(0,end_tag_indx)
           mesg_len =  mesg_lng_str.to_i
