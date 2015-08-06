@@ -43,21 +43,7 @@ class NetworkListener
 #      total_length = first_bytes.size
 #      end_byte =  total_length - end_tag_indx 
 #
-#        p :first_bytes
-#        p first_bytes
-#        p :first_bytes_l
-#        p first_bytes.size
-#        p :end_byte
-#        p end_byte
-#        p :end_tag_indx
-#        p end_tag_indx
-#        p :mesg_len
-#        p mesg_len
-#        
-#      message_request = first_bytes.slice(end_tag_indx+1,end_byte+1) 
-#      p message_request
-#      p :message_request_l
-#        p message_request.size.to_s
+#
           message_request= String.new
           first_bytes=nil
         mesg_len = 1 #will set on first pass
@@ -74,6 +60,20 @@ class NetworkListener
           mesg_len =  mesg_lng_str.to_i
           end_byte =  total_length - end_tag_indx
           message_request = first_bytes.slice(end_tag_indx+1,end_byte+1)
+          p :first_bytes
+          p first_bytes
+          p :first_bytes_l
+          p first_bytes.size
+          p :end_byte
+          p end_byte
+          p :end_tag_indx
+          p end_tag_indx
+          p :mesg_len
+          p mesg_len
+  
+        p message_request
+        p :message_request_l
+          p message_request.size.to_s
         else
           message_request = message_request +more
         end
