@@ -152,8 +152,8 @@ end
     p :yamilificat
    hash_request = YAML::load(request)
     return hash_request # symbolize_top_level_keys(hash_request)
-  rescue 
-      return nil
+#  rescue 
+#      return nil
   end
  
   def symbolize_top_level_keys(hash)
