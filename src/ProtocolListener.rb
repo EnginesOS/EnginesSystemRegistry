@@ -9,6 +9,8 @@ class ProtocolListener
   end
   
   def  perform_request(request_hash)
+    if request_hash != nil
+    
     if request_hash.has_key?(:command) == false
       @last_error="Error_non_command"
       return false
@@ -28,6 +30,7 @@ class ProtocolListener
       request = request_hash[:single_value]
     else
       request = request_hash
+    end
     end
 #     p :command     
 #       p command
