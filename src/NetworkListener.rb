@@ -50,11 +50,13 @@ class NetworkListener
           break
        end
         rescue IO::EAGAINWaitReadable
-          if message_request.size == mesg_len
+          if message_request.size >= mesg_len
              break
           end
+           p :EAGAINWaitReadable
                 retry
           rescue Errno::EIO
+            p :EIO
                  retry  
          rescue Errno::ECONNRESET
             return
