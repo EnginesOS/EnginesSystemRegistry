@@ -31,13 +31,17 @@ class NetworkListener
       p "Connection on " + socket.to_s
        
       first_bytes = socket.read_nonblock(1500) 
-      p :first_bytes
-      p first_bytes
+
       end_tag_indx = first_bytes.index(',')
 
       mesg_lng_str = first_bytes.slice(0,end_tag_indx)
       mesg_len =  mesg_lng_str.to_i
 
+        p :first_bytes
+        p first_bytes
+        p first_bytes.size
+        
+      
       total_length = first_bytes.size
       end_byte =  total_length - end_tag_indx 
 
