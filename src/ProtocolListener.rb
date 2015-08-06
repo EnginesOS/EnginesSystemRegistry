@@ -24,6 +24,11 @@ class ProtocolListener
     response_hash[:request]=request_hash
     request_hash.delete(:command)
     
+    if request_hash.has_key?(:single_value) == true
+      request = request_hash[:single_value]
+    else
+      request = request_hash
+    end
 #     p :command     
 #       p command
 #       p :request_hash
@@ -36,7 +41,7 @@ class ProtocolListener
        if method_params.length ==0
          response_object =  @system_registry.public_send(method_symbol)
        else
-         response_object = @system_registry.public_send(method_symbol,request_hash)
+         response_object = @system_registry.public_send(method_symbol,request)
        end
     
     if response_object.is_a?(Tree::TreeNode)
