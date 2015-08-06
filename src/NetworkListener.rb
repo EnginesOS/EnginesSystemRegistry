@@ -1,3 +1,4 @@
+require 'YAML'
 class NetworkListener
   
   def initialize(protocol_listener,ip,socket)
@@ -148,7 +149,7 @@ end
   end
   
   def convert_request_to_hash(request)
-    require 'YAML'
+   
     p :yamilificat
    hash_request = YAML::load(request)
     return hash_request # symbolize_top_level_keys(hash_request)
