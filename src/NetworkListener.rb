@@ -1,4 +1,4 @@
-require 'YAML'
+require 'yaml'
 class NetworkListener
   
   def initialize(protocol_listener,ip,socket)
