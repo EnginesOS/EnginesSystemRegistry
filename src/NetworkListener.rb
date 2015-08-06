@@ -50,7 +50,7 @@ class NetworkListener
         p mesg_len
         
       message_request = first_bytes.slice(end_tag_indx+1,end_byte) 
-      
+      p message_request
       while message_request.size < mesg_len
         begin
        more = socket.read_nonblock(1500)
