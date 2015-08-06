@@ -120,8 +120,9 @@ p "service_configurations_registry"
 p result[:result]
   p :As_json
   p result[:object].to_s
-config_registry =  JSON.parse( result[:object].to_s)
+
   p :class_name
+config_registry = YAML::load(result[:object])
 p config_registry.class.name
 
 command="orphaned_services_registry"
