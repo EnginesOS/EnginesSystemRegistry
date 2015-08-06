@@ -96,7 +96,7 @@ end
     rescue 
       return false
     end
-    p "wrote " + reply_hash[:command]
+    p "wrote " + reply.length
     
     return true  
   end
