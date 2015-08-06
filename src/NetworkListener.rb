@@ -79,12 +79,14 @@ class NetworkListener
          rescue Errno::ECONNRESET
             return
          rescue Errno::EPIPE
+           p :EPIPE
             return 
          rescue EOFError
+           p :EOFError
                    return  
         end
       end 
-
+      p :convert
       request_hash = convert_request_to_hash(message_request)
       p :request_hash
       p request_hash
