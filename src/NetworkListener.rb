@@ -114,7 +114,7 @@ end
   
   def send_result(socket,reply_hash)
     retry_count=0
-    
+    p :sending
     reply_json=reply_hash.to_json
     reply = build_mesg(reply_json)
 
