@@ -305,7 +305,7 @@ class SystemRegistry < Registry
       f.puts(serialized_object)
       f.close
       #FIXME do a del a rename as killing copu part way through ...
-      FileUtils.copy(SysConfig.ServiceTreeFile+".tmp", service_tree_file);
+      FileUtils.copy(service_tree_file+".tmp", service_tree_file);
       @last_tree_mod_time = File.mtime(service_tree_file)
       return true
     rescue Exception=>e
