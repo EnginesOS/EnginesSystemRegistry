@@ -1,5 +1,6 @@
 require_relative 'Registry.rb'
 require 'yaml'
+require 'fileutils'
 class SystemRegistry < Registry 
 
   require_relative 'SubRegistry.rb'
