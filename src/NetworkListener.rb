@@ -105,7 +105,7 @@ end
 
     begin
      
-     socket.write(reply)
+     socket.send(reply)
      # socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue  IO::EAGAINWaitWritable
       retry_count+=1
