@@ -42,6 +42,8 @@ class NetworkListener
        more = socket.read_nonblock(1500)
        
         if first_bytes == nil
+          p :first_read
+          p more
           first_bytes = more
           total_length = first_bytes.size
           end_tag_indx = first_bytes.index(',')
