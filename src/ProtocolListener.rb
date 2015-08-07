@@ -24,7 +24,7 @@ class ProtocolListener
     response_hash[:request_value]=command_hash[:value]
 
     begin
-    @registry_lock.synchronize  {
+ #   @registry_lock.synchronize  {
   
        method_symbol = command.to_sym
        request_method = @system_registry.method(method_symbol)
@@ -38,12 +38,12 @@ class ProtocolListener
        else
          response_object = @system_registry.public_send(method_symbol,request)
        end  
-    }
+ #   }
        
        rescue Exception=>e
          p e.to_s
          p "with " + request.to_s + " " +  command.to_s + e.backtrace.to_s
-      @registry_lock.unlock
+     # @registry_lock.unlock
          return false
        end
  
