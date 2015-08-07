@@ -6,7 +6,7 @@ class ProtocolListener
 
   def initialize()
     @system_registry = SystemRegistry.new
-    @registry_lock = Mutex.new
+    #@registry_lock = Mutex.new
   end
   
 
