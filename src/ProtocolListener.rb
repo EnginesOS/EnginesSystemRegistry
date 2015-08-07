@@ -43,7 +43,7 @@ class ProtocolListener
        p "invoking " + command.to_s + " with " + method_params.to_s
     
        if method_params.length ==0
-         response_object =  @system_registry.public_send(method_symbol,nil)
+         response_object =  @system_registry.public_send(method_symbol)
        else
          response_object = @system_registry.public_send(method_symbol,request)
        end
