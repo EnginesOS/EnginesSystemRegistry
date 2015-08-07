@@ -22,7 +22,7 @@ class ProtocolListener
     response_hash = Hash.new
     response_hash[:command]=command
     response_hash[:request_value]=command_hash[:value]
-
+    response_object=""
     begin
     @registry_lock.synchronize  {
   
