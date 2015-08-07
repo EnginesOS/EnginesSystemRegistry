@@ -59,7 +59,7 @@ class ProtocolListener
 #       @registry_lock.unlock
   end
   
-  def is_command_hash_valid
+  def is_command_hash_valid?(command_hash)
     if command_hash == nil
           return false
     elsif command_hash.has_key?(:command) == false 
