@@ -24,7 +24,7 @@ class ProtocolListener
     response_hash[:request_value]=command_hash[:value]
 
     begin
-    @registry_lock.synchronize do
+    @registry_lock.synchronize  {
   
        method_symbol = command.to_sym
        request_method = @system_registry.method(method_symbol)
@@ -38,14 +38,15 @@ class ProtocolListener
        else
          response_object = @system_registry.public_send(method_symbol,request)
        end  
-        
-    end   
+    }
+       
        rescue Exception=>e
          p e.to_s
          p "with " + request.to_s + " " +  command.to_s + e.backtrace.to_s
+      @registry_lock.unlock
          return false
        end
-    
+ 
   
     if response_object.is_a?(Tree::TreeNode)
       response_object = response_object.detached_subtree_copy
@@ -54,7 +55,8 @@ class ProtocolListener
     response_hash[:object] = response_object.to_yaml
 
    return response_hash
-  
+    ensure 
+       @registry_lock.unlock
   end
   
   def is_command_hash_valid
