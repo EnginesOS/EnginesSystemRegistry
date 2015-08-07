@@ -104,6 +104,7 @@ end
     reply = build_mesg(reply_yaml)
 
     begin
+      socket.recv(0) #check it's open anc hcuck wobbly if not
      socket.write(reply)
     rescue  IO::EAGAINWaitWritable
       retry_count+=1
