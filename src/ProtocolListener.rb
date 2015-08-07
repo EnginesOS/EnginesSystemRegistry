@@ -55,8 +55,8 @@ class ProtocolListener
     response_hash[:object] = response_object.to_yaml
 
    return response_hash
-    ensure 
-       @registry_lock.unlock
+#    ensure 
+#       @registry_lock.unlock
   end
   
   def is_command_hash_valid
