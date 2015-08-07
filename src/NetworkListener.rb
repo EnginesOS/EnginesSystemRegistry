@@ -54,6 +54,14 @@ class NetworkListener
         
        if message_request.size == mesg_len
           break
+       else
+         p :waiting_for_more
+         p message_request
+         p :want
+         p   mesg_len
+         p :have 
+         p message_request.size
+         
        end
         rescue IO::EAGAINWaitReadable
           if message_request.size >= mesg_len
