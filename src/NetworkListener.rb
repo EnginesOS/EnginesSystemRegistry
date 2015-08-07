@@ -78,8 +78,8 @@ class NetworkListener
            p :EPIPE
             return 
          rescue EOFError
-           p :EOFError
-                   return  
+          #End of Message
+                return  
         end
       end 
       p :pre_convert
