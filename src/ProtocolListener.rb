@@ -53,7 +53,7 @@ class ProtocolListener
     end
     
     response_hash[:object] = response_object.to_yaml
-
+    @registry_lock.unlock
    return response_hash
   ensure 
       @registry_lock.unlock
