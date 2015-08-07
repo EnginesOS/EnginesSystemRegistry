@@ -82,7 +82,7 @@ class NetworkListener
                  if result  != false
                    send_ok_result(socket,result)
                  else                
-                   send_error(socket,request,result)
+                   send_error(socket,request_hash,result)
                  end
     end
   end
