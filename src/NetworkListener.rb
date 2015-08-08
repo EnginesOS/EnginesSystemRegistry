@@ -5,7 +5,7 @@ class NetworkListener
   def initialize(protocol_listener,ip,socket)
     @registry_listener = open_socket(ip,socket)
     @protocol_listener = protocol_listener
-    @registry_lock.Mutex.new()
+    @registry_lock  = Mutex.new()
   end
   
   def listen_for_messages
