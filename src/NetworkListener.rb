@@ -4,6 +4,7 @@ class NetworkListener
   def initialize(protocol_listener,ip,socket)
     @registry_listener = open_socket(ip,socket)
     @protocol_listener = protocol_listener
+    @registry_lock.Mutex.new
   end
   
   def listen_for_messages
@@ -89,6 +90,7 @@ class NetworkListener
       request_hash = convert_request_to_hash(message_request)
       p :converted_request_hash
       p request_hash
+      @registry_lock.synchronize   {
     result = @protocol_listener.perform_request(request_hash)  
                
                  if result  != false
@@ -96,6 +98,7 @@ class NetworkListener
                  else                
                    send_error(socket,request_hash,result)
                  end
+      }      
     end
   end
 end
