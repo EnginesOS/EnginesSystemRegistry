@@ -30,31 +30,43 @@ class NetworkListener
   
   def process_messages(socket)
     
+    def process_first_chunk(mesg_data)
+      total_length = mesg_data.size
+      end_tag_indx = mesg_data.index(',')
+      mesg_lng_str = mesg_data.slice(0,end_tag_indx)
+      mesg_len =  mesg_lng_str.to_i
+      end_byte =  total_length - end_tag_indx
+      message_request = mesg_data.slice(end_tag_indx+1,end_byte+1)
+      return message_request , mesg_len
+    end
+    
+    session_timer_thread=1
     while true 
       begin
    
       p "Connection on " + socket.to_s
 
           message_request= String.new
-          first_bytes=nil
+          first_bytes=true
         mesg_len = 1 #will set on first pass
       while message_request.size < mesg_len
         begin
          # p :getting_more
-       more = socket.read_nonblock(1500)
+          mesg_data = socket.read_nonblock(1500)
        
-        if first_bytes == nil
-          p :first_read
-          p more
-          first_bytes = more
-          total_length = first_bytes.size
-          end_tag_indx = first_bytes.index(',')
-          mesg_lng_str = first_bytes.slice(0,end_tag_indx)
-          mesg_len =  mesg_lng_str.to_i
-          end_byte =  total_length - end_tag_indx
-          message_request = first_bytes.slice(end_tag_indx+1,end_byte+1)
+        if first_bytes == true
+          session_timer_thread = Thread.new {sleep 5}
+          first_bytes = false
+          
+
+          
+          message_request , mesg_len = process_first_chunk(mesg_data)
+          
         else
-          message_request = message_request +more
+          message_request = message_request + mesg_data
+           if session_timer_thread.is_running == false
+             p :Timeout
+           end
         end
         
        if message_request.size == mesg_len
@@ -111,14 +123,19 @@ end
     reply = build_mesg(reply_yaml)
 
     begin
-     
+      status = Timeout::timeout(15) {
      socket.send(reply,0)
+      }
      # socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue  IO::EAGAINWaitWritable
       retry_count+=1
       retry
+      rescue  Timeout::Error 
+         @last_error="Timeout sending reply"
+         return false
     rescue 
       return false
+      
     end
     p "wrote " + reply.length.to_s + " " + reply_hash.to_s
     
