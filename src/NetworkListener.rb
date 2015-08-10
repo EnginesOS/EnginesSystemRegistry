@@ -49,6 +49,7 @@ class NetworkListener
     deheaded_chunk[1]=mesg_len
    
     p deheaded_chunk.to_s
+p "of" + message_request.size + "bytes"
     return deheaded_chunk
   end
   
