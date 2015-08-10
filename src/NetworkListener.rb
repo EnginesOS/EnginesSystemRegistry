@@ -148,9 +148,7 @@ end
       p e.backtrace.to_s
       return false
   end
-   
-    p "wrote " + reply.length.to_s + " " + reply_hash.to_s
-    
+     
     return true  
   end
   
