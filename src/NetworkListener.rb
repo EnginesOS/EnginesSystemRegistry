@@ -57,10 +57,12 @@ class NetworkListener
         if first_bytes == true
           session_timer_thread = Thread.new {sleep 5}
           first_bytes = false
-          
-
-          
+       
           message_request , mesg_len = process_first_chunk(mesg_data)
+          p :message_request
+          p message_request
+          p :mesg_len
+          p mesg_len
           
         else
           message_request = message_request + mesg_data
