@@ -205,7 +205,12 @@ end
         result
       }
     end
-  
+    
+ def shutdown
+    
+ 
+   
+ end
   protected
   def open_socket(host,port)
     

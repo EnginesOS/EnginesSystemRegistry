@@ -69,5 +69,10 @@ class ProtocolListener
      end
      return true
   end
+  
+  def shutdown
+    
+  end
+  end
 
 end
