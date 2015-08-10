@@ -42,7 +42,8 @@ class NetworkListener
     session_timer_thread=1
     while true 
       begin
-      p "Connection on " + socket.peeraddr(true,:numeric).to_s
+      p "Connection on " 
+      p socket.peeraddr(true,:numeric).to_s
           message_request= String.new
           first_bytes=true
         mesg_len = 1 #will set on first pass
