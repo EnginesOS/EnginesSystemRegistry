@@ -21,5 +21,3 @@ exit
 
 network_listener.listen_for_messages
 
-#protocol_listener.shutdown
-#network_listener.shutdown

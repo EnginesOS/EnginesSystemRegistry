@@ -27,7 +27,7 @@ class NetworkListener
 
   def send_error(socket,request_hash,result)
     request_hash[:result] = "Error"
-    request_hash[:error] = result
+    request_hash[:error] = result.to_s + ":"  + @protocol_listener.last_error.to_s
     send_result(socket,request_hash)
   end
 
