@@ -35,6 +35,7 @@ class NetworkListener
   end
   
   def process_first_chunk(mesg_data)
+    p :deheaded_chunk
     deheaded_chunk = Array.new
     total_length = mesg_data.size
     end_tag_indx = mesg_data.index(',')
@@ -44,7 +45,7 @@ class NetworkListener
     message_request = mesg_data.slice(end_tag_indx+1,end_byte+1)
     deheaded_chunk[0]=message_request
     deheaded_chunk[1]=mesg_len
-    p :deheaded_chunk
+   
     p deheaded_chunk.to_s
     return deheaded_chunk
   end
@@ -62,7 +63,7 @@ class NetworkListener
         begin
           p :getting_mesg_data
           mesg_data = socket.read_nonblock(1500)
-       
+          p mesg_data
         if first_bytes == true
          # session_timer_thread = Thread.new {sleep 5}
           first_bytes = false
@@ -78,6 +79,7 @@ class NetworkListener
         end
         
        if message_request.size == mesg_len
+        
           break
        end
        
