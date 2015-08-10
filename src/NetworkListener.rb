@@ -44,6 +44,8 @@ class NetworkListener
     message_request = mesg_data.slice(end_tag_indx+1,end_byte+1)
     deheaded_chunk[0]=message_request
     deheaded_chunk[1]=mesg_len
+    p :deheaded_chunk
+    p deheaded_chunk.to_s
     return deheaded_chunk
   end
   
