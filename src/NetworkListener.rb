@@ -12,6 +12,8 @@ class NetworkListener
   def listen_for_messages
     loop do
       client = @registry_listener.accept       
+      p "Connection on " 
+      p client.peeraddr(true,:numeric).to_s
      thr = Thread.new {   process_messages(client) }
     end
   end
@@ -41,11 +43,10 @@ class NetworkListener
     
     session_timer_thread=1
     while true 
-      begin
-      p "Connection on " 
-      p socket.peeraddr(true,:numeric).to_s
+      begin   
           message_request= String.new
           first_bytes=true
+          
         mesg_len = 1 #will set on first pass
       while message_request.size < mesg_len
         begin
@@ -57,7 +58,7 @@ class NetworkListener
           first_bytes = false
 
          message_request , mesg_len = process_first_chunk(mesg_data)
-          
+          p "got " + message_request + " in " + mesg_len + " bytes" 
         else
           message_request = message_request + mesg_data
 #           if session_timer_thread.is_running == false
