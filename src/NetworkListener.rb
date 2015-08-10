@@ -69,9 +69,7 @@ class NetworkListener
           first_bytes = false
           deheaded_chunk = process_first_chunk(mesg_data)
           message_request = deheaded_chunk[0]
-           mesg_len   = deheaded_chunk[1]
-          p "got " + message_request + " in " + mesg_len.to_s + " bytes" 
-            p "of" + message_request
+           mesg_len   = deheaded_chunk[1]       
         else
           message_request = message_request + mesg_data
 #           if session_timer_thread.is_running == false
