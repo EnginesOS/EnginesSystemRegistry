@@ -13,7 +13,8 @@ class NetworkListener
     loop do
       client = @registry_listener.accept       
       p "Connection on " 
-      p client.peeraddr(true,:numeric).to_s
+      client_ipdetails = client.peeraddr(true,:numeric)
+        p client_ipdetails[2].to_s + ":" + client_ipdetails[1].to_s
      thr = Thread.new {   process_messages(client) }
     end
   end
