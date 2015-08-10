@@ -124,15 +124,16 @@ end
   
   def send_result(socket,reply_hash)
     retry_count=0
-    p :sending
-    p reply_hash
+   
+    p reply_hash[:command] + ":" +  reply_hash[:result]
     reply_yaml=reply_hash.to_yaml
     reply = build_mesg(reply_yaml)
 
     begin
       status = Timeout::timeout(15) {
-   bytes =  socket.write(reply) #,0)
-     p "bytes_sent:" + bytes.to_s
+        p :sending
+        bytes =  socket.write(reply) #,0)
+        p "bytes_sent:" + bytes.to_s
       }
      # socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue  IO::EAGAINWaitWritable
