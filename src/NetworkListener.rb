@@ -49,7 +49,7 @@ class NetworkListener
     deheaded_chunk[1]=mesg_len
    
     p deheaded_chunk.to_s
-p "of" + message_request.size.to._s + "bytes"
+p "of" + message_request.size.to_s + "bytes"
     return deheaded_chunk
   end
   
@@ -73,7 +73,7 @@ p "of" + message_request.size.to._s + "bytes"
           deheaded_chunk = process_first_chunk(mesg_data)
           message_request = deheaded_chunk[0]
            mesg_len   = deheaded_chunk[1]
-          p "got " + message_request + " in " + mesg_len + " bytes" 
+          p "got " + message_request + " in " + mesg_len.to_s + " bytes" 
             p "of" + message_request
         else
           message_request = message_request + mesg_data
