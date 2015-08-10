@@ -64,7 +64,7 @@ p "of" + message_request.size.to._s + "bytes"
         mesg_len = 1 #will set on first pass
       while message_request.size < mesg_len
         begin
-          p :getting_mesg_data
+          #p :getting_mesg_data
           mesg_data = socket.read_nonblock(1500)
           p mesg_data
         if first_bytes == true
