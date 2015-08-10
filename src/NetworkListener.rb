@@ -64,14 +64,15 @@ class NetworkListener
           mesg_len =  mesg_lng_str.to_i
           end_byte =  total_length - end_tag_indx
           message_request = mesg_data.slice(end_tag_indx+1,end_byte+1)
-          
+          p :message_request
+          p message_request
         #  message_request , mesg_len = process_first_chunk(mesg_data)
           
         else
           message_request = message_request + mesg_data
-           if session_timer_thread.is_running == false
-             p :Timeout
-           end
+#           if session_timer_thread.is_running == false
+#             p :Timeout
+#           end
         end
         
        if message_request.size == mesg_len
