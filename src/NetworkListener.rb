@@ -128,10 +128,10 @@ end
     p reply_hash[:command] + ":" +  reply_hash[:result]
     reply_yaml=reply_hash.to_yaml
     reply = build_mesg(reply_yaml)
-
+    p :sending
     begin
       status = Timeout::timeout(15) {
-        p :sending
+      
         bytes =  socket.write(reply) #,0)
         p "bytes_sent:" + bytes.to_s
       }
@@ -153,6 +153,8 @@ end
   
   def build_mesg(mesg_str)
     header = mesg_str.to_s.length
+    p :sending_header
+    p header
     return header.to_s + "," + mesg_str.to_s
   end
   
