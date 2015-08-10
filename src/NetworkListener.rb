@@ -49,7 +49,7 @@ class NetworkListener
     deheaded_chunk[1]=mesg_len
    
     p deheaded_chunk.to_s
-p "of" + message_request.size + "bytes"
+p "of" + message_request.size.to._s + "bytes"
     return deheaded_chunk
   end
   
@@ -103,6 +103,9 @@ p "of" + message_request.size + "bytes"
          rescue EOFError
           #End of Message
                 return  
+      rescue Exception=>e
+        p e.to_s
+        p e.backtrace.to_s
         end
       end 
 
