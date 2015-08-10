@@ -131,7 +131,8 @@ end
 
     begin
       status = Timeout::timeout(15) {
-     socket.send(reply,0)
+   bytes =  socket.send(reply,0)
+     p "bytes_sent:" + bytes.to_s
       }
      # socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue  IO::EAGAINWaitWritable
