@@ -71,8 +71,6 @@ class ProtocolListener
   end
   
   def shutdown
-    
   end
-  
 
 end

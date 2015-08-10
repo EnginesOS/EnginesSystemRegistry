@@ -4,7 +4,7 @@ require 'thread'
 class NetworkListener
   
   def initialize(protocol_listener,ip,socket)
-    @registry_listener = open_socket(ip,socket)
+    @registry_listener = start_network_server(ip,socket)
     @protocol_listener = protocol_listener
     @registry_lock  = Mutex.new()
   end
@@ -14,7 +14,9 @@ class NetworkListener
     loop do
       client = @registry_listener.accept       
       log_connection(client)
-      thr = Thread.new {   process_messages(client) }
+       if  check_request_source_address(client) == true
+            thr = Thread.new {   process_messages(client) }
+       end
     end
   end
   
@@ -24,20 +26,17 @@ class NetworkListener
    end
    
   def send_error(socket,request_hash,result)
-    p :errio
     request_hash[:result] = "Error"
     request_hash[:error] = result
     send_result(socket,request_hash) 
   end
   
   def send_ok_result(socket,result)    
-    p :ok
     result[:result] = "OK"
     send_result(socket,result)      
   end
   
   def process_first_chunk(mesg_data)
-    p :deheaded_chunk
     deheaded_chunk = Array.new
     total_length = mesg_data.size
     end_tag_indx = mesg_data.index(',')
@@ -48,8 +47,6 @@ class NetworkListener
     deheaded_chunk[0]=message_request
     deheaded_chunk[1]=mesg_len
    
-    p deheaded_chunk.to_s
-p "of" + message_request.size.to_s + "bytes"
     return deheaded_chunk
   end
   
@@ -153,7 +150,8 @@ end
     return header.to_s + "," + mesg_str.to_s
   end
   
-  def check_request_source_address(address)
+  def check_request_source_address(client)
+    ip = client.peeraddr(true,:numeric)
     #Stub for ip ACL rules
     return true
   end
@@ -212,7 +210,7 @@ end
    
  end
   protected
-  def open_socket(host,port)
+  def start_network_server(host,port)
     
     require 'socket'
     BasicSocket.do_not_reverse_lookup = true
