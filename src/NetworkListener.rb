@@ -131,7 +131,7 @@ end
     p :sending
     begin
       status = Timeout::timeout(15) {
-      
+        p :starting_time_out
         bytes =  socket.write(reply) #,0)
         p "bytes_sent:" + bytes.to_s
       }
