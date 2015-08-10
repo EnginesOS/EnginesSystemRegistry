@@ -1,4 +1,5 @@
 require 'yaml'
+require 'timeout'
 require 'thread'
 class NetworkListener
   
@@ -129,7 +130,7 @@ end
     reply_yaml=reply_hash.to_yaml
     reply = build_mesg(reply_yaml)
     p :sending
-   
+   begin
       status = Timeout::timeout(15) {
         p :starting_time_out
         bytes =  socket.write(reply) #,0)
@@ -146,7 +147,7 @@ end
       p  e.to_s
       p e.backtrace.to_s
       return false
-      
+  end
    
     p "wrote " + reply.length.to_s + " " + reply_hash.to_s
     
