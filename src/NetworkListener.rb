@@ -24,12 +24,14 @@ class NetworkListener
    end
    
   def send_error(socket,request_hash,result)
+    p :errio
     request_hash[:result] = "Error"
     request_hash[:error] = result
     send_result(socket,request_hash) 
   end
   
   def send_ok_result(socket,result)    
+    p :ok
     result[:result] = "OK"
     send_result(socket,result)      
   end
