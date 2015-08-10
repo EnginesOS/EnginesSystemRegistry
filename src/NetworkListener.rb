@@ -28,17 +28,17 @@ class NetworkListener
       
   end
   
+  def process_first_chunk(mesg_data)
+    total_length = mesg_data.size
+    end_tag_indx = mesg_data.index(',')
+    mesg_lng_str = mesg_data.slice(0,end_tag_indx)
+    mesg_len =  mesg_lng_str.to_i
+    end_byte =  total_length - end_tag_indx
+    message_request = mesg_data.slice(end_tag_indx+1,end_byte+1)
+    return message_request , mesg_len
+  end
+  
   def process_messages(socket)
-    
-    def process_first_chunk(mesg_data)
-      total_length = mesg_data.size
-      end_tag_indx = mesg_data.index(',')
-      mesg_lng_str = mesg_data.slice(0,end_tag_indx)
-      mesg_len =  mesg_lng_str.to_i
-      end_byte =  total_length - end_tag_indx
-      message_request = mesg_data.slice(end_tag_indx+1,end_byte+1)
-      return message_request , mesg_len
-    end
     
     session_timer_thread=1
     while true 
@@ -55,14 +55,17 @@ class NetworkListener
           mesg_data = socket.read_nonblock(1500)
        
         if first_bytes == true
-          session_timer_thread = Thread.new {sleep 5}
+         # session_timer_thread = Thread.new {sleep 5}
           first_bytes = false
-       
-          message_request , mesg_len = process_first_chunk(mesg_data)
-          p :message_request
-          p message_request
-          p :mesg_len
-          p mesg_len
+          
+          total_length = mesg_data.size
+          end_tag_indx = mesg_data.index(',')
+          mesg_lng_str = mesg_data.slice(0,end_tag_indx)
+          mesg_len =  mesg_lng_str.to_i
+          end_byte =  total_length - end_tag_indx
+          message_request = mesg_data.slice(end_tag_indx+1,end_byte+1)
+          
+        #  message_request , mesg_len = process_first_chunk(mesg_data)
           
         else
           message_request = message_request + mesg_data
