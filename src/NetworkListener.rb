@@ -125,6 +125,7 @@ end
         bytes =  socket.send(reply,0)
        
       }
+      p "registry_reply " + bytes.to_s + " bytes" 
      # socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue  IO::EAGAINWaitWritable
       retry_count+=1

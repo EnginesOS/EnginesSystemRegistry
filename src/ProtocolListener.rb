@@ -9,8 +9,6 @@ class ProtocolListener
 
   end
   
-
-  
   def  perform_request(command_hash)
     if is_command_hash_valid?(command_hash)== false
       return false
@@ -31,14 +29,12 @@ class ProtocolListener
        p method_params
        p "invoking " + command.to_s + " with " + method_params.to_s
     
-     
        if method_params.length ==0
          response_object =  @system_registry.public_send(method_symbol)
        else
          response_object = @system_registry.public_send(method_symbol,request)
        end  
-   
-       
+      
        rescue Exception=>e
          p e.to_s
          p "with " + request.to_s + " " +  command.to_s + e.backtrace.to_s
