@@ -125,6 +125,7 @@ end
   def send_result(socket,reply_hash)
     retry_count=0
     p :sending
+    p reply_hash
     reply_yaml=reply_hash.to_yaml
     reply = build_mesg(reply_yaml)
 
