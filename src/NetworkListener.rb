@@ -9,16 +9,20 @@ class NetworkListener
     @registry_lock  = Mutex.new()
   end
   
+  #Fix me need to limit connections close thread etc
   def listen_for_messages
     loop do
       client = @registry_listener.accept       
-      p "Connection on " 
-      client_ipdetails = client.peeraddr(true,:numeric)
-        p client_ipdetails[2].to_s + ":" + client_ipdetails[1].to_s
-     thr = Thread.new {   process_messages(client) }
+      log_connection(client)
+      thr = Thread.new {   process_messages(client) }
     end
   end
   
+  def log_connection(client)
+           client_ipdetails = client.peeraddr(true,:numeric)
+           p "Connection on " + client_ipdetails[2].to_s + ":" + client_ipdetails[1].to_s
+   end
+   
   def send_error(socket,request_hash,result)
     request_hash[:result] = "Error"
     request_hash[:error] = result
@@ -31,13 +35,16 @@ class NetworkListener
   end
   
   def process_first_chunk(mesg_data)
+    deheaded_chunk = Array.new
     total_length = mesg_data.size
     end_tag_indx = mesg_data.index(',')
     mesg_lng_str = mesg_data.slice(0,end_tag_indx)
     mesg_len =  mesg_lng_str.to_i
     end_byte =  total_length - end_tag_indx
     message_request = mesg_data.slice(end_tag_indx+1,end_byte+1)
-    return message_request , mesg_len
+    deheaded_chunk[0]=message_request
+    deheaded_chunk[1]=mesg_len
+    return deheaded_chunk
   end
   
   def process_messages(socket)
@@ -51,14 +58,15 @@ class NetworkListener
         mesg_len = 1 #will set on first pass
       while message_request.size < mesg_len
         begin
-         # p :getting_more
+          p :getting_mesg_data
           mesg_data = socket.read_nonblock(1500)
        
         if first_bytes == true
          # session_timer_thread = Thread.new {sleep 5}
           first_bytes = false
-
-         message_request , mesg_len = process_first_chunk(mesg_data)
+          deheaded_chunk = process_first_chunk(mesg_data)
+          message_request = deheaded_chunk[0]
+           mesg_len   = deheaded_chunk[1]
           p "got " + message_request + " in " + mesg_len + " bytes" 
         else
           message_request = message_request + mesg_data
