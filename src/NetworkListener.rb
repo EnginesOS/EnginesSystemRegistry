@@ -73,6 +73,7 @@ class NetworkListener
           message_request = deheaded_chunk[0]
            mesg_len   = deheaded_chunk[1]
           p "got " + message_request + " in " + mesg_len + " bytes" 
+            p "of" + message_request
         else
           message_request = message_request + mesg_data
 #           if session_timer_thread.is_running == false
@@ -80,7 +81,7 @@ class NetworkListener
 #           end
         end
         
-       if message_request.size == mesg_len
+       if message_request.size >= mesg_len
         
           break
        end
