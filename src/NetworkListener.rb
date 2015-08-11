@@ -15,7 +15,10 @@ class NetworkListener
       client = @registry_listener.accept
       log_connection(client)
       if  check_request_source_address(client) == true
-        thr = Thread.new {   process_messages(client) }
+        thr = Thread.new {   process_messages(client)
+                              p :closing_connection
+                               client.close()
+                               }
       end
     end
   end
