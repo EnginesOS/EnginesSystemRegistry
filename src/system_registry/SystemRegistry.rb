@@ -78,7 +78,7 @@ class SystemRegistry < Registry
   end
    end
    
-  def orphan_service(service_hash)
+  def orphanate_service(service_hash)
     if save_as_orphan(service_hash)
          return  remove_from_services_registry(service_hash)
        end
