@@ -74,14 +74,14 @@ class NetworkListener
 
             if message_request.size >= mesg_len
               p :read_complete
-              p message_request.size + " of " + mesg_len
+              p message_request.size.to_s + " of " + mesg_len.to_s
               break
             end
 
           rescue IO::EAGAINWaitReadable
             if message_request.size >= mesg_len
               p :readable_but_complete
-              p message_request.size + " of " + mesg_len
+              p message_request.size.to_s + " of " + mesg_len.to_s
               break
             end
             retry
