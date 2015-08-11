@@ -27,21 +27,21 @@ class SystemRegistry < Registry
      @managed_engines_registry.find_engine_services_hashes(params)
    end
    
-  def save_as_orphan(params)
-    if  @orphan_server_registry.save_as_orphan(params) == true
-      save_tree
-    end
-  end  
-  def release_orphan(params)
-    if  @orphan_server_registry.release_orphan(params) == true
+#  def save_as_orphan(params)
+#    if  @orphan_server_registry.save_as_orphan(params) == true
+#      save_tree
+#    end
+#  end  
+  def rebirth_orphan(params)
+    if  @orphan_server_registry.rebirth_orphan(params) == true
     save_tree
   end
    end  
-  def reparent_orphan(params)
-    if  @orphan_server_registry.reparent_orphan(params) == true
-    save_tree
-  end
-  end
+#  def reparent_orphan(params)
+#    if  @orphan_server_registry.reparent_orphan(params) == true
+#    save_tree
+#  end
+ # end
   def retrieve_orphan(params)
       @orphan_server_registry.retrieve_orphan(params)
     end
@@ -79,7 +79,7 @@ class SystemRegistry < Registry
    end
    
   def orphanate_service(service_hash)
-    if save_as_orphan(service_hash)
+    if   @orphan_server_registry.save_as_orphan(service_hash) == true
          return  remove_from_services_registry(service_hash)
        end
        log_error_mesg("Failed to save orphan",service_hash)   
@@ -131,53 +131,7 @@ class SystemRegistry < Registry
     
     end
     
-  #@ remove an engine matching :engine_name from the service registry, all non persistant serices are removed
-  #@ if :remove_all_data is true all data is deleted and all persistant services removed
-  #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
-  #@return true on success and false on fail
-#  def rm_remove_engine(params)
-#
-##    if params.has_key?(:parent_engine) == false
-##      params[:parent_engine] = params[:engine_name]
-##    end
-##    engines_type_tree = @managed_engines_registry.managed_engines_type_registry(params)
-##    if managed_engines_registry.is_a?(Tree::TreeNode) == false
-##      log_error_mesg("Warning Failed to find engine to remove",params)
-##      return true
-##    end
-##    engine_node =  managed_engines_registry[params[:parent_engine]]
-##
-##    if engine_node.is_a?(Tree::TreeNode) == false
-##      log_error_mesg("Warning Failed to find engine to remove",params)
-##      return true
-##    end
-##    SystemUtils.debug_output(  :rm_remove_engine_params, params)
-#    services = get_engine_persistant_services(params)
-#    services.each do | service |
-#      if params[:remove_all_data] == true
-#        if delete_service(service) == false
-#          log_error_mesg("Failed to remove service ",service)
-#          return false
-#        end
-#      else
-#        if orphan_service(service) == false
-#          log_error_mesg("Failed to orphan service ",service)
-#          return false
-#        end
-#      end
-#    end
-#
-#    if  managed_engines_type_tree(params).remove!(engine_node)
-# 
-#      return  save_tree
-#    else
-#      log_error_mesg("Failed to remove engine node ",engine_node)
-#      return false
-#    end
-#    log_error_mesg("Failed remove engine",params)
-#    return true
-#  end
-
+  
 
 
   
@@ -336,50 +290,7 @@ class SystemRegistry < Registry
   end
 
 
-## returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
-# # Creates new attached [TreeNode] with required parent path if none exists
-# # return nil on error
-# #param parent_node the branch to create the node under
-# #param type_path the dir path format as in dns or database/sql/mysql
-# def create_type_path_node(parent_node,type_path)
-#   if type_path == nil
-#     log_error_mesg("create_type_path passed a nil type_path when adding to ",parent_node)
-#     return false
-#   end
-#   if parent_node.is_a?(Tree::TreeNode) == false
-#     log_error_mesg("parent node not a tree node ",parent_node)
-#           return false
-#         end
-#   if type_path.include?("/") == false
-#     service_node = parent_node[type_path]
-#     if service_node == nil
-#       service_node = Tree::TreeNode.new(type_path,type_path)
-#       parent_node << service_node
-#     end
-#     return service_node
-#   else
-#
-#     sub_paths= type_path.split("/")
-#     prior_node = parent_node
-#     count=0
-#
-#     sub_paths.each do |sub_path|
-#       sub_node = prior_node[sub_path]
-#       if sub_node == nil
-#         sub_node = Tree::TreeNode.new(sub_path,sub_path)
-#         prior_node << sub_node
-#       end
-#       prior_node = sub_node
-#       count+=1
-#       if count == sub_paths.count
-#         return sub_node
-#       end
-#     end
-#   end
-#   log_error_mesg("create_type_path failed",type_path)
-#   return false
-# end
-  
+
 def orphaned_services_registry
     
     if check_system_registry_tree == false 
