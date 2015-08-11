@@ -66,17 +66,11 @@ class NetworkListener
               # session_timer_thread = Thread.new {sleep 5}
               first_bytes = false
               message_request, mesg_len= process_first_chunk(mesg_data)
-              #          message_request = deheaded_chunk[0]
-              #           mesg_len   = deheaded_chunk[1]
             else
               message_request = message_request + mesg_data
-              #           if session_timer_thread.is_running == false
-              #             p :Timeout
-              #           end
             end
 
             if message_request.size >= mesg_len
-
               break
             end
 
@@ -87,15 +81,15 @@ class NetworkListener
             retry
           rescue Errno::EIO
             p :EIO
-            return
+            
           rescue Errno::ECONNRESET
-            return
+            return 
           rescue Errno::EPIPE
             p :EPIPE
-            return
+            
           rescue EOFError
             #End of Message
-            return
+            
           rescue Exception=>e
             p e.to_s
             p e.backtrace.to_s
