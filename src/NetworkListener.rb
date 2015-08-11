@@ -82,13 +82,10 @@ class NetworkListener
               message_request = message_request + mesg_data
             end
 
-            if message_request.size >= mesg_len
-              p :read_complete
-              if message_request.size >   mesg_len
-                p :read_complete_NEED_TO_UNGET
+            if message_request.size >= mesg_len              
+              if message_request.size >   mesg_len                
                 socket.ungetbyte(message_request[mesg_len,message_request.size])
               message_request = message_request[0,mesg_len]
-              p message_request.size.to_s + " of " + mesg_len.to_s
               end
               break
             end
