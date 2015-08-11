@@ -84,7 +84,11 @@ class NetworkListener
 
             if message_request.size >= mesg_len
               p :read_complete
+              if message_request.size >   mesg_len
+                p :read_complete_NEED_TO_UNGET
+                socket.ungetbyte(message_request[mesg_len,message_request.size])
               p message_request.size.to_s + " of " + mesg_len.to_s
+              end
               break
             end
 
