@@ -65,6 +65,7 @@ class NetworkListener
     session_timer_thread=1
     while true
       begin
+       
         message_request= String.new
         first_bytes=true
         mesg_len = 1 #will set on first pass
@@ -108,11 +109,13 @@ class NetworkListener
           rescue Exception=>e
             p e.to_s
             p e.backtrace.to_s
+            @last_error="Exception:" + e.to_s + ":" + e.backtrace.to_s
+            send_error(socket,message_request,@last_error)
           end
         end
-
+       end
+      begin
         request_hash = convert_request_to_hash(message_request)
-
         @registry_lock.synchronize   {
           result = @protocol_listener.perform_request(request_hash)
           if result  != false
@@ -120,14 +123,14 @@ class NetworkListener
           else
             send_error(socket,request_hash,result)
           end
-        }
-      end
-    end
-    rescue Exception=>e
+        }  
+        rescue Exception=>e
              p e.to_s
              p e.backtrace.to_s      
              @last_error="Exception:" + e.to_s + ":" + e.backtrace.to_s
              send_error(socket,message_request,@last_error)
+        end
+    end
   end
 
   def send_result(socket,reply_hash)
