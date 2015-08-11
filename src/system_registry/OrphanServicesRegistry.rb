@@ -10,8 +10,7 @@ class OrphanServicesRegistry < SubRegistry
         return false
       end
   
-     if remove_tree_entry(orphan)
-  
+     if remove_tree_entry(orphan)  
       return true
      else
        log_error_mesg("failed to remove tree entry for ",orphan)
@@ -21,7 +20,7 @@ class OrphanServicesRegistry < SubRegistry
     end
     #Saves the service_hash in the orphaned service registry 
     #@return result 
-    def save_as_orphan(service_hash)
+    def orphanate_service(service_hash)
       provider_tree = orphaned_services_registry[service_hash[:publisher_namespace]]
         if provider_tree.is_a?(Tree::TreeNode) == false
           provider_tree =  Tree::TreeNode.new(service_hash[:publisher_namespace],service_hash[:publisher_namespace])

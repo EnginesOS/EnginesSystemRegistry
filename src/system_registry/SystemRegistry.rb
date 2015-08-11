@@ -90,7 +90,7 @@ class SystemRegistry < Registry
    end
    
   def orphanate_service(service_hash)
-    if   @orphan_server_registry.save_as_orphan(service_hash) == true
+    if   @orphan_server_registry.orphanate_service(service_hash) == true
          return  remove_from_services_registry(service_hash)
        end
        log_error_mesg("Failed to save orphan",service_hash)   
