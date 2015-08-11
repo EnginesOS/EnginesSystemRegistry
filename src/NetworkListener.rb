@@ -32,9 +32,15 @@ class NetworkListener
   end
 
   def send_error(socket,request_hash,result)
-    request_hash[:result] = "Error"
-    request_hash[:error] = result.to_s + ":"  + @protocol_listener.last_error.to_s
-    send_result(socket,request_hash)
+    if request_hash.is_a?(String)
+      message_hash = Hash.new
+      else
+      request_hash = request_hash
+    end
+    
+    message_hash[:result] = "Error"
+    message_hash[:error] = result.to_s + ":"  + @protocol_listener.last_error.to_s
+    send_result(socket,message_hash)
   end
 
   def send_ok_result(socket,result)
@@ -121,7 +127,7 @@ class NetworkListener
              p e.to_s
              p e.backtrace.to_s      
              @last_error="Exception:" + e.to_s + ":" + e.backtrace.to_s
-             send_error(socket,request_hash,@last_error)
+             send_error(socket,message_request,@last_error)
   end
 
   def send_result(socket,reply_hash)
