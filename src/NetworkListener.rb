@@ -3,6 +3,8 @@ require 'timeout'
 require 'thread'
 
 class NetworkListener
+  attr_accessor :last_error
+  
   def initialize(protocol_listener,ip,socket)
     @registry_listener = start_network_server(ip,socket)
     @protocol_listener = protocol_listener
@@ -118,6 +120,8 @@ class NetworkListener
     rescue Exception=>e
              p e.to_s
              p e.backtrace.to_s      
+             @last_error="Exception:" + e.to_s + ":" + e.backtrace.to_s
+             send_error(socket,request_hash,@last_error)
   end
 
   def send_result(socket,reply_hash)
