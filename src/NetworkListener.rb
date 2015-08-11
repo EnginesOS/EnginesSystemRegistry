@@ -15,10 +15,11 @@ class NetworkListener
       client = @registry_listener.accept
       log_connection(client)
       if  check_request_source_address(client) == true
-        thr = Thread.new {   process_messages(client)
-                              p :closing_connection
-                               client.close()
-                               }
+        thr = Thread.new {  
+            process_messages(client)
+            p :closing_connection
+            client.close()
+           }
       end
     end
   end
@@ -58,15 +59,13 @@ class NetworkListener
       begin
         message_request= String.new
         first_bytes=true
-
         mesg_len = 1 #will set on first pass
+        
         while message_request.size < mesg_len
           begin
-            #p :getting_mesg_data
             mesg_data = socket.read_nonblock(1500)
             p mesg_data
             if first_bytes == true
-              # session_timer_thread = Thread.new {sleep 5}
               first_bytes = false
               message_request, mesg_len= process_first_chunk(mesg_data)
             else
@@ -74,11 +73,15 @@ class NetworkListener
             end
 
             if message_request.size >= mesg_len
+              p :read_complete
+              p message_request.size + " of " + mesg_len
               break
             end
 
           rescue IO::EAGAINWaitReadable
             if message_request.size >= mesg_len
+              p :readable_but_complete
+              p message_request.size + " of " + mesg_len
               break
             end
             retry
@@ -91,6 +94,7 @@ class NetworkListener
             p :EPIPE
             
           rescue EOFError
+            p :EOF
             #End of Message
             
           rescue Exception=>e
@@ -111,6 +115,9 @@ class NetworkListener
         }
       end
     end
+    rescue Exception=>e
+             p e.to_s
+             p e.backtrace.to_s      
   end
 
   def send_result(socket,reply_hash)
