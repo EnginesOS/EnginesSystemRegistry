@@ -57,6 +57,16 @@ class SystemRegistry < Registry
     @services_registry.find_service_consumers(service_query_hash)
   end
  
+  
+    def get_service_entry(service_query_hash)
+        tree_node = find_service_consumers(service_query_hash)
+          if tree_node.is_a?(Tree::TreeNode) == false
+            return false                 
+          end
+          return tree_node.content
+    end
+  #
+  
   def update_attached_service(service_hash)
    if remove_from_managed_engines_registry(service_hash) &&
     remove_from_services_registry(service_hash) &&
@@ -64,6 +74,7 @@ class SystemRegistry < Registry
     add_to_services_registry(service_hash) == true    
     return true
    end
+      
    return false
   end
   
