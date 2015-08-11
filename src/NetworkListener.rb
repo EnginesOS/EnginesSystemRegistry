@@ -94,8 +94,8 @@ class NetworkListener
             p :EPIPE
             
           rescue EOFError
-            p :EOF
-            #End of Message
+            #p :EOF
+            #End of Message buffer
             
           rescue Exception=>e
             p e.to_s
