@@ -32,8 +32,9 @@ class NetworkListener
   end
 
   def send_error(socket,request_hash,result)
-    if request_hash.is_a?(String)
+    if request_hash.is_a?(Hash) == false
       message_hash = Hash.new
+      message_hash[:object] = request_hash
       else
       request_hash = request_hash
     end
