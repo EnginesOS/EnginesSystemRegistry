@@ -89,7 +89,11 @@ class SystemRegistry < Registry
   end
    end
    
-  def orphanate_service(service_hash)
+  def orphanate_service(service_query_hash)
+    service_hash = @orphan_server_registry.retrieve_orphan(service_query_hash)
+    if service_hash == nil
+      log_error_mesg(@orphan_server_registry.last_error)
+    end 
     if   @orphan_server_registry.orphanate_service(service_hash) == true
          return  remove_from_services_registry(service_hash)
        end
