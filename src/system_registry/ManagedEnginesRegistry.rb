@@ -130,7 +130,7 @@ class ManagedEnginesRegistry  < SubRegistry
     if  service_node == nil
       service_node = Tree::TreeNode.new(service_handle,service_hash)
       service_type_node << service_node
-    elsif service_hash[:persistant] == false
+    elsif  is_persistant?(service_hash) == false
       service_node.content = service_hash
     else
       log_error_mesg("Engine Node existed",service_handle)
@@ -143,6 +143,7 @@ class ManagedEnginesRegistry  < SubRegistry
 
     return true
   end
+
 #@return the service_handle from the service_hash
 # for backward compat (to be changed)
 def get_service_handle(params)

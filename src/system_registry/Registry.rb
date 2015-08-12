@@ -1,6 +1,15 @@
 require 'rubytree'
 class Registry
   attr_reader :last_error
+  
+  #handle missing persistant key as not persistance kludge to catch gui bug
+  def is_persistant?(hash)
+    if hash.has_key?(:persistance) == true &&  hash[:persistanct] == ture
+      return true
+    end
+    return false
+  end
+  
   #  # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
   #   # Creates new attached [TreeNode] with required parent path if none exists
   #   # return nil on error
