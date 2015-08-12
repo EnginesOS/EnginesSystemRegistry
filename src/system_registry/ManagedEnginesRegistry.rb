@@ -97,7 +97,7 @@ class ManagedEnginesRegistry  < SubRegistry
   #overwrites
   def add_to_managed_engines_registry(service_hash)
  p :add_to_managed_engines_registry
- P service_hash.to_s
+ p service_hash.to_s
     if service_hash.has_key?(:parent_engine) == false || service_hash[:parent_engine] == nil
       log_error_mesg("no_parent_engine_key",service_hash)
       return false
