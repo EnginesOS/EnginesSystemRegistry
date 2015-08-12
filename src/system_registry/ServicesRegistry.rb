@@ -53,6 +53,7 @@ class ServicesRegistry < SubRegistry
       service_type_node = create_type_path_node(provider_node,service_hash[:type_path])
         
       if service_type_node.is_a?(Tree::TreeNode) == false
+        log_error_mesg("failed to create TreeNode for",service_hash)
         return false
       end
       
