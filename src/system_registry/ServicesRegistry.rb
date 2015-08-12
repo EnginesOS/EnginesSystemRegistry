@@ -67,7 +67,7 @@ class ServicesRegistry < SubRegistry
         SystemUtils.debug_output( :create_new_service_regstry_entry,service_hash)
         service_node = Tree::TreeNode.new(service_hash[:service_handle],service_hash)
         engine_node << service_node
-      elsif service_hash[:persistant] == false
+      elsif  is_persistant?(service_hash)  == false
         SystemUtils.debug_output( :reattachexistsing_service_persistant_false,service_hash)
         service_node.content = service_hash
       else
