@@ -116,7 +116,7 @@ class ManagedEnginesRegistry  < SubRegistry
 
     service_type_node = create_type_path_node(engine_node,service_hash[:type_path])
     service_handle = get_service_handle(service_hash)
-    service_handle = service_hash[:service_handle]
+#    service_handle = service_hash[:service_handle]
     if service_type_node.is_a?(Tree::TreeNode) == false 
       log_error_mesg("no service type node",service_hash)
       return false
@@ -131,6 +131,7 @@ class ManagedEnginesRegistry  < SubRegistry
     if  service_node == nil
       service_node = Tree::TreeNode.new(service_handle,service_hash)
       service_type_node << service_node
+      service_node.content = service_hash
     elsif  is_persistant?(service_hash) == false
       service_node.content = service_hash
     else
