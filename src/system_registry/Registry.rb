@@ -4,7 +4,7 @@ class Registry
   
   #handle missing persistant key as not persistance kludge to catch gui bug
   def is_persistant?(hash)
-    if hash.has_key?(:persistance) == true &&  hash[:persistanct] == ture
+    if hash.has_key?(:persistance) == true &&  hash[:persistanct] == true
       return true
     end
     return false
