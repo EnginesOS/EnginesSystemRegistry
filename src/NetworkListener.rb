@@ -36,7 +36,7 @@ class NetworkListener
       message_hash = Hash.new
       message_hash[:object] = request_hash
       else
-      request_hash = request_hash
+      message_hash = request_hash
     end
     
     message_hash[:result] = "Error"
