@@ -111,7 +111,7 @@ class ManagedEnginesRegistry  < SubRegistry
       engine_node = engines_type_tree[ service_hash[:parent_engine] ]
     else
       engine_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash[:parent_engine] + " Engine Service Tree")
-    managed_engines_type_registry(service_hash) << engine_node
+      managed_engines_type_registry(service_hash) << engine_node
     end
 
     service_type_node = create_type_path_node(engine_node,service_hash[:type_path])
@@ -141,8 +141,12 @@ class ManagedEnginesRegistry  < SubRegistry
       #   service_node.content = service_hash
       return false
     end
-
+    p :success
     return true
+rescue Exception=>e
+  log_exception(e)
+  
+  
   end
 
 #@return the service_handle from the service_hash
