@@ -124,6 +124,7 @@ class NetworkListener
           if result  != false
             send_ok_result(socket,result)
           else
+            request_hash[:last_error]=@protocol_listener.last_error
             send_error(socket,request_hash,result)
           end
         }  

@@ -36,7 +36,7 @@ class ProtocolListener
     rescue Exception=>e
       p e.to_s
       p "with " + request.to_s + " " +  command.to_s + e.backtrace.to_s
-
+      p @system_registry.last_error.to_s
       return false
     end
 
@@ -45,7 +45,7 @@ class ProtocolListener
     end
 
     response_hash[:object] = response_object.to_yaml
-
+    response_hash[:last_error] = @system_registry.last_error
     return response_hash
 
   end

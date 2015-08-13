@@ -10,7 +10,34 @@ class SystemRegistry < Registry
   require_relative 'OrphanServicesRegistry.rb'
   require_relative 'SystemUtils.rb'
   
+ def test_orphans_registry_result(result)
+   if result == nil || result == false
+     @last_error=   @last_error.to_s + ":" + @orphan_server_registry.last_error
+   end
+   return result
+ end
+  def test_engines_registry_result(result)
+    if result == nil || result == false
+      @last_error=   @last_error.to_s + ":" + @managed_engines_registry.last_error
+    end
+    
+    return result
+  end
   
+  def test_services_registry_result(result)
+    if result == nil || result == false
+      @last_error=   @last_error.to_s + ":" + @services_registry.last_error
+    end
+    
+    return result
+   end
+  def test_configurations_registry_result(result)
+    if result == nil || result == false
+      @last_error=   @last_error.to_s + ":" + @configuration_registry.last_error
+    end
+    
+    return result
+   end
    
   #@ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
    def initialize() 
@@ -23,8 +50,25 @@ class SystemRegistry < Registry
      
    end
    
+   def take_snap_shot
+     @snap_shot=@system_registry.dup
+     clear_error
+   end
+   
+   def clear_error
+     @last_error=""
+   end
+   
+   def roll_back
+     if @snap_shot.is_a?(Tree::TreeNode)
+       @system_registry = @snap_shot
+     end
+     return @system_registry
+   end
+   
    def find_engine_services_hashes(params)
-     @managed_engines_registry.find_engine_services_hashes(params)
+     clear_error
+     test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
    end
    
 #  def save_as_orphan(params)
@@ -33,9 +77,12 @@ class SystemRegistry < Registry
 #    end
 #  end  
   def rebirth_orphan(params)
-    if  @orphan_server_registry.rebirth_orphan(params) == true
-    save_tree
+    take_snap_shot
+    if  test_orphans_registry_result(@orphan_server_registry.rebirth_orphan(params)) == true
+      return save_tree
   end
+    roll_back
+    return false
    end  
 #  def reparent_orphan(params)
 #    if  @orphan_server_registry.reparent_orphan(params) == true
@@ -43,22 +90,28 @@ class SystemRegistry < Registry
 #  end
  # end
   def retrieve_orphan(params)
-      @orphan_server_registry.retrieve_orphan(params)
+    clear_error
+    test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(params))
     end
     
   def get_orphaned_services(params)
-    @orphan_server_registry.get_orphaned_services(params)
+    clear_error
+    
+    test_orphans_registry_result(@orphan_server_registry.get_orphaned_services(params))
    end
   def find_orphan_consumers(params)
-     @orphan_server_registry.find_orphan_consumers(params)
+    clear_error
+    test_orphans_registry_result(@orphan_server_registry.find_orphan_consumers(params))
   end  
     
   def find_service_consumers(service_query_hash)
-    @services_registry.find_service_consumers(service_query_hash)
+    clear_error
+    test_services_registry_result(@services_registry.find_service_consumers(service_query_hash))
   end
  
   
     def get_service_entry(service_query_hash)
+      clear_error
         tree_node = find_service_consumers(service_query_hash)
           if tree_node.is_a?(Tree::TreeNode) == false
             return false                 
@@ -67,82 +120,116 @@ class SystemRegistry < Registry
     end
   #
   
-  def update_attached_service(service_hash)
-   if remove_from_managed_engines_registry(service_hash) &&
-    remove_from_services_registry(service_hash) &&
-    add_to_managed_engines_registry(service_hash) &&
-    add_to_services_registry(service_hash) == true    
-    return true
+  def update_attached_service(service_hash) 
+    take_snap_shot
+    if test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) &&
+      test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) &&
+      test_engines_registry_result(@managed_engines_registry.add_to_managed_engines_registry(service_hash)) &&
+      test_engines_registry_result(@managed_engines_registry.add_to_services_registry(service_hash)) == true
+#    end
+#   if remove_from_managed_engines_registry(service_hash) &&
+#    remove_from_services_registry(service_hash) &&
+#    add_to_managed_engines_registry(service_hash) &&
+#    add_to_services_registry(service_hash) == true    
+      return save_tree    
    end
-      
+    roll_back
    return false
   end
   
   def add_to_services_registry(service_hash)
-    if  @services_registry.add_to_services_registry(service_hash) == true
-    save_tree
+    take_snap_shot
+    if  test_services_registry_result(@services_registry.add_to_services_registry(service_hash)) == true
+      return save_tree
   end
   end   
+  
   def remove_from_services_registry(service_hash)
-    if  @services_registry.remove_from_services_registry(service_hash) == true
-    save_tree
+   take_snap_shot
+    if  test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) == true
+      return save_tree
   end
+    roll_back
+   return false
+  
    end
    
   def orphanate_service(service_query_hash)
-    service_hash = @orphan_server_registry.retrieve_orphan(service_query_hash)
+    take_snap_shot
+    service_hash = test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(service_query_hash))
     if service_hash == nil
-      log_error_mesg(@orphan_server_registry.last_error)
+      log_error_mesg(@orphan_server_registry.last_error.to_s)      
+      return false
     end 
-    if   @orphan_server_registry.orphanate_service(service_hash) == true
-         return  remove_from_services_registry(service_hash)
+    if  test_orphans_registry_result( @orphan_server_registry.orphanate_service(service_hash)  ) == true
+         if  test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) == true
+          return save_tree
+         else
+           log_error_mesg("Failed to save orphan" + @services_registry.last_error.to_s,service_hash) 
        end
-       log_error_mesg("Failed to save orphan",service_hash)   
-       return false
+       log_error_mesg("Failed to save orphan" + @orphan_server_registry.last_error.to_s ,service_hash) 
+      end
+    roll_back
+   return false  
   end
-  
  
   def service_is_registered?(service_hash)
-    @services_registry.service_is_registered?(service_hash)
+    clear_error
+    test_services_registry_result(@services_registry.service_is_registered?(service_hash))
   end
   
   def  find_engine_services_hashes(params)
-    @managed_engines_registry.find_engine_services_hashes(params)
+    clear_error
+    test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
   end
   def find_engine_services(params)
-    @managed_engines_registry.find_engine_services(params)
+    clear_error
+    test_engines_registry_result(@managed_engines_registry.find_engine_services(params))
   end
   def get_engine_nonpersistant_services(params)
-    @managed_engines_registry.get_engine_persistance_services(params,false)
+    clear_error
+    test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params,false))
   end
   def get_engine_persistant_services(params)
-    @managed_engines_registry.get_engine_persistance_services(params,true)
+    clear_error
+    test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params,true))
   end
   def remove_from_managed_engines_registry(service_hash)
-    if  @managed_engines_registry.remove_from_engine_registry(service_hash) == true
-    save_tree
-  end    
+    take_snap_shot
+    if  test_engines_registry_result(@managed_engines_registry.remove_from_engine_registry(service_hash)) == true
+      return save_tree
+  end   
+    roll_back
+    return false 
   end
   def add_to_managed_engines_registry(service_hash)
-    if  @managed_engines_registry.add_to_managed_engines_registry(service_hash) == true
+    take_snap_shot
+    if  test_engines_registry_result(@managed_engines_registry.add_to_managed_engines_registry(service_hash)) == true
     save_tree
-  end    
+  end
+       roll_back
+       return false    
    end
    
   def get_service_configurations_hashes(service_hash)
-    @configuration_registry.get_service_configurations_hashes(service_hash)
+    clear_error
+    test_configurations_registry_result(@configuration_registry.get_service_configurations_hashes(service_hash))
   end
    
   
   def update_service_configuration(config_hash)
-    if  @configuration_registry.update_service_configuration(config_hash) == true
+    take_snap_shot
+    if  test_configurations_registry_result(@configuration_registry.update_service_configuration(config_hash)) == true
     save_tree
-  end    
+  end
+    roll_back
+       return false      
   end
   
   #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
     def get_registered_against_service(params)
-      @services_registry.get_registered_against_service(params)
+      clear_error
+      test_services_registry_result(@services_registry.get_registered_against_service(params))
     
     end
     
@@ -151,13 +238,15 @@ class SystemRegistry < Registry
 
   
   def list_providers_in_use
-    @services_registry.list_providers_in_use
+    clear_error
+    test_services_registry_result(@services_registry.list_providers_in_use)
   end
   
  
   
   #@return boolean true if not nil
   def    check_system_registry_tree
+    clear_error
     st = system_registry_tree
     if   st.is_a?(Tree::TreeNode) == false
       SystemUtils.log_error_mesg("Nil service tree ?",st)
@@ -171,6 +260,7 @@ class SystemRegistry < Registry
   end
   
   def system_registry_tree
+    clear_error
     service_tree_file = "/opt/engines/run/service_manager/services.yaml"
     registry=@system_registry
     if @last_tree_mod_time && @last_tree_mod_time != nil 
@@ -188,6 +278,7 @@ class SystemRegistry < Registry
 
   
   def service_configurations_registry
+    clear_error
     if check_system_registry_tree == false
           return false
         end
@@ -204,6 +295,7 @@ class SystemRegistry < Registry
     #calls [log_exception] on error and returns nil 
     #@return service_tree [TreeNode]
     def tree_from_yaml()
+      clear_error
       begin
         service_tree_file = "/opt/engines/run/service_manager/services.yaml"
         if File.exist?(service_tree_file)
@@ -246,6 +338,7 @@ class SystemRegistry < Registry
    
   #@sets the service_tree and loast mod time 
    def load_tree
+     clear_error
      service_tree_file = "/opt/engines/run/service_manager/services.yaml"
       registry = tree_from_yaml()
      if File.exist?(service_tree_file)
@@ -264,6 +357,8 @@ class SystemRegistry < Registry
   # calls [log_exception] on error and returns false
     #@return boolean 
     def save_tree
+  
+      clear_error
       service_tree_file = "/opt/engines/run/service_manager/services.yaml"
       if File.exists?(service_tree_file)
         statefile_bak = service_tree_file + ".bak"
@@ -276,6 +371,7 @@ class SystemRegistry < Registry
       #FIXME do a del a rename as killing copu part way through ...
       FileUtils.copy(service_tree_file+".tmp", service_tree_file);
       @last_tree_mod_time = File.mtime(service_tree_file)
+      @snap_shot=nil
       return true
     rescue Exception=>e
       @last_error=( "save error")
@@ -289,7 +385,8 @@ class SystemRegistry < Registry
 #@return the ManagedServices Tree [TreeNode] Branch
    #  creates if does not exist
   def services_registry()
-   
+
+    clear_error
     if check_system_registry_tree == false
       return false
     end
@@ -307,7 +404,8 @@ class SystemRegistry < Registry
 
 
 def orphaned_services_registry
-    
+
+  clear_error
     if check_system_registry_tree == false 
           return false
         end
@@ -326,6 +424,8 @@ def orphaned_services_registry
 # @return the ManagedEngine Tree Branch
   # creates if does not exist
   def managed_engines_registry 
+
+    clear_error
     if check_system_registry_tree == false
           return false
         end
