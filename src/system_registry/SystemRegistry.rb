@@ -154,7 +154,7 @@ class SystemRegistry < Registry
   
    end
    
-  def orphanate_service(service_query_hash)
+  def orphanate_service(service_hash)
     take_snap_shot
 #    service_hash = test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(service_query_hash))
 #    if service_hash == nil
