@@ -156,11 +156,11 @@ class SystemRegistry < Registry
    
   def orphanate_service(service_query_hash)
     take_snap_shot
-    service_hash = test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(service_query_hash))
-    if service_hash == nil
-      log_error_mesg(@orphan_server_registry.last_error.to_s)      
-      return false
-    end 
+#    service_hash = test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(service_query_hash))
+#    if service_hash == nil
+#      log_error_mesg(@orphan_server_registry.last_error.to_s)      
+#      return false
+#    end 
     if  test_orphans_registry_result( @orphan_server_registry.orphanate_service(service_hash)  ) == true
          if  test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) == true
           return save_tree
