@@ -125,8 +125,7 @@ class NetworkListener
             p :ok_res_class
             p result.class.name
             send_ok_result(socket,result)
-          else
-            request_hash[:last_error]=@protocol_listener.last_error
+          else            
             send_error(socket,request_hash,result)
           end
         }  
