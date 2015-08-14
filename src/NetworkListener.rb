@@ -122,6 +122,8 @@ class NetworkListener
         @registry_lock.synchronize   {
           result = @protocol_listener.perform_request(request_hash)
           if result  != false
+            p :ok_res_class
+            p result.class.name
             send_ok_result(socket,result)
           else
             request_hash[:last_error]=@protocol_listener.last_error
