@@ -105,7 +105,7 @@ class Registry
        return ret_val
        rescue Exception=>e
             log_exception(e)
-            return nil
+            return false
      end
    #@branch the [TreeNode] under which to search
      #@param label the hash key for the value to match value against
@@ -134,30 +134,26 @@ class Registry
 # param remove [TreeNode] from the @servicetree
   # If the tree_node is the last child then the parent is removed this is continued up.
   #@return boolean  
-  def remove_tree_entry(tree_node)
-
-   
+  def remove_tree_entry(tree_node)   
     if   tree_node.is_a?(Tree::TreeNode ) == false
       log_error_mesg("Nil treenode ?",tree_node)      
       return false
     end
-
     if tree_node.parent.is_a?(Tree::TreeNode) == false
       log_error_mesg("No Parent Node ! on remove tree entry",tree_node)
       return false
     end
-
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
     if parent_node.has_children? == false
       remove_tree_entry(parent_node)
     end
-
     return true
     rescue Exception=>e
          log_exception(e)
          return false
   end
+  
 def log_error_mesg(msg,object)
    obj_str = object.to_s.slice(0,256)
 

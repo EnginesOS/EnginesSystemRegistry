@@ -51,8 +51,7 @@ end
     #@return [TreeNode] of Oprhaned Serivce that matches the supplied params
     #@param params { :type_path , :service_handle}
     #@return nil on no match
-    def retrieve_orphan_node(params)
-      
+    def retrieve_orphan_node(params)      
       provider_tree = orphaned_services_registry[params[:publisher_namespace]]
       if provider_tree.is_a?(Tree::TreeNode) == false
         log_error_mesg("No Orphan Matching publisher_namespace",params)

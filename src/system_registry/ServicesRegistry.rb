@@ -113,7 +113,7 @@ class ServicesRegistry < SubRegistry
     rescue Exception=>e
       puts e.message
       log_exception(e)
-  
+      return false
     end
   #@returns a [Hash] matching
   
