@@ -9,14 +9,12 @@ class OrphanServicesRegistry < SubRegistry
         log_error_mesg("No Orphan found to release",params)
         return false
       end
-  
      if remove_tree_entry(orphan)  
       return true
      else
        log_error_mesg("failed to remove tree entry for ",orphan)
      end
-     return false
-    
+     return false    
     end
     #Saves the service_hash in the orphaned service registry 
     #@return result 
