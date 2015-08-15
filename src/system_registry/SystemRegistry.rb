@@ -50,6 +50,10 @@ class SystemRegistry < Registry
 
   def take_snap_shot
     @snap_shot=@system_registry.dup
+    @configuration_registry.take_snap_shot
+    @services_registry.take_snap_shot
+    @managed_engines_registry.take_snap_shot
+    @orphan_server_registry.take_snap_shot
     clear_error
   end
 
@@ -58,9 +62,13 @@ class SystemRegistry < Registry
   end
 
   def roll_back
-    if @snap_shot.is_a?(Tree::TreeNode)
+    if @snap_shot.is_a?(Tree::TreeNode)      
       @system_registry = @snap_shot
     end
+      @configuration_registry.roll_back 
+      @services_registry.roll_back
+      @managed_engines_registry.roll_back
+      @orphan_server_registry.roll_back   
     return @system_registry
   end
 
