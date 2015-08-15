@@ -220,7 +220,7 @@ class SystemRegistry < Registry
   def add_to_managed_engines_registry(service_hash)
     take_snap_shot
     if  test_engines_registry_result(@managed_engines_registry.add_to_managed_engines_registry(service_hash)) == true
-      save_tree
+      return save_tree
     end
     roll_back
     return false
@@ -234,7 +234,7 @@ class SystemRegistry < Registry
   def update_service_configuration(config_hash)
     take_snap_shot
     if  test_configurations_registry_result(@configuration_registry.update_service_configuration(config_hash)) == true
-      save_tree
+      return   save_tree
     end
     roll_back
     return false
