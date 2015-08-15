@@ -92,7 +92,14 @@ class SystemRegistry < Registry
     clear_error
     test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(params))
   end
-
+  def release_orphan(params)     
+    take_snap_shot
+     if test_orphans_registry_result(@orphan_server_registry.release_orphan(params)) == true
+    return save_tree
+   end
+   roll_back
+   return false
+   end
   def get_orphaned_services(params)
     clear_error
     test_orphans_registry_result(@orphan_server_registry.get_orphaned_services(params))
