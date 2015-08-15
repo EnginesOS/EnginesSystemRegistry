@@ -12,28 +12,28 @@ class SystemRegistry < Registry
   require_relative 'SystemUtils.rb'
   def test_orphans_registry_result(result)
     if result == nil || result == false
-      @last_error=   @last_error.to_s + ":" + @orphan_server_registry.last_error
+      @last_error=   @last_error.to_s + ":" + @orphan_server_registry.last_error.to_s
     end
     return result
   end
 
   def test_engines_registry_result(result)
     if result == nil || result == false
-      @last_error=   @last_error.to_s + ":" + @managed_engines_registry.last_error
+      @last_error=   @last_error.to_s + ":" + @managed_engines_registry.last_error.to_s
     end
     return result
   end
 
   def test_services_registry_result(result)
     if result == nil || result == false
-      @last_error=   @last_error.to_s + ":" + @services_registry.last_error
+      @last_error=   @last_error.to_s + ":" + @services_registry.last_error.to_s
     end
     return result
   end
 
   def test_configurations_registry_result(result)
     if result == nil || result == false
-      @last_error=   @last_error.to_s + ":" + @configuration_registry.last_error
+      @last_error=   @last_error.to_s + ":" + @configuration_registry.last_error.to_s
     end
     return result
   end
@@ -134,9 +134,9 @@ class SystemRegistry < Registry
     take_snap_shot
     if  test_services_registry_result(@services_registry.add_to_services_registry(service_hash)) == true
       return save_tree
-      roll_back
-      return false
     end
+      roll_back
+      return false   
   end
 
   def remove_from_services_registry(service_hash)
