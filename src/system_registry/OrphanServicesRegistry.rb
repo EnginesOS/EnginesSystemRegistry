@@ -4,7 +4,7 @@ class OrphanServicesRegistry < SubRegistry
     #@ remove from both the service registry and orphan registery
     #@param params { :type_path , :service_handle}
     def release_orphan(params)
-      orphan = retrieve_orphan(params)
+      orphan = retrieve_orphan_node(params)
       if orphan.is_a?(Tree::TreeNode) == false
         log_error_mesg("No Orphan found to release",params)
         return false
@@ -40,11 +40,20 @@ class OrphanServicesRegistry < SubRegistry
       return false
     end
     
+def retrieve_orphan(params)
+  orphan = retrieve_orphan_node(params)
+  if orphan.is_a?(Tree::TreeNode) == true
+    return orphan.content
+  end  
+  return orphan  
+end
+  
+  
     
     #@return [TreeNode] of Oprhaned Serivce that matches the supplied params
     #@param params { :type_path , :service_handle}
     #@return nil on no match
-    def retrieve_orphan(params)
+    def retrieve_orphan_node(params)
       
       provider_tree = orphaned_services_registry[params[:publisher_namespace]]
       if provider_tree.is_a?(Tree::TreeNode) == false
@@ -100,7 +109,7 @@ class OrphanServicesRegistry < SubRegistry
     #@ Assign a new parent to an orphan
     #@return new service_hash
     def reparent_orphan(params)
-      orphan = retrieve_orphan(params)
+      orphan = retrieve_orphan_node(params)
       if orphan !=  false
         content = orphan.content
         content[:variables][:parent_engine]=params[:parent_engine]
