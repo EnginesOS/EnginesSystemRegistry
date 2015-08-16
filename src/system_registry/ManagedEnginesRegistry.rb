@@ -73,7 +73,7 @@ end
   end
 
 
-def find_engine_services_hashes(params)
+def find_engine_service_hash(params)
    if params.has_key?(:engine_name) == false ||\
      params.has_key?(:type_path) == false||\
      params.has_key?(:service_handle) == false||\
