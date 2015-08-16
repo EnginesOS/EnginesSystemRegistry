@@ -74,20 +74,27 @@ end
 
 
 def find_engine_service_hash(params)
-   if params.has_key?(:parent_engine) == false ||\
-     params.has_key?(:type_path) == false||\
-     params.has_key?(:service_handle) == false||\
-     params.has_key?(:container_type) == false
-     
-     log_error_mesg("missing parrameterss",params)
-       return false
+   if params.has_key?(:parent_engine) == false
+     log_error_mesg("missing parrameterss parent_engine",params)
+     return false
+   elsif  params.has_key?(:type_path) == false
+     log_error_mesg("missing parrameterss type_path",params)
+     return false
+     elsif   params.has_key?(:service_handle) == false
+     log_error_mesg("missing parrameterss service_handle",params)
+         return false       
+     elsif   params.has_key?(:container_type) == false
+       log_error_mesg("missing parrameterss container_type",params)       
+     return false
+     elsif   params.has_key?(:service_container_name) == false
+           log_error_mesg("missing parrameterss service_container_name",params)       
+         return false       
    end
-
    SystemUtils.debug_output("find_engine_services_hash", params)
    engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
    #p get_all_leafs_service_hashes(engine_node)
    if engine_node.is_a?(Tree::TreeNode) == false
-     log_error_mesg("Failed to find in managed service tree",params)    
+     log_error_mesg("Failed to find parent engine in managed service tree",params)    
      return false    
    end  
  engine_node = engine_node[params[:type_path]]   
