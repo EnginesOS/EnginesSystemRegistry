@@ -74,7 +74,7 @@ end
 
 
 def find_engine_service_hash(params)
-   if params.has_key?(:engine_name) == false ||\
+   if params.has_key?(:parent_engine) == false ||\
      params.has_key?(:type_path) == false||\
      params.has_key?(:service_handle) == false||\
      params.has_key?(:container_type) == false
