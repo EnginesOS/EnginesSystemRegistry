@@ -197,7 +197,10 @@ class SystemRegistry < Registry
     clear_error
     test_engines_registry_result(@managed_engines_registry.find_engine_services(params))
   end
-
+  def find_engine_service_hash(params)
+      clear_error
+      test_engines_registry_result(@managed_engines_registry.find_engine_service_hash(params))
+    end
   def get_engine_nonpersistant_services(params)
     clear_error
     test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params,false))

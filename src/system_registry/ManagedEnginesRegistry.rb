@@ -73,6 +73,37 @@ end
   end
 
 
+def find_engine_services_hashes(params)
+   if params.has_key?(:engine_name) == false ||\
+     params.has_key?(:type_path) == false||\
+     params.has_key?(:service_handle) == false||\
+     params.has_key?(:container_type) == false
+     
+     log_error_mesg("missing parrameterss",params)
+       return false
+   end
+
+   SystemUtils.debug_output("find_engine_services_hash", params)
+   engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
+   #p get_all_leafs_service_hashes(engine_node)
+   if engine_node.is_a?(Tree::TreeNode) == false
+     log_error_mesg("Failed to find in managed service tree",params)    
+     return false    
+   end  
+ engine_node = engine_node[params[:type_path]]   
+ if engine_node.is_a?(Tree::TreeNode) == false   
+    log_error_mesg("Failed to find type_path " + params[:type_path] + "in managed service tree",params)
+    return false    
+  end  
+ engine_node = engine_node[params[:service_handle]]
+   if engine_node.is_a?(Tree::TreeNode) == false    
+     log_error_mesg("Failed to find service_handle " + params[:service_handle] + "in managed service tree",params)
+     return false    
+   end        
+   return engine_node.content
+ end
+
+ 
   #@return [Array] of all service_hashs marked persistance [boolean] for :engine_name
   def get_engine_persistance_services(params,persistance) #params is :engine_name
      
