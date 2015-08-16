@@ -77,13 +77,9 @@ class ServicesRegistry < SubRegistry
         log_error_mesg("Cannot over write persistant service" + service_node.content.to_s + " with ",service_hash)
         #       service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
         #       service_type_node << service_node
-  
-      end
-  
+      end 
       #FIXME need to handle updating service
-  
       return true
-  
     rescue Exception=>e
       puts e.message
       log_exception(e)
@@ -135,38 +131,29 @@ class ServicesRegistry < SubRegistry
         log_error_mesg("no_publisher_namespace",service_query_hash)
         return false
       end
-  
       provider_tree = service_provider_tree(service_query_hash[:publisher_namespace])
-  
       if service_query_hash.has_key?(:type_path) == false  || service_query_hash[:type_path] == nil
         log_error_mesg("find_service_consumers_no_type_path", service_query_hash)
   
         return provider_tree
-      end
-      
+      end      
       if provider_tree.is_a?(Tree::TreeNode) == false
         return false
-      end
-  
-      service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path])
-  
+      end 
+      service_path_tree = get_type_path_node(provider_tree,service_query_hash[:type_path]) 
       if service_path_tree.is_a?(Tree::TreeNode) == false
         log_error_mesg("Failed to find matching service path",service_query_hash)
         return false
-      end
-  
+      end  
       if service_query_hash.has_key?(:parent_engine) == false || service_query_hash[:parent_engine]  == nil
         #log_error_mesg("find_service_consumers_no_parent_engine", service_query_hash)
         return  service_path_tree
       end
-  
-      services = service_path_tree[service_query_hash[:parent_engine]] 
-        
+        services = service_path_tree[service_query_hash[:parent_engine]]         
       if  services.is_a?(Tree::TreeNode) == false
         log_error_mesg("Failed to find matching parent_engine",service_query_hash)
         return false
       end
-  
       if service_query_hash.has_key?(:service_handle) == false || service_query_hash[:service_handle]  == nil
         log_error_mesg("find_service_consumers_no_service_handle", service_query_hash)
         return  services
@@ -179,7 +166,6 @@ class ServicesRegistry < SubRegistry
         return false
       end
       return service
-  
     end
 
     
@@ -231,15 +217,13 @@ end
   #@return an [Array] of service_hashs of Active persistant services match @params [Hash]
   #:path_type :publisher_namespace    
   def get_active_persistant_services(params)
-    
-      
+
       leafs = Array.new
       services = find_service_consumers(params)
       if services != nil && services != false
         leafs = get_matched_leafs(services,:persistant,true)
       end   
-      return leafs
-   
+      return leafs  
   end
     
   #end
