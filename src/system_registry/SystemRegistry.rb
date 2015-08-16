@@ -136,9 +136,9 @@ class SystemRegistry < Registry
   def update_attached_service(service_hash)
     take_snap_shot
     if test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) &&
-    test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) &&
+    test_services_registry_result(@managed_engines_registry.remove_from_engine_registry(service_hash)) &&
     test_engines_registry_result(@managed_engines_registry.add_to_managed_engines_registry(service_hash)) &&
-    test_engines_registry_result(@managed_engines_registry.add_to_services_registry(service_hash)) == true
+    test_engines_registry_result(@services_registry.add_to_services_registry(service_hash)) == true
       return save_tree
     end
     roll_back
