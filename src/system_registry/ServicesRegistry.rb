@@ -216,9 +216,11 @@ end
         service_node = find_service_consumers(service_hash)
   
         if service_node.is_a?(Tree::TreeNode) == true
+          p :removed_from_services_registry
+          p service_hash
           return remove_tree_entry(service_node)
         else
-          log_error_mesg("Fail to find service for removal",service_hash)
+          log_error_mesg("Fail to find service for removal"+service_hash.to_s + service_node )
         end
       end
       log_error_mesg("Fail to remove service" ,service_hash)
