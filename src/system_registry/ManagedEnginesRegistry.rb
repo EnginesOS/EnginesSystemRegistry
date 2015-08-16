@@ -68,10 +68,7 @@ end
         else 
           return get_matched_leafs(engine_node,:persistant,false)
        end
-      end
-      
-
-      
+      end        
     return get_all_leafs_service_hashes(engine_node)
   end
 
