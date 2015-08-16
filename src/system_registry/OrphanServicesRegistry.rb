@@ -105,6 +105,7 @@ end
   
     #@ Assign a new parent to an orphan
     #@return new service_hash
+    #does not modfiey the tree
     def reparent_orphan(params)
       orphan = retrieve_orphan_node(params)
       if orphan !=  false

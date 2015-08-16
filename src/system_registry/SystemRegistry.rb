@@ -91,11 +91,11 @@ class SystemRegistry < Registry
     return false
   end
 
-  #  def reparent_orphan(params)
-  #    if  @orphan_server_registry.reparent_orphan(params) == true
-  #    save_tree
-  #  end
-  # end
+    def reparent_orphan(params)
+      clear_error
+      test_orphans_registry_result(@orphan_server_registry.reparent_orphan(params))
+   end
+   
   def retrieve_orphan(params)
     clear_error
     test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(params))
