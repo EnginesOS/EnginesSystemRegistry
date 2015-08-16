@@ -220,7 +220,7 @@ end
           p service_hash
           return remove_tree_entry(service_node)
         else
-          log_error_mesg("Fail to find service for removal"+service_hash.to_s + service_node )
+          log_error_mesg("Fail to find service for removal"+service_hash.to_s, service_node )
         end
       end
       log_error_mesg("Fail to remove service" ,service_hash)
