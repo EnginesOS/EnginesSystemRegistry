@@ -54,6 +54,14 @@ class ManagedEnginesRegistry  < SubRegistry
      return false    
    end
    
+if  params.has_key?(:service_handle) && params[:service_handle] != nil
+  engine_node = engine_node[params[:service_handle]]
+    if engine_node.is_a?(Tree::TreeNode) == false
+     
+      log_error_mesg("Failed to find service_handle " + params[:service_handle] + "in managed service tree",params)
+      return false    
+    end
+end
       if params.has_key?(:persistant) 
         if params[:persistant] == true
           return get_matched_leafs(engine_node,:persistant,true)
@@ -61,6 +69,9 @@ class ManagedEnginesRegistry  < SubRegistry
           return get_matched_leafs(engine_node,:persistant,false)
        end
       end
+      
+
+      
     return get_all_leafs_service_hashes(engine_node)
   end
 

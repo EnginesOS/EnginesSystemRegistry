@@ -188,10 +188,10 @@ class SystemRegistry < Registry
     test_services_registry_result(@services_registry.service_is_registered?(service_hash))
   end
 
-  def  find_engine_services_hashes(params)
-    clear_error
-    test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
-  end
+#  def  find_engine_services_hashes(params)
+#    clear_error
+#    test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
+#  end
 
   def find_engine_services(params)
     clear_error
