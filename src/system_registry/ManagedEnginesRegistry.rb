@@ -131,7 +131,7 @@ def find_engine_service_hash(params)
       SystemUtils.debug_output("matches",matches)
       leafs =  leafs.concat(matches)
     end
-    return leafs
+    return order_hashes_in_priotity(leafs)
   end
 
   #Register the service_hash with the engine
