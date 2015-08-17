@@ -62,6 +62,7 @@ class SystemRegistry < Registry
   end
 
   def roll_back
+    p :roll_back
     if @snap_shot.is_a?(Tree::TreeNode)      
       @system_registry = @snap_shot
     end
@@ -171,6 +172,7 @@ class SystemRegistry < Registry
     #      log_error_mesg(@orphan_server_registry.last_error.to_s)
     #      return false
     #    end
+    p :oprhanicate
     if  test_orphans_registry_result( @orphan_server_registry.orphanate_service(service_hash)  ) == true
       if  test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) == true
         return save_tree
