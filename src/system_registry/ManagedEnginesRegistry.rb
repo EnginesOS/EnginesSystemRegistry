@@ -64,12 +64,12 @@ if  params.has_key?(:service_handle) && params[:service_handle] != nil
 end
       if params.has_key?(:persistant) 
         if params[:persistant] == true
-          return get_matched_leafs(engine_node,:persistant,true)
+          return  order_hashes_in_priotity(get_matched_leafs(engine_node,:persistant,true))
         else 
-          return get_matched_leafs(engine_node,:persistant,false)
+          return  order_hashes_in_priotity(get_matched_leafs(engine_node,:persistant,false))
        end
       end        
-    return get_all_leafs_service_hashes(engine_node)
+    return  order_hashes_in_priotity(get_all_leafs_service_hashes(engine_node))
   end
 
 
