@@ -102,11 +102,27 @@ class Registry
            ret_val.concat(get_all_leafs_service_hashes(sub_branch))
          end
        end
-       return ret_val
+       return order_hashes_in_priotity(ret_val)
        rescue Exception=>e
             log_exception(e)
             return false
      end
+     
+    
+     def order_hashes_in_priotity(hashes)
+       priority=Array.new
+       standard=Array.new       
+       hashes.each do |service_hash|
+         if service_hash.has_key?(:priority) == false\
+           || service_hash[:priority] ==0
+           standard.push(service_hash)
+         else
+           priority.push(service_hash)
+         end
+       end         
+       return priority.concat(standard)
+     end
+     
    #@branch the [TreeNode] under which to search
      #@param label the hash key for the value to match value against
      #@return [Array] all service_hash(s) which contain the hash pair label=value    
