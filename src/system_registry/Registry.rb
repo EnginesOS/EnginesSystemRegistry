@@ -110,8 +110,6 @@ class Registry
      
     
      def order_hashes_in_priotity(hashes)
-       p :pre_sort
-       p hashes
        priority=Array.new
        standard=Array.new       
        hashes.each do |service_hash|
@@ -122,10 +120,7 @@ class Registry
            priority.push(service_hash)
          end
        end       
-       p :sorted  
-       priority.concat(standard)
-       p priority
-       return priority
+       return priority.concat(standard)
      end
      
    #@branch the [TreeNode] under which to search
