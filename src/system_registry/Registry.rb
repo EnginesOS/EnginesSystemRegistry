@@ -123,8 +123,9 @@ class Registry
          end
        end       
        p :sorted  
+       priority.concat(standard)
        p priority
-       return priority.concat(standard)
+       return priority
      end
      
    #@branch the [TreeNode] under which to search
