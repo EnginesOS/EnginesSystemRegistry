@@ -110,6 +110,8 @@ class Registry
      
     
      def order_hashes_in_priotity(hashes)
+       p :pre_sort
+       p hashes
        priority=Array.new
        standard=Array.new       
        hashes.each do |service_hash|
@@ -119,7 +121,9 @@ class Registry
          else
            priority.push(service_hash)
          end
-       end         
+       end       
+       p :sorted  
+       p priority
        return priority.concat(standard)
      end
      
