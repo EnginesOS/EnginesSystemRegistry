@@ -12,7 +12,7 @@ class SystemRegistry < Registry
   require_relative 'SystemUtils.rb'
   def test_orphans_registry_result(result)
     if result == nil || result == false
-      @last_error=   @last_error.to_s + ":" + @orphan_server_registry.last_error.to_s
+      @last_error= @last_error.to_s + ":" + @orphan_server_registry.last_error.to_s
     end
     return result
   end
@@ -49,7 +49,7 @@ class SystemRegistry < Registry
   end
 
   def take_snap_shot
-    @snap_shot=@system_registry.dup
+    #@snap_shot=@system_registry.dup
     @configuration_registry.take_snap_shot
     @services_registry.take_snap_shot
     @managed_engines_registry.take_snap_shot
@@ -62,10 +62,13 @@ class SystemRegistry < Registry
   end
 
   def roll_back
-    p :roll_back
-    if @snap_shot.is_a?(Tree::TreeNode)      
-      @system_registry = @snap_shot
-    end
+    p ":++++++++++++++++++++++++++++++++++"
+    p ":____________ROLL_BACK_____________:"
+    p "++++++++++++++++++++++++++++++++++"
+#      
+#    if @snap_shot.is_a?(Tree::TreeNode)      
+#      @system_registry = @snap_shot
+#    end
       @configuration_registry.roll_back 
       @services_registry.roll_back
       @managed_engines_registry.roll_back
