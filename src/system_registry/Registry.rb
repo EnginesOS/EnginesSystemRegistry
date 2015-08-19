@@ -81,8 +81,6 @@ class Registry
      end
   rescue Exception=>e
        log_exception(e)
-       return false
-     
    end
   # @return [Array] of all service_hash(s) below this branch
      def get_all_leafs_service_hashes(branch)
@@ -105,7 +103,6 @@ class Registry
        return order_hashes_in_priotity(ret_val)
        rescue Exception=>e
             log_exception(e)
-            return false
      end
      
     
@@ -152,7 +149,7 @@ class Registry
   #@return boolean  
   def remove_tree_entry(tree_node)   
     if   tree_node.is_a?(Tree::TreeNode ) == false
-      log_error_mesg("Nil treenode ?",tree_node)      
+      log_error_mesg("remove_tree_entry Nil treenode ?",tree_node)      
       return false
     end
     if tree_node.parent.is_a?(Tree::TreeNode) == false
@@ -162,7 +159,9 @@ class Registry
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
     if parent_node.has_children? == false
-      remove_tree_entry(parent_node)
+      if remove_tree_entry(parent_node) == false
+        return false
+      end
     end
     return true
     rescue Exception=>e
@@ -172,15 +171,15 @@ class Registry
   
 def log_error_mesg(msg,object)
    obj_str = object.to_s.slice(0,256)
-
    @last_error = msg +":" + obj_str
    SystemUtils.log_error_mesg(msg,object)
-
+   return false
  end
 
  def log_exception(e)
    @last_error = e.to_s.slice(0,256)
    SystemUtils.log_exception(e)
+   return false
  end
   
 end
