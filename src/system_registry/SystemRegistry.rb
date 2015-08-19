@@ -172,7 +172,8 @@ class SystemRegistry < Registry
     #      log_error_mesg(@orphan_server_registry.last_error.to_s)
     #      return false
     #    end
-    p :oprhanicate
+    
+    p :oprhanicate_now
     if  test_orphans_registry_result( @orphan_server_registry.orphanate_service(service_hash)  ) == true
       if  test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) == true
         return save_tree
@@ -412,7 +413,7 @@ class SystemRegistry < Registry
   end
 
   def orphaned_services_registry
-
+      
     clear_error
     if check_system_registry_tree == false
       return false
