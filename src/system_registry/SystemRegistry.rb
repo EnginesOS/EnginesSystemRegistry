@@ -177,6 +177,7 @@ class SystemRegistry < Registry
       if  test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) == true
         return save_tree
       else
+        @orphan_server_registry.release_orphan(params)
         log_error_mesg("Failed to save orphan in remove_from_services_registry" + @services_registry.last_error.to_s,service_hash)
       end
       log_error_mesg("Failed to save orphan" + @orphan_server_registry.last_error.to_s ,service_hash)
