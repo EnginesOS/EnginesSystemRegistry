@@ -45,7 +45,7 @@ class ManagedEnginesRegistry  < SubRegistry
     end
     
     if  params.has_key?(:type_path)
-      engine_node = engine_node[params[:type_path]]
+      engine_node = get_type_path_node(engine_node,params[:type_path])
     end
     
   if engine_node.is_a?(Tree::TreeNode) == false
@@ -97,7 +97,7 @@ def find_engine_service_hash(params)
      log_error_mesg("Failed to find parent engine in managed service tree",params)    
      return false    
    end  
- engine_node = engine_node[params[:type_path]]   
+   engine_node = get_type_path_node(engine_node,params[:type_path])
  if engine_node.is_a?(Tree::TreeNode) == false   
     log_error_mesg("Failed to find type_path " + params[:type_path] + "in managed service tree",params)
     return false    
