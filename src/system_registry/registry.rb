@@ -26,7 +26,7 @@ class Registry
     end
     if type_path.include?('/') == false
       service_node = parent_node[type_path]
-      if service_node.is_a(Tree::TreeNode) == false
+      if service_node.is_a?(Tree::TreeNode) == false
         service_node = Tree::TreeNode.new(type_path, type_path)
         parent_node << service_node
       end
