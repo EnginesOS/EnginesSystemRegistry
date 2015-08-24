@@ -96,10 +96,10 @@ class NetworkListener
           rescue EOFError
             # p :EOF
             # End of Message buffer
-          rescue Exception=>e
+          rescue StandardError=>e
             p e.to_s
             p e.backtrace.to_s
-            @last_error = 'Exception:' + e.to_s + ':' + e.backtrace.to_s
+            @last_error = 'StandardError:' + e.to_s + ':' + e.backtrace.to_s
             send_error(socket,message_request, @last_error)
           end
         end
@@ -116,10 +116,10 @@ class NetworkListener
             send_error(socket, request_hash, result)
           end
         }
-      rescue Exception => e
+      rescue StandardError => e
         p e.to_s
         p e.backtrace.to_s
-        @last_error = 'Exception:' + e.to_s + ':' + e.backtrace.to_s
+        @last_error = 'StandardError:' + e.to_s + ':' + e.backtrace.to_s
         send_error(socket, message_request, @last_error)
       end
     end
@@ -141,7 +141,7 @@ class NetworkListener
     rescue Timeout::Error
       @last_error = 'Timeout sending reply'
       return false
-    rescue Exception => e
+    rescue StandardError => e
       p e.to_s
       p e.backtrace.to_s
       return false

@@ -273,7 +273,7 @@ class SystemRegistry < Registry
     end
     return true
   rescue
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -290,7 +290,7 @@ class SystemRegistry < Registry
     end
     @system_registry = registry
     return registry
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -304,7 +304,7 @@ class SystemRegistry < Registry
       @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
     end
     return @system_registry ['Configurations']
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return nil
   end
@@ -323,7 +323,7 @@ class SystemRegistry < Registry
       end
       registry = YAML::load(tree_data)
       return registry
-    rescue Exception => e
+    rescue StandardError => e
       puts e.message + ' with ' + tree_data.to_s
       log_exception(e)
       return nil
@@ -342,7 +342,7 @@ class SystemRegistry < Registry
       registry << Tree::TreeNode.new('Services', 'Managed Services')
     end
     return registry
-  rescue Exception => e
+  rescue StandardError => e
     puts e.message
     log_exception(e)
   end
@@ -358,7 +358,7 @@ class SystemRegistry < Registry
       @last_tree_mod_time = nil
     end
     return registry
-  rescue Exception => e
+  rescue StandardError => e
     @last_error = 'load tree'
     log_exception(e)
     return false
@@ -382,7 +382,7 @@ class SystemRegistry < Registry
     FileUtils.copy(service_tree_file + '.tmp', service_tree_file)
     @last_tree_mod_time = File.mtime(service_tree_file)
     return true
-  rescue Exception => e
+  rescue StandardError => e
     @last_error = 'save error'
     log_exception(e)
     if File.exist?(service_tree_file) == false
@@ -402,7 +402,7 @@ class SystemRegistry < Registry
       @system_registry << Tree::TreeNode.new('Services', 'Service register')
     end
     return @system_registry['Services']
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end
@@ -418,7 +418,7 @@ class SystemRegistry < Registry
       orphans = @system_registry['OphanedServices']
     end
     return orphans
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return nil
   end
@@ -434,7 +434,7 @@ class SystemRegistry < Registry
       @system_registry << Tree::TreeNode.new('ManagedEngine', 'ManagedEngine Service register')
     end
     return @system_registry['ManagedEngine']
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end

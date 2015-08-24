@@ -175,7 +175,7 @@ class ManagedEnginesRegistry < SubRegistry
     end
     p :success
     return true
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
   end
 

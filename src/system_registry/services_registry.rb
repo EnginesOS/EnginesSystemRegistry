@@ -71,7 +71,7 @@ class ServicesRegistry < SubRegistry
     end
     # FIXME: need to handle updating service
     return true
-  rescue Exception => e
+  rescue StandardError => e
     puts e.message
     log_exception(e)
     return false
@@ -97,7 +97,7 @@ class ServicesRegistry < SubRegistry
   #        retval.push(node.content)
   #      end
   #
-  #    rescue Exception => e
+  #    rescue StandardError => e
   #      puts e.message
   #      log_exception(e)
   #      return false

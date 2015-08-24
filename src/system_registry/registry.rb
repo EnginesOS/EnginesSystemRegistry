@@ -78,7 +78,7 @@ class Registry
       end
       return sub_node
     end
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
   end
 
@@ -100,7 +100,7 @@ class Registry
       end
     end
     return order_hashes_in_priotity(ret_val)
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
   end
 
@@ -162,7 +162,7 @@ class Registry
       end
     end
     return true
-  rescue Exception => e
+  rescue StandardError => e
     log_exception(e)
     return false
   end

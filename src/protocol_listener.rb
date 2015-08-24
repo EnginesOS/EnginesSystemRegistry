@@ -27,7 +27,7 @@ class ProtocolListener
       else
         response_object = @system_registry.public_send(method_symbol, request)
       end
-    rescue Exception => e
+    rescue StandardError => e
       p e.to_s
       p 'with ' + request.to_s + ' ' + command.to_s + e.backtrace.to_s
       p @system_registry.last_error.to_s

@@ -112,10 +112,10 @@ class SystemUtils
         SystemUtils.log_error_mesg('Error Code:' + $CHILD_STATUS.to_s + ' in run ' + cmd + ' Output:', res)
         return res
       end
-    rescue Exception => e
+    rescue StandardError => e
       SystemUtils.log_exception(e)
-      SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ', res)
-      return 'Exception Error in SystemUtils.run_system(cmd): ' + e.to_s
+      SystemUtils.log_error_mesg('StandardError Error in SystemUtils.run_system(cmd): ', res)
+      return 'StandardError Error in SystemUtils.run_system(cmd): ' + e.to_s
     end
   end
 
@@ -134,7 +134,7 @@ class SystemUtils
       end
     end
     return retval
-  rescue Exception => e
+  rescue StandardError => e
     SystemUtils.log_exception(e)
   end
 
@@ -184,10 +184,10 @@ class SystemUtils
       return retval
     end
     return retval
-  rescue Exception => e
+  rescue StandardError => e
     SystemUtils.log_exception(e)
-    SystemUtils.log_error_mesg('Exception Error in SystemUtils.execute_command( ' + cmd + '): ', retval)
-    retval[:stderr] += 'Exception Error in SystemUtils.run_system(' + cmd + '): ' + e.to_s
+    SystemUtils.log_error_mesg('StandardError Error in SystemUtils.execute_command( ' + cmd + '): ', retval)
+    retval[:stderr] += 'StandardError Error in SystemUtils.run_system(' + cmd + '): ' + e.to_s
     retval[:result] = -99
     return retval
   end
@@ -202,10 +202,10 @@ class SystemUtils
       res = (%x<#`{cmd}`>)
       SystemUtils.debug_output('Run ' + cmd + ' ResultCode:' + $CHILD_STATUS.to_s + ' Output:', res)
       return res
-    rescue Exception => e
+    rescue StandardError => e
       SystemUtils.log_exception(e)
-      SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ', res)
-      return 'Exception Error in SystemUtils.run_system(cmd): ' + e.to_s
+      SystemUtils.log_error_mesg('StandardError Error in SystemUtils.run_system(cmd): ', res)
+      return 'StandardError Error in SystemUtils.run_system(cmd): ' + e.to_s
     end
   end
 
