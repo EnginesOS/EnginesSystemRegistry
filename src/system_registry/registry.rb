@@ -4,9 +4,7 @@ class Registry
   attr_reader :last_error
   # handle missing persistant key as not persistance kludge to catch gui bug
   def is_persistant?(hash)
-    if hash.key?(:persistance) == true && hash[:persistanct] == true
-      return true
-    end
+    return true if hash.key?(:persistance) == true && hash[:persistanct] == true
     return false
   end
 
@@ -16,14 +14,8 @@ class Registry
   # param parent_node the branch to create the node under
   # param type_path the dir path format as in dns or database/sql/mysql
   def create_type_path_node(parent_node, type_path)
-    if type_path.nil?
-      log_error_mesg('create_type_path passed a nil type_path when adding to ', parent_node)
-      return false
-    end
-    if parent_node.is_a?(Tree::TreeNode) == false
-      log_error_mesg('parent node not a tree node ', parent_node)
-      return false
-    end
+    return log_error_mesg('create_type_path passed a nil type_path when adding to ', parent_node) if type_path.nil?
+    return log_error_mesg('parent node not a tree node ', parent_node) if parent_node.is_a?(Tree::TreeNode) == false
     if type_path.include?('/') == false
       service_node = parent_node[type_path]
       if service_node.is_a?(Tree::TreeNode) == false
@@ -45,9 +37,7 @@ class Registry
         end
         prior_node = sub_node
         count += 1
-        if count == sub_paths.count
-          return sub_node
-        end
+    return sub_node if count == sub_paths.count
       end
     end
     log_error_mesg('create_type_path failed', type_path)
@@ -64,9 +54,7 @@ class Registry
       return nil
     end
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
-    if type_path.include?('/') == false
-      return parent_node[type_path]
-    else
+    return parent_node[type_path]  if type_path.include?('/') == false
       sub_paths = type_path.split('/')
       sub_node = parent_node
       sub_paths.each do |sub_path|
@@ -77,7 +65,6 @@ class Registry
         end
       end
       return sub_node
-    end
   rescue StandardError => e
     log_exception(e)
   end
@@ -89,12 +76,8 @@ class Registry
     branch.children.each do |sub_branch|
       #    SystemUtils.debug_output('on node',sub_branch.name)
       if sub_branch.children.count == 0
-        if sub_branch.content.is_a?(Hash)
-          # SystemUtils.debug_output('pushed_content', sub_branch.content)
-          ret_val.push(sub_branch.content)
-        else
-          SystemUtils.debug_output('skipping content ', sub_branch.content)
-        end
+        ret_val.push(sub_branch.content) if sub_branch.content.is_a?(Hash)
+          # SystemUtils.debug_output('pushed_content', sub_branch.content)       
       else
         ret_val.concat(get_all_leafs_service_hashes(sub_branch))
       end
@@ -129,9 +112,7 @@ class Registry
       #  SystemUtils.debug_output('sub node',sub_branch.name)
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash)
-          if sub_branch.content[label] == value
-            ret_val.push(sub_branch.content)
-          end
+          ret_val.push(sub_branch.content) if sub_branch.content[label] == value
         else
           SystemUtils.debug_output('Leaf Content not a hash ', sub_branch.content)
         end
@@ -146,14 +127,8 @@ class Registry
   # If the tree_node is the last child then the parent is removed this is continued up.
   # @return boolean
   def remove_tree_entry(tree_node)
-    if tree_node.is_a?(Tree::TreeNode) == false
-      log_error_mesg('remove_tree_entry Nil treenode ?', tree_node)
-      return false
-    end
-    if tree_node.parent.is_a?(Tree::TreeNode) == false
-      log_error_mesg('No Parent Node ! on remove tree entry', tree_node)
-      return false
-    end
+   return log_error_mesg('remove_tree_entry Nil treenode ?', tree_node) if tree_node.is_a?(Tree::TreeNode) == false
+   return log_error_mesg('No Parent Node ! on remove tree entry', tree_node) if tree_node.parent.is_a?(Tree::TreeNode) == false
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
     if parent_node.has_children? == false

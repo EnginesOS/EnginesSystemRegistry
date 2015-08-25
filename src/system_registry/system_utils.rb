@@ -60,9 +60,7 @@ class SystemUtils
       when Array then
         newval = []
         value.each do |array_val|
-          if array_val.is_a?(Hash)
-            array_val = SystemUtils.symbolize_keys(array_val)
-          end
+          array_val = SystemUtils.symbolize_keys(array_val) if array_val.is_a?(Hash)
           newval.push(array_val)
         end
         newval
@@ -129,9 +127,8 @@ class SystemUtils
       else
         val = nil
       end
-      if pair.nil? == false && pair[0].nil? == false
-        retval[pair[0].to_sym] = val
-      end
+    retval[pair[0].to_sym] = val if pair.nil? == false && pair[0].nil? == false
+
     end
     return retval
   rescue StandardError => e
@@ -161,9 +158,7 @@ class SystemUtils
           retval[:stdout] += line.chop
           #              p :lne_by_line
           #              p line
-          if stderr_is_open
-            retval[:stderr] += stderr.read_nonblock(256)
-          end
+          retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
         end
         retval[:result] = th.value.exitstatus
       rescue Errno::EIO
@@ -276,14 +271,11 @@ class SystemUtils
 
   def self.service_hash_variables_as_str(service_hash)
     argument = ''
-    if service_hash.key?(:publisher_namespace)
-      argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':'
-    end
+    argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':' if service_hash.key?(:publisher_namespace)
     service_variables = service_hash[:variables]
     sources = ''
-    if service_variables.nil? == true
-      return argument
-    end
+    return argument if service_variables.nil? == true
+
     service_variables.each_pair do |key, value|
       if key == :sources
         sources = value

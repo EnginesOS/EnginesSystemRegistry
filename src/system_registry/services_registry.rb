@@ -107,10 +107,8 @@ class ServicesRegistry < SubRegistry
   # @service_query_hash :publisher_namespace , :type_path , :service_handle
   def get_service_entry(service_query_hash)
     tree_node = find_service_consumers(service_query_hash)
-    if tree_node.is_a?(Tree::TreeNode) == false
-      return false
-    end
-    return tree_node.content
+    return tree_node.content if tree_node.is_a?(Tree::TreeNode) 
+    log_error_mesg("get service_ entry failed ",service_query_hash)
   end
 
   # @returns a [TreeNode] to the depth of the search
@@ -118,42 +116,22 @@ class ServicesRegistry < SubRegistry
   # @service_query_hash :publisher_namespace , :type_path
   # @service_query_hash :publisher_namespace , :type_path , :service_handle
   def find_service_consumers(service_query_hash)
-    if service_query_hash.key?(:publisher_namespace) == false || service_query_hash[:publisher_namespace].nil? == true
-      log_error_mesg('no_publisher_namespace', service_query_hash)
-      return false
-    end
+    return log_error_mesg('no_publisher_namespace', service_query_hash) if service_query_hash[:publisher_namespace].nil? ||  service_query_hash.key?(:publisher_namespace) == false
     provider_tree = service_provider_tree(service_query_hash[:publisher_namespace])
-    if service_query_hash.key?(:type_path) == false || service_query_hash[:type_path].nil? == true
+    if service_query_hash[:type_path].nil? == true || service_query_hash.key?(:type_path) == false 
       log_error_mesg('find_service_consumers_no_type_path', service_query_hash)
       return provider_tree
     end
-    if provider_tree.is_a?(Tree::TreeNode) == false
-      return false
-    end
+    return log_error_mesg('no Provider tree', service_query_hash) if provider_tree.is_a?(Tree::TreeNode) == false
     service_path_tree = get_type_path_node(provider_tree, service_query_hash[:type_path])
-    if service_path_tree.is_a?(Tree::TreeNode) == false
-      log_error_mesg('Failed to find matching service path', service_query_hash)
-      return false
-    end
-    if service_query_hash.key?(:parent_engine) == false || service_query_hash[:parent_engine].nil? == true
-      # log_error_mesg('find_service_consumers_no_parent_engine', service_query_hash)
-      return service_path_tree
-    end
+    return log_error_mesg('Failed to find matching service path', service_query_hash) if service_path_tree.is_a?(Tree::TreeNode) == false
+    return service_path_tree if service_query_hash[:parent_engine].nil? == true || service_query_hash.key?(:parent_engine) == false
     services = service_path_tree[service_query_hash[:parent_engine]]
-    if services.is_a?(Tree::TreeNode) == false
-      log_error_mesg('Failed to find matching parent_engine', service_query_hash)
-      return false
-    end
-    if service_query_hash.key?(:service_handle) == false || service_query_hash[:service_handle].nil? == true
-      log_error_mesg('find_service_consumers_no_service_handle', service_query_hash)
-      return services
-    end
+    return log_error_mesg('Failed to find matching parent_engine', service_query_hash) if services.is_a?(Tree::TreeNode) == false
+    return log_error_mesg('find_service_consumers_no_service_handle', service_query_hash) if service_query_hash[:service_handle].nil? ||service_query_hash.key?(:service_handle) == false 
     SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
     service = services[service_query_hash[:service_handle]]
-    if service.nil? == true
-      log_error_mesg('failed to find match in services tree', service_query_hash)
-      return false
-    end
+    return log_error_mesg('failed to find match in services tree', service_query_hash)if service.nil? == true
     return service
   end
 
@@ -174,9 +152,7 @@ class ServicesRegistry < SubRegistry
   def get_registered_against_service(params)
     hashes = []
     service_tree = find_service_consumers(params)
-    if service_tree.is_a?(Tree::TreeNode) == true
-      hashes = get_all_leafs_service_hashes(service_tree)
-    end
+    hashes = get_all_leafs_service_hashes(service_tree) if service_tree.is_a?(Tree::TreeNode) == true
     return hashes
   end
 
@@ -185,16 +161,10 @@ class ServicesRegistry < SubRegistry
   def remove_from_services_registry(service_hash)
     if @registry.is_a?(Tree::TreeNode) == true
       service_node = find_service_consumers(service_hash)
-      if service_node.is_a?(Tree::TreeNode) == true
-        p :removed_from_services_registry
-        p service_hash
-        return remove_tree_entry(service_node)
-      else
-        log_error_mesg('Fail to find service for removal' + service_hash.to_s, service_node)
-      end
+      return remove_tree_entry(service_node) if service_node.is_a?(Tree::TreeNode) == true
+       log_error_mesg('Fail to find service for removal' + service_hash.to_s, service_node)
     end
     log_error_mesg('Fail to remove service', service_hash)
-    return false
   end
 
   # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
@@ -202,9 +172,7 @@ class ServicesRegistry < SubRegistry
   def get_active_persistant_services(params)
     leafs = []
     services = find_service_consumers(params)
-    if services.nil? == false && services != false
-      leafs = get_matched_leafs(services, :persistant, true)
-    end
+    leafs = get_matched_leafs(services, :persistant, true) if services.nil? == false && services != false
     return leafs
   end
 end

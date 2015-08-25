@@ -5,16 +5,9 @@ class OrphanServicesRegistry < SubRegistry
   # @param params { :type_path , :service_handle}
   def release_orphan(params)
     orphan = retrieve_orphan_node(params)
-    if orphan.is_a?(Tree::TreeNode) == false
-      log_error_mesg('No Orphan found to release', params)
-      return false
-    end
-    if remove_tree_entry(orphan)
-      return true
-    else
-      log_error_mesg('failed to remove tree entry for ', orphan)
-    end
-    return false
+    return log_error_mesg('No Orphan found to release', params) if orphan.is_a?(Tree::TreeNode) == false
+    return true if remove_tree_entry(orphan)
+    log_error_mesg('failed to remove tree entry for ', orphan)
   end
 
   # Saves the service_hash in the orphaned service registry
@@ -41,9 +34,7 @@ class OrphanServicesRegistry < SubRegistry
 
   def retrieve_orphan(params)
     orphan = retrieve_orphan_node(params)
-    if orphan.is_a?(Tree::TreeNode) == true
-      return orphan.content
-    end
+    return orphan.content if orphan.is_a?(Tree::TreeNode) == true
     return orphan
   end
 
@@ -52,17 +43,11 @@ class OrphanServicesRegistry < SubRegistry
   # @return nil on no match
   def retrieve_orphan_node(params)
     provider_tree = orphaned_services_registry[params[:publisher_namespace]]
-    if provider_tree.is_a?(Tree::TreeNode) == false
-      log_error_mesg('No Orphan Matching publisher_namespace', params)
-      return false
-    end
+    return log_error_mesg('No Orphan Matching publisher_namespace', params) if provider_tree.is_a?(Tree::TreeNode) == false
     SystemUtils.debug_output(:orpahns_retr_start, params[:type_path])
     type_path = params[:type_path]
     type = get_type_path_node(provider_tree, type_path)
-    if type.is_a?(Tree::TreeNode) == false
-      log_error_mesg('No Orphan Matching type_path', params)
-      return false
-    end
+    return log_error_mesg('No Orphan Matching type_path', params) if type.is_a?(Tree::TreeNode) == false
     types_for_engine = type[params[:parent_engine]]
     if types_for_engine.is_a?(Array)
       types_for_engine.each do |engine_type|

@@ -9,9 +9,7 @@ class SubRegistry < Registry
   end
 
   def roll_back
-    if @snap_shot.nil? == false && @snap_shot.is_a?(Tree::TreeNode)
-      @registry = @snap_shot
-    end
+    @registry = @snap_shot if @snap_shot.nil? == false && @snap_shot.is_a?(Tree::TreeNode)
   end
 
   def clear_error

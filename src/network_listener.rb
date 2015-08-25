@@ -7,7 +7,7 @@ class NetworkListener
   def initialize(protocol_listener, ip, socket)
     @registry_listener = start_network_server(ip, socket)
     @protocol_listener = protocol_listener
-    @registry_lock = Mutex.new()
+    @registry_lock = Mutex.new
   end
 
   # Fix me need to limit connections close thread etc
@@ -130,10 +130,7 @@ class NetworkListener
     reply_yaml = reply_hash.to_yaml
     reply = build_mesg(reply_yaml)
     begin
-      Timeout::timeout(25) {
-        bytes = socket.send(reply, 0)
-        p 'registry_reply ' + bytes.to_s + ' bytes'
-      }
+      Timeout::timeout(25) { bytes = socket.send(reply, 0) }
       # socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue IO::EAGAINWaitWritable
       retry_count += 1
@@ -142,9 +139,7 @@ class NetworkListener
       @last_error = 'Timeout sending reply'
       return false
     rescue StandardError => e
-      p e.to_s
-      p e.backtrace.to_s
-      return false
+      return SystemUtils.log_exception(e)
     end
     return true
   end
@@ -161,9 +156,7 @@ class NetworkListener
   end
 
   def check_request(request_str, source_address)
-    if check_request_source_address(source_address) == false
-      return false
-    end
+    return false if check_request_source_address(source_address) == false
     return true
   end
 

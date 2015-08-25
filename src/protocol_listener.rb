@@ -7,9 +7,7 @@ class ProtocolListener
   end
 
   def  perform_request(command_hash)
-    if is_command_hash_valid?(command_hash) == false
-      return false
-    end
+    return false if is_command_hash_valid?(command_hash) == false  
     command = command_hash[:command]
     request = command_hash[:value]
     response_hash = {}
@@ -28,29 +26,19 @@ class ProtocolListener
         response_object = @system_registry.public_send(method_symbol, request)
       end
     rescue StandardError => e
-      p e.to_s
-      p 'with ' + request.to_s + ' ' + command.to_s + e.backtrace.to_s
-      p @system_registry.last_error.to_s
-      return false
+      SystemUtils.log_error_mesg( 'with ' + request.to_s + ' ' + command.to_s + @system_registry.last_error.to_s, command_hash)
+      return SystemUtils.log_exception(e)
     end
-    if response_object.is_a?(Tree::TreeNode)
-      response_object = response_object.detached_subtree_copy
-    end
+    response_object = response_object.detached_subtree_copy if response_object.is_a?(Tree::TreeNode)      
     response_hash[:object] = response_object.to_yaml
     response_hash[:last_error] = @system_registry.last_error
     return response_hash
   end
 
   def is_command_hash_valid?(command_hash)
-    if command_hash.nil?
-      return false
-    elsif command_hash.key?(:command) == false
-      @last_error = 'Error_non_command'
-      return false
-    elsif command_hash[:command].nil?
-      @last_error = 'nil command'
-      return false
-    end
+    return false if command_hash.nil?      
+    return SystemUtils.log_error_mesg('Error_no command', command_hash) if command_hash.key?(:command) == false
+    return SystemUtils.log_error_mesg('nilcommand', command_hash) if command_hash[:command].nil?
     return true
   end
 
