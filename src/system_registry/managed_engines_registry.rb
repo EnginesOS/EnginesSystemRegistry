@@ -23,6 +23,8 @@ class ManagedEnginesRegistry < SubRegistry
   def find_engine_services_hashes(params)
     SystemUtils.debug_output('find_engine_services_hashes', params)
     params[:parent_engine] = params[:engine_name] if params.key?(:engine_name)
+    engine_node = managed_engines_type_registry(params)
+    return log_error_mesg('Failed to find engine type node' , params) if engine_node.is_a?(Tree::TreeNode) == false
     engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
     return log_error_mesg('Failed to find in managed service tree', params) if engine_node.is_a?(Tree::TreeNode) == false
     engine_node = get_type_path_node(engine_node, params[:type_path]) if params.key?(:type_path)
