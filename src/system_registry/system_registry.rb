@@ -10,25 +10,7 @@ class SystemRegistry < Registry
   require_relative 'services_registry.rb'
   require_relative 'orphan_services_registry.rb'
   require_relative 'system_utils.rb'
-  def test_orphans_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @orphan_server_registry.last_error.to_s  if result.nil? || !result
-    return result
-  end
 
-  def test_engines_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @managed_engines_registry.last_error.to_s if result.nil? || !result
-    return result
-  end
-
-  def test_services_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @services_registry.last_error.to_s if result.nil? || !result
-    return result
-  end
-
-  def test_configurations_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @configuration_registry.last_error.to_s if result.nil? || !result
-    return result
-  end
 
   # @ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
   def initialize
@@ -71,20 +53,6 @@ class SystemRegistry < Registry
     clear_error
     test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
   end
-
-  #  def save_as_orphan(params)
-  #    if  @orphan_server_registry.save_as_orphan(params) == true
-  #      save_tree
-  #    end
-  #  end
-  #  def rebirth_orphan(params)
-  #    take_snap_shot
-  #    if  test_orphans_registry_result(@orphan_server_registry.rebirth_orphan(params)) == true
-  #      return save_tree
-  #    end
-  #    roll_back
-  #    return false
-  #  end
 
   def reparent_orphan(params)
     clear_error
@@ -381,5 +349,25 @@ class SystemRegistry < Registry
   rescue StandardError => e
     log_exception(e)
     return false
+  end
+  
+  def test_orphans_registry_result(result)
+    @last_error = @last_error.to_s + ':' + @orphan_server_registry.last_error.to_s  if result.nil? || !result
+    return result
+  end
+
+  def test_engines_registry_result(result)
+    @last_error = @last_error.to_s + ':' + @managed_engines_registry.last_error.to_s if result.nil? || !result
+    return result
+  end
+
+  def test_services_registry_result(result)
+    @last_error = @last_error.to_s + ':' + @services_registry.last_error.to_s if result.nil? || !result
+    return result
+  end
+
+  def test_configurations_registry_result(result)
+    @last_error = @last_error.to_s + ':' + @configuration_registry.last_error.to_s if result.nil? || !result
+    return result
   end
 end

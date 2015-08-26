@@ -77,33 +77,7 @@ class ServicesRegistry < SubRegistry
     return false
   end
 
-  #    # @return an array of service_hashes in the Service registry that match the @type_path and @identifier
-  #    def attached_services(type_path,identifier)
-  #      retval = Array.new
-  #      if managed_service_tree ==nil
-  #        log_error_mesg('panic_no_managed_service_node', type_path.to_s + ' ' + identifier.to_s)
-  #        return retval
-  #      end
-  #      services = get_type_path_node(managed_service_tree,type_path)
-  #
-  #      if services == false
-  #        return retval
-  #      end
-  #      service = services[identifier]
-  #      if service == nil
-  #        return  retval
-  #      end
-  #      service.each do |node|
-  #        retval.push(node.content)
-  #      end
-  #
-  #    rescue StandardError => e
-  #      puts e.message
-  #      log_exception(e)
-  #      return false
-  #    end
-  #  #@returns a [Hash] matching
-  #
+
   # @service_query_hash :publisher_namespace , :type_path , :service_handle
   def get_service_entry(service_query_hash)
     tree_node = find_service_consumers(service_query_hash)

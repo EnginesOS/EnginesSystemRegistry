@@ -130,7 +130,7 @@ class Registry
    return log_error_mesg('No Parent Node ! on remove tree entry', tree_node) if !tree_node.parent.is_a?(Tree::TreeNode)
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
-    if parent_node.has_children? == false
+    if !parent_node.has_children?
       return log_error_mesg("failed to remove tree Entry",parent_node) if !remove_tree_entry(parent_node)
     end
     return true
