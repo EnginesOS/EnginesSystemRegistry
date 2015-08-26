@@ -58,6 +58,7 @@ class Registry
       sub_paths = type_path.split('/')
       sub_node = parent_node
       sub_paths.each do |sub_path|
+        p sub_path
         sub_node = sub_node[sub_path]
         if sub_node.nil?
           log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node)

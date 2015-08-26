@@ -43,20 +43,18 @@ class OrphanServicesRegistry < SubRegistry
   # @return nil on no match
   def retrieve_orphan_node(params)
     provider_tree = orphaned_services_registry[params[:publisher_namespace]]
-    return log_error_mesg('No Orphan Matching publisher_namespace', params) if provider_tree.is_a?(Tree::TreeNode) == false
-    SystemUtils.debug_output(:orpahns_retr_start, params[:type_path])
+    return log_error_mesg('No Orphan Matching publisher_namespace', params) if !provider_tree.is_a?(Tree::TreeNode) 
     type_path = params[:type_path]
     type = get_type_path_node(provider_tree, type_path)
-    return log_error_mesg('No Orphan Matching type_path', params) if type.is_a?(Tree::TreeNode) == false
-    types_for_engine = type[params[:parent_engine]]
+    return log_error_mesg('No Orphan Matching type_path', params) if !type.is_a?(Tree::TreeNode)   
+    types_for_engine = type[params[:parent_engine]]      
     if types_for_engine.is_a?(Array)
       types_for_engine.each do |engine_type|
-        # p type.content
-        if engine_type.nil? == true
+        if engine_type.nil?
           log_error_mesg(' nil type in ', types_for_engine)
           next
         end
-        if engine_type[params[:service_handle]].nil? == false
+        if !engine_type[params[:service_handle]].nil?
           return type[params[:service_handle]]
         else
           log_error_mesg('params nil service_handle', params)
@@ -64,7 +62,7 @@ class OrphanServicesRegistry < SubRegistry
       end
       log_error_mesg('No Matching Orphan found in search', params)
       return false
-    elsif types_for_engine.nil? == true
+    elsif types_for_engine.nil?
       return false
     else
       orphan = types_for_engine[params[:service_handle]]
