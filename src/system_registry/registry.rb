@@ -4,7 +4,7 @@ class Registry
   attr_reader :last_error
   # handle missing persistant key as not persistance kludge to catch gui bug
   def is_persistant?(hash)
-    return true if hash.key?(:persistance) == true && hash[:persistanct] == true
+    return true if hash.key?(:persistance) && hash[:persistanct]
     return false
   end
 
@@ -15,10 +15,10 @@ class Registry
   # param type_path the dir path format as in dns or database/sql/mysql
   def create_type_path_node(parent_node, type_path)
     return log_error_mesg('create_type_path passed a nil type_path when adding to ', parent_node) if type_path.nil?
-    return log_error_mesg('parent node not a tree node ', parent_node) if parent_node.is_a?(Tree::TreeNode) == false
-    if type_path.include?('/') == false
+    return log_error_mesg('parent node not a tree node ', parent_node) if !parent_node.is_a?(Tree::TreeNode)
+    if !type_path.include?('/')
       service_node = parent_node[type_path]
-      if service_node.is_a?(Tree::TreeNode) == false
+      if !service_node.is_a?(Tree::TreeNode)
         service_node = Tree::TreeNode.new(type_path, type_path)
         parent_node << service_node
       end
@@ -49,16 +49,15 @@ class Registry
   # @param parent_node the branch to search under
   # @param type_path the dir path format as in dns or database/sql/mysql
   def get_type_path_node(parent_node,type_path)
-    if type_path.nil? || parent_node.is_a?(Tree::TreeNode) == false
+    if type_path.nil? || !parent_node.is_a?(Tree::TreeNode)
       log_error_mesg('get_type_path_node_passed_a_nil path:' + type_path.to_s , parent_node.to_s)
       return nil
     end
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
-    return parent_node[type_path]  if type_path.include?('/') == false
+    return parent_node[type_path]  if !type_path.include?('/')
       sub_paths = type_path.split('/')
       sub_node = parent_node
       sub_paths.each do |sub_path|
-        p sub_path
         sub_node = sub_node[sub_path]
         if sub_node.nil?
           log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node)
@@ -77,8 +76,7 @@ class Registry
     branch.children.each do |sub_branch|
       #    SystemUtils.debug_output('on node',sub_branch.name)
       if sub_branch.children.count == 0
-        ret_val.push(sub_branch.content) if sub_branch.content.is_a?(Hash)
-          # SystemUtils.debug_output('pushed_content', sub_branch.content)       
+        ret_val.push(sub_branch.content) if sub_branch.content.is_a?(Hash)          
       else
         ret_val.concat(get_all_leafs_service_hashes(sub_branch))
       end
@@ -92,7 +90,7 @@ class Registry
     priority = []
     standard = []
     hashes.each do |service_hash|
-      if service_hash.key?(:priority) == false\
+      if !service_hash.key?(:priority) \
       || service_hash[:priority] == 0
         standard.push(service_hash)
       else
@@ -128,14 +126,12 @@ class Registry
   # If the tree_node is the last child then the parent is removed this is continued up.
   # @return boolean
   def remove_tree_entry(tree_node)
-   return log_error_mesg('remove_tree_entry Nil treenode ?', tree_node) if tree_node.is_a?(Tree::TreeNode) == false
-   return log_error_mesg('No Parent Node ! on remove tree entry', tree_node) if tree_node.parent.is_a?(Tree::TreeNode) == false
+   return log_error_mesg('remove_tree_entry Nil treenode ?', tree_node) if !tree_node.is_a?(Tree::TreeNode)
+   return log_error_mesg('No Parent Node ! on remove tree entry', tree_node) if !tree_node.parent.is_a?(Tree::TreeNode)
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
     if parent_node.has_children? == false
-      if remove_tree_entry(parent_node) == false
-        return false
-      end
+      return log_error_mesg("failed to remove tree Entry",parent_node) if !remove_tree_entry(parent_node)
     end
     return true
   rescue StandardError => e

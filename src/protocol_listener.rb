@@ -7,7 +7,7 @@ class ProtocolListener
   end
 
   def  perform_request(command_hash)
-    return false if is_command_hash_valid?(command_hash) == false  
+    return false if !is_command_hash_valid?(command_hash)
     command = command_hash[:command]
     request = command_hash[:value]
     response_hash = {}
@@ -37,7 +37,7 @@ class ProtocolListener
 
   def is_command_hash_valid?(command_hash)
     return false if command_hash.nil?      
-    return SystemUtils.log_error_mesg('Error_no command', command_hash) if command_hash.key?(:command) == false
+    return SystemUtils.log_error_mesg('Error_no command', command_hash) if !command_hash.key?(:command)
     return SystemUtils.log_error_mesg('nilcommand', command_hash) if command_hash[:command].nil?
     return true
   end

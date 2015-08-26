@@ -15,7 +15,7 @@ class NetworkListener
     loop do
       client = @registry_listener.accept
       log_connection(client)
-      if  check_request_source_address(client) == true
+      if check_request_source_address(client)
         thr = Thread.new {
           process_messages(client)
           p :closing_connection
@@ -31,7 +31,7 @@ class NetworkListener
   end
 
   def send_error(socket, request_hash, result)
-    if request_hash.is_a?(Hash) == false
+    if !request_hash.is_a?(Hash)
       message_hash = {}
       message_hash[:object] = request_hash
     else
@@ -61,13 +61,13 @@ class NetworkListener
     while true
       begin
         message_request = ''
-        first_bytes =  true
+        first_bytes = true
         mesg_len = 1 # will set on first pass
         while message_request.size < mesg_len
           begin
             mesg_data = socket.read_nonblock(1500)
             p mesg_data
-            if first_bytes == true
+            if first_bytes
               first_bytes = false
               message_request, mesg_len = process_first_chunk(mesg_data)
             else
@@ -156,7 +156,7 @@ class NetworkListener
   end
 
   def check_request(request_str, source_address)
-    return false if check_request_source_address(source_address) == false
+    return false if !check_request_source_address(source_address)
     return true
   end
 
