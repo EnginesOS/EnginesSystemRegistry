@@ -4,7 +4,7 @@ class SystemUtils
 
   attr_reader :debug, :level, :last_error
   def self.debug_output(label, object)
-    if SystemUtils.debug == true
+    if SystemUtils.debug
       p label.to_sym
       p object
     end
@@ -274,7 +274,7 @@ class SystemUtils
     argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':' if service_hash.key?(:publisher_namespace)
     service_variables = service_hash[:variables]
     sources = ''
-    return argument if service_variables.nil? == true
+    return argument if service_variables.nil?
 
     service_variables.each_pair do |key, value|
       if key == :sources

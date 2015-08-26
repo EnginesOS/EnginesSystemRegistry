@@ -1,6 +1,6 @@
 class ManagedEnginesRegistry < SubRegistry
   def find_engine_services(params)
-    return log_error_mesg('find_engine_services passed nil params', params) if params.nil? == true
+    return log_error_mesg('find_engine_services passed nil params', params) if params.nil?
     engines_type_tree = managed_engines_type_registry(params)
     return log_error_mesg('fail to find engine type tree', params) if engines_type_tree.is_a?(Tree::TreeNode) == false
     engine_node = engines_type_tree[params[:parent_engine]]
@@ -8,7 +8,7 @@ class ManagedEnginesRegistry < SubRegistry
     SystemUtils.debug_output(:find_engine_services_with_params, params)
     if params.key?(:type_path) && params[:type_path].nil? == false
       services = get_type_path_node(engine_node, params[:type_path]) # engine_node[params[:type_path]]
-      if services.is_a?(Tree::TreeNode) == true && params.key?(:service_handle) && params[:service_handle].nil? == false
+      if services.is_a?(Tree::TreeNode) && params.key?(:service_handle) && params[:service_handle].nil? == false
         service = services[params[:service_handle]]
         return service
       else
@@ -94,9 +94,9 @@ class ManagedEnginesRegistry < SubRegistry
     service_handle = get_service_handle(service_hash)
     # service_handle = service_hash[:service_handle]
     return log_error_mesg('no service type node', service_hash) if service_type_node.is_a?(Tree::TreeNode) == false
-    return log_error_mesg('Service hash has nil handle', service_hash) if service_handle.nil? == true
+    return log_error_mesg('Service hash has nil handle', service_hash) if service_handle.nil?
     service_node = service_type_node[service_handle]
-    if service_node.nil? == true
+    if service_node.nil?
       service_node = Tree::TreeNode.new(service_handle, service_hash)
       service_type_node << service_node
       service_node.content = service_hash

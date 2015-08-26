@@ -34,7 +34,7 @@ class OrphanServicesRegistry < SubRegistry
 
   def retrieve_orphan(params)
     orphan = retrieve_orphan_node(params)
-    return orphan.content if orphan.is_a?(Tree::TreeNode) == true
+    return orphan.content if orphan.is_a?(Tree::TreeNode)
     return orphan
   end
 
@@ -66,7 +66,7 @@ class OrphanServicesRegistry < SubRegistry
       return false
     else
       orphan = types_for_engine[params[:service_handle]]
-      if orphan.nil? == true
+      if orphan.nil?
         log_error_mesg('No Matching Orphan', params)
         return false
       else
@@ -103,7 +103,7 @@ class OrphanServicesRegistry < SubRegistry
     leafs = []
     SystemUtils.debug_output(:looking_for_orphans, params)
     orphans = find_orphan_consumers(params)
-    if orphans.is_a?(Tree::TreeNode) == true
+    if orphans.is_a?(Tree::TreeNode)
       leafs = get_matched_leafs(orphans, :persistant, true)
     end
     return leafs
@@ -114,16 +114,16 @@ class OrphanServicesRegistry < SubRegistry
   # @service_query_hash :publisher_namespace , :type_path
   # @service_query_hash :publisher_namespace , :type_path , :service_handle
   def find_orphan_consumers(service_query_hash)
-    if service_query_hash.key?(:publisher_namespace) == false || service_query_hash[:publisher_namespace].nil? == true
+    if service_query_hash.key?(:publisher_namespace) == false || service_query_hash[:publisher_namespace].nil?
       log_error_mesg('no_publisher_namespace', service_query_hash)
       return false
     end
     provider_tree = orphaned_services_registry[service_query_hash[:publisher_namespace]]
-    if service_query_hash.key?(:type_path) == false || service_query_hash[:type_path].nil? == true
+    if service_query_hash.key?(:type_path) == false || service_query_hash[:type_path].nil?
       log_error_mesg('find_service_consumers_no_type_path', service_query_hash)
       return provider_tree
     end
-    if provider_tree.nil? == true
+    if provider_tree.nil?
       log_error_mesg('found no match for provider in orphans', service_query_hash[:publisher_namespace])
       return false
     end
