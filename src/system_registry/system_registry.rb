@@ -47,6 +47,8 @@ class SystemRegistry < Registry
     @managed_engines_registry.roll_back
     @orphan_server_registry.roll_back
     return @system_registry
+    rescue StandardError => e
+      log_exception(e)
   end
 
   def find_engine_services_hashes(params)
@@ -348,7 +350,6 @@ class SystemRegistry < Registry
     return @system_registry['ManagedEngine']
   rescue StandardError => e
     log_exception(e)
-    return false
   end
   
   def test_orphans_registry_result(result)
