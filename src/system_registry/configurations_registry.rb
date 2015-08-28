@@ -29,7 +29,7 @@ class ConfigurationsRegistry < SubRegistry
       configurations = Tree::TreeNode.new(service_configuration_hash[:service_name], ' Configurations for :' + service_configuration_hash[:service_name])
       @registry << configurations
     elsif configurations[service_configuration_hash[:configurator_name]]
-      return false
+      return false 
     end
     configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name], service_configuration_hash)
     configurations << configuration

@@ -86,7 +86,7 @@ class OrphanServicesRegistry < SubRegistry
   # does not modfiey the tree
   def reparent_orphan(params)
     orphan = retrieve_orphan_node(params)
-    if orphan != false
+    if orphan
       content = orphan.content
       content[:variables][:parent_engine] = params[:parent_engine]
       content[:parent_engine] = params[:parent_engine]
