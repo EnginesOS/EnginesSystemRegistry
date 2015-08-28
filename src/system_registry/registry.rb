@@ -24,11 +24,9 @@ class Registry
       end
       return service_node
     else
-
       sub_paths = type_path.split('/')
       prior_node = parent_node
       count = 0
-
       sub_paths.each do |sub_path|
         sub_node = prior_node[sub_path]
         if sub_node.nil?
@@ -41,7 +39,6 @@ class Registry
       end
     end
     log_error_mesg('create_type_path failed', type_path)
-    return false
   end
 
   # @returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
@@ -59,10 +56,7 @@ class Registry
       sub_node = parent_node
       sub_paths.each do |sub_path|
         sub_node = sub_node[sub_path]
-        if sub_node.nil?
-          log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node)
-          return false
-        end
+        return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
       end
       return sub_node
   rescue StandardError => e

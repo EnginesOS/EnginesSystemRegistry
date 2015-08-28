@@ -2,35 +2,19 @@ class ServicesRegistry < SubRegistry
   # Wrapper for Gui to
   # @return [TreeNode] managed_service_tree[publisher]
   def service_provider_tree(publisher)
-    if @registry.is_a?(Tree::TreeNode)
-      return @registry[publisher]
-    end
-    return false
+    return @registry[publisher] if @registry.is_a?(Tree::TreeNode)
   end
 
   # @Boolean returns true | false if servcice hash is registered in service tree
   def service_is_registered?(service_hash)
     provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]
-    if provider_node.is_a?(Tree::TreeNode) == false
-      p :nil_provider_node
-      return false
-    end
+    return false unless provider_node.is_a?(Tree::TreeNode) 
     service_type_node = create_type_path_node(provider_node, service_hash[:type_path])
-    if service_type_node.is_a?(Tree::TreeNode) == false
-      p :nil_service_type_node
-      return false
-    end
+    return false unless service_type_node.is_a?(Tree::TreeNode)
     engine_node = service_type_node[service_hash[:parent_engine]]
-    if engine_node.is_a?(Tree::TreeNode) == false
-      p :nil_engine_node
-      return false
-    end
+    return false unless engine_node.is_a?(Tree::TreeNode)
     service_node = engine_node[service_hash[:service_handle]]
-    if service_node.nil?
-      p :nil_service_handle
-      return false
-    end
-    p :service_hash_is_registered
+    return false if service_node.nil?
     return true
   end
 
@@ -45,10 +29,7 @@ class ServicesRegistry < SubRegistry
       @registry << provider_node
     end
     service_type_node = create_type_path_node(provider_node, service_hash[:type_path])
-    if service_type_node.is_a?(Tree::TreeNode) == false
-      log_error_mesg('failed to create TreeNode for', service_hash)
-      return false
-    end
+     return log_error_mesg('failed to create TreeNode for', service_hash) if service_type_node.is_a?(Tree::TreeNode) == false
     engine_node = service_type_node[service_hash[:parent_engine]]
     if engine_node.is_a?(Tree::TreeNode) == false
       engine_node = Tree::TreeNode.new(service_hash[:parent_engine], service_hash[:parent_engine])
@@ -74,7 +55,6 @@ class ServicesRegistry < SubRegistry
   rescue StandardError => e
     puts e.message
     log_exception(e)
-    return false
   end
 
 
