@@ -42,8 +42,11 @@ class NetworkListener
     send_result(socket, message_hash)
   end
 
-  def send_ok_result(socket, result)
-    result[:result] = 'OK'
+  def send_ok_result(socket, result)        
+    unless result.is_a?(Hash) 
+      result = { :object => result }
+    end
+    result[:result] = 'OK' 
     send_result(socket, result)
   end
 
