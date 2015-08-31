@@ -116,7 +116,6 @@ class ManagedEnginesRegistry < SubRegistry
   def get_service_handle(params)
     return params[:service_handle] if params.key?(:service_handle) && !params[:service_handle].nil?
       log_error_mesg('no :service_handle', params)
-      return nil
   end
 
   # @return the appropriate tree under managedservices trees either engine or service

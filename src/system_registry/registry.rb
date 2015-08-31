@@ -16,9 +16,9 @@ class Registry
   def create_type_path_node(parent_node, type_path)
     return log_error_mesg('create_type_path passed a nil type_path when adding to ', parent_node) if type_path.nil?
     return log_error_mesg('parent node not a tree node ', parent_node) if !parent_node.is_a?(Tree::TreeNode)
-    if !type_path.include?('/')
+    unless type_path.include?('/')
       service_node = parent_node[type_path]
-      if !service_node.is_a?(Tree::TreeNode)
+      unless service_node.is_a?(Tree::TreeNode)
         service_node = Tree::TreeNode.new(type_path, type_path)
         parent_node << service_node
       end
@@ -48,7 +48,7 @@ class Registry
   def get_type_path_node(parent_node,type_path)
     if type_path.nil? || !parent_node.is_a?(Tree::TreeNode)
       log_error_mesg('get_type_path_node_passed_a_nil path:' + type_path.to_s , parent_node.to_s)
-      return nil
+      return false
     end
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
     return parent_node[type_path]  if !type_path.include?('/')
@@ -120,17 +120,16 @@ class Registry
   # If the tree_node is the last child then the parent is removed this is continued up.
   # @return boolean
   def remove_tree_entry(tree_node)
-   return log_error_mesg('remove_tree_entry Nil treenode ?', tree_node) if !tree_node.is_a?(Tree::TreeNode)
-   return log_error_mesg('No Parent Node ! on remove tree entry', tree_node) if !tree_node.parent.is_a?(Tree::TreeNode)
+   return log_error_mesg('remove_tree_entry Nil treenode ?', tree_node) unless tree_node.is_a?(Tree::TreeNode)
+   return log_error_mesg('No Parent Node ! on remove tree entry', tree_node) unless tree_node.parent.is_a?(Tree::TreeNode)
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
-    if !parent_node.has_children?
-      return log_error_mesg("failed to remove tree Entry",parent_node) if !remove_tree_entry(parent_node)
+    unless parent_node.has_children?
+      return log_error_mesg("failed to remove tree Entry",parent_node) unless remove_tree_entry(parent_node)
     end
     return true
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def log_error_mesg(msg, object)
