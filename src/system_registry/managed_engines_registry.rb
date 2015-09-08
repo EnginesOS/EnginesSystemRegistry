@@ -140,5 +140,6 @@ class ManagedEnginesRegistry < SubRegistry
     service_node = find_engine_services(service_hash)
     return remove_tree_entry(service_node) if service_node.is_a?(Tree::TreeNode)
     log_error_mesg('Failed to find service node to remove service from engine registry ', service_hash)
+    return true # failure to find ok 
   end
 end
