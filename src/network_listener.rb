@@ -16,9 +16,10 @@ class NetworkListener
       client = @registry_listener.accept
       log_connection(client)
       if check_request_source_address(client)
-        Thread.new {
+        Thread.new {         
           process_messages(client)
           p :closing_connection
+          client.shutdown(Socket::SHUT_RDWR) 
           client.close
         }
       end
@@ -97,6 +98,7 @@ class NetworkListener
           rescue Errno::EPIPE
             p :EPIPE
           rescue EOFError
+            return
             # p :EOF
             # End of Message buffer
           rescue StandardError=>e
