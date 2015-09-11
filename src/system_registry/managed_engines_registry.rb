@@ -38,11 +38,11 @@ class ManagedEnginesRegistry < SubRegistry
   end
 
   def find_engine_service_hash(params)    
-      return log_error_mesg('missing parrameterss parent_engine', params) if !params.key?(:parent_engine)
-      return log_error_mesg('missing parrameterss type_path', params) if !params.key?(:type_path)
-      return log_error_mesg('missing parrameterss service_handle', params) if !params.key?(:service_handle)
-      return log_error_mesg('missing parrameterss container_type', params) if !params.key?(:container_type)
-      return log_error_mesg('missing parrameterss service_container_name', params) if !params.key?(:service_container_name)
+      return log_error_mesg('missing parrameters parent_engine', params) if !params.key?(:parent_engine)
+      return log_error_mesg('missing parrameters type_path', params) if !params.key?(:type_path)
+      return log_error_mesg('missing parrameters service_handle', params) if !params.key?(:service_handle)
+      return log_error_mesg('missing parrameters container_type', params) if !params.key?(:container_type)
+      return log_error_mesg('missing parrameters service_container_name', params) if !params.key?(:service_container_name)
     SystemUtils.debug_output('find_engine_services_hash', params)
     engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
    return log_error_mesg('Failed to find parent engine in managed service tree', params) if !engine_node.is_a?(Tree::TreeNode)
@@ -141,5 +141,9 @@ class ManagedEnginesRegistry < SubRegistry
     return remove_tree_entry(service_node) if service_node.is_a?(Tree::TreeNode)
     log_error_mesg('Failed to find service node to remove service from engine registry ', service_hash)
     return true # failure to find ok 
+  end
+  
+  def all_engines_registered_to(service_path)
+    get_matched_leafs(@registry, :type_path, service_path)
   end
 end

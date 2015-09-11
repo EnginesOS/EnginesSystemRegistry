@@ -179,6 +179,10 @@ class SystemRegistry < Registry
     roll_back
     return false
   end
+  
+  def all_engines_registered_to(service_path)
+    test_engines_registry_result(@managed_engines_registry.all_engines_registered_to(service_path))
+  end
 
   def add_to_managed_engines_registry(service_hash)
     take_snap_shot
