@@ -65,6 +65,14 @@ class SystemRegistry < Registry
     clear_error
     test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(params))
   end
+  def rebirth_orphan(params)
+    take_snap_shot
+   if test_orphans_registry_result(@orphan_server_registry.release_orphan(params))
+    return save_tree if test_services_registry_result(@managed_engines_registry.add_to_services_registry(params))
+   end
+    roll_back
+  end
+  
 
   def release_orphan(params)
     take_snap_shot
