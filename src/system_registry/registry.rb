@@ -15,15 +15,8 @@ class Registry
   # param type_path the dir path format as in dns or database/sql/mysql
   def create_type_path_node(parent_node, type_path)
     return log_error_mesg('create_type_path passed a nil type_path when adding to ', parent_node) if type_path.nil?
-    return log_error_mesg('parent node not a tree node ', parent_node) if !parent_node.is_a?(Tree::TreeNode)
-    unless type_path.include?('/')
-      service_node = parent_node[type_path]
-      unless service_node.is_a?(Tree::TreeNode)
-        service_node = Tree::TreeNode.new(type_path, type_path)
-        parent_node << service_node
-      end
-      return service_node
-    else
+    return log_error_mesg('parent node not a tree node ', parent_node) unless parent_node.is_a?(Tree::TreeNode)
+    if type_path.include?('/')
       sub_paths = type_path.split('/')
       prior_node = parent_node
       count = 0
@@ -35,8 +28,15 @@ class Registry
         end
         prior_node = sub_node
         count += 1
-    return sub_node if count == sub_paths.count
+        return sub_node if count == sub_paths.count
       end
+    else
+      service_node = parent_node[type_path]
+      unless service_node.is_a?(Tree::TreeNode)
+        service_node = Tree::TreeNode.new(type_path, type_path)
+        parent_node << service_node
+      end
+      return service_node
     end
     log_error_mesg('create_type_path failed', type_path)
   end
@@ -45,20 +45,20 @@ class Registry
   # @return nil on error
   # @param parent_node the branch to search under
   # @param type_path the dir path format as in dns or database/sql/mysql
-  def get_type_path_node(parent_node,type_path)
+  def get_type_path_node(parent_node, type_path)
     if type_path.nil? || !parent_node.is_a?(Tree::TreeNode)
-      log_error_mesg('get_type_path_node_passed_a_nil path:' + type_path.to_s , parent_node.to_s)
+      log_error_mesg('get_type_path_node_passed_a_nil path:' + type_path.to_s, parent_node.to_s)
       return false
     end
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
-    return parent_node[type_path]  if !type_path.include?('/')
-      sub_paths = type_path.split('/')
-      sub_node = parent_node
-      sub_paths.each do |sub_path|
-        sub_node = sub_node[sub_path]
-        return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
-      end
-      return sub_node
+    return parent_node[type_path]  unless type_path.include?('/')
+    sub_paths = type_path.split('/')
+    sub_node = parent_node
+    sub_paths.each do |sub_path|
+      sub_node = sub_node[sub_path]
+      return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
+    end
+    return sub_node
   rescue StandardError => e
     log_exception(e)
   end
@@ -70,7 +70,7 @@ class Registry
     branch.children.each do |sub_branch|
       #    SystemUtils.debug_output('on node',sub_branch.name)
       if sub_branch.children.count == 0
-        ret_val.push(sub_branch.content) if sub_branch.content.is_a?(Hash)          
+        ret_val.push(sub_branch.content) if sub_branch.content.is_a?(Hash)
       else
         ret_val.concat(get_all_leafs_service_hashes(sub_branch))
       end
@@ -120,8 +120,8 @@ class Registry
   # If the tree_node is the last child then the parent is removed this is continued up.
   # @return boolean
   def remove_tree_entry(tree_node)
-   return log_error_mesg('remove_tree_entry Nil treenode ?', tree_node) unless tree_node.is_a?(Tree::TreeNode)
-   return log_error_mesg('No Parent Node ! on remove tree entry', tree_node) unless tree_node.parent.is_a?(Tree::TreeNode)
+    return log_error_mesg('remove_tree_entry Nil treenode ?', tree_node) unless tree_node.is_a?(Tree::TreeNode)
+    return log_error_mesg('No Parent Node ! on remove tree entry', tree_node) unless tree_node.parent.is_a?(Tree::TreeNode)
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
     unless parent_node.has_children?

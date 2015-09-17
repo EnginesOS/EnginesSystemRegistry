@@ -8,7 +8,7 @@ class ServicesRegistry < SubRegistry
   # @Boolean returns true | false if servcice hash is registered in service tree
   def service_is_registered?(service_hash)
     provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]
-    return false unless provider_node.is_a?(Tree::TreeNode) 
+    return false unless provider_node.is_a?(Tree::TreeNode)
     service_type_node = create_type_path_node(provider_node, service_hash[:type_path])
     return false unless service_type_node.is_a?(Tree::TreeNode)
     engine_node = service_type_node[service_hash[:parent_engine]]
@@ -25,7 +25,7 @@ class ServicesRegistry < SubRegistry
   def add_to_services_registry(service_hash)
     provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]
     if provider_node.is_a?(Tree::TreeNode) == false
-      provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace], ' Provider:' + service_hash[:publisher_namespace] + ':' + service_hash[:type_path])
+      provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace], 'Publisher:' + service_hash[:publisher_namespace] + ':' + service_hash[:type_path])
       @registry << provider_node
     end
     service_type_node = create_type_path_node(provider_node, service_hash[:type_path])
@@ -55,38 +55,6 @@ class ServicesRegistry < SubRegistry
   rescue StandardError => e
     puts e.message
     log_exception(e)
-  end
-
-
-  # @service_query_hash :publisher_namespace , :type_path , :service_handle
-  def get_service_entry(service_query_hash)
-    tree_node = find_service_consumers(service_query_hash)
-    return tree_node.content if tree_node.is_a?(Tree::TreeNode) 
-    log_error_mesg("get service_ entry failed ",service_query_hash)
-  end
-
-  # @returns a [TreeNode] to the depth of the search
-  # @service_query_hash :publisher_namespace
-  # @service_query_hash :publisher_namespace , :type_path
-  # @service_query_hash :publisher_namespace , :type_path , :service_handle
-  def find_service_consumers(service_query_hash)
-    return log_error_mesg('no_publisher_namespace', service_query_hash) if service_query_hash[:publisher_namespace].nil? ||  service_query_hash.key?(:publisher_namespace) == false
-    provider_tree = service_provider_tree(service_query_hash[:publisher_namespace])
-    if service_query_hash[:type_path].nil? || service_query_hash.key?(:type_path) == false 
-      log_error_mesg('find_service_consumers_no_type_path', service_query_hash)
-      return provider_tree
-    end
-    return log_error_mesg('no Provider tree', service_query_hash) if provider_tree.is_a?(Tree::TreeNode) == false
-    service_path_tree = get_type_path_node(provider_tree, service_query_hash[:type_path])
-    return log_error_mesg('Failed to find matching service path', service_query_hash) if service_path_tree.is_a?(Tree::TreeNode) == false
-    return service_path_tree if service_query_hash[:parent_engine].nil? || service_query_hash.key?(:parent_engine) == false
-    services = service_path_tree[service_query_hash[:parent_engine]]
-    return log_error_mesg('Failed to find matching parent_engine', service_query_hash) if services.is_a?(Tree::TreeNode) == false
-    return log_error_mesg('find_service_consumers_no_service_handle', service_query_hash) if service_query_hash[:service_handle].nil? ||service_query_hash.key?(:service_handle) == false 
-    SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
-    service = services[service_query_hash[:service_handle]]
-    return log_error_mesg('failed to find match in services tree', service_query_hash)if service.nil?
-    return service
   end
 
   def list_providers_in_use
@@ -129,4 +97,36 @@ class ServicesRegistry < SubRegistry
     leafs = get_matched_leafs(services, :persistant, true) if services.nil? == false && services != false
     return leafs
   end
+  
+  private
+# @returns a [TreeNode] to the depth of the search
+# @service_query_hash :publisher_namespace
+# @service_query_hash :publisher_namespace , :type_path
+# @service_query_hash :publisher_namespace , :type_path , :service_handle
+def find_service_consumers(service_query_hash)
+  return log_error_mesg('no_publisher_namespace', service_query_hash) if service_query_hash[:publisher_namespace].nil? || service_query_hash.key?(:publisher_namespace) == false
+  provider_tree = service_provider_tree(service_query_hash[:publisher_namespace])
+  if service_query_hash[:type_path].nil? || service_query_hash.key?(:type_path) == false 
+    log_error_mesg('find_service_consumers_no_type_path', service_query_hash)
+    return provider_tree
+  end
+  return log_error_mesg('no Provider tree', service_query_hash) if provider_tree.is_a?(Tree::TreeNode) == false
+  service_path_tree = get_type_path_node(provider_tree, service_query_hash[:type_path])
+  return log_error_mesg('Failed to find matching service path', service_query_hash) if service_path_tree.is_a?(Tree::TreeNode) == false
+  return service_path_tree if service_query_hash[:parent_engine].nil? || service_query_hash.key?(:parent_engine) == false
+  services = service_path_tree[service_query_hash[:parent_engine]]
+  return log_error_mesg('Failed to find matching parent_engine', service_query_hash) if services.is_a?(Tree::TreeNode) == false
+  return log_error_mesg('find_service_consumers_no_service_handle', service_query_hash) if service_query_hash[:service_handle].nil? ||service_query_hash.key?(:service_handle) == false 
+  SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
+  service = services[service_query_hash[:service_handle]]
+  return log_error_mesg('failed to find match in services tree', service_query_hash)if service.nil?
+  return service
+end
+   
+# @service_query_hash :publisher_namespace , :type_path , :service_handle
+def get_service_entry(service_query_hash)
+  tree_node = find_service_consumers(service_query_hash)
+  return tree_node.content if tree_node.is_a?(Tree::TreeNode) 
+  log_error_mesg('get service_ entry failed ', service_query_hash)
+end
 end
