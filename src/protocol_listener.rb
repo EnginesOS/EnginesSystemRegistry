@@ -43,5 +43,6 @@ class ProtocolListener
   end
 
   def shutdown
+    @system_registry.shutdown
   end
 end

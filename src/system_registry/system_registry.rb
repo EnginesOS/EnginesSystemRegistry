@@ -31,7 +31,14 @@ class SystemRegistry < Registry
     roll_back
     return false
   end
-
+  
+  
+  def shutdown
+     p :GOT_SHUT_DOWN
+    roll_back
+    save_tree
+   end
+   
   def find_service_consumers(service_query_hash)
     clear_error
     test_services_registry_result(@services_registry.find_service_consumers(service_query_hash))

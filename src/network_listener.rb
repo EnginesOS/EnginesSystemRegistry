@@ -209,6 +209,7 @@ class NetworkListener
 
   def shutdown
     p :GOT_SHUT_DOWN
+    @registry_listener.close 
   end
 
   protected
