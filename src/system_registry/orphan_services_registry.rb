@@ -116,7 +116,8 @@ class OrphanServicesRegistry < SubRegistry
           log_error_mesg(' nil type in ', types_for_engine)
           next
         end
-        if !engine_type[params[:service_handle]].nil?
+        unless engine_type[params[:service_handle]].nil
+           P :matchin_search
           return type[params[:service_handle]]
         else
           log_error_mesg('params nil service_handle', params)
@@ -125,15 +126,12 @@ class OrphanServicesRegistry < SubRegistry
       log_error_mesg('No Matching Orphan found in search', params)
       return false
     elsif types_for_engine.nil?
+      p :No_orphan_types
       return false
     else
-      orphan = types_for_engine[params[:service_handle]]
-      if orphan.nil?
+        return types_for_engine[params[:service_handle]] if types_for_engine.key?(params[:service_handle])
         log_error_mesg('No Matching Orphan', params)
         return false
-      else
-        return orphan
-      end
     end
   end
 end
