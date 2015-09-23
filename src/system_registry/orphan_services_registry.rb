@@ -129,7 +129,7 @@ class OrphanServicesRegistry < SubRegistry
       p :No_orphan_types
       return false
     else
-        return types_for_engine[params[:service_handle]] if types_for_engine.key?(params[:service_handle])
+        return types_for_engine[params[:service_handle]] unless types_for_engine(params[:service_handle]).nil 
         log_error_mesg('No Matching Orphan', params)
         return false
     end
