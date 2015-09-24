@@ -69,6 +69,8 @@ class NetworkListener
         mesg_len = 1 # will set on first pass
         while message_request.size < mesg_len
           begin
+            first = true
+             socket.read(0)
             mesg_data = socket.read_nonblock(1500)
             p mesg_data
             if first_bytes
