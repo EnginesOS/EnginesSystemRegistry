@@ -143,7 +143,7 @@ class SystemRegistry < Registry
 
   def system_registry_tree
     clear_error
-   return nil if File.exist?('/tmp/.reglock')
+   return nil if File.exist?('/opt/engines/run/service_manager/.reglock')
  
     service_tree_file = '/opt/engines/run/service_manager/services.yaml'
     registry = @system_registry
@@ -151,7 +151,7 @@ class SystemRegistry < Registry
       current_time = File.mtime(service_tree_file)
       registry = load_tree if !@last_tree_mod_time.eql?(current_time)
     end
-    FileUtils.touch('/tmp/.reglock')
+    FileUtils.touch('/opt/engines/run/service_manager/.reglock')
     @system_registry = registry
     return registry
   rescue StandardError => e
@@ -394,7 +394,7 @@ class SystemRegistry < Registry
     f = File.new(service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
-    FileUtils.rm('/tmp/.reglock')
+    FileUtils.rm('/opt/engines/run/service_manager/.reglock')
     # FIXME: do a del a rename as killing copu part way through ...
     FileUtils.copy(service_tree_file + '.tmp', service_tree_file)
     @last_tree_mod_time = File.mtime(service_tree_file)

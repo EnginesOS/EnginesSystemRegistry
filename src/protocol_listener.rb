@@ -2,9 +2,10 @@ class ProtocolListener
   attr_accessor :last_error
 
   require_relative 'system_registry/system_registry.rb'
-  def initialize
+  def initialize()
     @system_registry = SystemRegistry.new
   end
+  
 
   def  perform_request(command_hash)
     return false if !is_command_hash_valid?(command_hash)
@@ -38,7 +39,7 @@ class ProtocolListener
   def is_command_hash_valid?(command_hash)
     return false if command_hash.nil?      
     return SystemUtils.log_error_mesg('Error_no command', command_hash) if !command_hash.key?(:command)
-    return SystemUtils.log_error_mesg('nilcommand', command_hash) if command_hash[:command].nil?
+    return SystemUtils.log_error_mesg('nil command', command_hash) if command_hash[:command].nil?
     return true
   end
 
