@@ -143,15 +143,14 @@ class SystemRegistry < Registry
 
   def system_registry_tree
     clear_error
-   return nil if File.exist?('/opt/engines/run/service_manager/.reglock')
- 
+  
     service_tree_file = '/opt/engines/run/service_manager/services.yaml'
     registry = @system_registry
     if @last_tree_mod_time && !@last_tree_mod_time.nil?
       current_time = File.mtime(service_tree_file)
       registry = load_tree if !@last_tree_mod_time.eql?(current_time)
     end
-    FileUtils.touch('/opt/engines/run/service_manager/.reglock')
+    
     @system_registry = registry
     return registry
   rescue StandardError => e
@@ -343,6 +342,7 @@ class SystemRegistry < Registry
       elsif File.exist?(service_tree_file + '.bak')
         tree_data = File.read(service_tree_file + '.bak')
       end
+      FileUtils.touch('/opt/engines/run/service_manager/.reglock')
       registry = YAML::load(tree_data)
       return registry
     rescue StandardError => e
@@ -369,6 +369,11 @@ class SystemRegistry < Registry
   # @sets the service_tree and loast mod time
   def load_tree
     clear_error
+    if File.exist?('/opt/engines/run/service_manager/.reglock')
+      SystemUtils.log_error_mesg("REGISTRY IS LOCKED")
+      return nil
+    end
+    
     service_tree_file = '/opt/engines/run/service_manager/services.yaml'
     registry = tree_from_yaml()
     @last_tree_mod_time = nil
@@ -394,7 +399,7 @@ class SystemRegistry < Registry
     f = File.new(service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
-    FileUtils.rm('/opt/engines/run/service_manager/.reglock')
+    FileUtils.rm('/opt/engines/run/service_manager/.reglock') if File.exist?('/opt/engines/run/service_manager/.reglock')
     # FIXME: do a del a rename as killing copu part way through ...
     FileUtils.copy(service_tree_file + '.tmp', service_tree_file)
     @last_tree_mod_time = File.mtime(service_tree_file)
