@@ -35,9 +35,12 @@ class SystemRegistry < Registry
   def lock_registry
     FileUtils.touch('/opt/engines/run/service_manager/.reglock')
   end
-  
+  def release_lock
+    FileUtils.rm('/opt/engines/run/service_manager/.reglock') if File.exist?('/opt/engines/run/service_manager/.reglock')   
+  end
   def shutdown
      p :GOT_SHUT_DOWN
+    release_lock   
     roll_back
     save_tree
    end
@@ -304,7 +307,6 @@ class SystemRegistry < Registry
   private
 
   def take_snap_shot
-
     @configuration_registry.take_snap_shot
     @services_registry.take_snap_shot
     @managed_engines_registry.take_snap_shot
@@ -372,12 +374,7 @@ class SystemRegistry < Registry
   # @sets the service_tree and loast mod time
   def load_tree
     clear_error
-    if File.exist?('/opt/engines/run/service_manager/.reglock')
-      SystemUtils.log_error_mesg("REGISTRY IS LOCKED")
-      p "REGISTRY IS LOCKED"
-      @registry = nil
-      return false
-    end
+    return false unless registry_is_unlocked
     
     service_tree_file = '/opt/engines/run/service_manager/services.yaml'
     registry = tree_from_yaml()
@@ -390,6 +387,13 @@ class SystemRegistry < Registry
     return false
   end
 
+  def registry_is_unlocked
+    return true unless File.exist?('/opt/engines/run/service_manager/.reglock')
+         SystemUtils.log_error_mesg("REGISTRY IS LOCKED")
+         p "REGISTRY IS LOCKED"      
+         return false    
+  end
+  
   # saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree
   # calls [log_exception] on error and returns false
   # @return boolean
