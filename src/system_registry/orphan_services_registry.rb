@@ -40,7 +40,7 @@ class OrphanServicesRegistry < SubRegistry
 
   # @return  orphaned_services_tree
   # @wrapper for the gui
-  def orphaned_services_registry
+  def orphaned_services_registry   
     return @registry
   end
 
