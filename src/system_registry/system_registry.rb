@@ -407,6 +407,7 @@ class SystemRegistry < Registry
       statefile_bak = service_tree_file + '.bak'
       FileUtils.copy(service_tree_file, statefile_bak)
     end
+    return false unless @system_registry.is_a?(Tree::TreeNode)
     serialized_object = YAML::dump(@system_registry)
     f = File.new(service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
