@@ -156,6 +156,7 @@ class SystemRegistry < Registry
       current_time = File.mtime(service_tree_file)
       registry = load_tree if !@last_tree_mod_time.eql?(current_time)
     end
+    p 'FAILED TO LOAD TREE IS RGISTRY LOCKED?' unless registry.is_a?(Tree::TreeNode) 
     
     @system_registry = registry
     return registry
@@ -410,10 +411,10 @@ class SystemRegistry < Registry
     f.close
    
     # FIXME: do a del a rename as killing copu part way through ...
-    FileUtils.copy(service_tree_file + '.tmp', service_tree_file)    
-    FileUtils.rm('/opt/engines/run/service_manager/.reglock') if File.exist?('/opt/engines/run/service_manager/.reglock')   
+    FileUtils.copy(service_tree_file + '.tmp', service_tree_file)        
    ds = Time.now.to_i.to_s + '_' + Process.pid.to_s
     FileUtils.mv(service_tree_file + '.tmp', service_tree_file + '.' + ds )
+    FileUtils.rm('/opt/engines/run/service_manager/.reglock') if File.exist?('/opt/engines/run/service_manager/.reglock')   
     @last_tree_mod_time = File.mtime(service_tree_file)
     return true
   rescue StandardError => e
