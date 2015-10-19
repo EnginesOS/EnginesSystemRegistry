@@ -366,6 +366,8 @@ class SystemRegistry < Registry
     registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
     registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
     registry << Tree::TreeNode.new('Services', 'Managed Services')
+    @system_registry = registry
+    save_tree
     return registry
   rescue StandardError => e
     puts e.message
