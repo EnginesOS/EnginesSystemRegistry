@@ -32,6 +32,9 @@ class SystemRegistry < Registry
     return false
   end
   
+  def lock_registry
+    FileUtils.touch('/opt/engines/run/service_manager/.reglock')
+  end
   
   def shutdown
      p :GOT_SHUT_DOWN
@@ -342,7 +345,7 @@ class SystemRegistry < Registry
       elsif File.exist?(service_tree_file + '.bak')
         tree_data = File.read(service_tree_file + '.bak')
       end
-      FileUtils.touch('/opt/engines/run/service_manager/.reglock')
+     lock_registry
       registry = YAML::load(tree_data)
       return registry
     rescue StandardError => e
@@ -371,6 +374,7 @@ class SystemRegistry < Registry
     clear_error
     if File.exist?('/opt/engines/run/service_manager/.reglock')
       SystemUtils.log_error_mesg("REGISTRY IS LOCKED")
+      p "REGISTRY IS LOCKED"
       @registry = nil
       return false
     end
