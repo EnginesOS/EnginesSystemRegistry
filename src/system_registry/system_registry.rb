@@ -371,7 +371,8 @@ class SystemRegistry < Registry
     clear_error
     if File.exist?('/opt/engines/run/service_manager/.reglock')
       SystemUtils.log_error_mesg("REGISTRY IS LOCKED")
-      return nil
+      @registry = nil
+      return false
     end
     
     service_tree_file = '/opt/engines/run/service_manager/services.yaml'
@@ -399,9 +400,12 @@ class SystemRegistry < Registry
     f = File.new(service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
-    FileUtils.rm('/opt/engines/run/service_manager/.reglock') if File.exist?('/opt/engines/run/service_manager/.reglock')
+   
     # FIXME: do a del a rename as killing copu part way through ...
-    FileUtils.copy(service_tree_file + '.tmp', service_tree_file)
+    FileUtils.copy(service_tree_file + '.tmp', service_tree_file)    
+    FileUtils.rm('/opt/engines/run/service_manager/.reglock') if File.exist?('/opt/engines/run/service_manager/.reglock')   
+   ds = Time.now.to_i.to_s + '_' + Process.pid.to_s
+    FileUtils.mv(service_tree_file + '.tmp', service_tree_file + '.' + ds )
     @last_tree_mod_time = File.mtime(service_tree_file)
     return true
   rescue StandardError => e
