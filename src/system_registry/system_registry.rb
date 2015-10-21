@@ -383,6 +383,7 @@ class SystemRegistry < Registry
     registry = tree_from_yaml()
     @last_tree_mod_time = nil
     @last_tree_mod_time = File.mtime(service_tree_file) if File.exist?(service_tree_file)
+    p :TREE_LOADED
     return registry
   rescue StandardError => e
     @last_error = 'load tree'
@@ -419,6 +420,7 @@ class SystemRegistry < Registry
     FileUtils.mv(service_tree_file + '.tmp', service_tree_file + '.' + ds )
     FileUtils.rm('/opt/engines/run/service_manager/.reglock') if File.exist?('/opt/engines/run/service_manager/.reglock')   
     @last_tree_mod_time = File.mtime(service_tree_file)
+    p :SAVED_TREE
     return true
   rescue StandardError => e
     @last_error = 'save error'
