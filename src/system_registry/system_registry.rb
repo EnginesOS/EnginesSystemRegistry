@@ -226,7 +226,8 @@ class SystemRegistry < Registry
   # return boolean
   def reparent_orphan(params)
     clear_error
-    test_orphans_registry_result(@orphan_server_registry.reparent_orphan(params))
+    return save_tree if test_orphans_registry_result(@orphan_server_registry.reparent_orphan(params))
+
   end
 
   # @params [Hash] of orphan matching the params

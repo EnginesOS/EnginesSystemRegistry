@@ -50,10 +50,9 @@ class OrphanServicesRegistry < SubRegistry
   def reparent_orphan(params)
     orphan = retrieve_orphan_node(params)
     if orphan
-      content = orphan.content
-      content[:variables][:parent_engine] = params[:parent_engine]
-      content[:parent_engine] = params[:parent_engine]
-      return content
+      orphan.content[:variables][:parent_engine] = params[:new_parent]
+      orphan.content[:parent_engine] = params[:new_parent]
+      return orphan.content
     else
       log_error_mesg('No orphan found to reparent', params)
       return false
