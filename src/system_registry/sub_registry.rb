@@ -4,7 +4,7 @@ class SubRegistry < Registry
   end
 
   def take_snap_shot
-    @snap_shot = @registry.dup
+    @snap_shot = @registry.detached_subtree_copy
     clear_error
   end
 

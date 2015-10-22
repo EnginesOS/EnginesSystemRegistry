@@ -117,7 +117,7 @@ class OrphanServicesRegistry < SubRegistry
         end
         unless engine_type[params[:service_handle]].nil?
            P :matchin_search
-          return type[params[:service_handle]]
+          return engine_type[params[:service_handle]]
         else
           log_error_mesg('params nil service_handle', params)
         end
