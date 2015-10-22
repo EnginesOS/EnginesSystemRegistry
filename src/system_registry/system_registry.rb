@@ -41,8 +41,8 @@ class SystemRegistry < Registry
   def shutdown
      p :GOT_SHUT_DOWN
     release_lock   
-    roll_back
-    save_tree
+    # roll_back DONT SAVE Tree same as rool back
+    #save_tree
    end
    
   def find_service_consumers(service_query_hash)
@@ -411,14 +411,14 @@ class SystemRegistry < Registry
     end
     return false unless @system_registry.is_a?(Tree::TreeNode)
     serialized_object = YAML::dump(@system_registry)
-    f = File.new(service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    @writing = true
+    ds = Time.now.to_i.to_s + '_' + Process.pid.to_s
+    f = File.new(service_tree_file + '.' + ds  , File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
-   
-    # FIXME: do a del a rename as killing copu part way through ...
-    FileUtils.copy(service_tree_file + '.tmp', service_tree_file)        
-   ds = Time.now.to_i.to_s + '_' + Process.pid.to_s
-    FileUtils.mv(service_tree_file + '.tmp', service_tree_file + '.' + ds )
+    FileUtils.mv(service_tree_file + '.' + ds, service_tree_file  )
+    # FIXME: do a del a rename as killing copy part way through ...
+    FileUtils.cp(service_tree_file , service_tree_file + '.' + ds )
     FileUtils.rm('/opt/engines/run/service_manager/.reglock') if File.exist?('/opt/engines/run/service_manager/.reglock')   
     @last_tree_mod_time = File.mtime(service_tree_file)
     p :SAVED_TREE
