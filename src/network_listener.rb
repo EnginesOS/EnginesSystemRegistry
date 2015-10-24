@@ -9,7 +9,7 @@ class NetworkListener
     @protocol_listener = protocol_listener
     @registry_lock = Mutex.new
   end
-
+  
   # Fix me need to limit connections close thread etc
   def listen_for_messages
     loop do
@@ -26,6 +26,7 @@ class NetworkListener
     end
   end
 
+  
   def log_connection(client)
     client_ipdetails = client.peeraddr(true, :numeric)
     p 'Connection on ' + client_ipdetails[2].to_s + ':' + client_ipdetails[1].to_s
