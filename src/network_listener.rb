@@ -13,6 +13,7 @@ class NetworkListener
   # Fix me need to limit connections close thread etc
   def listen_for_messages
     loop do
+      
       client = @registry_listener.accept
       log_connection(client)
       if check_request_source_address(client)
