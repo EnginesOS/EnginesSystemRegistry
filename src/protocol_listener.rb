@@ -6,7 +6,8 @@ class ProtocolListener
     @system_registry = SystemRegistry.new
   end
 
-  def  perform_request(command_hash)
+  
+  def perform_request(command_hash)
     return false if !is_command_hash_valid?(command_hash)
     command = command_hash[:command]
     request = command_hash[:value]
