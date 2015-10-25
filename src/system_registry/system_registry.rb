@@ -36,7 +36,7 @@ class SystemRegistry < Registry
   def shutdown
      p :GOT_SHUT_DOWN
     roll_back
-    save_tree
+  
    end
    
   def find_service_consumers(service_query_hash)
