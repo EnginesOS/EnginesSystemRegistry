@@ -1,11 +1,15 @@
 class ConfigurationsRegistry < SubRegistry
 
+  # @return [Array] of configurations registered against service_name
+  # return empty [Array] if none
   def get_service_configurations_hashes(service_name)
     configurations = get_service_configurations(service_name)
     return [] unless configurations.is_a?(Tree::TreeNode)
     get_all_leafs_service_hashes(configurations)
   end
 
+  # add the service configuration in the [Hash] service_configuration_hash
+  # required keys are :service_name :configurator_name :publisher_namespace :type_path :variables
   def add_service_configuration(service_configuration_hash)
     configurations = get_service_configurations(service_configuration_hash[:service_name])
     if !configurations.is_a?(Tree::TreeNode)
@@ -19,10 +23,14 @@ class ConfigurationsRegistry < SubRegistry
     return true
   end
 
+  # Remove service configuration matching the [Hash] service_configuration_hash 
+  # required keys are :service_name :configurator_name
+  # @return boolean indicating failure
+  #
   def rm_service_configuration(service_configuration_hash)
     service_configurations = get_service_configurations(service_configuration_hash[:service_name])
     return false unless service_configurations.is_a?(Tree::TreeNode)
-    return false unless service_configuration_hash.key?(:configurator_name)
+    return false unless service_configuration_hash.key?(  )
     service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
     return remove_tree_entry(service_configuration) if service_configuration.is_a?(Tree::TreeNode)
   end

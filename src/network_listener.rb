@@ -10,18 +10,23 @@ class NetworkListener
     @registry_lock = Mutex.new
   end
   
-  # Fix me need to limit connections close thread etc
+  # @ listen socket and create a new process thread per client
+  # close thread socket when process_messages terminates 
   def listen_for_messages
-    loop do
-      
+    clients = 0
+    loop do      
       client = @registry_listener.accept
       log_connection(client)
+      p :Current_Client_Count
+      p clients.to_s
       if check_request_source_address(client)
+        clients += 1
         Thread.new {         
           process_messages(client)
           p :closing_connection
           client.shutdown(Socket::SHUT_RDWR) 
           client.close
+          clients -= 1
         }
       end
     end
@@ -63,6 +68,9 @@ class NetworkListener
     return message_request, mesg_len
   end
 
+  # main loop for processing messages
+  # first byte read is blocking subsequent reads until the end of the message are non blocking
+  # any characters beyond the end the curent message are unget, so messages can be queued (not support be the client)  
   def process_messages(socket)
     while true
       begin
@@ -138,8 +146,10 @@ class NetworkListener
     retry_count = 0
     reply_yaml = reply_hash.to_yaml
     reply = build_mesg(reply_yaml)
+    bytes = 0
     begin
-      Timeout::timeout(25) { bytes = socket.send(reply, 0) }
+      reply = reply[bytes,-1]
+      Timeout::timeout(5) { bytes += socket.send(reply, 0) }
       # socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue IO::EAGAINWaitWritable
       retry_count += 1

@@ -44,12 +44,7 @@ class SystemRegistry < Registry
     test_services_registry_result(@services_registry.find_service_consumers(service_query_hash))
   end
 
-  def get_service_entry(service_query_hash)
-    clear_error
-    tree_node = find_service_consumers(service_query_hash)
-    return false  if !tree_node.is_a?(Tree::TreeNode)
-    return tree_node.content
-  end
+
 
   def add_to_services_registry(service_hash)
     take_snap_shot
@@ -103,6 +98,11 @@ class SystemRegistry < Registry
     test_engines_registry_result(@managed_engines_registry.find_engine_service_hash(params))
   end
 
+#  def  get_active_persistant_services(params)
+#    clear_error
+#    test_engines_registry_result(@managed_engines_registry.get_active_persistant_services(params, false))
+#  end
+  
   def get_engine_nonpersistant_services(params)
     clear_error
     test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params, false))
@@ -156,15 +156,7 @@ class SystemRegistry < Registry
     return false
   end
 
-  def service_configurations_registry
-    clear_error
-    return false if !check_system_registry_tree
-    @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations') if @system_registry['Configurations'].nil?
-    return @system_registry ['Configurations']
-  rescue StandardError => e
-    log_exception(e)
-    return nil
-  end
+
 
   # @return the ManagedServices Tree [TreeNode] Branch
   #  creates if does not exist
@@ -178,16 +170,7 @@ class SystemRegistry < Registry
     return false
   end
 
-  def orphaned_services_registry
-    clear_error
-    return false if !check_system_registry_tree
-    orphans = @system_registry['OphanedServices']
-    @system_registry << Tree::TreeNode.new('OphanedServices', 'Persistant Services left after Engine Deinstall') if !orphans.is_a?(Tree::TreeNode)
-    @system_registry['OphanedServices']
-  rescue StandardError => e
-    log_exception(e)
-    return nil
-  end
+
 
   # @return the ManagedEngine Tree Branch
   # creates if does not exist
@@ -200,16 +183,16 @@ class SystemRegistry < Registry
     log_exception(e)
   end
 
-  def get_service_configurations_hashes(service_hash)
+  
+  def orphaned_services_registry
     clear_error
-    test_configurations_registry_result(@configuration_registry.get_service_configurations_hashes(service_hash))
-  end
-
-  def update_service_configuration(config_hash)
-    take_snap_shot
-    return save_tree if test_configurations_registry_result(@configuration_registry.update_service_configuration(config_hash))
-    roll_back
-    return false
+    return false if !check_system_registry_tree
+    orphans = @system_registry['OphanedServices']
+    @system_registry << Tree::TreeNode.new('OphanedServices', 'Persistant Services left after Engine Deinstall') if !orphans.is_a?(Tree::TreeNode)
+    @system_registry['OphanedServices']
+  rescue StandardError => e
+    log_exception(e)
+    return nil
   end
 
   # @params [Hash] Loads the varaibles from the matching orphan
@@ -276,27 +259,77 @@ class SystemRegistry < Registry
     return false
   end
 
-  def test_orphans_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @orphan_server_registry.last_error.to_s  if result.is_a?(FalseClass)
-    return result
+ 
+  
+  def service_configurations_registry
+    clear_error
+    return false if !check_system_registry_tree
+    @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations') if @system_registry['Configurations'].nil?
+    return @system_registry ['Configurations']
+  rescue StandardError => e
+    log_exception(e)
+    return nil
   end
-
-  def test_engines_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @managed_engines_registry.last_error.to_s if result.is_a?(FalseClass)
-    return result
-  end
-
-  def test_services_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @services_registry.last_error.to_s if result.is_a?(FalseClass)
-    return result
-  end
-
-  def test_configurations_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @configuration_registry.last_error.to_s if result.is_a?(FalseClass)
-    return result
-  end
+  
+  def get_service_configurations_hashes(service_hash)
+      clear_error
+      test_configurations_registry_result(@configuration_registry.get_service_configurations_hashes(service_hash))
+    end
+    
+    def add_service_configuration(service_hash)
+      take_snap_shot
+      return save_tree if test_configurations_registry_result(@configuration_registry.add_service_configuration(service_hash))
+      roll_back  
+     end
+     
+    def rm_service_configuration(service_hash)
+      take_snap_shot
+      return save_tree if test_configurations_registry_result(@configuration_registry.rm_service_configuration(service_hash))
+      roll_back 
+      end
+     
+     def get_service_configuration(service_hash)
+        clear_error
+        test_configurations_registry_result(@configuration_registry.get_service_configuration(service_hash))
+     end
+    
+    def update_service_configuration(config_hash)
+      take_snap_shot
+      return save_tree if test_configurations_registry_result(@configuration_registry.update_service_configuration(config_hash))
+      roll_back
+      return false
+    end
+  
+  
 
   private
+
+  def get_service_entry(service_query_hash)
+    clear_error
+    tree_node = find_service_consumers(service_query_hash)
+    return false  if !tree_node.is_a?(Tree::TreeNode)
+    return tree_node.content
+  end
+    
+  def test_orphans_registry_result(result)
+     @last_error = @last_error.to_s + ':' + @orphan_server_registry.last_error.to_s  if result.is_a?(FalseClass)
+     return result
+   end
+ 
+   def test_engines_registry_result(result)
+     @last_error = @last_error.to_s + ':' + @managed_engines_registry.last_error.to_s if result.is_a?(FalseClass)
+     return result
+   end
+ 
+   def test_services_registry_result(result)
+     @last_error = @last_error.to_s + ':' + @services_registry.last_error.to_s if result.is_a?(FalseClass)
+     return result
+   end
+ 
+   def test_configurations_registry_result(result)
+     @last_error = @last_error.to_s + ':' + @configuration_registry.last_error.to_s if result.is_a?(FalseClass)
+     return result
+   end
 
   def take_snap_shot
     @configuration_registry.take_snap_shot

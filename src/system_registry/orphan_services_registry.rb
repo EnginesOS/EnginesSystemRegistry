@@ -72,6 +72,8 @@ class OrphanServicesRegistry < SubRegistry
     return leafs
   end
 
+private
+
   # @returns a [TreeNode] to the depth of the search
   # @service_query_hash :publisher_namespace
   # @service_query_hash :publisher_namespace , :type_path
@@ -98,8 +100,7 @@ class OrphanServicesRegistry < SubRegistry
     return service_path_tree
   end
 
-  private
-
+  
   # @return [TreeNode] of Oprhaned Serivce that matches the supplied params
   # @param params { :type_path , :service_handle}
   # @return nil on no match
@@ -117,7 +118,7 @@ class OrphanServicesRegistry < SubRegistry
           next
         end
         unless engine_type[params[:service_handle]].nil?
-           P :matchin_search
+           p :matchin_search
           return type[params[:service_handle]]
         else
           log_error_mesg('params nil service_handle', params)
