@@ -353,20 +353,21 @@ class SystemRegistry < Registry
     #      @system_registry = @snap_shot
     #    end
     #perhaps just reload
-    @configuration_registry.roll_back
-    @system_registry ['Configurations'] = @configuration_registry.registry
+#    @configuration_registry.roll_back
+#    @system_registry ['Configurations'] = @configuration_registry.registry
+#    
+#    @services_registry.roll_back
+#    @system_registry['Services'] = @services_registry.registry
+#      
+#    @managed_engines_registry.roll_back
+#    @system_registry['ManagedEngine'] = @managed_engines_registry.registry
+#    
+#    @orphan_server_registry.roll_back
+#    @system_registry['OphanedServices'] = @orphan_server_registry.registry
     
-    @services_registry.roll_back
-    @system_registry['Services'] = @services_registry.registry
-      
-    @managed_engines_registry.roll_back
-    @system_registry['ManagedEngine'] = @managed_engines_registry.registry
-    
-    @orphan_server_registry.roll_back
-    @system_registry['OphanedServices'] = @orphan_server_registry.registry
-      
-    unlock_tree
-    
+  #  unlock_tree unlock occurs in load tree
+    @system_registry = load_tree
+    set_registries
     return @system_registry
   rescue StandardError => e
     log_exception(e)
@@ -436,6 +437,7 @@ class SystemRegistry < Registry
    return nil unless lock_tree    
     service_tree_file = '/opt/engines/run/service_manager/services.yaml'
     registry = tree_from_yaml()
+    p :LOAD_TREE
     @last_tree_mod_time = nil
     @last_tree_mod_time = File.mtime(service_tree_file) if File.exist?(service_tree_file)
     unlock_tree
