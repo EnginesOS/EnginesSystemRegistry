@@ -146,7 +146,7 @@ class SystemRegistry < Registry
   def system_registry_tree
     clear_error
     @@service_tree_file 
-      current_mod_time = File.mtime(service_tree_file)
+      current_mod_time = File.mtime(@@service_tree_file)
     @last_tree_mod_time = nil
       if @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
         @system_registry = load_tree
@@ -455,22 +455,19 @@ class SystemRegistry < Registry
   # @return boolean
   def save_tree
     clear_error    
-    if File.exist?(@@service_tree_file)
-      statefile_bak = @@service_tree_file + '.bak'
-      FileUtils.copy(@@service_tree_file, statefile_bak)
-    end
+    FileUtils.copy(@@service_tree_file, @@service_tree_file + '.bak') if File.exist?(@@service_tree_file)
+
     serialized_object = YAML::dump(@system_registry)
     f = File.new(@@service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
-    f.close
-    unlock_tree
-    # FIXME: do a del a rename as killing copu part way through ...
-    FileUtils.copy(service_tree_file + '.tmp', service_tree_file)
+    f.close    
+    FileUtils.mv(@@service_tree_file + '.tmp', @@service_tree_file)
     @last_tree_mod_time = File.mtime(@@service_tree_file)
+    unlock_tree
     return true
   rescue StandardError => e
     @last_error = 'save error'
-    FileUtils.copy(service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
+    FileUtils.copy(@@service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
     log_exception(e)
   end
 end
