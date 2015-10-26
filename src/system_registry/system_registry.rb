@@ -143,19 +143,18 @@ class SystemRegistry < Registry
 
   def system_registry_tree
     clear_error
-    service_tree_file = '/opt/engines/run/service_manager/services.yaml'
-    registry = @system_registry
-    if @last_tree_mod_time && !@last_tree_mod_time.nil?
+    service_tree_file = '/opt/engines/run/service_manager/services.yaml'   
       current_mod_time = File.mtime(service_tree_file)
-      registry = load_tree if !@last_tree_mod_time.eql?(current_mod_time)
-    end
-    @system_registry = registry
-    return registry
+      if @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
+        @system_registry = load_tree
+        set_registries
+      end
+    return @system_registry
   rescue StandardError => e
     log_exception(e)
     return false
   end
-
+  
 
 
   # @return the ManagedServices Tree [TreeNode] Branch
@@ -163,8 +162,8 @@ class SystemRegistry < Registry
   def services_registry
     clear_error
     return false if !check_system_registry_tree
-    @system_registry << Tree::TreeNode.new('Services', 'Service register') if !@system_registry['Services'].is_a?(Tree::TreeNode)
-    return @system_registry['Services']
+    system_registry_tree << Tree::TreeNode.new('Services', 'Service register') if !system_registry_tree['Services'].is_a?(Tree::TreeNode)
+    return system_registry_tree['Services']
   rescue StandardError => e
     log_exception(e)
     return false
@@ -177,8 +176,8 @@ class SystemRegistry < Registry
   def managed_engines_registry
     clear_error
     return false if !check_system_registry_tree
-    @system_registry << Tree::TreeNode.new('ManagedEngine', 'ManagedEngine Service register') if !@system_registry['ManagedEngine'].is_a?(Tree::TreeNode)
-    return @system_registry['ManagedEngine']
+    system_registry_tree << Tree::TreeNode.new('ManagedEngine', 'ManagedEngine Service register') if !system_registry_tree['ManagedEngine'].is_a?(Tree::TreeNode)
+    system_registry_tree['ManagedEngine']
   rescue StandardError => e
     log_exception(e)
   end
@@ -187,9 +186,9 @@ class SystemRegistry < Registry
   def orphaned_services_registry
     clear_error
     return false if !check_system_registry_tree
-    orphans = @system_registry['OphanedServices']
-    @system_registry << Tree::TreeNode.new('OphanedServices', 'Persistant Services left after Engine Deinstall') if !orphans.is_a?(Tree::TreeNode)
-    @system_registry['OphanedServices']
+    orphans = system_registry_tree['OphanedServices']
+    system_registry_tree << Tree::TreeNode.new('OphanedServices', 'Persistant Services left after Engine Deinstall') if !orphans.is_a?(Tree::TreeNode)
+    system_registry_tree['OphanedServices']
   rescue StandardError => e
     log_exception(e)
     return nil
@@ -264,8 +263,8 @@ class SystemRegistry < Registry
   def service_configurations_registry
     clear_error
     return false if !check_system_registry_tree
-    @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations') if @system_registry['Configurations'].nil?
-    return @system_registry ['Configurations']
+    system_registry_tree << Tree::TreeNode.new('Configurations', 'Service Configurations') if system_registry_tree['Configurations'].nil?
+    system_registry_tree ['Configurations']
   rescue StandardError => e
     log_exception(e)
     return nil
@@ -352,14 +351,32 @@ class SystemRegistry < Registry
     #    if @snap_shot.is_a?(Tree::TreeNode)
     #      @system_registry = @snap_shot
     #    end
-    unlock_tree
+    #perhaps just reload
     @configuration_registry.roll_back
+    @system_registry ['Configurations'] = @configuration_registry.registry
+    
     @services_registry.roll_back
+    @system_registry['Services'] = @services_registry.registry
+      
     @managed_engines_registry.roll_back
+    @system_registry['ManagedEngine'] = @managed_engines_registry.registry
+    
     @orphan_server_registry.roll_back
+    @system_registry['OphanedServices'] = @orphan_server_registry.registry
+      
+    unlock_tree
+    
     return @system_registry
   rescue StandardError => e
     log_exception(e)
+  end
+  
+  def set_registries
+    @configuration_registry.registry = system_registry_tree ['Configurations']
+    @orphan_server_registry.registry = system_registry_tree['OphanedServices']
+    @managed_engines_registry.registry = system_registry_tree['ManagedEngine']
+    @services_registry.registry = system_registry_tree['Services']
+      
   end
 
   # loads the Service tree off disk from [SysConfig.ServiceTreeFile]
@@ -412,7 +429,7 @@ class SystemRegistry < Registry
     File.delete(@@RegistryLock)
   end
   
-    # @sets the service_tree and loast mod time
+    # @sets the service_tree and load mod time
   def load_tree
     clear_error
    return nil unless lock_tree    

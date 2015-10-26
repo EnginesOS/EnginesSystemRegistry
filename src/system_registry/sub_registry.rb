@@ -1,4 +1,7 @@
 class SubRegistry < Registry
+   
+  attr_accessor :registry
+  
   def initialize(registry)
     @registry = registry
   end
