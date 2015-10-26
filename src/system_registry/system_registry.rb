@@ -3,6 +3,8 @@ require 'yaml'
 require 'fileutils'
 
 class SystemRegistry < Registry
+  @@service_tree_file = '/opt/engines/run/service_manager/services.yaml'   
+  
   @@RegistryLock='/tmp/registry.lock'
   require_relative 'sub_registry.rb'
   require_relative 'configurations_registry.rb'
@@ -143,7 +145,7 @@ class SystemRegistry < Registry
 
   def system_registry_tree
     clear_error
-    service_tree_file = '/opt/engines/run/service_manager/services.yaml'   
+    @@service_tree_file 
       current_mod_time = File.mtime(service_tree_file)
     @last_tree_mod_time = nil
       if @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
@@ -386,12 +388,11 @@ class SystemRegistry < Registry
   # @return service_tree [TreeNode]
   def tree_from_yaml
     clear_error
-    begin
-      service_tree_file = '/opt/engines/run/service_manager/services.yaml'
-      if File.exist?(service_tree_file)
-        tree_data = File.read(service_tree_file)
-      elsif File.exist?(service_tree_file + '.bak')
-        tree_data = File.read(service_tree_file + '.bak')
+    begin      
+      if File.exist?(@@service_tree_file)
+        tree_data = File.read(@@service_tree_file)
+      elsif File.exist?(@@service_tree_file + '.bak')
+        tree_data = File.read(@@service_tree_file + '.bak')
       end
       registry = YAML::load(tree_data)
       return registry
@@ -405,8 +406,7 @@ class SystemRegistry < Registry
   # Load tree from file or create initial service tree
   # @return ServiceTree as a [TreeNode]
   def initialize_tree
-    service_tree_file = '/opt/engines/run/service_manager/services.yaml'
-    return load_tree if File.exist?(service_tree_file)
+    return load_tree if File.exist?(@@service_tree_file)
     registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
     registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
     registry << Tree::TreeNode.new('Services', 'Managed Services')
@@ -434,12 +434,14 @@ class SystemRegistry < Registry
     # @sets the service_tree and load mod time
   def load_tree
     clear_error
-   return nil unless lock_tree    
-    service_tree_file = '/opt/engines/run/service_manager/services.yaml'
+  unless lock_tree
+    p :Failed_to_gain_lock   
+    return nil 
+  end
     registry = tree_from_yaml()
     p :LOAD_TREE
     @last_tree_mod_time = nil
-    @last_tree_mod_time = File.mtime(service_tree_file) if File.exist?(service_tree_file)
+    @last_tree_mod_time = File.mtime(@@service_tree_file) if File.exist?(@@service_tree_file)
     unlock_tree
     return registry
   rescue StandardError => e
@@ -453,23 +455,22 @@ class SystemRegistry < Registry
   # @return boolean
   def save_tree
     clear_error    
-    service_tree_file = '/opt/engines/run/service_manager/services.yaml'
-    if File.exist?(service_tree_file)
-      statefile_bak = service_tree_file + '.bak'
-      FileUtils.copy(service_tree_file, statefile_bak)
+    if File.exist?(@@service_tree_file)
+      statefile_bak = @@service_tree_file + '.bak'
+      FileUtils.copy(@@service_tree_file, statefile_bak)
     end
     serialized_object = YAML::dump(@system_registry)
-    f = File.new(service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new(@@service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
     unlock_tree
     # FIXME: do a del a rename as killing copu part way through ...
     FileUtils.copy(service_tree_file + '.tmp', service_tree_file)
-    @last_tree_mod_time = File.mtime(service_tree_file)
+    @last_tree_mod_time = File.mtime(@@service_tree_file)
     return true
   rescue StandardError => e
     @last_error = 'save error'
-    FileUtils.copy(service_tree_file + '.bak', service_tree_file) if !File.exist?(service_tree_file)
+    FileUtils.copy(service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
     log_exception(e)
   end
 end
