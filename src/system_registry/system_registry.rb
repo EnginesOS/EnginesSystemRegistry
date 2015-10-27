@@ -305,17 +305,16 @@ class SystemRegistry < Registry
       return false
     end
   
-  
-
-  private
-
+ 
   def get_service_entry(service_query_hash)
     clear_error
     tree_node = find_service_consumers(service_query_hash)
     return false  if !tree_node.is_a?(Tree::TreeNode)
     return tree_node.content
   end
-    
+  
+  private
+
   def test_orphans_registry_result(result)
      @last_error = @last_error.to_s + ':' + @orphan_server_registry.last_error.to_s  if result.is_a?(FalseClass)
      return result
