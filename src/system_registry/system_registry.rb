@@ -146,7 +146,7 @@ class SystemRegistry < Registry
 
   def system_registry_tree    
       current_mod_time = File.mtime(@@service_tree_file)
-    @last_tree_mod_time = nil
+   # @last_tree_mod_time = nil
       if @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
         @system_registry = load_tree
         set_registries
@@ -378,10 +378,10 @@ class SystemRegistry < Registry
   end
   
   def set_registries
-    @configuration_registry.reset_registry(system_registry_tree['Configurations'])
-    @orphan_server_registry.reset_registry(system_registry_tree['OphanedServices'])
-    @managed_engines_registry.reset_registry(system_registry_tree['ManagedEngine'])
-    @services_registry.reset_registry(system_registry_tree['Services'])
+    @configuration_registry.reset_registry(@system_registry['Configurations'])
+    @orphan_server_registry.reset_registry(@system_registry['OphanedServices'])
+    @managed_engines_registry.reset_registry(@system_registry['ManagedEngine'])
+    @services_registry.reset_registry(@system_registry['Services'])
       
   end
 
