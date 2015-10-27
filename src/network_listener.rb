@@ -152,6 +152,7 @@ class NetworkListener
       Timeout::timeout(5) { bytes += socket.send(reply.to_s, 0) }
       # socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue IO::EAGAINWaitWritable
+      p :NOT_ALLBYTES
       retry_count += 1
       retry
     rescue Timeout::Error
