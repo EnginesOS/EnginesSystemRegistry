@@ -145,7 +145,8 @@ class SystemRegistry < Registry
   end
 
   def system_registry_tree    
-      current_mod_time = File.mtime(@@service_tree_file)
+
+    current_mod_time = File.mtime(@@service_tree_file) unless @last_tree_mod_time == nil 
    # @last_tree_mod_time = nil
       if @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
         @system_registry = load_tree
@@ -409,6 +410,7 @@ class SystemRegistry < Registry
   # @return ServiceTree as a [TreeNode]
   def initialize_tree
     return load_tree if File.exist?(@@service_tree_file)
+    @last_tree_mod_time = nil
     registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
     registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
     registry << Tree::TreeNode.new('Services', 'Managed Services')
