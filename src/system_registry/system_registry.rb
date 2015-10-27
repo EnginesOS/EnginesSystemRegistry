@@ -17,7 +17,7 @@ class SystemRegistry < Registry
     # @service_tree root of the Service Registry Tree
     @system_registry = initialize_tree
     @configuration_registry = ConfigurationsRegistry.new(service_configurations_registry_tree)
-    @services_registry = ServicesRegistry.new(services_registry_tree_tree)
+    @services_registry = ServicesRegistry.new(services_registry_tree)
     @managed_engines_registry = ManagedEnginesRegistry.new(managed_engines_registry_tree)
     @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry_tree)
   end
