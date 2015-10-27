@@ -16,11 +16,10 @@ class SystemRegistry < Registry
   def initialize
     # @service_tree root of the Service Registry Tree
     @system_registry = initialize_tree
-    @configuration_registry = ConfigurationsRegistry.new(service_configurations_registry)
-    @services_registry = ServicesRegistry.new(services_registry)
-    @managed_engines_registry = ManagedEnginesRegistry.new(managed_engines_registry)
-    @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry)
-    save_tree if @last_tree_mod_time == nil
+    @configuration_registry = ConfigurationsRegistry.new(service_configurations_registry_tree)
+    @services_registry = ServicesRegistry.new(services_registry_tree_tree)
+    @managed_engines_registry = ManagedEnginesRegistry.new(managed_engines_registry_tree)
+    @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry_tree)
   end
 
   def update_attached_service(service_hash)
@@ -166,7 +165,7 @@ class SystemRegistry < Registry
 
   # @return the ManagedServices Tree [TreeNode] Branch
   #  creates if does not exist
-  def services_registry
+  def services_registry_tree
     clear_error
     return false if !check_system_registry_tree
     system_registry_tree << Tree::TreeNode.new('Services', 'Service register') if !system_registry_tree['Services'].is_a?(Tree::TreeNode)
@@ -180,7 +179,7 @@ class SystemRegistry < Registry
 
   # @return the ManagedEngine Tree Branch
   # creates if does not exist
-  def managed_engines_registry
+  def managed_engines_registry_tree
     clear_error
     return false if !check_system_registry_tree
     system_registry_tree << Tree::TreeNode.new('ManagedEngine', 'ManagedEngine Service register') if !system_registry_tree['ManagedEngine'].is_a?(Tree::TreeNode)
@@ -190,7 +189,7 @@ class SystemRegistry < Registry
   end
 
   
-  def orphaned_services_registry
+  def orphaned_services_registry_tree
     clear_error
     return false if !check_system_registry_tree
     orphans = system_registry_tree['OphanedServices']
@@ -267,7 +266,7 @@ class SystemRegistry < Registry
 
  
   
-  def service_configurations_registry
+  def service_configurations_registry_tree
     clear_error
     return false if !check_system_registry_tree
     system_registry_tree << Tree::TreeNode.new('Configurations', 'Service Configurations') if system_registry_tree['Configurations'].nil?
@@ -410,12 +409,12 @@ class SystemRegistry < Registry
   # Load tree from file or create initial service tree
   # @return ServiceTree as a [TreeNode]
   def initialize_tree
-    return load_tree if File.exist?(@@service_tree_file)
-    @last_tree_mod_time = nil
-    registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
-    registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
-    registry << Tree::TreeNode.new('Services', 'Managed Services')
-    return registry
+    return load_tree if File.exist?(@@service_tree_file)    
+    @system_registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
+    @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
+    @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
+    save_tree
+    @system_registry 
   rescue StandardError => e
     puts e.message
     log_exception(e)
