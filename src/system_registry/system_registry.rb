@@ -159,6 +159,7 @@ class SystemRegistry < Registry
   end
   
   def sync
+    p :SYNC
     system_registry_tree    
   end
 
