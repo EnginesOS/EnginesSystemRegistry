@@ -269,7 +269,7 @@ class SystemRegistry < Registry
     clear_error
     return false if !check_system_registry_tree
     system_registry_tree << Tree::TreeNode.new('Configurations', 'Service Configurations') if system_registry_tree['Configurations'].nil?
-    system_registry_tree ['Configurations']
+    system_registry_tree['Configurations']
   rescue StandardError => e
     log_exception(e)
     return nil
