@@ -410,6 +410,7 @@ class SystemRegistry < Registry
   # @return ServiceTree as a [TreeNode]
   def initialize_tree
     return load_tree if File.exist?(@@service_tree_file)    
+    lock_tree
     @system_registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
     @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
     @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
@@ -459,6 +460,7 @@ class SystemRegistry < Registry
   # @return boolean
   def save_tree
     clear_error    
+    p :save_trer
     FileUtils.copy(@@service_tree_file, @@service_tree_file + '.bak') if File.exist?(@@service_tree_file)
 
     serialized_object = YAML::dump(@system_registry)
