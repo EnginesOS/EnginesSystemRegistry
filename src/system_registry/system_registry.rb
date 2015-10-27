@@ -123,6 +123,7 @@ class SystemRegistry < Registry
   end
 
   def all_engines_registered_to(service_path)
+    clear_error
     test_engines_registry_result(@managed_engines_registry.all_engines_registered_to(service_path))
   end
 
@@ -144,8 +145,7 @@ class SystemRegistry < Registry
   end
 
   def system_registry_tree
-    clear_error
-    @@service_tree_file 
+    
       current_mod_time = File.mtime(@@service_tree_file)
     @last_tree_mod_time = nil
       if @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
@@ -158,7 +158,9 @@ class SystemRegistry < Registry
     return false
   end
   
-
+  def sync
+    system_registry_tree    
+  end
 
   # @return the ManagedServices Tree [TreeNode] Branch
   #  creates if does not exist
