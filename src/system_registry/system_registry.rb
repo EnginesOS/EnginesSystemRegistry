@@ -20,6 +20,7 @@ class SystemRegistry < Registry
     @services_registry = ServicesRegistry.new(services_registry)
     @managed_engines_registry = ManagedEnginesRegistry.new(managed_engines_registry)
     @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry)
+    save_tree if @last_tree_mod_time == nil
   end
 
   def update_attached_service(service_hash)
