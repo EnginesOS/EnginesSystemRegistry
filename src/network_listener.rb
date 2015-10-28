@@ -171,6 +171,7 @@ class NetworkListener
 
   def build_mesg(mesg_str)
     header = mesg_str.to_s.length
+    p header.to_s + ',' + mesg_str.to_s
     return header.to_s + ',' + mesg_str.to_s
   end
 
