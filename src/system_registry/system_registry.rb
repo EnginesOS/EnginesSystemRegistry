@@ -151,13 +151,14 @@ class SystemRegistry < Registry
       if @system_registry == nil || @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
         @system_registry = load_tree
         # FIXME should be recover tree with warning
+        log_error_mesg('Panic nil regsitry loaded', @system_registry)
         @system_registry = initialize_tree if @system_registry.nil?
         set_registries
       end
     return @system_registry
   rescue StandardError => e
     log_exception(e)
-    return false
+    return nil
   end
   
   def sync
