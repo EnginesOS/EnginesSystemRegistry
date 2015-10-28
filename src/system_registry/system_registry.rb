@@ -107,6 +107,8 @@ class SystemRegistry < Registry
   
   def get_engine_nonpersistant_services(params)
     clear_error
+    p :get_engine_nonpersistant_services
+    p params
     test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params, false))
   end
 
