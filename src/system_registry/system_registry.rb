@@ -377,19 +377,22 @@ class SystemRegistry < Registry
     log_exception(e)
   end
   
-  def set_registries
-    @configuration_registry.reset_registry(@system_registry['Configurations']) unless @system_registry['Configurations'].nil?
-    @orphan_server_registry.reset_registry(@system_registry['OphanedServices']) unless @system_registry['OphanedServices'].nil?
-    @managed_engines_registry.reset_registry(@system_registry['ManagedEngine']) unless @system_registry['ManagedEngine'].nil?
-    @services_registry.reset_registry(@system_registry['Services']) unless @system_registry['Services'].nil?
-      
-    # Call these as will create if nil
-    services_registry_tree
-    managed_engines_registry_tree
-    orphan_server_registry_tree
-    configuration_registry_tree
-    
+  # set @registry to the appropirate tree Node for eaach sub resgistry
+  # creates node if nil via_xxx_yyy_tree
+  def set_registries      
+    configuration_registry_tree if @system_registry['Configurations'].nil?
+    @configuration_registry.reset_registry(@system_registry['Configurations'])      
+    services_registry_tree if @system_registry['Services'].nil?
+    @services_registry.reset_registry(@system_registry['Services'])
+    orphan_server_registry_tree if @system_registry['OphanedServices'].nil?
+    @orphan_server_registry.reset_registry(@system_registry['OphanedServices']) 
+    managed_engines_registry_tree if @system_registry['ManagedEngine'].nil?
+    @managed_engines_registry.reset_registry(@system_registry['ManagedEngine']) 
+ 
+  
   end
+  
+  
 
   # loads the Service tree off disk from [SysConfig.ServiceTreeFile]
   # calls [log_exception] on error and returns nil
