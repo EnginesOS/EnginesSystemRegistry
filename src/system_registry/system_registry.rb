@@ -38,7 +38,7 @@ class SystemRegistry < Registry
   def shutdown
      p :GOT_SHUT_DOWN
     roll_back
-  
+    unlock_tree
    end
    
   def find_service_consumers(service_query_hash)
@@ -453,7 +453,8 @@ class SystemRegistry < Registry
       sleep 1
       sleep 1 if File.exist?(@@RegistryLock)
       p :REGISTRY_LOCKED
-      return log_error_mesg("Failed to lock",@@RegistryLock) if File.exist?(@@RegistryLock)
+       log_error_mesg("Failed to lock",@@RegistryLock) if File.exist?(@@RegistryLock)
+       return true
     end
     FileUtils.touch(@@RegistryLock)
     return true
@@ -468,7 +469,7 @@ class SystemRegistry < Registry
     clear_error
   unless lock_tree
     p :Failed_to_gain_lock   
-    return nil 
+    #return nil 
   end
     registry = tree_from_yaml()
     p :LOAD_TREE
