@@ -148,7 +148,7 @@ class SystemRegistry < Registry
 
     current_mod_time = File.mtime(@@service_tree_file) unless @last_tree_mod_time == nil 
    # @last_tree_mod_time = nil
-      if @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
+      if @system_registry == nil || @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
         @system_registry = load_tree
         set_registries
       end
