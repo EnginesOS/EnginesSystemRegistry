@@ -168,7 +168,7 @@ class SystemRegistry < Registry
   def services_registry_tree
     clear_error
     return false if !check_system_registry_tree
-    system_registry_tree << Tree::TreeNode.new('Services', 'Service register') if !system_registry_tree['Services'].is_a?(Tree::TreeNode)
+    system_registry_tree << Tree::TreeNode.new('Services', 'Service register') unless system_registry_tree['Services'].is_a?(Tree::TreeNode)
     return system_registry_tree['Services']
   rescue StandardError => e
     log_exception(e)
@@ -378,11 +378,17 @@ class SystemRegistry < Registry
   end
   
   def set_registries
-    @configuration_registry.reset_registry(@system_registry['Configurations'])
-    @orphan_server_registry.reset_registry(@system_registry['OphanedServices'])
-    @managed_engines_registry.reset_registry(@system_registry['ManagedEngine'])
-    @services_registry.reset_registry(@system_registry['Services'])
+    @configuration_registry.reset_registry(@system_registry['Configurations']) unless @system_registry['Configurations'].nil?
+    @orphan_server_registry.reset_registry(@system_registry['OphanedServices']) unless @system_registry['OphanedServices'].nil?
+    @managed_engines_registry.reset_registry(@system_registry['ManagedEngine']) unless @system_registry['ManagedEngine'].nil?
+    @services_registry.reset_registry(@system_registry['Services']) unless @system_registry['Services'].nil?
       
+    # Call these as will create if nil
+    services_registry_tree
+    managed_engines_registry_tree
+    orphan_server_registry_tree
+    configuration_registry_tree
+    
   end
 
   # loads the Service tree off disk from [SysConfig.ServiceTreeFile]
@@ -413,6 +419,7 @@ class SystemRegistry < Registry
     @system_registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
     @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
     @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
+    @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
     save_tree
     @system_registry 
   rescue StandardError => e
