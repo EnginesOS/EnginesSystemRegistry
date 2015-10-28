@@ -462,7 +462,7 @@ class SystemRegistry < Registry
   end
   
   def unlock_tree
-    File.delete(@@RegistryLock)
+    File.delete(@@RegistryLock) if File.exist?(@@RegistryLock)
   end
   
     # @sets the service_tree and load mod time
