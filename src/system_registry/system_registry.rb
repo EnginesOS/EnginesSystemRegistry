@@ -373,6 +373,7 @@ class SystemRegistry < Registry
 #    @system_registry['OphanedServices'] = @orphan_server_registry.registry
     
   #  unlock_tree unlock occurs in load tree
+    unlock_tree
     @system_registry = load_tree
     set_registries
     return @system_registry
