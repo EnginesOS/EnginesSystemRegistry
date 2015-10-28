@@ -130,14 +130,14 @@ class NetworkListener
             p result.class.name
             send_ok_result(socket, result)
           else
-            send_error(socket, request_hash, result)
+            return unless send_error(socket, request_hash, result)
           end
         }
       rescue StandardError => e
         p e.to_s
         p e.backtrace.to_s
         @last_error = 'StandardError:' + e.to_s + ':' + e.backtrace.to_s
-        send_error(socket, message_request, @last_error)
+        return send_error(socket, message_request, @last_error)
       end
     end
   end
@@ -158,6 +158,8 @@ class NetworkListener
       retry
     rescue Errno::EPIPE
       return false 
+    rescue Errno::ECONNRESET
+            return false
     rescue Timeout::Error
       @last_error = 'Timeout sending reply'
       return false    
