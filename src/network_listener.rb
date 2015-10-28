@@ -13,20 +13,20 @@ class NetworkListener
   # @ listen socket and create a new process thread per client
   # close thread socket when process_messages terminates 
   def listen_for_messages
-    clients = 0
+    @clients = 0
     loop do      
       client = @registry_listener.accept
       log_connection(client)
       p :Current_Client_Count
-      p clients.to_s
+      p @clients.to_s
       if check_request_source_address(client)
-        clients += 1
+        @clients += 1
         Thread.new {         
           process_messages(client)
           p :closing_connection
           client.shutdown(Socket::SHUT_RDWR) 
           client.close
-          clients -= 1
+          @clients -= 1
         }
       end
     end
