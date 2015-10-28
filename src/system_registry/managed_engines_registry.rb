@@ -47,6 +47,7 @@ class ManagedEnginesRegistry < SubRegistry
       matches = get_matched_leafs(service, :persistant, persistance)
       SystemUtils.debug_output('matches', matches)
       leafs = leafs.concat(matches)
+      p leafs
     end
     return order_hashes_in_priotity(leafs)
   end
