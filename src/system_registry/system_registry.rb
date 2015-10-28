@@ -152,7 +152,7 @@ class SystemRegistry < Registry
         @system_registry = load_tree
         # FIXME should be recover tree with warning
         log_error_mesg('Panic nil regsitry loaded', @system_registry) if @system_registry.nil?
-        @system_registry = initialize_tree if @system_registry.nil?
+        @system_registry = recovery_tree if @system_registry.nil?
         set_registries
       end
     return @system_registry
@@ -435,6 +435,19 @@ class SystemRegistry < Registry
     log_exception(e)
   end
 
+  # FIXME this should do a recovery and not a recreate
+  def recovery_tree
+    @system_registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
+        @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
+        @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
+        @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
+        save_tree
+        @system_registry 
+      rescue StandardError => e
+        puts e.message
+        log_exception(e)
+  end
+  
   def lock_tree
     if File.exist?(@@RegistryLock)
       sleep 1
