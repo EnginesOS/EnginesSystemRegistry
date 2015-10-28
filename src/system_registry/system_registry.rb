@@ -150,6 +150,8 @@ class SystemRegistry < Registry
    # @last_tree_mod_time = nil
       if @system_registry == nil || @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
         @system_registry = load_tree
+        # FIXME should be recover tree with warning
+        @system_registry = initialize_tree if @system_registry.nil?
         set_registries
       end
     return @system_registry
