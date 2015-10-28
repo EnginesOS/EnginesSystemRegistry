@@ -151,7 +151,7 @@ class SystemRegistry < Registry
       if @system_registry == nil || @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
         @system_registry = load_tree
         # FIXME should be recover tree with warning
-        log_error_mesg('Panic nil regsitry loaded', @system_registry)
+        log_error_mesg('Panic nil regsitry loaded', @system_registry) if @system_registry.nil?
         @system_registry = initialize_tree if @system_registry.nil?
         set_registries
       end
@@ -383,6 +383,8 @@ class SystemRegistry < Registry
   # set @registry to the appropirate tree Node for eaach sub resgistry
   # creates node if nil via_xxx_yyy_tree
   def set_registries      
+    p :system_registry_as_a_str
+    p @system_registry.to_s
     configuration_registry_tree if @system_registry['Configurations'].nil?
     @configuration_registry.reset_registry(@system_registry['Configurations'])      
     services_registry_tree if @system_registry['Services'].nil?
