@@ -10,7 +10,7 @@ class ProtocolListener
 
   # Invoke the method mapped to the command_hash[:command], with the parrameters supplied in  command_hash[:value]
   # @return false if @param command_hash is invalid or and exception is thrown
-  # #return [Hash] response_object with the keys :object and :last_error
+  # #return [Hash] response_object with the keys :reply_object and :last_error
   
   def perform_request(command_hash)
     return false if !is_command_hash_valid?(command_hash)
@@ -35,12 +35,12 @@ class ProtocolListener
     rescue StandardError => e
       SystemUtils.log_error_mesg( 'with ' + request.to_s + ' ' + command.to_s + @system_registry.last_error.to_s, command_hash)
       SystemUtils.log_exception(e)
-      response_hash[:object] = false.to_yaml
+      response_hash[:reply_object] = false.to_yaml
       response_hash[:last_error] = e.to_s
       return response_hash
     end
     response_object = response_object.detached_subtree_copy if response_object.is_a?(Tree::TreeNode)      
-    response_hash[:object] = response_object.to_yaml
+    response_hash[:reply_object] = response_object.to_yaml
     response_hash[:last_error] = @system_registry.last_error
     return response_hash
   end
