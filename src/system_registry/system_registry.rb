@@ -389,12 +389,12 @@ class SystemRegistry < Registry
     @configuration_registry.reset_registry(@system_registry['Configurations'])      
     services_registry_tree if @system_registry['Services'].nil?
     @services_registry.reset_registry(@system_registry['Services'])
-    orphan_server_registry_tree if @system_registry['OphanedServices'].nil?
+    orphaned_services_registry_tree if @system_registry['OphanedServices'].nil?
     @orphan_server_registry.reset_registry(@system_registry['OphanedServices']) 
     managed_engines_registry_tree if @system_registry['ManagedEngine'].nil?
     @managed_engines_registry.reset_registry(@system_registry['ManagedEngine']) 
- 
-  
+    rescue StandardError => e
+        log_exception(e)
   end
   
   
