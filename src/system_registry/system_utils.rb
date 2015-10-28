@@ -79,7 +79,7 @@ class SystemUtils
     @@last_error = e_str
     p e_str
     SystemUtils.log_output(e_str, 10)
-    f = File.open('/var/lib/engines/registry/exceptions.' + Process.pid, 'a+')
+    f = File.open('/var/lib/engines/registry/exceptions.' + Process.pid.to_s, 'a+')
     f.puts(e_str)
     f.close
   end

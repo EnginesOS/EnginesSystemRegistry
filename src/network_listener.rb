@@ -149,13 +149,15 @@ class NetworkListener
     bytes = 0
     begin
       #reply = reply[bytes,-1]
-      Timeout::timeout(5) { bytes += socket.send(reply.to_s, 0) }
+      Timeout::timeout(10) { bytes += socket.send(reply.to_s, 0) }
       bytes += socket.send(reply.to_s, 0)
        socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue IO::EAGAINWaitWritable
       p :NOT_ALLBYTES
       retry_count += 1
       retry
+    rescue Errno::EPIPE
+      return false 
     rescue Timeout::Error
       @last_error = 'Timeout sending reply'
       return false    
