@@ -53,7 +53,9 @@ params[:configurator_name]='test_ca'
 obj = rest_delete('/system_registry/services/configurations/',{:params => params } )
 test_failed('Delete a Configuration for a configurator', obj) unless obj == true
 annouce_test("Check Deleted Hash")
+p :l
 obj = rest_get('/system_registry/services/configuration/',{:params => params })
+p :l
 test_failed('Delete (acutally) a Configuration for a configurator', obj)  unless obj.is?(Hash)
 p :l
 
