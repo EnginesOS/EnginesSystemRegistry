@@ -14,12 +14,14 @@ require 'rubytree'
 
   get '/system_registry/configurations/' do
     @system_registry = SystemRegistry.new
+    p request.query_string
     p params
     @system_registry.get_service_configurations_hashes(params).to_json
   end
 
   get '/system_registry/configuration/' do
     @system_registry = SystemRegistry.new
+    p request.query_string
     p params
     @system_registry.get_service_configuration(params).to_json
   end
