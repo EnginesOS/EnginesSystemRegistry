@@ -13,6 +13,7 @@
 
   get '/system_registry/configurations' do
     @system_registry = SystemRegistry.new
+    p params
     @system_registry.get_service_configurations_hashes(params).to_json
   end
 
