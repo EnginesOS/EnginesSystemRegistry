@@ -60,7 +60,7 @@ p :del_hash_test
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
-r = RestClient.delete('http://127.0.0.1:4567/system_registry/configuration/',params )
+r = RestClient.delete('http://127.0.0.1:4567/system_registry/configuration/',{:params => params } )
 p r
 params = {}
 params[:service_name]='cert_auth'
