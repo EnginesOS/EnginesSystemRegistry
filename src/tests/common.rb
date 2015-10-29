@@ -9,7 +9,7 @@ def test_type(type)
 end
 
 def parse_rest_response(r)
-  return nil if r.nil? || r = ''
+  return nil if r.nil? || r == ''
    return false if r == 'false'
    return true if r == 'true'
    res = JSON.parse(r, :create_additions => true)
