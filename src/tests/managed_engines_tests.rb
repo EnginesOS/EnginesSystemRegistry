@@ -70,6 +70,7 @@ params[:service_handle] = 'test_dns'
 params[:service_container_name] = 'dns'
 obj = rest_get('/system_registry/engine/service/',{:params => params })
 test_failed('Failed to find added', obj) unless obj.is_a?(Hash)
+ p obj.to_s
 
 annouce_test("Update service hash from an engine")
 
