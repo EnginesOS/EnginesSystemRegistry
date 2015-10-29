@@ -70,8 +70,8 @@ p r
 
 r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration/',{:params => params })
   p r
- obj = JSON.parse(r, :create_additions => true) 
-p :add_failed_to_del if  obj.is_a?(Hash)
+p :add_failed_to_del unless r == 'false'
+
 
  
  
