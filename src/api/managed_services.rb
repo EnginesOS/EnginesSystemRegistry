@@ -27,6 +27,7 @@ get '/system_registry/service/is_registered' do
 end
 
 post '/system_registry/services/' do
+  p symbolize_keys(params)
  if @@system_registry.add_to_services_registry(symbolize_keys(params)).to_json
   status(202)
 else
