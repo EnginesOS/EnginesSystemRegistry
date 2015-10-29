@@ -4,10 +4,16 @@
 require_relative '../utils.rb'
   
 require_relative 'common.rb'
+
 test_type('Regsitry')
-annouce_test('Registry Status')
+annouce_test('Registry Tree')
 obj = rest_get('/system_registry/status/', nil)
 test_failed('Registry Status', obj) unless obj.is_a?(TrueClass)
+
+annouce_test('Registry Status')
+obj = rest_get('/system_registry/tree', nil)
+test_failed('Registry Status', obj) unless obj.is_a?(Tree::TreeNode)
+
 
 require_relative 'configuration_tests.rb'
 require_relative 'managed_engines_tests.rb'
