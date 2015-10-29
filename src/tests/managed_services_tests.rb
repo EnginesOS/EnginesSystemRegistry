@@ -69,7 +69,7 @@ params[:variables][:hostname] = 'ip'
 obj = rest_put('/system_registry/service/',{:params => params })
 test_failed('Failed /system_registry/service/is_registered', obj) unless obj.is_a?(TrueClass)
 
-obj = rest_get('system_registry/service/',{:params => params })
+obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed system_registry/service/', obj) unless obj.is_a?(Hash)
 
 annouce_test('update service')
