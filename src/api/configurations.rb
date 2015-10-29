@@ -11,7 +11,7 @@ get '/system_registry/configurations_tree' do
  end
  
  post '/system_registry/configuration/' do
-    if@@system_registry.add_service_configuration(symbolize_keys(params))
+    if@@system_registry.add_service_configuration(symbolize_keys(params)).to_json
       status(202)
     else
       status(404)
@@ -19,7 +19,7 @@ get '/system_registry/configurations_tree' do
  end
  
  put '/system_registry/configuration/' do 
- if@@system_registry.update_service_configuration(symbolize_keys(params))
+ if@@system_registry.update_service_configuration(symbolize_keys(params)).to_json
    status(202)
  else
    status(404)
@@ -27,7 +27,7 @@ get '/system_registry/configurations_tree' do
 end
 
 delete '/system_registry/configuration/' do
- if@@system_registry.rm_service_configuration(symbolize_keys(params))
+ if@@system_registry.rm_service_configuration(symbolize_keys(params)).to_json
     status(202)
   else
     status(404)
