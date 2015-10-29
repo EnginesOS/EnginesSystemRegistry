@@ -16,8 +16,8 @@ end
 
 def parse_rest_response(r)
     return false if r.code > 399
-  return true if r.body  == '' 
-  return false if r.body  == 'false' 
+  return true if r.to_s   == '' 
+  return false if r.to_s  == 'false' 
    res = JSON.parse(r, :create_additions => true)     
    return symbolize_keys(res) if res.is_a?(Hash)
    return res 
