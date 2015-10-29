@@ -56,8 +56,8 @@ params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
 r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration/',{:params => params })
  obj = JSON.parse(r, :create_additions => true) 
-p :add_failed_to_update unless  obj.is_a?(Hash)
-p :add_failed_to_update  unless  obj[:variables][:test_var] = 'TESTINGS'
+p :failed_to_update unless  obj.is_a?(Hash)
+p :failed_to_update  unless obj[:variables].is_a?(Hash) && obj[:variables][:test_var] = 'TESTINGS'
 
 p :del_hash_test
 params = {}
