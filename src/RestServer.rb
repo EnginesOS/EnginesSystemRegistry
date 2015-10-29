@@ -12,7 +12,7 @@ require 'rubytree'
     @system_registry.service_configurations_registry_tree.to_json
   end
 
-  get '/system_registry/configurations' do
+  get '/system_registry/configurations/:name' do
     @system_registry = SystemRegistry.new
     p params
     @system_registry.get_service_configurations_hashes(params).to_json
