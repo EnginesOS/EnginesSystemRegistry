@@ -83,8 +83,8 @@ p :get_tree_test
 p :MANAGED_ENGINES_tree_error unless obj.is_a?(Tree::TreeNode)
 p obj
  
+p :find_managed_engine_service_hash
 params = {}
-
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
@@ -93,8 +93,16 @@ params[:service_handle] = 'dns'
 params[:service_container_name] = 'dns'
 r = RestClient.get('http://127.0.0.1:4567/system_registry/engine_service_hash/',{:params => params })
   obj = JSON.parse(r, :create_additions => true)
-  p :Configuration_hashes_test_error unless obj.is_a?(Hash)
-  
+  p :managed_engine_service_hash_errore unless obj.is_a?(Hash)
+
+    
+p :find_managed_engine_service_hashes
+params = {}
+params[:container_type] = 'service'
+params[:parent_engine] = 'mysql_server'
+r = RestClient.get('http://127.0.0.1:4567/system_registry/engine_service_hash/',{:params => params })
+  obj = JSON.parse(r, :create_additions => true)
+  p :managed_engine_service_hashes_errore unless obj.is_a?(Array)
   
   
   
