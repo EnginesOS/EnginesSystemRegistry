@@ -1,5 +1,4 @@
 get '/system_registry/configurations_tree' do
-
   @@system_registry.service_configurations_registry_tree.to_json
  end
 
