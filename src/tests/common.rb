@@ -9,7 +9,7 @@ def test_type(type)
 end
 
 def test_failed(message, obj)
-  p 'Failed:' + @test_type.to_s + ':' + test_name + ':' +  @current_test +"->" + message.to_s
+  p 'Failed:' + @test_type.to_s + ':' +  @current_test +"->" + message.to_s
   p obj.to_s
 end
 
