@@ -17,8 +17,9 @@ require 'rubytree'
     p :request_query_string
     p request.query_string
     p :params
-    p params
+   
     r_params = symbolize_keys(params)
+    p r_params
      @system_registry.get_service_configurations_hashes(r_params).to_json
   end
 
