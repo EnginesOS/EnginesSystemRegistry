@@ -15,7 +15,7 @@ get '/system_registry/service/registered/' do
 end
 
 get '/system_registry/services/providers/in_use/' do
-  @@system_registry.list_providers_in_use(symbolize_keys(params)).to_json
+  @@system_registry.list_providers_in_use().to_json
 end
 
 get '/system_registry/service/' do
