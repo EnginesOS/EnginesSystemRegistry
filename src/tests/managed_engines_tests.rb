@@ -58,7 +58,7 @@ params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip'
 params[:variables][:hostname] = 'ip'
 obj = rest_post('/system_registry/engine/services/',params )
-test_failed('Failed to add', obj) unless obj.is_a?(Array)
+test_failed('Failed to add', obj) unless obj.is_a?(TrueClass)
 
 annouce_test("Find service hash for an engine")
 params = {}
@@ -86,7 +86,7 @@ params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip2'
 params[:variables][:hostname] = 'ip2'
 obj = rest_get('/system_registry/engine/service/',{:params => params })
-test_failed('Failed to update', obj) unless obj == true
+test_failed('Failed to update', obj) unless obj.is_a?(TrueClass)
 params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
@@ -107,7 +107,7 @@ params[:parent_engine] = 'test'
 params[:service_handle] = 'test_dns'
 params[:service_container_name] = 'dns'
 obj = rest_delete('/system_registry/engine/services/',{:params => params })
-test_failed('Failed to del added', obj) unless obj == true
+test_failed('Failed to del added', obj) unless obj.is_a?(TrueClass)
 
 annouce_test("checl did Remove service hash from an engine")
 params = {}
