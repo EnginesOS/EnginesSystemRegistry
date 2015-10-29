@@ -30,7 +30,7 @@ class ConfigurationsRegistry < SubRegistry
   def rm_service_configuration(service_configuration_hash)
     service_configurations = get_service_configurations(service_configuration_hash[:service_name])
     return false unless service_configurations.is_a?(Tree::TreeNode)
-    return false unless service_configuration_hash.key?(  )
+    return false unless service_configuration_hash.key?( :configurator_name )
     service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
     return remove_tree_entry(service_configuration) if service_configuration.is_a?(Tree::TreeNode)
   end
