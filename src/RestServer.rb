@@ -12,7 +12,7 @@ begin
   set :logging, true
   set :run, true
 
-   @system_registry = SystemRegistry.new
+   @@system_registry = SystemRegistry.new
     
 require_relative 'api/configurations.rb'
 require_relative 'api/managed_services.rb'
