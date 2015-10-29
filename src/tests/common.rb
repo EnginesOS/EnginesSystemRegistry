@@ -6,10 +6,10 @@ end
 
 def test_type(type)
   @test_type = type.to_s
-  p ''  
-  p ''
+  puts ''  
+  puts ''
   
-  p ('__________' + type + '___________')
+  puts ('__________' + type + '___________')
 
 end
 
