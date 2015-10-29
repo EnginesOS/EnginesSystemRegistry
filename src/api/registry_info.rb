@@ -1,3 +1,3 @@
 get '/system_registry/status/' do
-  "OK".to_json
+ TrueClass.to_json
  end
