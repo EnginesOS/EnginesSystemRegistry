@@ -8,7 +8,7 @@ p :get_tree_test
  obj = JSON.parse(r, :create_additions => true)
  p r.class
  p 'PPPPPPPPPPPPPPPPP'
- p obj.class
+ p obj
  p 'OOOOOOOOOOOOOOOOO'
  
 p :get_hashes_test
