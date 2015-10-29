@@ -31,8 +31,8 @@ p :get_hash_test
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
-config_hash[:variables] = {}
-    config_hash[:variables][:test_var] = "TEST INGS"
+params[:variables] = {}
+params[:variables][:test_var] = "TEST INGS"
 r = RestClient.post('http://127.0.0.1:4567/system_registry/configuration/',{:params => params }.to_json, :content_type => :json, :accept => :json)
 obj = JSON.parse(r, :create_additions => true)
  p obj.to_s
