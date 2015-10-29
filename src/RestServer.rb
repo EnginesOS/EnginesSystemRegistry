@@ -3,7 +3,8 @@
   require 'sinatra'
   require 'json'
   require_relative 'system_registry/system_registry.rb'
-    
+require 'rubytree'
+
    @system_registry = SystemRegistry.new
     
   get '/system_registry/configurations_tree' do
@@ -19,6 +20,7 @@
 
   get '/system_registry/configuration/' do
     @system_registry = SystemRegistry.new
+    p params
     @system_registry.get_service_configuration(params).to_json
   end
   
