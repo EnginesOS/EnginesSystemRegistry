@@ -26,7 +26,7 @@ params[:variables][:ip] = 'ip'
 params[:variables][:hostname] = 'ip' 
 obj = rest_post('/system_registry/services/',params )
 test_failed('Failed add service to orphanate', obj) unless obj  == true
-obj = rest_post('/system_registry/services/orphans/',{:params => params } )
+obj = rest_post('/system_registry/services/orphans/', params  )
 test_failed('Failed orphanate_service', obj) unless obj  == true
 
 
