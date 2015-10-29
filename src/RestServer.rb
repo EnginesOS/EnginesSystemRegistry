@@ -26,7 +26,7 @@
      end    
   end
   
-  update '/system_registry/configuration' do
+  put '/system_registry/configuration' do
   if @system_registry.update_service_configuration(service_hash)
     status(202)
   else
