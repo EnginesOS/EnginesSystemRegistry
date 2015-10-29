@@ -18,7 +18,7 @@ require 'rubytree'
     p request.query_string
     p :params
     p params
-    r_params = json.parse(params)
+    r_params = JSON.parse(params)
     @system_registry.get_service_configurations_hashes(r_params).to_json
   end
 
