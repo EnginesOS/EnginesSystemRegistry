@@ -18,7 +18,8 @@ require 'rubytree'
     p request.query_string
     p :params
     p params
-    @system_registry.get_service_configurations_hashes(params).to_json
+    r_params = json.parse(params)
+    @system_registry.get_service_configurations_hashes(r_params).to_json
   end
 
   get '/system_registry/configuration/' do
