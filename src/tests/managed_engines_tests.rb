@@ -57,7 +57,7 @@ params[:variables] = {}
 params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip'
 params[:variables][:hostname] = 'ip'
-obj = rest_post('/system_registry/add_to_managed_engines_registry/',{:params => params })
+obj = rest_post('/system_registry/add_to_managed_engines_registry',{:params => params })
 test_failed('Failed to add', obj) unless obj.is_a?(Array)
 
 annouce_test("Find service hash for an engine")
