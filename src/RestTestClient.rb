@@ -1,7 +1,7 @@
 
   require 'rest-client'
   require 'rubytree'
-  
+require_relative'utils.rb'
   
 ### Test Configurations
 p :CONFIGURATIONS
@@ -37,9 +37,10 @@ params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
 r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration/',{:params => params })
- obj = JSON.parse(r, :create_additions => true)
- p obj.to_s
+ robj = JSON.parse(r, :create_additions => true)
+ p robj.to_s
  p r
+ obj = symbolize_keys(robj)
 p :add_failed_to_add unless  obj.is_a?(Hash) && obj[:variables].is_a?(Hash) && obj[:variables][:test_var] = 'TEST INGS'
 
  
@@ -55,7 +56,8 @@ params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
 r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration/',{:params => params })
- obj = JSON.parse(r, :create_additions => true) 
+ robj = JSON.parse(r, :create_additions => true) 
+obj = symbolize_keys(robj)
 p :failed_to_update unless  obj.is_a?(Hash)
 p :failed_to_update  unless obj[:variables].is_a?(Hash) && obj[:variables][:test_var] = 'TESTINGS'
 
