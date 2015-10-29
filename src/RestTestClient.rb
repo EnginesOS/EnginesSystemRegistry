@@ -100,7 +100,7 @@ p :find_managed_engine_service_hashes
 params = {}
 params[:container_type] = 'service'
 params[:parent_engine] = 'mysql_server'
-r = RestClient.get('http://127.0.0.1:4567/system_registry/engine_service_hash/',{:params => params })
+r = RestClient.get('http://127.0.0.1:4567/system_registry/engine_services/',{:params => params })
   if  r == 'false'
     p :managed_engine_service_hashes_errore
   else
