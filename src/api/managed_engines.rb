@@ -20,7 +20,7 @@ get '/system_registry/engine_persistant_services' do
 end
 
 post '/system_registry/add_to_managed_engines_registry' do
-  if @@system_registry.add_to_managed_engines_registry(symbolize_keys(params))
+  if @@system_registry.add_to_managed_engines_registry(symbolize_keys(params)).to_json
   status(202)
 else
   status(404)
@@ -28,7 +28,7 @@ end
 end
 
 delete '/system_registry/remove_from_managed_engines_registry' do
-if @@system_registry.remove_from_managed_engines_registry(symbolize_keys(params))
+if @@system_registry.remove_from_managed_engines_registry(symbolize_keys(params)).to_json
   status(202)
 else
   status(404)
@@ -36,7 +36,7 @@ end
 end 
 
 put  '/system_registry/update_managed_engine_service' do
-  if @@system_registry.update_managed_engine_service(symbolize_keys(params))
+  if @@system_registry.update_managed_engine_service(symbolize_keys(params)).to_json
   status(202)
 else
   status(404)

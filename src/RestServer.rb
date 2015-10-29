@@ -5,7 +5,11 @@ begin
   require 'rubytree'
   require_relative'utils.rb'
   require_relative 'system_registry/system_registry.rb'
-
+  
+  set :sessions, true
+  set :logging, true
+  set :run, true
+  
    @@system_registry = SystemRegistry.new
     
 require_relative 'api/configurations.rb'
