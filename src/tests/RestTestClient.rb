@@ -4,7 +4,7 @@
 require_relative '../utils.rb'
   
 require_relative 'common.rb'
-
+test_type('Regsitry')
 annouce_test('Registry Status')
 obj = rest_get('/system_registry/status/', nil)
 test_failed('Registry Status', obj) unless obj  == 'OK'
