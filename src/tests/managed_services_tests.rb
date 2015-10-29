@@ -44,9 +44,8 @@ params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
-params[:parent_engine] = 'dns'
+params[:parent_engine] = 'auth'
 params[:service_handle] = 'auth'
-params[:service_container_name] = 'dns'
 annouce_test('service_is_registered')
 obj = rest_get('/system_registry/service/is_registered',{:params => params })
 test_failed('Failed /system_registry/service/is_registered', obj) unless obj.is_a?(TrueClass)
