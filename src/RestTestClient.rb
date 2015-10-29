@@ -9,7 +9,7 @@ p :CONFIGURATIONS
   r =   RestClient.get('http://127.0.0.1:4567/system_registry/configurations_tree', nil)
  obj = JSON.parse(r, :create_additions => true)
    p :Configuration_tree_error unless obj.is_a?(Tree::TreeNode)
- p obj
+
   p :get_hashes_test
   params = {}
   params[:service_name]='cert_auth'
@@ -81,7 +81,7 @@ p :get_tree_test
   r =   RestClient.get('http://127.0.0.1:4567/system_registry/managed_engines_tree', nil)
  obj = JSON.parse(r, :create_additions => true)
 p :MANAGED_ENGINES_tree_error unless obj.is_a?(Tree::TreeNode)
- 
+p obj
  
  
  
