@@ -1,3 +1,4 @@
 get '/system_registry/status/' do
- TrueClass.to_json
+  r = true
+ r.to_json
  end
