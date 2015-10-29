@@ -40,6 +40,9 @@ r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration/',{:pa
  obj = JSON.parse(r, :create_additions => true)
  p obj.to_s
  p r
+p :add_failed_to_update unless  obj.is_a?(Hash)
+p :add_failed_to_update  unless  obj[:variables][:test_var] = 'TEST INGS'
+ 
 p :update_hash_test
 params = {}
 params[:service_name]='cert_auth'
@@ -52,20 +55,22 @@ params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
 r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration/',{:params => params })
- obj = JSON.parse(r, :create_additions => true)
- p obj.to_s
- p r
+ obj = JSON.parse(r, :create_additions => true) 
+p :add_failed_to_update unless  obj.is_a?(Hash)
+p :add_failed_to_update  unless  obj[:variables][:test_var] = 'TESTINGS'
+
 p :del_hash_test
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
 r = RestClient.delete('http://127.0.0.1:4567/system_registry/configuration/',{:params => params } )
 p r
-params = {}
-params[:service_name]='cert_auth'
-params[:configurator_name]='test_ca'
+
 r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration/',{:params => params })
- p r
+ obj = JSON.parse(r, :create_additions => true) 
+p :add_failed_to_del if  obj.is_a?(Hash)
+
+ 
  
  
 p :MANAGED_ENGINES
