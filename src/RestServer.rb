@@ -7,9 +7,10 @@
    @system_registry = SystemRegistry.new
     
   get '/system_registry/configurations_tree' do
+    @system_registry = SystemRegistry.new
     @system_registry.service_configurations_registry_tree.to_json
   end
-  
+
   get '/system_registry/configurations' do
     @system_registry.service_configurations_hashes(params).to_json
   end
