@@ -313,7 +313,7 @@ class SystemRegistry < Registry
     end
   
   def update_managed_engine_service(service_query_hash)
-    p :NYI
+      p :NYI
     return false
 end
 
