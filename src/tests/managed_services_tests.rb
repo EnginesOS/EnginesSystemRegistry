@@ -66,7 +66,7 @@ params[:variables] = {}
 params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip'
 params[:variables][:hostname] = 'ip' 
-obj = rest_post('/system_registry/service/',{:params => params })
+obj = rest_post('/system_registry/services/',{:params => params })
 test_failed('Failed /system_registry/service/is_registered', obj) unless obj.is_a?(TrueClass)
 
 obj = rest_get('/system_registry/service/',{:params => params })
@@ -101,7 +101,7 @@ params[:variables] = {}
 params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip2'
 params[:variables][:hostname] = 'ip2' 
-obj = rest_delete('/system_registry/service/',{:params => params })
+obj = rest_delete('/system_registry/services/',{:params => params })
 test_failed('Failed delete/system_registry/servic', obj) unless obj.is_a?(TrueClass)
 obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed to delete', obj) unless obj.is_a?(FalseClass)
