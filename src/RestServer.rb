@@ -42,7 +42,7 @@ require 'rubytree'
      end    
   end
   
-  put '/system_registry/configuration' do
+  put '/system_registry/configuration/' do
     @system_registry = SystemRegistry.new
   if @system_registry.update_service_configuration(symbolize_keys(params))
     status(202)
