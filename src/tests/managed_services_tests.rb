@@ -50,7 +50,7 @@ annouce_test('service_is_registered')
 obj = rest_get('/system_registry/service/is_registered',{:params => params })
 test_failed('Failed /system_registry/service/is_registered', obj) unless obj.is_a?(TrueClass)
 
-obj = rest_get('system_registry/service/',{:params => params })
+obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed system_registry/service/', obj) unless obj.is_a?(Hash)
 
 
