@@ -45,12 +45,12 @@ params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
 params[:parent_engine] = 'dns'
-params[:service_handle] = 'mgmt'
+params[:service_handle] = 'auth'
 params[:service_container_name] = 'dns'
 annouce_test('service_is_registered')
 obj = rest_get('/system_registry/service/is_registered',{:params => params })
 test_failed('Failed /system_registry/service/is_registered', obj) unless obj.is_a?(TrueClass)
-
+annouce_test('check service registered')
 obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed system_registry/service/', obj) unless obj.is_a?(Hash)
 
@@ -60,7 +60,7 @@ params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
-params[:parent_engine] = 'test'
+params[:parent_engine] = 'dns'
 params[:service_handle] = 'test_dns'
 params[:service_container_name] = 'dns'
 params[:variables] = {}
@@ -78,7 +78,7 @@ params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
-params[:parent_engine] = 'test'
+params[:parent_engine] = 'dns'
 params[:service_handle] = 'test_dns'
 params[:service_container_name] = 'dns'
 params[:variables] = {}
@@ -96,7 +96,7 @@ params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
 params[:parent_engine] = 'test'
-params[:service_handle] = 'test_dns'
+params[:service_handle] = 'dns'
 params[:service_container_name] = 'dns'
 params[:variables] = {}
 params[:variables][:service_handle] = params[:service_handle]
