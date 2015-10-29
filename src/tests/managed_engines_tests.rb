@@ -85,7 +85,7 @@ params[:variables] = {}
 params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip2'
 params[:variables][:hostname] = 'ip2'
-obj = rest_put('/system_registry/engine/service/',{:params => params })
+obj = rest_put('/system_registry/engine/service/',params )
 test_failed('Failed to update', obj) unless obj.is_a?(TrueClass)
 params = {}
 params[:container_type] = 'service'

@@ -66,7 +66,7 @@ params[:variables] = {}
 params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip'
 params[:variables][:hostname] = 'ip' 
-obj = rest_post('/system_registry/services/',{:params => params })
+obj = rest_post('/system_registry/services/',params )
 test_failed('Failed add service', obj) unless obj.is_a?(TrueClass)
 annouce_test('add service added')
 obj = rest_get('/system_registry/service/',{:params => params })
@@ -84,7 +84,7 @@ params[:variables] = {}
 params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip2'
 params[:variables][:hostname] = 'ip2' 
-obj = rest_put('/system_registry/service/',{:params => params })
+obj = rest_put('/system_registry/service/', params)
 test_failed('Failed update service', obj) unless obj.is_a?(Hash)
 test_failed('Failed update service comparision', obj) unless obj.is_a?(Hash) && obj[:variables].is_a?(Hash) && obj[:variables][:hostname] == 'ip2' 
 
