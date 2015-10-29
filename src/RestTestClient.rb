@@ -47,7 +47,7 @@ params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
 params[:variables] = {}
 params[:variables][:test_var] = "TESTINGS"
-r = RestClient.pust('http://127.0.0.1:4567/system_registry/configuration/',params )
+r = RestClient.put('http://127.0.0.1:4567/system_registry/configuration/',params )
 p r
 params = {}
 params[:service_name]='cert_auth'
