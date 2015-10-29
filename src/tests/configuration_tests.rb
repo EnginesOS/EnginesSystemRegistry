@@ -2,8 +2,7 @@
 
 test_type('Configurations Regsitry')
 
-  r = rest_get('/system_registry/configurations_tree', nil)
- obj = JSON.parse(r, :create_additions => true)
+obj = rest_get('/system_registry/configurations_tree', nil)
    p :Configuration_tree_error unless obj.is_a?(Tree::TreeNode)
 
   p :get_hashes_test
