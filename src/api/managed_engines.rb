@@ -2,12 +2,12 @@ get '/system_registry/managed_engines_tree' do
   @@system_registry.managed_engines_registry_tree.to_json
  end
 
-get '/system_registry/engine_service_hash' do
+get '/system_registry/engine_service_hash/' do
   @@system_registry.find_engine_service_hash(symbolize_keys(params)).to_json
 end
 
 get '/system_registry/engine_services' do
-@@system_registry.find_engine_service_hash(symbolize_keys(params).to_json)
+@@system_registry.find_engine_service_hashes(symbolize_keys(params).to_json)
 end
 
 get '/system_registry/engine_nonpersistant_services' do
