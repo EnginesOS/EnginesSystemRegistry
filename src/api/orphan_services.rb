@@ -12,6 +12,7 @@ get '/system_registry/services/orphan/' do
  end
 
  post '/system_registry/services/orphans/' do
+   p symbolize_keys(params)
  if @@system_registry.orphanate_service(symbolize_keys(params)).to_json
    status(202)
  else
