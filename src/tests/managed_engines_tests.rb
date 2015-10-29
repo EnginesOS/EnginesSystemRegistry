@@ -105,7 +105,7 @@ params[:type_path] = 'dns'
 params[:parent_engine] = 'test'
 params[:service_handle] = 'test_dns'
 params[:service_container_name] = 'dns'
-obj = rest_delete('/system_registry/remove_from_managed_engines_registry/',{:params => params })
+obj = rest_delete('/system_registry/remove_from_managed_engines_registry',{:params => params })
 test_failed('Failed to del added', obj) unless obj == true
 params = {}
 params[:container_type] = 'service'
