@@ -33,7 +33,7 @@ params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
 params[:variables] = {}
 params[:variables][:test_var] = "TEST INGS"
-r = RestClient.post('http://127.0.0.1:4567/system_registry/configuration/',{:params => params }, :content_type => :json, :accept => :json)
+r = RestClient.post('http://127.0.0.1:4567/system_registry/configuration/',{:params => params })
 obj = JSON.parse(r, :create_additions => true)
  p obj.to_s
  
