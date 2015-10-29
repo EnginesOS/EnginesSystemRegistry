@@ -4,7 +4,7 @@ get '/system_registry/configurations_tree' do
  end
 
  get '/system_registry/configurations/' do
-   @@system_registry.get_service_configurations_hashes(symbolize_keys(params)).to_json
+   @@system_registry.get_service_configurations_hashes(params['service_name']).to_json
  end
 
  get '/system_registry/configuration/' do
