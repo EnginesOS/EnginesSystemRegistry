@@ -294,6 +294,7 @@ class SystemRegistry < Registry
      
     def rm_service_configuration(service_hash)
       take_snap_shot
+      p service_hash
       return save_tree if test_configurations_registry_result(@configuration_registry.rm_service_configuration(service_hash))
       roll_back 
       end
