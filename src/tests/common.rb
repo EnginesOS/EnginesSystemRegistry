@@ -15,12 +15,9 @@ end
 
 
 def parse_rest_response(r)
-  return false if r.nil? || r == ''
-   return false if r == 'false'
-   return true if r == 'true'
     return false if r.code > 399
    res = JSON.parse(r, :create_additions => true)   
-  return true if ( res.nil? || res.to_s == '' ) &&  r.code  < 399
+  return true if res.nil? || res.to_s == '' 
    return symbolize_keys(res) if res.is_a?(Hash)
    return res 
  rescue
