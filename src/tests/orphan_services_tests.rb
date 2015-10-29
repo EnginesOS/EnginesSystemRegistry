@@ -12,6 +12,16 @@ params[:type_path] = 'dns'
 obj = rest_get('/system_registry/services/orphans/',{:params => params } )
 test_failed('Failed ti list orphan services', obj) unless obj.is_a?(Array)
 
+
+# silent delete orpah n prior to adding it in case prior test failed to remove
+params = {}
+params[:container_type] = 'service'
+params[:publisher_namespace] = 'EnginesSystem'
+params[:type_path] = 'dns'
+params[:service_handle] = 'test' 
+obj = rest_delete('/system_registry/services/orphans/',{:params => params } )
+
+
 annouce_test("orphanate_service")
 params = {}
 params[:container_type] = 'service'
