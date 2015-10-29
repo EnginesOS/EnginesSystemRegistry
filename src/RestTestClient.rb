@@ -6,7 +6,7 @@
  obj = JSON.parse(r)
  p r
  p 'PPPPPPPPPPPPPPPPP'
- p obj.to_s
+ p obj.class
  p 'OOOOOOOOOOOOOOOOO'
  
  
