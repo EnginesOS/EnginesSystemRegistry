@@ -86,8 +86,8 @@ params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip2'
 params[:variables][:hostname] = 'ip2' 
 obj = rest_put('/system_registry/service/',{:params => params })
-test_failed('Faile update service', obj) unless obj.is_a?(Hash)
-test_failed('Faile update service', obj) unless obj[:variables].is_a?(Hash) && obj[:variables][:hostname] == 'ip2' 
+test_failed('Failed update service', obj) unless obj.is_a?(Hash)
+test_failed('Failed update service', obj) unless obj.is_a?(Hash) && obj[:variables].is_a?(Hash) && obj[:variables][:hostname] == 'ip2' 
 
 annouce_test('remove_from_services_registry')
 annouce_test('update service')
