@@ -310,7 +310,11 @@ class SystemRegistry < Registry
       return false
     end
   
- 
+  def update_managed_engine_service(service_query_hash)
+    P :NYI
+    return false
+end
+
   def get_service_entry(service_query_hash)
     clear_error
     tree_node = find_service_consumers(service_query_hash)
