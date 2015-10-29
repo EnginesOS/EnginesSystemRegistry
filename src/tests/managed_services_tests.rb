@@ -85,7 +85,8 @@ params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip2'
 params[:variables][:hostname] = 'ip2' 
 obj = rest_put('/system_registry/service/', params)
-test_failed('Failed update service', obj) unless obj.is_a?(Hash)
+test_failed('Failed update service', obj)  if obj.is_a?(FalseClass)
+obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed update service comparision', obj) unless obj.is_a?(Hash) && obj[:variables].is_a?(Hash) && obj[:variables][:hostname] == 'ip2' 
 
 annouce_test('remove_from_services_registry')
@@ -102,8 +103,7 @@ params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip2'
 params[:variables][:hostname] = 'ip2' 
 obj = rest_delete('/system_registry/services/',{:params => params })
-test_failed('Failed delete/system_registry/servic', obj) unless obj == true
-p obj.class.name
+test_failed('Failed delete/system_registry/servic', obj) if obj.is_a?(FalseClass)
 obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed to delete', obj) unless obj.is_a?(FalseClass)
 #' 
