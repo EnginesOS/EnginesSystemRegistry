@@ -16,12 +16,13 @@ end
 
 def parse_rest_response(r)
     return false if r.code > 399
-   res = JSON.parse(r, :create_additions => true)   
-  return true if res.nil? || res.to_s == '' 
+  return true if r.body  == '' 
+  p t.to_s
+   res = JSON.parse(r, :create_additions => true)     
    return symbolize_keys(res) if res.is_a?(Hash)
    return res 
  rescue
-   p "Failed to parse rest response " + r.to_s
+   p "Failed to parse rest response _" + r.to_s + "_"
      return false
 end
 
