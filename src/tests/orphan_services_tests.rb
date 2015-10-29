@@ -10,7 +10,7 @@ params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
 obj = rest_post('/system_registry/services/orphans/',params )
-test_failed('Failed add service to orphanate', obj) unless obj.is_a?
+test_failed('Failed ti list orphan services', obj) unless obj.is_a?(Array)
 annouce_test("orphanate_service")
 
 params = {}
