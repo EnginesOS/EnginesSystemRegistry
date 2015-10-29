@@ -25,6 +25,8 @@ params[:configurator_name]='test_ca'
 params[:variables] = {}
 params[:variables][:test_var] = "TEST INGS"
 obj = rest_post('/system_registry/services/configurations/',params )
+annouce_test("Check Add Hash")
+params = {}
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
