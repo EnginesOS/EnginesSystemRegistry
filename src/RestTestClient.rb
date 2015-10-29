@@ -108,7 +108,36 @@ r = RestClient.get('http://127.0.0.1:4567/system_registry/engine_services',{:par
   p :managed_engine_service_hashes_errore unless obj.is_a?(Array)
 end
   
+
+p :find_managed_engine_nonpersist
+
+params = {}
+params[:container_type] = 'service'
+params[:parent_engine] = 'mysql_server'
+r = RestClient.get('http://127.0.0.1:4567/system_registry/engine_nonpersistant_services/',{:params => params })
+  if  r == 'false'
+    p :_managed_engine_nonpersist_errore
+  else
+  obj = JSON.parse(r, :create_additions => true)
+  p :_managed_engine_nonpersist_errore unless obj.is_a?(Array)
+end
   
+p :find_managed_engine_persist
+
+params = {}
+params[:container_type] = 'service'
+params[:parent_engine] = 'mysql_server'
+r = RestClient.get('http://127.0.0.1:4567/system_registry/engine_persistant_services/',{:params => params })
+  if  r == 'false'
+    p :find_managed_engine_persist_errore
+  else
+  obj = JSON.parse(r, :create_additions => true)
+  p :find_managed_engine_persist_errore unless obj.is_a?(Array)
+end
+
+
+
+
 p :MANAGED_SERVCES
 r =   RestClient.get('http://127.0.0.1:4567/system_registry/managed_services_tree', nil)
 obj = JSON.parse(r, :create_additions => true)
