@@ -13,7 +13,7 @@ begin
   set :run, true
 
    @@system_registry = SystemRegistry.new
-    
+  require_relative 'api/registry_info.rb'  
 require_relative 'api/configurations.rb'
 require_relative 'api/managed_services.rb'
 require_relative 'api/orphan_services.rb'
