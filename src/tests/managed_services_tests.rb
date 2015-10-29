@@ -20,7 +20,7 @@ params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
-params[:service_handle] = 'mgmt_dns'
+params[:service_handle] = 'dns'
 params[:service_container_name] = 'dns'
 obj = rest_get('/system_registry/service/consumers/',{:params => params })
  
@@ -44,8 +44,8 @@ params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
-params[:parent_engine] = 'mgmt'
-params[:service_handle] = 'mgmt_dns'
+params[:parent_engine] = 'dns'
+params[:service_handle] = 'mgmt'
 params[:service_container_name] = 'dns'
 annouce_test('service_is_registered')
 obj = rest_get('/system_registry/service/is_registered',{:params => params })
