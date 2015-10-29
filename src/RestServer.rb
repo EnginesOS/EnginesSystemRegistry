@@ -18,8 +18,8 @@ require 'rubytree'
     p request.query_string
     p :params
     p params
-    r_params = JSON.parse(params)
-    @system_registry.get_service_configurations_hashes(r_params).to_json
+    r_params = symbolize_keys(hash)
+     @system_registry.get_service_configurations_hashes(r_params).to_json
   end
 
   get '/system_registry/configuration/' do
@@ -55,4 +55,26 @@ delete '/system_registry/configuration' do
      status(404)
    end    
  end
- 
+def symbolize_keys(hash)
+  hash.inject({}){|result, (key, value)|
+    new_key = case key
+    when String then key.to_sym
+    else key
+    end
+    new_value = case value
+    when Hash then symbolize_keys(value)
+    when Array then
+      newval = []
+      value.each do |array_val|
+        if array_val.is_a?(Hash)
+          array_val = symbolize_keys(array_val)
+        end
+        newval.push(array_val)
+      end
+      newval
+    else value
+    end
+    result[new_key] = new_value
+    result
+  }
+end
