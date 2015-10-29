@@ -21,9 +21,11 @@ end
 get '/system_registry/service/' do
   @@system_registry.get_service_entry(symbolize_keys(params)).to_json
 end
+
 get '/system_registry/service/is_registered' do
   @@system_registry.service_is_registered(symbolize_keys(params)).to_json
 end
+
 post '/system_registry/services/' do
  if @@system_registry.add_to_services_registry(symbolize_keys(params)).to_json
   status(202)
