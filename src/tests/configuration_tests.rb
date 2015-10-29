@@ -2,65 +2,58 @@
 
 test_type('Configurations Regsitry')
 
+annouce_test("Tree")
 obj = rest_get('/system_registry/configurations_tree', nil)
-   p :Configuration_tree_error unless obj.is_a?(Tree::TreeNode)
-
-  p :get_hashes_test
+test_failed('Loading Tree', obj) unless obj.is_a?(Tree::TreeNode)
+annouce_test("Get Hashes")
   params = {}
   params[:service_name]='cert_auth'
   obj = rest_get('/system_registry/configurations/',{:params => params })
-  p :Configuration_hashes_test_error unless obj.is_a?(Array)
+  test_failed('Retrieve Configurations for a service', obj) unless obj.is_a?(Array)
  
-p :get_hash_test
+annouce_test("Get Hash")
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='system_ca'
 obj = rest_get('/system_registry/configuration/',{:params => params })
-p :Configuration_hashes_test_error unless  obj.is_a?(Hash)
+test_failed('Retrieve Configuration for a configurator', obj)  unless  obj.is_a?(Hash)
  
-p :add_hash_test
+annouce_test("Add Hash")
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
 params[:variables] = {}
 params[:variables][:test_var] = "TEST INGS"
 obj = rest_post('/system_registry/configuration/',params )
-p obj
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
-ob = rest_get('/system_registry/configuration/',{:params => params })
+obj = rest_get('/system_registry/configuration/',{:params => params })
  
-p :add_failed_to_add unless  obj.is_a?(Hash) && obj[:variables].is_a?(Hash) && obj[:variables][:test_var] = 'TEST INGS'
+test_failed('Add a Configuration for a configurator', obj) unless  obj.is_a?(Hash) && obj[:variables].is_a?(Hash) && obj[:variables][:test_var] = 'TEST INGS'
 
  
-p :update_hash_test
+annouce_test("Update Hash")
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
 params[:variables] = {}
 params[:variables][:test_var] = "TESTINGS"
 obj = rest_put('/system_registry/configuration/',params )
-p obj
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
-r = rest_get('/system_registry/configuration/',{:params => params })
- obj = JSON.parse(r, :create_additions => true) 
-
-p :failed_to_update unless  obj.is_a?(Hash)
-p :failed_to_update  unless obj[:variables].is_a?(Hash) && obj[:variables][:test_var] = 'TESTINGS'
-
-p :del_hash_test
+obj = rest_get('/system_registry/configuration/',{:params => params })
+test_failed('Update a Configuration for a configurator', obj)unless  obj.is_a?(Hash)
+test_failed('Update a Configuration for a configurator', obj) unless obj[:variables].is_a?(Hash) && obj[:variables][:test_var] = 'TESTINGS'
+annouce_test("Delete Hash")
 params = {}
 params[:service_name]='cert_auth'
 params[:configurator_name]='test_ca'
-r = rest_delete('/system_registry/configuration/',{:params => params } )
-p r
-
-r = rest_get('/system_registry/configuration/',{:params => params })
-  p r
-p :add_failed_to_del unless r == 'false'
+obj = rest_delete('/system_registry/configuration/',{:params => params } )
+test_failed('Delete a Configuration for a configurator', obj) unless obj == true
+obj = rest_get('/system_registry/configuration/',{:params => params })
+test_failed('Delete (acutally) a Configuration for a configurator', obj)  unless obj == false
 
 
  
