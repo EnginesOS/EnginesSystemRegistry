@@ -69,7 +69,7 @@ params[:variables][:ip] = 'ip'
 params[:variables][:hostname] = 'ip' 
 obj = rest_post('/system_registry/services/',{:params => params })
 test_failed('Failed add service', obj) unless obj.is_a?(TrueClass)
-
+annouce_test('add service added')
 obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed service not added', obj) unless obj.is_a?(Hash)
 
