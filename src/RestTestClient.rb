@@ -40,7 +40,7 @@ r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration/',{:pa
  obj = JSON.parse(r, :create_additions => true)
  p obj.to_s
  p r
-p :add_failed_to_update unless  obj.is_a?(Hash) && obj[:variables][:test_var] = 'TEST INGS'
+p :add_failed_to_update unless  obj.is_a?(Hash) && obj[:variables].is_a?(Hash) && obj[:variables][:test_var] = 'TEST INGS'
 
  
 p :update_hash_test
