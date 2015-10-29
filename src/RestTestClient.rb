@@ -101,9 +101,12 @@ params = {}
 params[:container_type] = 'service'
 params[:parent_engine] = 'mysql_server'
 r = RestClient.get('http://127.0.0.1:4567/system_registry/engine_service_hash/',{:params => params })
+  if  r == 'false'
+    p :managed_engine_service_hashes_errore
+  else
   obj = JSON.parse(r, :create_additions => true)
   p :managed_engine_service_hashes_errore unless obj.is_a?(Array)
-  
+end
   
   
 p :MANAGED_SERVCES
