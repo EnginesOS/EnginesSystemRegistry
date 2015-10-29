@@ -9,10 +9,10 @@ params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
-obj = rest_post('/system_registry/services/orphans/',{:params => params } )
+obj = rest_get('/system_registry/services/orphans/',{:params => params } )
 test_failed('Failed ti list orphan services', obj) unless obj.is_a?(Array)
-annouce_test("orphanate_service")
 
+annouce_test("orphanate_service")
 params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
