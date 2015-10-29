@@ -67,7 +67,7 @@ params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip'
 params[:variables][:hostname] = 'ip' 
 obj = rest_post('/system_registry/services/',params )
-test_failed('Failed add service', obj) unless obj.is_a?(TrueClass)
+test_failed('Failed add service', obj) unless obj  == true
 annouce_test('add service added')
 obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed service not added', obj) unless obj.is_a?(Hash)
@@ -102,7 +102,7 @@ params[:variables][:service_handle] = params[:service_handle]
 params[:variables][:ip] = 'ip2'
 params[:variables][:hostname] = 'ip2' 
 obj = rest_delete('/system_registry/services/',{:params => params })
-test_failed('Failed delete/system_registry/servic', obj) unless obj.is_a?(TrueClass)
+test_failed('Failed delete/system_registry/servic', obj) unless obj == true
 obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed to delete', obj) unless obj.is_a?(FalseClass)
 #' 
