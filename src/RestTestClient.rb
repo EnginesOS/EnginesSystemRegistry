@@ -8,7 +8,7 @@ p :CONFIGURATIONS
 p :get_tree_test
   r =   RestClient.get('http://127.0.0.1:4567/system_registry/configurations_tree', nil)
  obj = JSON.parse(r, :create_additions => true)
- p obj
+ p obj.class
  
 p :get_hashes_test
 params = {}
@@ -72,15 +72,16 @@ p :MANAGED_ENGINES
 p :get_tree_test
   r =   RestClient.get('http://127.0.0.1:4567/system_registry/managed_engines_tree', nil)
  obj = JSON.parse(r, :create_additions => true)
- p obj
+ p obj.class
  
  
  
  
- P :MANAGED_SERVCES
+p :MANAGED_SERVCES
 r =   RestClient.get('http://127.0.0.1:4567/system_registry/managed_services_tree', nil)
 obj = JSON.parse(r, :create_additions => true)
-p obj
+p obj.class
+
 
 
 
@@ -88,4 +89,4 @@ p obj
 p :ORPHAN_SERVICES
 r =   RestClient.get('http://127.0.0.1:4567/system_registry/orphan_services_tree', nil)
 obj = JSON.parse(r, :create_additions => true)
-p obj
+p obj.class
