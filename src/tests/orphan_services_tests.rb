@@ -9,7 +9,7 @@ params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
-obj = rest_post('/system_registry/services/orphans/',params )
+obj = rest_post('/system_registry/services/orphans/',{:params => params } )
 test_failed('Failed ti list orphan services', obj) unless obj.is_a?(Array)
 annouce_test("orphanate_service")
 
@@ -39,7 +39,7 @@ params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
 params[:service_handle] = 'test' 
-obj = rest_get('/system_registry/services/orphan/',params )
+obj = rest_get('/system_registry/services/orphan/',{:params => params } )
 test_failed('Failed orphanate_service', obj) unless obj.is_a?(Hash)
 
 
@@ -50,5 +50,5 @@ params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
 params[:service_handle] = 'test' 
-obj = rest_delete('/system_registry/services/orphans/',params )
+obj = rest_delete('/system_registry/services/orphans/',{:params => params } )
 test_failed('Failed release oprhan', obj) unless obj  == true
