@@ -103,6 +103,7 @@ params[:variables][:ip] = 'ip2'
 params[:variables][:hostname] = 'ip2' 
 obj = rest_delete('/system_registry/services/',{:params => params })
 test_failed('Failed delete/system_registry/servic', obj) unless obj == true
+p obj.class.name
 obj = rest_get('/system_registry/service/',{:params => params })
 test_failed('Failed to delete', obj) unless obj.is_a?(FalseClass)
 #' 
