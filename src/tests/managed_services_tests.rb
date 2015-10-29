@@ -90,7 +90,7 @@ test_failed('Failed update service', obj) unless obj.is_a?(Hash)
 test_failed('Failed update service comparision', obj) unless obj.is_a?(Hash) && obj[:variables].is_a?(Hash) && obj[:variables][:hostname] == 'ip2' 
 
 annouce_test('remove_from_services_registry')
-annouce_test('update service')
+
 params = {}
 params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'

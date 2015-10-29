@@ -6,6 +6,11 @@ end
 
 def test_type(type)
   @test_type = type.to_s
+  p ''  
+  p ''
+  
+  p ('__________' + type + '___________')
+
 end
 
 def test_failed(message, obj)
