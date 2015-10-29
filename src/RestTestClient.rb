@@ -22,7 +22,7 @@ p :get_hash_test
 params = {}
 params[:name]='cert_auth'
 params[:configurator_name]='system_ca'
-r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration',{:params => params })
+r =   RestClient.get('http://127.0.0.1:4567/system_registry/configuration/',{:params => params })
 
 
  obj = JSON.parse(r, :create_additions => true)

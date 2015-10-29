@@ -20,19 +20,19 @@ require 'rubytree'
    
     r_params = symbolize_keys(params)
     p r_params
-     @system_registry.get_service_configurations_hashes(r_params).to_json
+     @system_registry.get_service_configurations_hashes(symbolize_keys(params)).to_json
   end
 
   get '/system_registry/configuration/' do
     @system_registry = SystemRegistry.new
     p request.query_string
     p params
-    @system_registry.get_service_configuration(params).to_json
+    @system_registry.get_service_configuration(symbolize_keys(params)).to_json
   end
   
-  post '/system_registry/configuration' do
+  post '/system_registry/configuration/' do
     @system_registry = SystemRegistry.new
-     if @system_registry.add_service_configuration(service_hash)
+     if @system_registry.add_service_configuration(symbolize_keys(params))
        status(202)
      else
        status(404)
