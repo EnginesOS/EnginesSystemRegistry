@@ -70,7 +70,7 @@ params[:service_handle] = 'test_dns'
 params[:service_container_name] = 'dns'
 obj = rest_get('/system_registry/engine/service/',{:params => params })
 test_failed('Failed to find added', obj) unless obj.is_a?(Hash)
- p obj.to_s
+ 
 
 annouce_test("Update service hash from an engine")
 
@@ -108,14 +108,10 @@ params[:service_handle] = 'test_dns'
 params[:service_container_name] = 'dns'
 obj = rest_delete('/system_registry/engine/services/',{:params => params })
 test_failed('Failed to del added', obj) unless obj == true
+
+annouce_test("checl did Remove service hash from an engine")
 params = {}
-params[:container_type] = 'service'
-params[:publisher_namespace] = 'EnginesSystem'
-params[:type_path] = 'dns'
-params[:parent_engine] = 'test'
-params[:service_handle] = 'test_dns'
-params[:service_container_name] = 'dns'
 obj = rest_get('/system_registry/engine/service/',{:params => params })
-test_failed('Failed as found deleted ', obj) if obj != false
+test_failed('Failed as found deleted ', obj) if obj.is_a?(Hash)
 
 

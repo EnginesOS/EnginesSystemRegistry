@@ -25,10 +25,9 @@ params[:service_container_name] = 'dns'
 obj = rest_get('/system_registry/service/consumers/',{:params => params })
 test_failed('Failed registered/engines/', obj) unless obj.is_a?(TreeNode)
 
-params = {}
-
-params[:publisher_namespace] = 'EnginesSystem'
 annouce_test("list_providers_in_use")
+params = {}
+params[:publisher_namespace] = 'EnginesSystem'
 obj = rest_get('/system_registry/services/providers/in_use/',{:params => params })
 test_failed('Failed list_providers_in_use', obj) unless obj.is_a?(Array)
 
