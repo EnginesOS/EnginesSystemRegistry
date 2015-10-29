@@ -44,16 +44,16 @@ require 'rubytree'
   
   put '/system_registry/configuration' do
     @system_registry = SystemRegistry.new
-  if @system_registry.update_service_configuration(service_hash)
+  if @system_registry.update_service_configuration(symbolize_keys(params))
     status(202)
   else
     status(404)
   end    
 end
 
-delete '/system_registry/configuration' do
+delete '/system_registry/configuration/' do
   @system_registry = SystemRegistry.new
-  if @system_registry.rm_service_configuration(service_hash)
+  if @system_registry.rm_service_configuration(symbolize_keys(params))
      status(202)
    else
      status(404)
