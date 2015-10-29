@@ -89,7 +89,7 @@ params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
 params[:parent_engine] = 'dns'
-params[service_handle] = 'dns'
+params[:service_handle] = 'dns'
 r = RestClient.get('http://127.0.0.1:4567/system_registry/engine_service_hash/',{:params => params })
   obj = JSON.parse(r, :create_additions => true)
   p :Configuration_hashes_test_error unless obj.is_a?(Hash)
