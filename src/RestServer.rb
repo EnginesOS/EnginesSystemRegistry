@@ -1,7 +1,7 @@
 
   
   require 'sinatra'
-  require 'JSON'
+  require 'json'
   require_relative 'system_registry/system_registry.rb'
     
    @system_registry = SystemRegistry.new
