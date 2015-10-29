@@ -23,7 +23,7 @@ params[:type_path] = 'dns'
 params[:service_handle] = 'mgmt_dns'
 params[:service_container_name] = 'dns'
 obj = rest_get('/system_registry/service/consumers/',{:params => params })
-  p obj
+ 
 test_failed('Failed registered/engines/', obj) unless obj.is_a?(Tree::TreeNode)
 
 annouce_test("list_providers_in_use")

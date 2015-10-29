@@ -68,6 +68,9 @@ class ServicesRegistry < SubRegistry
       retval.push(provider.name)
     end
     return retval
+    rescue StandardError => e
+      puts e.message
+      log_exception(e)
   end
 
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
