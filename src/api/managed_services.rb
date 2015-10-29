@@ -23,7 +23,7 @@ get '/system_registry/service/' do
 end
 
 get '/system_registry/service/is_registered' do
-  @@system_registry.service_is_registered(symbolize_keys(params)).to_json
+  @@system_registry.service_is_registered?(symbolize_keys(params)).to_json
 end
 
 post '/system_registry/services/' do
