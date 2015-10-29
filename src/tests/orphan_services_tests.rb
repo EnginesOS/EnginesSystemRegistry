@@ -19,6 +19,7 @@ params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
 params[:service_handle] = 'test' 
+params[:parent_engine] = 'auth'
 obj = rest_delete('/system_registry/services/orphans/',{:params => params } )
 
 

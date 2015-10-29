@@ -22,6 +22,8 @@ get '/system_registry/services/orphan/' do
  
 
  delete '/system_registry/services/orphans/' do
+   p :release_orphan
+   p symbolize_keys(params)
  if @@system_registry.release_orphan(symbolize_keys(params)).to_json
    status(202)
  else
