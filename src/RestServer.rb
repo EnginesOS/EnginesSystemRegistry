@@ -32,6 +32,9 @@ require 'rubytree'
   
   post '/system_registry/configuration/' do
     @system_registry = SystemRegistry.new
+    :post_new_conf
+    p request.query_string
+       p params
      if @system_registry.add_service_configuration(symbolize_keys(params))
        status(202)
      else
