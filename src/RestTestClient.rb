@@ -4,7 +4,7 @@
   r =   RestClient.get('http://127.0.0.1:4567/system_registry/configurations_tree', nil)
  p :get_tree_test
  obj = JSON.parse(r)
- p r
+ p r.class
  p 'PPPPPPPPPPPPPPPPP'
  p obj.class
  p 'OOOOOOOOOOOOOOOOO'
