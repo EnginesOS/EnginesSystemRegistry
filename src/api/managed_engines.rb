@@ -7,7 +7,7 @@ get '/system_registry/engine_service_hash/' do
 end
 
 get '/system_registry/engine_services' do
-@@system_registry.find_engine_services_hashes(symbolize_keys(params).to_json)
+@@system_registry.find_engine_services_hashes(symbolize_keys(params)).to_json
 end
 
 get '/system_registry/engine_nonpersistant_services/' do
