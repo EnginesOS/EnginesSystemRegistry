@@ -14,7 +14,9 @@ require 'rubytree'
 
   get '/system_registry/configurations/' do
     @system_registry = SystemRegistry.new
+    p :request_query_string
     p request.query_string
+    p :params
     p params
     @system_registry.get_service_configurations_hashes(params).to_json
   end
