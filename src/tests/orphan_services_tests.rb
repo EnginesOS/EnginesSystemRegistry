@@ -1,5 +1,4 @@
-p :ORPHAN_SERVICES
-r =   RestClient.get('http://127.0.0.1:4567/system_registry/orphan_services_tree', nil)
-obj = JSON.parse(r, :create_additions => true)
-p obj.class.name
-p :ORPHAN_SERVCES_tree_error unless obj.is_a?(Tree::TreeNode)
+test_type('Orphaned Services Regsitry')
+annouce_test("Tree")
+obj = rest_get('/system_registry/orphan_services_tree', nil)
+test_failed('Loading Tree', obj) unless obj.is_a?(Tree::TreeNode)

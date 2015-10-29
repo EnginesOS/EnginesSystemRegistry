@@ -19,7 +19,7 @@ get '/system_registry/engine_persistant_services/' do
 @@system_registry.get_engine_persistant_services(symbolize_keys(params)).to_json
 end
 
-post '/system_registry/add_to_managed_engines_registry' do
+post '/system_registry/add_to_managed_engines_registry/' do
   if @@system_registry.add_to_managed_engines_registry(symbolize_keys(params)).to_json
   status(202)
 else
