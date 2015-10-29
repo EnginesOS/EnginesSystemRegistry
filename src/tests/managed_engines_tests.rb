@@ -66,8 +66,8 @@ params[:container_type] = 'service'
 params[:publisher_namespace] = 'EnginesSystem'
 params[:type_path] = 'dns'
 params[:parent_engine] = 'test'
-params[:service_handle] = 'dns'
-params[:service_container_name] = 'test_dns'
+params[:service_handle] = 'test_dns'
+params[:service_container_name] = 'dns'
 obj = rest_get('/system_registry/engine_service_hash/',{:params => params })
 test_failed('Failed to find added', obj) unless obj.is_a?(Hash)
 
