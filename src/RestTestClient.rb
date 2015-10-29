@@ -14,7 +14,7 @@ p :get_tree_test
 p :get_hashes_test
 params = {}
 params[:name]='cert_auth'
-r =   RestClient.get('http://127.0.0.1:4567/system_registry/configurations',{:params => params })
+r =   RestClient.get('http://127.0.0.1:4567/system_registry/configurations/',{:params => params })
  obj = JSON.parse(r, :create_additions => true)
  p obj.to_s
  
