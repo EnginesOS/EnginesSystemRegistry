@@ -3,7 +3,7 @@ get '/system_registry/services/configurations/tree' do
  end
 
  get '/system_registry/service/configurations/' do
-   p params
+   p params.to_s
    @@system_registry.get_service_configurations_hashes(params['service_name']).to_json
  end
 
