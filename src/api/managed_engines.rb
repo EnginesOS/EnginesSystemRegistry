@@ -7,26 +7,22 @@ get '/system_registry/engine/service/' do
 end
 
 get '/system_registry/engine/services/' do
-  :system_registry_engine_services_
-  
-  p symbolize_keys(params)
+  STDERR.puts 'engines_services'
+    STDERR.puts params.to_s
 @@system_registry.find_engine_services_hashes(symbolize_keys(params)).to_json
 end
 
 get '/system_registry/engine/services/nonpersistant/' do
-  p :engines_services_nonpersistant
-  p params
-  params = symbolize_keys(params)
-  params[:persistant] = false
+  STDERR.puts 'engines_services_nonpersistant'
+  STDERR.puts params.to_s
 @@system_registry.get_engine_nonpersistant_services(symbolize_keys(params)).to_json
 end
 
 
 get '/system_registry/engine/services/persistant/' do
-  p symbolize_keys(params)
-  p :system_registry_engine_services_persistant_
-  params = symbolize_keys(params)
-  params[:persistant] = true
+  
+  STDERR.puts ':system_registry_engine_services_persistant_'
+  STDERR.puts params.to_s
 @@system_registry.get_engine_persistant_services(params).to_json
 end
 
