@@ -14,6 +14,8 @@ get '/system_registry/engine/services/' do
 end
 
 get '/system_registry/engine/services/nonpersistant/' do
+  p :engines_services_nonpersistant
+  p params
   params = symbolize_keys(params)
   params[:persistant] = false
 @@system_registry.get_engine_nonpersistant_services(symbolize_keys(params)).to_json
