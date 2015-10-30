@@ -3,7 +3,7 @@ get '/system_registry/engines/tree' do
  end
 
 get '/system_registry/engine/service/' do
-  @@system_registry.find_engine_service_hash(symbolize_keys(params)).to_json
+  @@system_registry.find_engine_service_hash(symbolize_keys(symbolize_keys(params))).to_json
 end
 
 get '/system_registry/engine/services/' do
@@ -16,7 +16,7 @@ end
 get '/system_registry/engine/services/nonpersistant/' do
   params = symbolize_keys(params)
   params[:persistant] = false
-@@system_registry.get_engine_nonpersistant_services(params).to_json
+@@system_registry.get_engine_nonpersistant_services(symbolize_keys(params)).to_json
 end
 
 
