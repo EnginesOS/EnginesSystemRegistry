@@ -8,7 +8,7 @@ test_failed('Loading Tree', obj) unless obj.is_a?(Tree::TreeNode)
 annouce_test("Get Hashes")
   params = {}
   params[:service_name]='cert_auth'
-  obj = rest_get('/system_registry/services/configurations/',{:params => params })
+  obj = rest_get('/system_registry/service/configurations/',{:params => params })
   test_failed('Retrieve Configurations for a service', obj) unless obj.is_a?(Array)
  
 annouce_test("Get Hash")
