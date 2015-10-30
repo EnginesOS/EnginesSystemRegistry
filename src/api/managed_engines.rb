@@ -25,7 +25,7 @@ get '/system_registry/engine/services/persistant/' do
   p :system_registry_engine_services_persistant_
   params = symbolize_keys(params)
   params[:persistant] = true
-@@system_registry.get_engine_persistant_services(symbolize_keys(params)).to_json
+@@system_registry.get_engine_persistant_services(params).to_json
 end
 
 post '/system_registry/engine/services/' do
