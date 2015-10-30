@@ -1,11 +1,11 @@
-
+require_relative'utils.rb'
 
 begin
   
   require 'sinatra'
   require 'json'
   require 'rubytree'
-  require_relative'utils.rb'
+ 
   require_relative 'system_registry/system_registry.rb'
   
   set :sessions, true
