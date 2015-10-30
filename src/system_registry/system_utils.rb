@@ -5,15 +5,15 @@ class SystemUtils
   attr_reader :debug, :level, :last_error
   def self.debug_output(label, object)
     if SystemUtils.debug
-      p label.to_sym
-      p object
+      STDERR.puts label.to_s
+      STDERR.puts  object.to_s
     end
   end
 
   def self.log_output(object, level)
     if SystemUtils.level < level
-      p :Error
-      p object.to_s
+      STDERR.puts 'Error'
+      STDERR.puts  object.to_s
     end
   end
 
