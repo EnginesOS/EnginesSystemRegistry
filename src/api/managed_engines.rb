@@ -7,6 +7,7 @@ get '/system_registry/engine/service/' do
 end
 
 get '/system_registry/engine/services/' do
+  p symbolize_keys(params)
 @@system_registry.find_engine_services_hashes(symbolize_keys(params)).to_json
 end
 
