@@ -87,7 +87,7 @@ class ManagedEnginesRegistry < SubRegistry
       service_node.content = service_hash
     else
       log_error_mesg('Engine Node existed', service_handle)
-      log_error_mesg('Cannot over write persistant service' + service_node.content.to_s + ' with ', service_hash)
+      log_error_mesg('Cannot over write persistant service in managed engines tree' + service_node.content.to_s + ' with ', service_hash)
     end
     return true
   rescue StandardError => e

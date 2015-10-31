@@ -46,7 +46,7 @@ class ServicesRegistry < SubRegistry
     else
       p :failed
       log_error_mesg('Service Node existed', service_hash[:service_handle])
-      log_error_mesg('Cannot over write persistant service' + service_node.content.to_s + ' with ', service_hash)
+      log_error_mesg('Cannot over write persistant service in services tree' + service_node.content.to_s + ' with ', service_hash)
       # service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
       # service_type_node << service_node
     end
