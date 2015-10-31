@@ -1,4 +1,4 @@
-
+class RegistryUtils
 def self.boolean_if_true_false_str(r)
                   if  r == 'true'
                     return true
@@ -8,18 +8,18 @@ def self.boolean_if_true_false_str(r)
        return r     
  end
  
-def self.symbolize_keys(hash)
+def RegistryUtils.symbolize_keys(hash)
   hash.inject({}){|result, (key, value)|
     new_key = case key
     when String then key.to_sym
     else key
     end
     new_value = case value
-    when Hash then self.symbolize_keys(value)
+    when Hash then RegistryUtils.symbolize_keys(value)
     when Array then
       newval = []
       value.each do |array_val|
-        array_val = self.symbolize_keys(array_val) if array_val.is_a?(Hash)
+        array_val = RegistryUtils.symbolize_keys(array_val) if array_val.is_a?(Hash)
         newval.push(array_val)
       end
       newval
@@ -43,3 +43,4 @@ def log_exception(e)
    f.puts(e_str)
    f.close
  end
+end
