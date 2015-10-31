@@ -24,7 +24,7 @@ end
 get '/v0/system_registry/engine/services/persistant/' do
   
   STDERR.puts ':system_registry_engine_services_persistant_'
-  STDERR.puts params.to_s
+  STDERR.puts RegistryUtils.symbolize_keys(params).to_s
 @@system_registry.get_engine_persistant_services(RegistryUtils.symbolize_keys(params)).to_json
 end
 
@@ -37,7 +37,7 @@ else
 end    
 end
 
-delete '/v0/system_registry/engine/services/' do
+delete '/v0/system_registry/engine/services/del/' do
 if @@system_registry.remove_from_managed_engines_registry(RegistryUtils.symbolize_keys(params)).to_json
   status(202)
 else
