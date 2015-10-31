@@ -1,14 +1,11 @@
 class RegistryUtils
   
-def RegistryUtils.boolean_if_true_false_str(r)
-                  if  r == 'true'
-                    return true
-                  elsif r == 'false'
-                   return false
-                  end
-       return r     
- end
- 
+  def RegistryUtils.boolean_if_true_false_str(r)
+    return true if r == 'true'
+    return false if r == 'false'
+    return r
+  end
+
 def RegistryUtils.symbolize_keys(hash)
   hash.inject({}){|result, (key, value)|
     new_key = case key
@@ -25,7 +22,7 @@ def RegistryUtils.symbolize_keys(hash)
       end
       newval
     when String then
-      self.boolean_if_true_false_str(value)
+      RegistryUtils.boolean_if_true_false_str(value)
     else value
     end
     result[new_key] = new_value
@@ -38,7 +35,6 @@ def RegistryUtils.log_exception(e)
      e_str += bt + ' \n'
    end
    @@last_error = e_str
-  STDERR.puts e_str
    SystemUtils.log_output(e_str, 10)
    f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
    f.puts(e_str)
