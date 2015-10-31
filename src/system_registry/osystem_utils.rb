@@ -51,38 +51,38 @@ class SystemUtils
   #   end
   #
   
-  def self.boolean_if_true_false_str(r)
-                    if  r == 'true'
-                      return true
-                    elsif r == 'false'
-                     return false
-                    end
-         return r     
-   end
-   
-   def self.symbolize_keys(hash)
-     hash.inject({}){|result, (key, value)|
-       new_key = case key
-       when String then key.to_sym
-       else key
-       end
-       new_value = case value
-       when Hash then self.symbolize_keys(value)
-       when Array then
-         newval = []
-         value.each do |array_val|
-           array_val = self.symbolize_keys(array_val) if array_val.is_a?(Hash)
-           newval.push(array_val)
-         end
-         newval
-         when String then
-         self.boolean_if_true_false_str(value)
-       else value
-       end
-       result[new_key] = new_value
-       result
-     }
-   end
+#  def self.boolean_if_true_false_str(r)
+#                    if  r == 'true'
+#                      return true
+#                    elsif r == 'false'
+#                     return false
+#                    end
+#         return r     
+#   end
+#   
+#  def self.symbolize_keys(hash)
+#    hash.inject({}){|result, (key, value)|
+#      new_key = case key
+#      when String then key.to_sym
+#      else key
+#      end
+#      new_value = case value
+#      when Hash then self.symbolize_keys(value)
+#      when Array then
+#        newval = []
+#        value.each do |array_val|
+#          array_val = self.symbolize_keys(array_val) if array_val.is_a?(Hash)
+#          newval.push(array_val)
+#        end
+#        newval
+#      when String then
+#        self.boolean_if_true_false_str(value)
+#      else value
+#      end
+#      result[new_key] = new_value
+#      result
+#    }
+#  end
 #  def self.symbolize_keys(hash)
 #    
 #    hash.inject({}){|result, (key, value)|
