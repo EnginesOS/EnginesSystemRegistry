@@ -1,4 +1,4 @@
-require_relative '../utils.rb'
+require_relative 'utils.rb'
 
 get '/system_registry/status/' do
   r = true
