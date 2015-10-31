@@ -23,3 +23,17 @@ require_relative 'api/managed_engines.rb'
 rescue StandardError=>e 
   log_exception(e)
 end
+
+def log_exception(e)
+   e_str = e.to_s()
+   e.backtrace.each do |bt|
+     e_str += bt + ' \n'
+   end
+   @@last_error = e_str
+  STDERR.puts e_str
+   SystemUtils.log_output(e_str, 10)
+   f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
+   f.puts(e_str)
+   f.close
+  return false
+ end

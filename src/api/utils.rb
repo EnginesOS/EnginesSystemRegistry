@@ -32,7 +32,7 @@ def RegistryUtils.symbolize_keys(hash)
     result
   }
 end
-def log_exception(e)
+def RegistryUtils.log_exception(e)
    e_str = e.to_s()
    e.backtrace.each do |bt|
      e_str += bt + ' \n'
@@ -43,6 +43,7 @@ def log_exception(e)
    f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
    f.puts(e_str)
    f.close
+  return false
  end
- return false
+
 end
