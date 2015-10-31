@@ -1,3 +1,5 @@
+require_relative '../utils.rb'
+
 get '/system_registry/engines/tree' do
   @@system_registry.managed_engines_registry_tree.to_json
  end

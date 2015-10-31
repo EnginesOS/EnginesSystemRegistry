@@ -1,3 +1,5 @@
+require_relative '../utils.rb'
+
 get '/system_registry/status/' do
   r = true
  r.to_json

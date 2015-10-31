@@ -1,3 +1,5 @@
+require_relative '../utils.rb'
+
 get '/system_registry/services/configurations/tree' do
   @@system_registry.service_configurations_registry_tree.to_json
  end
