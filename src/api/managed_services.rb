@@ -1,4 +1,4 @@
-require_relative '../utils.rb'
+require_relative 'utils.rb'
 
 get '/system_registry/services/tree' do
   @@system_registry.services_registry_tree.to_json

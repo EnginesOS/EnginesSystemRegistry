@@ -1,5 +1,5 @@
 
-def boolean_if_true_false_str(r)
+def self.boolean_if_true_false_str(r)
                   if  r == 'true'
                     return true
                   elsif r == 'false'
@@ -8,7 +8,7 @@ def boolean_if_true_false_str(r)
        return r     
  end
  
-def symbolize_keys(hash)
+def self.symbolize_keys(hash)
   hash.inject({}){|result, (key, value)|
     new_key = case key
     when String then key.to_sym
@@ -19,12 +19,12 @@ def symbolize_keys(hash)
     when Array then
       newval = []
       value.each do |array_val|
-        array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
+        array_val = self.symbolize_keys(array_val) if array_val.is_a?(Hash)
         newval.push(array_val)
       end
       newval
     when String then
-      boolean_if_true_false_str(value)
+      self.boolean_if_true_false_str(value)
     else value
     end
     result[new_key] = new_value
