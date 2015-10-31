@@ -37,7 +37,7 @@ else
 end    
 end
 
-delete '/v0/system_registry/engine/services/del/' do
+delete '/v0/system_registry/engine/services/del' do
 if @@system_registry.remove_from_managed_engines_registry(RegistryUtils.symbolize_keys(params)).to_json
   status(202)
 else
@@ -45,7 +45,7 @@ else
 end    
 end 
 
-put  '/v0/system_registry/engine/service/' do
+put  '/v0/system_registry/engine/service/update' do
   if @@system_registry.update_managed_engine_service(RegistryUtils.symbolize_keys(params)).to_json
   status(202)
 else
