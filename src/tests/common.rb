@@ -27,7 +27,7 @@ def parse_rest_response(r)
    return symbolize_keys(res) if res.is_a?(Hash)
    return res 
  rescue
-   p "Failed to parse rest response _" + r.to_s + "_"
+   p "Failed to parse rest response _" + res.to_s + "_"
      return false
 end
 
