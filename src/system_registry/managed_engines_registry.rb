@@ -44,6 +44,8 @@ class ManagedEnginesRegistry < SubRegistry
     end
     services.children.each do |service|
       SystemUtils.debug_output(:finding_match_for, service.content)
+      STDERR.puts :serach_4_persistance
+      STDERR.puts persistance.to_s
       matches = get_matched_leafs(service, :persistant, persistance)
       SystemUtils.debug_output('matches', matches)
       leafs = leafs.concat(matches)
