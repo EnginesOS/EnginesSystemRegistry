@@ -1,5 +1,5 @@
 
-def self.boolean_if_true_false_str(r)
+def boolean_if_true_false_str(r)
                   if  r == 'true'
                     return true
                   elsif r == 'false'
