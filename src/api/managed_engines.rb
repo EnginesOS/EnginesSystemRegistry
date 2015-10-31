@@ -5,7 +5,7 @@ get '/system_registry/engines/tree' do
  end
 
 get '/system_registry/engine/service/' do
-  @@system_registry.find_engine_service_hash(self.RegistryUtils.symbolize_keys(params)).to_json
+  @@system_registry.find_engine_service_hash(RegistryUtils.symbolize_keys(params)).to_json
 end
 
 get '/system_registry/engine/services/' do

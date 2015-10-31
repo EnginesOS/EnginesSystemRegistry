@@ -1,4 +1,5 @@
 class RegistryUtils
+  
 def self.boolean_if_true_false_str(r)
                   if  r == 'true'
                     return true
