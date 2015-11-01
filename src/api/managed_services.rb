@@ -45,7 +45,7 @@ else
 end    
 end
 
-delete '/v0/system_registry/service/del' do
+delete '/v0/system_registry/services/del' do
 if @@system_registry.remove_from_services_registry(RegistryUtils.symbolize_keys(params)).to_json
  status(202)
 else
