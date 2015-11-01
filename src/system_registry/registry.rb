@@ -4,7 +4,7 @@ class Registry
   attr_reader :last_error
   # handle missing persistant key as not persistance kludge to catch gui bug
   def is_persistant?(hash)
-    return true if hash.key?(:persistance) && hash[:persistanct]
+    return true if hash.key?(:persistant) && hash[:persistant]
     return false
   end
 

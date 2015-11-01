@@ -44,9 +44,12 @@ class ManagedEnginesRegistry < SubRegistry
     end
     services.children.each do |service|
       SystemUtils.debug_output(:finding_match_for, service.content)
+      STDERR.puts :serach_4_persistance
+      STDERR.puts persistance.to_s + ':' + persistance.class.name
       matches = get_matched_leafs(service, :persistant, persistance)
       SystemUtils.debug_output('matches', matches)
       leafs = leafs.concat(matches)
+      p leafs
     end
     return order_hashes_in_priotity(leafs)
   end
@@ -84,7 +87,7 @@ class ManagedEnginesRegistry < SubRegistry
       service_node.content = service_hash
     else
       log_error_mesg('Engine Node existed', service_handle)
-      log_error_mesg('Cannot over write persistant service' + service_node.content.to_s + ' with ', service_hash)
+      log_error_mesg('Cannot over write persistant service in managed engines tree' + service_node.content.to_s + ' with ', service_hash)
     end
     return true
   rescue StandardError => e
@@ -148,4 +151,6 @@ class ManagedEnginesRegistry < SubRegistry
       return engine_node
     end
   end
+  
+
 end

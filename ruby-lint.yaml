@@ -2,13 +2,15 @@
 directories:
  - src 
 requires:
- - /home/jim/workspace/RegsitryService/src/network_listener.rb
- - /home/jim/workspace/RegsitryService/src/protocol_listener.rb
- - /home/jim/workspace/RegsitryService/src/system_registry/registry.rb
- - /home/jim/workspace/RegsitryService/src/system_registry/sub_registry.rb
- - /home/jim/workspace/RegsitryService/src/system_registry/services_registry.rb
- - /home/jim/workspace/RegsitryService/src/system_registry/system_registry.rb
- - /home/jim/workspace/RegsitryService/src/system_registry/configurations_registry.rb
- - /home/jim/workspace/RegsitryService/src/system_registry/managed_engines_registry.rb
- - /home/jim/workspace/RegsitryService/src/system_registry/orphan_services_registry.rb
- - /home/jim/workspace/RegsitryService/src/system_registry/system_utils.rb
+ - /home/jim/git/Engines/Registry/src/network_listener.rb
+ - /home/jim/git/Engines/Registry/src/protocol_listener.rb
+ - /home/jim/git/Engines/Registry/src/system_registry/registry.rb
+ - /home/jim/git/Engines/Registry/src/system_registry/sub_registry.rb
+ - /home/jim/git/Engines/Registry/src/system_registry/services_registry.rb
+ - /home/jim/git/Engines/Registry/src/system_registry/system_registry.rb
+ - /home/jim/git/Engines/Registry/src/system_registry/configurations_registry.rb
+ - /home/jim/git/Engines/Registry/src/system_registry/managed_engines_registry.rb
+ - /home/jim/git/Engines/Registry/src/system_registry/orphan_services_registry.rb
+ - /home/jim/git/Engines/Registry/src/system_registry/system_utils.rb
+ 
+ 

@@ -9,23 +9,30 @@ class NetworkListener
     @protocol_listener = protocol_listener
     @registry_lock = Mutex.new
   end
-
-  # Fix me need to limit connections close thread etc
+  
+  # @ listen socket and create a new process thread per client
+  # close thread socket when process_messages terminates 
   def listen_for_messages
-    loop do
+    @clients = 0
+    loop do      
       client = @registry_listener.accept
       log_connection(client)
+      p :Current_Client_Count
+      p @clients.to_s
       if check_request_source_address(client)
+        @clients += 1
         Thread.new {         
           process_messages(client)
           p :closing_connection
           client.shutdown(Socket::SHUT_RDWR) 
           client.close
+          @clients -= 1
         }
       end
     end
   end
 
+  
   def log_connection(client)
     client_ipdetails = client.peeraddr(true, :numeric)
     p 'Connection on ' + client_ipdetails[2].to_s + ':' + client_ipdetails[1].to_s
@@ -61,6 +68,9 @@ class NetworkListener
     return message_request, mesg_len
   end
 
+  # main loop for processing messages
+  # first byte read is blocking subsequent reads until the end of the message are non blocking
+  # any characters beyond the end the curent message are unget, so messages can be queued (not support be the client)  
   def process_messages(socket)
     while true
       begin
@@ -120,14 +130,14 @@ class NetworkListener
             p result.class.name
             send_ok_result(socket, result)
           else
-            send_error(socket, request_hash, result)
+            return unless send_error(socket, request_hash, result)
           end
         }
       rescue StandardError => e
         p e.to_s
         p e.backtrace.to_s
         @last_error = 'StandardError:' + e.to_s + ':' + e.backtrace.to_s
-        send_error(socket, message_request, @last_error)
+        return send_error(socket, message_request, @last_error)
       end
     end
   end
@@ -136,12 +146,20 @@ class NetworkListener
     retry_count = 0
     reply_yaml = reply_hash.to_yaml
     reply = build_mesg(reply_yaml)
+    bytes = 0
     begin
-      Timeout::timeout(25) { bytes = socket.send(reply, 0) }
-      # socket.recv(0) #check it's open anc hcuck wobbly if not
+      #reply = reply[bytes,-1]
+      Timeout::timeout(10) { bytes += socket.send(reply.to_s, 0) }
+      bytes += socket.send(reply.to_s, 0)
+       socket.recv(0) #check it's open anc hcuck wobbly if not
     rescue IO::EAGAINWaitWritable
+      p :NOT_ALLBYTES
       retry_count += 1
       retry
+    rescue Errno::EPIPE
+      return false 
+    rescue Errno::ECONNRESET
+            return false
     rescue Timeout::Error
       @last_error = 'Timeout sending reply'
       return false    
@@ -153,6 +171,7 @@ class NetworkListener
 
   def build_mesg(mesg_str)
     header = mesg_str.to_s.length
+    p header.to_s + ',' + mesg_str.to_s
     return header.to_s + ',' + mesg_str.to_s
   end
 

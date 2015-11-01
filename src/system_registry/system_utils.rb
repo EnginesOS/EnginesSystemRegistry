@@ -5,15 +5,15 @@ class SystemUtils
   attr_reader :debug, :level, :last_error
   def self.debug_output(label, object)
     if SystemUtils.debug
-      p label.to_sym
-      p object
+      STDERR.puts label.to_s
+      STDERR.puts  object.to_s
     end
   end
 
   def self.log_output(object, level)
     if SystemUtils.level < level
-      p :Error
-      p object.to_s
+      STDERR.puts 'Error'
+      STDERR.puts  object.to_s
     end
   end
 
@@ -37,6 +37,7 @@ class SystemUtils
     return key
   end
 
+ 
   #  def SystemUtils.system_release
   #    if File.exists?(SystemConfig.ReleaseFile) == false
   #         return 'current'
@@ -49,27 +50,61 @@ class SystemUtils
   #     return SystemUtils.system_release + '.' + SystemConfig.api_version + '.' + SystemConfig.engines_system_version
   #   end
   #
-  def self.symbolize_keys(hash)
-    hash.inject({}){|result, (key, value)|
-      new_key = case key
-      when String then key.to_sym
-      else key
-      end
-      new_value = case value
-      when Hash then symbolize_keys(value)
-      when Array then
-        newval = []
-        value.each do |array_val|
-          array_val = SystemUtils.symbolize_keys(array_val) if array_val.is_a?(Hash)
-          newval.push(array_val)
-        end
-        newval
-      else value
-      end
-      result[new_key] = new_value
-      result
-    }
-  end
+  
+#  def self.boolean_if_true_false_str(r)
+#                    if  r == 'true'
+#                      return true
+#                    elsif r == 'false'
+#                     return false
+#                    end
+#         return r     
+#   end
+#   
+#  def self.symbolize_keys(hash)
+#    hash.inject({}){|result, (key, value)|
+#      new_key = case key
+#      when String then key.to_sym
+#      else key
+#      end
+#      new_value = case value
+#      when Hash then self.symbolize_keys(value)
+#      when Array then
+#        newval = []
+#        value.each do |array_val|
+#          array_val = self.symbolize_keys(array_val) if array_val.is_a?(Hash)
+#          newval.push(array_val)
+#        end
+#        newval
+#      when String then
+#        self.boolean_if_true_false_str(value)
+#      else value
+#      end
+#      result[new_key] = new_value
+#      result
+#    }
+#  end
+#  def self.symbolize_keys(hash)
+#    
+#    hash.inject({}){|result, (key, value)|
+#      new_key = case key
+#      when String then key.to_sym
+#      else key
+#      end
+#      new_value = case value
+#      when Hash then symbolize_keys(value)
+#      when Array then
+#        newval = []
+#        value.each do |array_val|
+#          array_val = SystemUtils.symbolize_keys(array_val) if array_val.is_a?(Hash)
+#          newval.push(array_val)
+#        end
+#        newval
+#      else value
+#      end
+#      result[new_key] = new_value
+#      result
+#    }
+#  end
 
   def self.log_exception(e)
     e_str = e.to_s()
@@ -79,6 +114,9 @@ class SystemUtils
     @@last_error = e_str
     p e_str
     SystemUtils.log_output(e_str, 10)
+    f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
+    f.puts(e_str)
+    f.close
   end
 
   def self.last_error

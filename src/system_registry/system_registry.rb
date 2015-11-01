@@ -3,7 +3,9 @@ require 'yaml'
 require 'fileutils'
 
 class SystemRegistry < Registry
-
+  @@service_tree_file = '/opt/engines/run/service_manager/services.yaml'   
+  
+  @@RegistryLock='/tmp/registry.lock'
   require_relative 'sub_registry.rb'
   require_relative 'configurations_registry.rb'
   require_relative 'managed_engines_registry.rb'
@@ -14,10 +16,10 @@ class SystemRegistry < Registry
   def initialize
     # @service_tree root of the Service Registry Tree
     @system_registry = initialize_tree
-    @configuration_registry = ConfigurationsRegistry.new(service_configurations_registry)
-    @services_registry = ServicesRegistry.new(services_registry)
-    @managed_engines_registry = ManagedEnginesRegistry.new(managed_engines_registry)
-    @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry)
+    @configuration_registry = ConfigurationsRegistry.new(service_configurations_registry_tree)
+    @services_registry = ServicesRegistry.new(services_registry_tree)
+    @managed_engines_registry = ManagedEnginesRegistry.new(managed_engines_registry_tree)
+    @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry_tree)
   end
 
   def update_attached_service(service_hash)
@@ -36,7 +38,7 @@ class SystemRegistry < Registry
   def shutdown
      p :GOT_SHUT_DOWN
     roll_back
-    save_tree
+    unlock_tree
    end
    
   def find_service_consumers(service_query_hash)
@@ -44,12 +46,7 @@ class SystemRegistry < Registry
     test_services_registry_result(@services_registry.find_service_consumers(service_query_hash))
   end
 
-  def get_service_entry(service_query_hash)
-    clear_error
-    tree_node = find_service_consumers(service_query_hash)
-    return false  if !tree_node.is_a?(Tree::TreeNode)
-    return tree_node.content
-  end
+
 
   def add_to_services_registry(service_hash)
     take_snap_shot
@@ -103,8 +100,15 @@ class SystemRegistry < Registry
     test_engines_registry_result(@managed_engines_registry.find_engine_service_hash(params))
   end
 
+#  def  get_active_persistant_services(params)
+#    clear_error
+#    test_engines_registry_result(@managed_engines_registry.get_active_persistant_services(params, false))
+#  end
+  
   def get_engine_nonpersistant_services(params)
     clear_error
+    p :get_engine_nonpersistant_services
+    p params
     test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params, false))
   end
 
@@ -121,6 +125,7 @@ class SystemRegistry < Registry
   end
 
   def all_engines_registered_to(service_path)
+    clear_error
     test_engines_registry_result(@managed_engines_registry.all_engines_registered_to(service_path))
   end
 
@@ -141,75 +146,63 @@ class SystemRegistry < Registry
     log_exception(e)
   end
 
-  def system_registry_tree
-    clear_error
-    service_tree_file = '/opt/engines/run/service_manager/services.yaml'
-    registry = @system_registry
-    if @last_tree_mod_time && !@last_tree_mod_time.nil?
-      current_time = File.mtime(service_tree_file)
-      registry = load_tree if !@last_tree_mod_time.eql?(current_time)
-    end
-    @system_registry = registry
-    return registry
-  rescue StandardError => e
-    log_exception(e)
-    return false
-  end
+  def system_registry_tree    
 
-  def service_configurations_registry
-    clear_error
-    return false if !check_system_registry_tree
-    @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations') if @system_registry['Configurations'].nil?
-    return @system_registry ['Configurations']
+    current_mod_time = File.mtime(@@service_tree_file) unless @last_tree_mod_time == nil 
+   # @last_tree_mod_time = nil
+      if @system_registry == nil || @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
+        @system_registry = load_tree
+        # FIXME should be recover tree with warning
+        log_error_mesg('Panic nil regsitry loaded', @system_registry) if @system_registry.nil?
+        @system_registry = recovery_tree if @system_registry.nil?
+        set_registries
+      end
+    return @system_registry
   rescue StandardError => e
     log_exception(e)
     return nil
+  end
+  
+  def sync
+    p :SYNC
+    system_registry_tree    
   end
 
   # @return the ManagedServices Tree [TreeNode] Branch
   #  creates if does not exist
-  def services_registry
+  def services_registry_tree
     clear_error
     return false if !check_system_registry_tree
-    @system_registry << Tree::TreeNode.new('Services', 'Service register') if !@system_registry['Services'].is_a?(Tree::TreeNode)
-    return @system_registry['Services']
+    system_registry_tree << Tree::TreeNode.new('Services', 'Service register') unless system_registry_tree['Services'].is_a?(Tree::TreeNode)
+    return system_registry_tree['Services']
   rescue StandardError => e
     log_exception(e)
     return false
   end
 
-  def orphaned_services_registry
-    clear_error
-    return false if !check_system_registry_tree
-    orphans = @system_registry['OphanedServices']
-    @system_registry << Tree::TreeNode.new('OphanedServices', 'Persistant Services left after Engine Deinstall') if !orphans.is_a?(Tree::TreeNode)
-    @system_registry['OphanedServices']
-  rescue StandardError => e
-    log_exception(e)
-    return nil
-  end
+
 
   # @return the ManagedEngine Tree Branch
   # creates if does not exist
-  def managed_engines_registry
+  def managed_engines_registry_tree
     clear_error
     return false if !check_system_registry_tree
-    @system_registry << Tree::TreeNode.new('ManagedEngine', 'ManagedEngine Service register') if !@system_registry['ManagedEngine'].is_a?(Tree::TreeNode)
-    return @system_registry['ManagedEngine']
+    system_registry_tree << Tree::TreeNode.new('ManagedEngine', 'ManagedEngine Service register') if !system_registry_tree['ManagedEngine'].is_a?(Tree::TreeNode)
+    system_registry_tree['ManagedEngine']
   rescue StandardError => e
     log_exception(e)
   end
 
-  def get_service_configurations_hashes(service_hash)
+  
+  def orphaned_services_registry_tree
     clear_error
-    test_configurations_registry_result(@configuration_registry.get_service_configurations_hashes(service_hash))
-  end
-
-  def update_service_configuration(config_hash)
-    take_snap_shot
-    return save_tree if test_configurations_registry_result(@configuration_registry.update_service_configuration(config_hash))
-    roll_back
-    return false
+    return false if !check_system_registry_tree
+    orphans = system_registry_tree['OphanedServices']
+    system_registry_tree << Tree::TreeNode.new('OphanedServices', 'Persistant Services left after Engine Deinstall') if !orphans.is_a?(Tree::TreeNode)
+    system_registry_tree['OphanedServices']
+  rescue StandardError => e
+    log_exception(e)
+    return nil
   end
 
   # @params [Hash] Loads the varaibles from the matching orphan
@@ -276,29 +269,83 @@ class SystemRegistry < Registry
     return false
   end
 
-  def test_orphans_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @orphan_server_registry.last_error.to_s  if result.is_a?(FalseClass)
-    return result
+ 
+  
+  def service_configurations_registry_tree
+    clear_error
+    return false if !check_system_registry_tree
+    system_registry_tree << Tree::TreeNode.new('Configurations', 'Service Configurations') if system_registry_tree['Configurations'].nil?
+    system_registry_tree['Configurations']
+  rescue StandardError => e
+    log_exception(e)
+    return nil
   end
+  
+  def get_service_configurations_hashes(service_hash)
+      clear_error
+      test_configurations_registry_result(@configuration_registry.get_service_configurations_hashes(service_hash))
+    end
+    
+    def add_service_configuration(service_hash)
+      take_snap_shot
+      return save_tree if test_configurations_registry_result(@configuration_registry.add_service_configuration(service_hash))
+      roll_back  
+     end
+     
+    def rm_service_configuration(service_hash)
+      take_snap_shot
+      return save_tree if test_configurations_registry_result(@configuration_registry.rm_service_configuration(service_hash))
+      roll_back 
+      end
+     
+     def get_service_configuration(service_hash)
+        clear_error
+        test_configurations_registry_result(@configuration_registry.get_service_configuration(service_hash))
+     end
+    
+    def update_service_configuration(config_hash)
+      take_snap_shot
+      return save_tree if test_configurations_registry_result(@configuration_registry.update_service_configuration(config_hash))
+      roll_back
+      return false
+    end
+  
+  def update_managed_engine_service(service_query_hash)
+      p :NYI
+    return false
+end
 
-  def test_engines_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @managed_engines_registry.last_error.to_s if result.is_a?(FalseClass)
-    return result
+  def get_service_entry(service_query_hash)
+    clear_error
+    tree_node = find_service_consumers(service_query_hash)
+    return false  if !tree_node.is_a?(Tree::TreeNode)
+    return tree_node.content
   end
-
-  def test_services_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @services_registry.last_error.to_s if result.is_a?(FalseClass)
-    return result
-  end
-
-  def test_configurations_registry_result(result)
-    @last_error = @last_error.to_s + ':' + @configuration_registry.last_error.to_s if result.is_a?(FalseClass)
-    return result
-  end
-
+  
   private
 
+  def test_orphans_registry_result(result)
+     @last_error = @last_error.to_s + ':' + @orphan_server_registry.last_error.to_s  if result.is_a?(FalseClass)
+     return result
+   end
+ 
+   def test_engines_registry_result(result)
+     @last_error = @last_error.to_s + ':' + @managed_engines_registry.last_error.to_s if result.is_a?(FalseClass)
+     return result
+   end
+ 
+   def test_services_registry_result(result)
+     @last_error = @last_error.to_s + ':' + @services_registry.last_error.to_s if result.is_a?(FalseClass)
+     return result
+   end
+ 
+   def test_configurations_registry_result(result)
+     @last_error = @last_error.to_s + ':' + @configuration_registry.last_error.to_s if result.is_a?(FalseClass)
+     return result
+   end
+
   def take_snap_shot
+    lock_tree
     @configuration_registry.take_snap_shot
     @services_registry.take_snap_shot
     @managed_engines_registry.take_snap_shot
@@ -318,26 +365,57 @@ class SystemRegistry < Registry
     #    if @snap_shot.is_a?(Tree::TreeNode)
     #      @system_registry = @snap_shot
     #    end
-    @configuration_registry.roll_back
-    @services_registry.roll_back
-    @managed_engines_registry.roll_back
-    @orphan_server_registry.roll_back
+    #perhaps just reload
+#    @configuration_registry.roll_back
+#    @system_registry ['Configurations'] = @configuration_registry.registry
+#    
+#    @services_registry.roll_back
+#    @system_registry['Services'] = @services_registry.registry
+#      
+#    @managed_engines_registry.roll_back
+#    @system_registry['ManagedEngine'] = @managed_engines_registry.registry
+#    
+#    @orphan_server_registry.roll_back
+#    @system_registry['OphanedServices'] = @orphan_server_registry.registry
+    
+  #  unlock_tree unlock occurs in load tree
+    unlock_tree
+    @system_registry = load_tree
+    set_registries
     return @system_registry
   rescue StandardError => e
     log_exception(e)
   end
+  
+  # set @registry to the appropirate tree Node for eaach sub resgistry
+  # creates node if nil via_xxx_yyy_tree
+  def set_registries      
+    p :system_registry_as_a_str
+    p @system_registry.to_s
+    configuration_registry_tree if @system_registry['Configurations'].nil?
+    @configuration_registry.reset_registry(@system_registry['Configurations'])      
+    services_registry_tree if @system_registry['Services'].nil?
+    @services_registry.reset_registry(@system_registry['Services'])
+    orphaned_services_registry_tree if @system_registry['OphanedServices'].nil?
+    @orphan_server_registry.reset_registry(@system_registry['OphanedServices']) 
+    managed_engines_registry_tree if @system_registry['ManagedEngine'].nil?
+    @managed_engines_registry.reset_registry(@system_registry['ManagedEngine']) 
+    rescue StandardError => e
+        log_exception(e)
+  end
+  
+  
 
   # loads the Service tree off disk from [SysConfig.ServiceTreeFile]
   # calls [log_exception] on error and returns nil
   # @return service_tree [TreeNode]
   def tree_from_yaml
     clear_error
-    begin
-      service_tree_file = '/opt/engines/run/service_manager/services.yaml'
-      if File.exist?(service_tree_file)
-        tree_data = File.read(service_tree_file)
-      elsif File.exist?(service_tree_file + '.bak')
-        tree_data = File.read(service_tree_file + '.bak')
+    begin      
+      if File.exist?(@@service_tree_file)
+        tree_data = File.read(@@service_tree_file)
+      elsif File.exist?(@@service_tree_file + '.bak')
+        tree_data = File.read(@@service_tree_file + '.bak')
       end
       registry = YAML::load(tree_data)
       return registry
@@ -351,24 +429,60 @@ class SystemRegistry < Registry
   # Load tree from file or create initial service tree
   # @return ServiceTree as a [TreeNode]
   def initialize_tree
-    service_tree_file = '/opt/engines/run/service_manager/services.yaml'
-    return load_tree if File.exist?(service_tree_file)
-    registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
-    registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
-    registry << Tree::TreeNode.new('Services', 'Managed Services')
-    return registry
+    return load_tree if File.exist?(@@service_tree_file)    
+    lock_tree
+    @system_registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
+    @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
+    @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
+    @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
+    save_tree
+    @system_registry 
   rescue StandardError => e
     puts e.message
     log_exception(e)
   end
 
-  # @sets the service_tree and loast mod time
+  # FIXME this should do a recovery and not a recreate
+  def recovery_tree
+    @system_registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
+        @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
+        @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
+        @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
+        save_tree
+        @system_registry 
+      rescue StandardError => e
+        puts e.message
+        log_exception(e)
+  end
+  
+  def lock_tree
+    if File.exist?(@@RegistryLock)
+      sleep 1
+      sleep 1 if File.exist?(@@RegistryLock)
+      p :REGISTRY_LOCKED
+       log_error_mesg("Failed to lock",@@RegistryLock) if File.exist?(@@RegistryLock)
+       return true
+    end
+    FileUtils.touch(@@RegistryLock)
+    return true
+  end
+  
+  def unlock_tree
+    File.delete(@@RegistryLock) if File.exist?(@@RegistryLock)
+  end
+  
+    # @sets the service_tree and load mod time
   def load_tree
     clear_error
-    service_tree_file = '/opt/engines/run/service_manager/services.yaml'
+  unless lock_tree
+    p :Failed_to_gain_lock   
+    #return nil 
+  end
     registry = tree_from_yaml()
+    p :LOAD_TREE
     @last_tree_mod_time = nil
-    @last_tree_mod_time = File.mtime(service_tree_file) if File.exist?(service_tree_file)
+    @last_tree_mod_time = File.mtime(@@service_tree_file) if File.exist?(@@service_tree_file)
+    unlock_tree
     return registry
   rescue StandardError => e
     @last_error = 'load tree'
@@ -380,23 +494,21 @@ class SystemRegistry < Registry
   # calls [log_exception] on error and returns false
   # @return boolean
   def save_tree
-    clear_error
-    service_tree_file = '/opt/engines/run/service_manager/services.yaml'
-    if File.exist?(service_tree_file)
-      statefile_bak = service_tree_file + '.bak'
-      FileUtils.copy(service_tree_file, statefile_bak)
-    end
+    clear_error    
+    p :save_trer
+    FileUtils.copy(@@service_tree_file, @@service_tree_file + '.bak') if File.exist?(@@service_tree_file)
+
     serialized_object = YAML::dump(@system_registry)
-    f = File.new(service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new(@@service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
-    f.close
-    # FIXME: do a del a rename as killing copu part way through ...
-    FileUtils.copy(service_tree_file + '.tmp', service_tree_file)
-    @last_tree_mod_time = File.mtime(service_tree_file)
+    f.close    
+    FileUtils.mv(@@service_tree_file + '.tmp', @@service_tree_file)
+    @last_tree_mod_time = File.mtime(@@service_tree_file)
+    unlock_tree
     return true
   rescue StandardError => e
     @last_error = 'save error'
-    FileUtils.copy(service_tree_file + '.bak', service_tree_file) if !File.exist?(service_tree_file)
+    FileUtils.copy(@@service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
     log_exception(e)
   end
 end
