@@ -28,7 +28,7 @@ get '/v0/system_registry/service/is_registered' do
   @@system_registry.service_is_registered?(RegistryUtils.symbolize_keys(params)).to_json
 end
 
-post '/v0/system_registry/services/' do
+post '/v0/system_registry/services/add' do
   p RegistryUtils.symbolize_keys(params)
  if @@system_registry.add_to_services_registry(RegistryUtils.symbolize_keys(params)).to_json
   status(202)

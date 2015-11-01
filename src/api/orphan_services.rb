@@ -11,7 +11,7 @@ get '/v0/system_registry/services/orphan/' do
   @@system_registry.retrieve_orphan(RegistryUtils.symbolize_keys(params)).to_json
  end
 
- post '/v0/system_registry/services/orphans/' do
+ post '/v0/system_registry/services/orphans/add' do
    p RegistryUtils.symbolize_keys(params)
  if @@system_registry.orphanate_service(RegistryUtils.symbolize_keys(params)).to_json
    status(202)
@@ -21,7 +21,7 @@ get '/v0/system_registry/services/orphan/' do
  end
  
 
- delete '/v0/system_registry/services/orphans/' do
+ delete '/v0/system_registry/services/orphans/del' do
    p :release_orphan
    p RegistryUtils.symbolize_keys(params)
  if @@system_registry.release_orphan(RegistryUtils.symbolize_keys(params)).to_json

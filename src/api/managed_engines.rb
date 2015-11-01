@@ -28,7 +28,7 @@ get '/v0/system_registry/engine/services/persistant/' do
 @@system_registry.get_engine_persistant_services(RegistryUtils.symbolize_keys(params)).to_json
 end
 
-post '/v0/system_registry/engine/services/' do
+post '/v0/system_registry/engine/services/add' do
   STDERR.puts RegistryUtils.symbolize_keys(params).to_s
   if @@system_registry.add_to_managed_engines_registry(RegistryUtils.symbolize_keys(params)).to_json
   status(202)
