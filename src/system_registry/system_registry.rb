@@ -257,11 +257,13 @@ class SystemRegistry < Registry
     #    end
     p :oprhanicate_now
     if test_orphans_registry_result( @orphan_server_registry.orphanate_service(service_hash))
+      p :oprhanicateed
       if test_services_registry_result(@services_registry.remove_from_services_registry(service_hash))
+        p :remove_from_service_tree
         return save_tree
       else
         @orphan_server_registry.release_orphan(service_hash)
-        log_error_mesg('Failed to save orphan in remove_from_services_registry' + @services_registry.last_error.to_s, service_hash)
+        log_error_mesg('Failed to save orphan in remove_from_services_registry de orphaning' + @services_registry.last_error.to_s, service_hash)
       end
       log_error_mesg('Failed to save orphan' + @orphan_server_registry.last_error.to_s, service_hash)
     end
