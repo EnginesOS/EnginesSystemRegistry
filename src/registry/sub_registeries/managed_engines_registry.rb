@@ -39,14 +39,17 @@ class ManagedEnginesRegistry < SubRegistry
     params[:parent_engine] = params[:engine_name] unless params.key?(:parent_engine)
     services = find_engine_services(params)
     unless services.is_a?(Tree::TreeNode)
-      log_error_mesg('get_engine_persistance_services  Failed to find engine services', params)
+      log_error_mesg('Failed to find engine in persistant service', params)
       return leafs
     end
     services.children.each do |service|
       SystemUtils.debug_output(:finding_match_for, service.content)
+      STDERR.puts :serach_4_persistance
+      STDERR.puts persistance.to_s + ':' + persistance.class.name
       matches = get_matched_leafs(service, :persistant, persistance)
       SystemUtils.debug_output('matches', matches)
       leafs = leafs.concat(matches)
+      p leafs
     end
     return order_hashes_in_priotity(leafs)
   end
@@ -84,7 +87,7 @@ class ManagedEnginesRegistry < SubRegistry
       service_node.content = service_hash
     else
       log_error_mesg('Engine Node existed', service_handle)
-      log_error_mesg('Cannot over write persistant service' + service_node.content.to_s + ' with ', service_hash)
+      log_error_mesg('Cannot over write persistant service in managed engines tree' + service_node.content.to_s + ' with ', service_hash)
     end
     return true
   rescue StandardError => e
@@ -148,4 +151,6 @@ class ManagedEnginesRegistry < SubRegistry
       return engine_node
     end
   end
+  
+
 end

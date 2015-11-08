@@ -10,6 +10,12 @@ class OrphanServicesRegistry < SubRegistry
     log_error_mesg('failed to remove tree entry for ', orphan)
   end
 
+
+  def rollback_orphaned_service(params)
+    clear_error
+       test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
+  end
+  
   # Saves the service_hash in the orphaned service registry
   # @return result
   def orphanate_service(service_hash)
@@ -26,9 +32,14 @@ class OrphanServicesRegistry < SubRegistry
         engine_node = Tree::TreeNode.new(service_hash[:parent_engine], 'Belonged to ' + service_hash[:parent_engine])
         type_node << engine_node
       end
+      STDERR.puts :add_orpha
+  STDERR.puts service_hash.to_s
+  STDERR.puts :at
+  STDERR.puts engine_node.to_s
       engine_node << Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       return true
     end
+STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
     return false
   end
 
@@ -40,7 +51,7 @@ class OrphanServicesRegistry < SubRegistry
 
   # @return  orphaned_services_tree
   # @wrapper for the gui
-  def orphaned_services_registry   
+  def orphaned_services_registry
     return @registry
   end
 
@@ -50,9 +61,10 @@ class OrphanServicesRegistry < SubRegistry
   def reparent_orphan(params)
     orphan = retrieve_orphan_node(params)
     if orphan
-      orphan.content[:variables][:parent_engine] = params[:new_parent]
-      orphan.content[:parent_engine] = params[:new_parent]
-      return orphan.content
+      content = orphan.content
+      content[:variables][:parent_engine] = params[:parent_engine]
+      content[:parent_engine] = params[:parent_engine]
+      return content
     else
       log_error_mesg('No orphan found to reparent', params)
       return false
@@ -70,6 +82,8 @@ class OrphanServicesRegistry < SubRegistry
     end
     return leafs
   end
+
+private
 
   # @returns a [TreeNode] to the depth of the search
   # @service_query_hash :publisher_namespace
@@ -97,8 +111,7 @@ class OrphanServicesRegistry < SubRegistry
     return service_path_tree
   end
 
-  private
-
+  
   # @return [TreeNode] of Oprhaned Serivce that matches the supplied params
   # @param params { :type_path , :service_handle}
   # @return nil on no match
@@ -116,8 +129,8 @@ class OrphanServicesRegistry < SubRegistry
           next
         end
         unless engine_type[params[:service_handle]].nil?
-           P :matchin_search
-          return engine_type[params[:service_handle]]
+           p :matchin_search
+          return type[params[:service_handle]]
         else
           log_error_mesg('params nil service_handle', params)
         end
