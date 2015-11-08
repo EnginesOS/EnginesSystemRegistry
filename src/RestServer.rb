@@ -18,7 +18,7 @@ require_relative 'api/configurations.rb'
 require_relative 'api/managed_services.rb'
 require_relative 'api/orphan_services.rb'
 require_relative 'api/managed_engines.rb'
-
+  require_relative 'api/subservices.rb'
 
 rescue StandardError=>e 
   log_exception(e)
