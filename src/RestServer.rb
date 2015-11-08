@@ -6,7 +6,7 @@ begin
   require 'json'
   require 'rubytree'
  
-  require_relative 'system_registry/system_registry.rb'
+  require_relative 'registry/system_registry/system_registry.rb'
   
   set :sessions, true
   set :logging, true

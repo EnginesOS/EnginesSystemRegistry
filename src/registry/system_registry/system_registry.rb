@@ -1,4 +1,4 @@
-require_relative 'registry.rb'
+require_relative '../registry.rb'
 require 'yaml'
 require 'fileutils'
 
@@ -6,12 +6,15 @@ class SystemRegistry < Registry
   @@service_tree_file = '/opt/engines/run/service_manager/services.yaml'   
   
   @@RegistryLock='/tmp/registry.lock'
-  require_relative 'sub_registry.rb'
-  require_relative 'configurations_registry.rb'
-  require_relative 'managed_engines_registry.rb'
-  require_relative 'services_registry.rb'
-  require_relative 'orphan_services_registry.rb'
-  require_relative 'system_utils.rb'
+  require_relative '../sub_registeries/sub_registry.rb'
+  require_relative '../sub_registeries/configurations_registry.rb'
+  require_relative '../sub_registeries/managed_engines_registry.rb'
+  require_relative '../sub_registeries/services_registry.rb'
+  require_relative '../sub_registeries/orphan_services_registry.rb'
+  require_relative '../system_utils.rb'
+  require_relative 'configurations.rb'
+  include Configurations
+  
   # @ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
   def initialize
     # @service_tree root of the Service Registry Tree
@@ -238,6 +241,11 @@ class SystemRegistry < Registry
     return false
   end
 
+  def rollback_orphaned_service(params)
+    clear_error
+       test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
+  end
+   
   def get_orphaned_services(params)
     clear_error
     test_orphans_registry_result(@orphan_server_registry.get_orphaned_services(params))
@@ -272,46 +280,7 @@ class SystemRegistry < Registry
   end
 
  
-  
-  def service_configurations_registry_tree
-    clear_error
-    return false if !check_system_registry_tree
-    system_registry_tree << Tree::TreeNode.new('Configurations', 'Service Configurations') if system_registry_tree['Configurations'].nil?
-    system_registry_tree['Configurations']
-  rescue StandardError => e
-    log_exception(e)
-    return nil
-  end
-  
-  def get_service_configurations_hashes(service_hash)
-      clear_error
-      test_configurations_registry_result(@configuration_registry.get_service_configurations_hashes(service_hash))
-    end
-    
-    def add_service_configuration(service_hash)
-      take_snap_shot
-      return save_tree if test_configurations_registry_result(@configuration_registry.add_service_configuration(service_hash))
-      roll_back  
-     end
-     
-    def rm_service_configuration(service_hash)
-      take_snap_shot
-      return save_tree if test_configurations_registry_result(@configuration_registry.rm_service_configuration(service_hash))
-      roll_back 
-      end
-     
-     def get_service_configuration(service_hash)
-        clear_error
-        test_configurations_registry_result(@configuration_registry.get_service_configuration(service_hash))
-     end
-    
-    def update_service_configuration(config_hash)
-      take_snap_shot
-      return save_tree if test_configurations_registry_result(@configuration_registry.update_service_configuration(config_hash))
-      roll_back
-      return false
-    end
-  
+ 
   def update_managed_engine_service(service_query_hash)
       p :NYI
     return false
@@ -492,6 +461,8 @@ end
     return false
   end
 
+ 
+  
   # saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree
   # calls [log_exception] on error and returns false
   # @return boolean
