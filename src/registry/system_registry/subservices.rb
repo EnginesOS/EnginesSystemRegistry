@@ -1,5 +1,5 @@
 module Subservices
-  require_relative 'utils.rb'
+  
   
   def subservices_registry_tree
     clear_error
