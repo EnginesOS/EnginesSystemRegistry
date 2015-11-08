@@ -5,7 +5,8 @@ require 'fileutils'
 class SystemRegistry < Registry
   @@service_tree_file = '/opt/engines/run/service_manager/services.yaml'   
   
-  @@RegistryLock='/tmp/registry.lock'
+ 
+
   require_relative '../sub_registeries/sub_registry.rb'
   require_relative '../sub_registeries/configurations_registry.rb'
   require_relative '../sub_registeries/managed_engines_registry.rb'
@@ -14,7 +15,23 @@ class SystemRegistry < Registry
   require_relative '../system_utils.rb'
   require_relative 'configurations.rb'
   include Configurations
-  
+  require_relative 'orphans.rb'
+  include Orphans
+  require_relative 'services.rb'
+  include Services
+  require_relative 'engines.rb'
+  include Engines
+  require_relative 'checks.rb'
+  include Checks
+  require_relative 'trees.rb'
+    include Trees
+         
+  def shutdown
+      p :GOT_SHUT_DOWN
+     roll_back
+     unlock_tree
+    end
+    
   # @ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
   def initialize
     # @service_tree root of the Service Registry Tree
@@ -38,223 +55,8 @@ class SystemRegistry < Registry
   end
   
   
-  def shutdown
-     p :GOT_SHUT_DOWN
-    roll_back
-    unlock_tree
-   end
+ 
    
-  def find_service_consumers(service_query_hash)
-    clear_error
-    test_services_registry_result(@services_registry.find_service_consumers(service_query_hash))
-  end
-
-
-
-  def add_to_services_registry(service_hash)
-    take_snap_shot
-    return save_tree if test_services_registry_result(@services_registry.add_to_services_registry(service_hash))
-    roll_back
-    return false
-  end
-
-  def remove_from_services_registry(service_hash)
-    take_snap_shot
-    return save_tree if test_services_registry_result(@services_registry.remove_from_services_registry(service_hash))
-    roll_back
-    return false
-  end
-
-  # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
-  def get_registered_against_service(params)
-    clear_error
-    test_services_registry_result(@services_registry.get_registered_against_service(params))
-  end
-
-  def list_providers_in_use
-    clear_error
-    test_services_registry_result(@services_registry.list_providers_in_use)
-  end
-
-  def service_is_registered?(service_hash)
-    clear_error
-    test_services_registry_result(@services_registry.service_is_registered?(service_hash))
-  end
-
-  #  def  find_engine_services_hashes(params)
-  #    clear_error
-  #    test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
-  #  end
-
-  # ENGINE STUFF
-
-  def find_engine_services_hashes(params)
-    clear_error
-    test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
-  end
-  # Returns Treenodes
-  #  def find_engine_services(params)
-  #    clear_error
-  #    test_engines_registry_result(@managed_engines_registry.find_engine_services(params))
-  #  end
-
-  def find_engine_service_hash(params)
-    clear_error
-    test_engines_registry_result(@managed_engines_registry.find_engine_service_hash(params))
-  end
-
-#  def  get_active_persistant_services(params)
-#    clear_error
-#    test_engines_registry_result(@managed_engines_registry.get_active_persistant_services(params, false))
-#  end
-  
-  def get_engine_nonpersistant_services(params)
-    clear_error
-    p :get_engine_nonpersistant_services
-    p params
-    test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params, false))
-  end
-
-  def get_engine_persistant_services(params)
-    clear_error
-    test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params, true))
-  end
-
-  def remove_from_managed_engines_registry(service_hash)
-    take_snap_shot
-    return save_tree if test_engines_registry_result(@managed_engines_registry.remove_from_engine_registry(service_hash))
-    roll_back
-    return false
-  end
-
-  def all_engines_registered_to(service_path)
-    clear_error
-    test_engines_registry_result(@managed_engines_registry.all_engines_registered_to(service_path))
-  end
-
-  def add_to_managed_engines_registry(service_hash)
-    take_snap_shot
-    return save_tree if test_engines_registry_result(@managed_engines_registry.add_to_managed_engines_registry(service_hash))
-    roll_back
-    return false
-  end
-
-  # @return boolean true if not nil
-  def check_system_registry_tree
-    clear_error
-    st = system_registry_tree
-    return SystemUtils.log_error_mesg('Nil service tree ?', st) if !st.is_a?(Tree::TreeNode)
-    return true
-  rescue StandardError => e
-    log_exception(e)
-  end
-
-  def system_registry_tree    
-
-    current_mod_time = File.mtime(@@service_tree_file) unless @last_tree_mod_time == nil 
-   # @last_tree_mod_time = nil
-      if @system_registry == nil || @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
-        @system_registry = load_tree
-        # FIXME should be recover tree with warning
-        log_error_mesg('Panic nil regsitry loaded', @system_registry) if @system_registry.nil?
-        @system_registry = recovery_tree if @system_registry.nil?
-        set_registries
-      end
-    return @system_registry
-  rescue StandardError => e
-    log_exception(e)
-    return nil
-  end
-  
-  def sync
-    p :SYNC
-    system_registry_tree    
-  end
-
-  # @return the ManagedServices Tree [TreeNode] Branch
-  #  creates if does not exist
-  def services_registry_tree
-    clear_error
-    return false if !check_system_registry_tree
-    system_registry_tree << Tree::TreeNode.new('Services', 'Service register') unless system_registry_tree['Services'].is_a?(Tree::TreeNode)
-    return system_registry_tree['Services']
-  rescue StandardError => e
-    log_exception(e)
-    return false
-  end
-
-
-
-  # @return the ManagedEngine Tree Branch
-  # creates if does not exist
-  def managed_engines_registry_tree
-    clear_error
-    return false if !check_system_registry_tree
-    system_registry_tree << Tree::TreeNode.new('ManagedEngine', 'ManagedEngine Service register') if !system_registry_tree['ManagedEngine'].is_a?(Tree::TreeNode)
-    system_registry_tree['ManagedEngine']
-  rescue StandardError => e
-    log_exception(e)
-  end
-
-  
-  def orphaned_services_registry_tree
-    clear_error
-    return false if !check_system_registry_tree
-    orphans = system_registry_tree['OphanedServices']
-    system_registry_tree << Tree::TreeNode.new('OphanedServices', 'Persistant Services left after Engine Deinstall') if !orphans.is_a?(Tree::TreeNode)
-    system_registry_tree['OphanedServices']
-  rescue StandardError => e
-    log_exception(e)
-    return nil
-  end
-
-  # @params [Hash] Loads the varaibles from the matching orphan
-  # does not save bnut just populates the content/service variables in the hash
-  # return boolean
-  def reparent_orphan(params)
-    clear_error
-    test_orphans_registry_result(@orphan_server_registry.reparent_orphan(params))
-  end
-
-  # @params [Hash] of orphan matching the params
-  # return boolean
-  def retrieve_orphan(params)
-    clear_error
-    test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(params))
-  end
-
-  # Removes orphan and places in the managed_engine_registry
-  def rebirth_orphan(params)
-    take_snap_shot
-    if test_orphans_registry_result(@orphan_server_registry.release_orphan(params))
-      if test_services_registry_result(@services_registry.add_to_services_registry(params))
-        return save_tree if test_services_registry_result(@managed_engines_registry.add_to_managed_engines_registry(params))
-      end
-    end
-    roll_back
-  end
-
-  def release_orphan(params)
-    take_snap_shot
-    return save_tree if test_orphans_registry_result(@orphan_server_registry.release_orphan(params))
-    roll_back
-    return false
-  end
-
-  def rollback_orphaned_service(params)
-    clear_error
-       test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
-  end
-   
-  def get_orphaned_services(params)
-    clear_error
-    test_orphans_registry_result(@orphan_server_registry.get_orphaned_services(params))
-  end
-  #
-  #  def find_orphan_consumers(params)
-  #    clear_error
-  #    test_orphans_registry_result(@orphan_server_registry.find_orphan_consumers(params))
-  #  end
 
   def orphanate_service(service_hash)
     take_snap_shot
@@ -279,42 +81,60 @@ class SystemRegistry < Registry
     return false
   end
 
+  # Removes orphan and places in the managed_engine_registry
+    def rebirth_orphan(params)
+      take_snap_shot
+      if test_orphans_registry_result(@orphan_server_registry.release_orphan(params))
+        if test_services_registry_result(@services_registry.add_to_services_registry(params))
+          return save_tree if test_services_registry_result(@managed_engines_registry.add_to_managed_engines_registry(params))
+        end
+      end
+      roll_back
+    end
+  #  def  find_engine_services_hashes(params)
+  #    clear_error
+  #    test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
+  #  end
+
+ 
+
+  
+
+  def system_registry_tree    
+
+    current_mod_time = File.mtime(@@service_tree_file) unless @last_tree_mod_time == nil 
+   # @last_tree_mod_time = nil
+      if @system_registry == nil || @last_tree_mod_time.nil? || !@last_tree_mod_time.eql?(current_mod_time)
+        @system_registry = load_tree
+        # FIXME should be recover tree with warning
+        log_error_mesg('Panic nil regsitry loaded', @system_registry) if @system_registry.nil?
+        @system_registry = recovery_tree if @system_registry.nil?
+        set_registries
+      end
+    return @system_registry
+  rescue StandardError => e
+    log_exception(e)
+    return nil
+  end
+  
+  def sync
+    p :SYNC
+    system_registry_tree    
+  end
+
+ 
  
  
   def update_managed_engine_service(service_query_hash)
       p :NYI
     return false
-end
+    end
 
-  def get_service_entry(service_query_hash)
-    clear_error
-    tree_node = find_service_consumers(service_query_hash)
-    return false  if !tree_node.is_a?(Tree::TreeNode)
-    return tree_node.content
-  end
-  
+ 
   private
 
-  def test_orphans_registry_result(result)
-     @last_error = @last_error.to_s + ':' + @orphan_server_registry.last_error.to_s  if result.is_a?(FalseClass)
-     return result
-   end
- 
-   def test_engines_registry_result(result)
-     @last_error = @last_error.to_s + ':' + @managed_engines_registry.last_error.to_s if result.is_a?(FalseClass)
-     return result
-   end
- 
-   def test_services_registry_result(result)
-     @last_error = @last_error.to_s + ':' + @services_registry.last_error.to_s if result.is_a?(FalseClass)
-     return result
-   end
- 
-   def test_configurations_registry_result(result)
-     @last_error = @last_error.to_s + ':' + @configuration_registry.last_error.to_s if result.is_a?(FalseClass)
-     return result
-   end
-
+  require_relative 'file_locking.rb'
+  
   def take_snap_shot
     lock_tree
     @configuration_registry.take_snap_shot
@@ -426,21 +246,7 @@ end
         log_exception(e)
   end
   
-  def lock_tree
-    if File.exist?(@@RegistryLock)
-      sleep 1
-      sleep 1 if File.exist?(@@RegistryLock)
-      p :REGISTRY_LOCKED
-       log_error_mesg("Failed to lock",@@RegistryLock) if File.exist?(@@RegistryLock)
-       return true
-    end
-    FileUtils.touch(@@RegistryLock)
-    return true
-  end
-  
-  def unlock_tree
-    File.delete(@@RegistryLock) if File.exist?(@@RegistryLock)
-  end
+ 
   
     # @sets the service_tree and load mod time
   def load_tree
