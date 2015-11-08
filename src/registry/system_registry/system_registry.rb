@@ -25,6 +25,8 @@ class SystemRegistry < Registry
   include Checks
   require_relative 'trees.rb'
     include Trees
+  require_relative 'subservices.rb'
+    include Subservices
          
   def shutdown
       p :GOT_SHUT_DOWN
