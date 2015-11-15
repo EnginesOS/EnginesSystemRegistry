@@ -10,6 +10,12 @@ class OrphanServicesRegistry < SubRegistry
     log_error_mesg('failed to remove tree entry for ', orphan)
   end
 
+
+  def rollback_orphaned_service(params)
+    clear_error
+       test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
+  end
+  
   # Saves the service_hash in the orphaned service registry
   # @return result
   def orphanate_service(service_hash)
@@ -26,9 +32,14 @@ class OrphanServicesRegistry < SubRegistry
         engine_node = Tree::TreeNode.new(service_hash[:parent_engine], 'Belonged to ' + service_hash[:parent_engine])
         type_node << engine_node
       end
+      STDERR.puts :add_orpha
+  STDERR.puts service_hash.to_s
+  STDERR.puts :at
+  STDERR.puts engine_node.to_s
       engine_node << Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       return true
     end
+STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
     return false
   end
 

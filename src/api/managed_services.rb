@@ -5,7 +5,8 @@ get '/v0/system_registry/services/tree' do
 end
  
 get '/v0/system_registry/service/registered/engines/' do
-  @@system_registry.all_engines_registered_to(RegistryUtils.symbolize_keys(params)).to_json
+  p = RegistryUtils.symbolize_keys(params)  
+  @@system_registry.all_engines_registered_to(p[:service_type]).to_json
 end
 
 get '/v0/system_registry/service/consumers/' do

@@ -1,4 +1,0 @@
-class SubservicesRegistry < SubRegistry
-
-
-end
