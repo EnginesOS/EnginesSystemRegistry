@@ -1,7 +1,7 @@
 begin
 
   require 'sinatra'
-  require 'json'
+  require 'yajl'
   require 'rubytree'
 
   require_relative 'registry/system_registry/system_registry.rb'
