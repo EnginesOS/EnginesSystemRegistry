@@ -1,7 +1,7 @@
 begin
 
   require 'sinatra'
-  require 'yajl-ruby'
+  require 'yajl'
   require 'rubytree'
 
   require_relative 'registry/system_registry/system_registry.rb'
