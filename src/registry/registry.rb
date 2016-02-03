@@ -2,9 +2,9 @@ require 'rubytree'
 
 class Registry
   attr_reader :last_error
-  # handle missing persistant key as not persistance kludge to catch gui bug
-  def is_persistant?(hash)
-    return true if hash.key?(:persistant) && hash[:persistant]
+  # handle missing persistent key as not persistence kludge to catch gui bug
+  def is_persistent?(hash)
+    return true if hash.key?(:persistent) && hash[:persistent]
     return false
   end
 

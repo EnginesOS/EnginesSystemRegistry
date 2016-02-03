@@ -517,8 +517,8 @@ class EnginesOSapi
     return s
   end
     
-  def get_engine_persistant_services(params)
-    @core_api.get_engine_persistant_services(params)
+  def get_engine_persistent_services(params)
+    @core_api.get_engine_persistent_services(params)
   end
 
   # @returns [EnginesOSapiResult]
@@ -555,7 +555,7 @@ class EnginesOSapi
   # @params service_hash
   # this method is called to register the service hash with service
   # nothing is written to the service registry
-  # effectivitly activating non persistant services
+  # effectivitly activating non persistent services
   def register_attached_service(service_query)
     p :register_attached_service
     p service_query
@@ -623,13 +623,13 @@ class EnginesOSapi
     @core_api.get_registered_against_service(params)
   end
 
-  # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
+  # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
   # :path_type :publisher_namespace
-  def get_active_persistant_services(params)
-    @core_api.get_active_persistant_services(params)
+  def get_active_persistent_services(params)
+    @core_api.get_active_persistent_services(params)
   end
 
-  # @return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+  # @return an [Array] of service_hashs of Orphaned persistent services match @params [Hash]
   # :path_type :publisher_namespace
   def get_orphaned_services(params)
     @core_api.get_orphaned_services(params)

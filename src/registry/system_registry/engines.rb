@@ -17,21 +17,21 @@ module Engines
      test_engines_registry_result(@managed_engines_registry.find_engine_service_hash(params))
    end
  
- #  def  get_active_persistant_services(params)
+ #  def  get_active_persistent_services(params)
  #    clear_error
- #    test_engines_registry_result(@managed_engines_registry.get_active_persistant_services(params, false))
+ #    test_engines_registry_result(@managed_engines_registry.get_active_persistent_services(params, false))
  #  end
    
-   def get_engine_nonpersistant_services(params)
+   def get_engine_nonpersistent_services(params)
      clear_error
-     p :get_engine_nonpersistant_services
+     p :get_engine_nonpersistent_services
      p params
-     test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params, false))
+     test_engines_registry_result(@managed_engines_registry.get_engine_persistence_services(params, false))
    end
  
-   def get_engine_persistant_services(params)
+   def get_engine_persistent_services(params)
      clear_error
-     test_engines_registry_result(@managed_engines_registry.get_engine_persistance_services(params, true))
+     test_engines_registry_result(@managed_engines_registry.get_engine_persistence_services(params, true))
    end
  
    def remove_from_managed_engines_registry(service_hash)

@@ -32,7 +32,7 @@ annouce_test("Find non persist service hashes for an engine ")
 params = {}
 params[:container_type] = 'service'
 params[:parent_engine] = 'mysql_server'
-obj = rest_get('/system_registry/engine/services/nonpersistant/',{:params => params })
+obj = rest_get('/system_registry/engine/services/nonpersistent/',{:params => params })
 test_failed('Failed to find', obj) unless obj.is_a?(Array)
 
   
@@ -41,7 +41,7 @@ annouce_test("Find  persist service hashes for an engine ")
 params = {}
 params[:container_type] = 'service'
 params[:parent_engine] = 'auth'
-obj = rest_get('/system_registry/engine/services/persistant/',{:params => params })
+obj = rest_get('/system_registry/engine/services/persistent/',{:params => params })
 test_failed('Failed to find', obj) unless obj.is_a?(Array)
 
 

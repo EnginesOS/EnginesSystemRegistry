@@ -14,18 +14,18 @@ get '/v0/system_registry/engine/services/' do
 @@system_registry.find_engine_services_hashes(RegistryUtils.symbolize_keys(params)).to_json
 end
 
-get '/v0/system_registry/engine/services/nonpersistant/' do
-  STDERR.puts 'engines_services_nonpersistant'
+get '/v0/system_registry/engine/services/nonpersistent/' do
+  STDERR.puts 'engines_services_nonpersistent'
   STDERR.puts params.to_s
-@@system_registry.get_engine_nonpersistant_services(RegistryUtils.symbolize_keys(params)).to_json
+@@system_registry.get_engine_nonpersistent_services(RegistryUtils.symbolize_keys(params)).to_json
 end
 
 
-get '/v0/system_registry/engine/services/persistant/' do
+get '/v0/system_registry/engine/services/persistent/' do
   
-  STDERR.puts ':system_registry_engine_services_persistant_'
+  STDERR.puts ':system_registry_engine_services_persistent_'
   STDERR.puts RegistryUtils.symbolize_keys(params).to_s
-@@system_registry.get_engine_persistant_services(RegistryUtils.symbolize_keys(params)).to_json
+@@system_registry.get_engine_persistent_services(RegistryUtils.symbolize_keys(params)).to_json
 end
 
 post '/v0/system_registry/engine/services/add' do
