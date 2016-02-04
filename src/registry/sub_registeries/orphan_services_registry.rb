@@ -19,6 +19,7 @@ class OrphanServicesRegistry < SubRegistry
   # Saves the service_hash in the orphaned service registry
   # @return result
   def orphanate_service(service_hash)
+    STDERR.puts :Orphanate
     provider_tree = orphaned_services_registry[service_hash[:publisher_namespace]]
     unless provider_tree.is_a?(Tree::TreeNode)
       provider_tree = Tree::TreeNode.new(service_hash[:publisher_namespace], service_hash[:publisher_namespace])
