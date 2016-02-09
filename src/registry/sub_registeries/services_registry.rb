@@ -40,13 +40,13 @@ class ServicesRegistry < SubRegistry
       SystemUtils.debug_output(:create_new_service_regstry_entry, service_hash)
       service_node = Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       engine_node << service_node
-    elsif is_persistant?(service_hash) == false
-      SystemUtils.debug_output(:reattachexistsing_service_persistant_false, service_hash)
+    elsif is_persistent?(service_hash) == false
+      SystemUtils.debug_output(:reattachexistsing_service_persistent_false, service_hash)
       service_node.content = service_hash
     else
       p :failed
       log_error_mesg('Service Node existed', service_hash[:service_handle])
-      log_error_mesg('Cannot over write persistant service in services tree' + service_node.content.to_s + ' with ', service_hash)
+      log_error_mesg('Cannot over write persistent service in services tree' + service_node.content.to_s + ' with ', service_hash)
       # service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
       # service_type_node << service_node
     end
@@ -92,12 +92,12 @@ class ServicesRegistry < SubRegistry
     log_error_mesg('Fail to remove service', service_hash)
   end
 
-  # @return an [Array] of service_hashs of Active persistant services match @params [Hash]
+  # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
   # :path_type :publisher_namespace
-  def get_active_persistant_services(params)
+  def get_active_persistent_services(params)
     leafs = []
     services = find_service_consumers(params)
-    leafs = get_matched_leafs(services, :persistant, true) if services.nil? == false && services != false
+    leafs = get_matched_leafs(services, :persistent, true) if services.nil? == false && services != false
     return leafs
   end
   

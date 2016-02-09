@@ -1,5 +1,5 @@
 class OrphanServicesRegistry < SubRegistry
-  # @Methods for handling orphaned persistant services
+  # @Methods for handling orphaned persistent services
   # module OrphanedServices
   # @ remove from both the service registry and orphan registery
   # @param params { :type_path , :service_handle}
@@ -19,6 +19,7 @@ class OrphanServicesRegistry < SubRegistry
   # Saves the service_hash in the orphaned service registry
   # @return result
   def orphanate_service(service_hash)
+    STDERR.puts :Orphanate
     provider_tree = orphaned_services_registry[service_hash[:publisher_namespace]]
     unless provider_tree.is_a?(Tree::TreeNode)
       provider_tree = Tree::TreeNode.new(service_hash[:publisher_namespace], service_hash[:publisher_namespace])
@@ -71,14 +72,14 @@ STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
     end
   end
 
-  # @return an [Array] of service_hashs of Orphaned persistant services match @params [Hash]
+  # @return an [Array] of service_hashs of Orphaned persistent services match @params [Hash]
   # :path_type :publisher_namespace
   def get_orphaned_services(params)
     leafs = []
     SystemUtils.debug_output(:looking_for_orphans, params)
     orphans = find_orphan_consumers(params)
     if orphans.is_a?(Tree::TreeNode)
-      leafs = get_matched_leafs(orphans, :persistant, true)
+      leafs = get_matched_leafs(orphans, :persistent, true)
     end
     return leafs
   end
