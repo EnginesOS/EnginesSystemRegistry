@@ -307,7 +307,7 @@ class SystemUtils
     return service_hash
   end
 
-  def self.service_hash_variables_as_str(service_hash)
+  def self.hash_variables_as_json_str(service_hash)
     argument = ''
     argument = 'publisher_namespace=' + service_hash[:publisher_namespace] + ':type_path=' + service_hash[:type_path] + ':' if service_hash.key?(:publisher_namespace)
     service_variables = service_hash[:variables]

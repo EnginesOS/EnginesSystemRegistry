@@ -11,7 +11,15 @@ module Trees
      return false
    end
  
- 
+  def  shares_registry_tree
+    clear_error
+    return false if !check_system_registry_tree
+    system_registry_tree << Tree::TreeNode.new('Shares', 'Service Shares') unless system_registry_tree['Shares'].is_a?(Tree::TreeNode)
+    return system_registry_tree['Shares']
+  rescue StandardError => e
+    log_exception(e)
+    return false
+  end
  
    # @return the ManagedEngine Tree Branch
    # creates if does not exist

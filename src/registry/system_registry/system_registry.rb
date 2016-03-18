@@ -12,7 +12,13 @@ class SystemRegistry < Registry
   require_relative '../sub_registeries/managed_engines_registry.rb'
   require_relative '../sub_registeries/services_registry.rb'
   require_relative '../sub_registeries/orphan_services_registry.rb'
+  require_relative '../sub_registeries/shares_registry.rb'
+  
   require_relative '../system_utils.rb'
+  
+  require_relatice 'shares.rb'
+  include Shares
+  
   require_relative 'configurations.rb'
   include Configurations
   require_relative 'orphans.rb'
@@ -143,6 +149,7 @@ class SystemRegistry < Registry
     @services_registry.take_snap_shot
     @managed_engines_registry.take_snap_shot
     @orphan_server_registry.take_snap_shot
+    @shares_registry.take_snap_shot
     clear_error
   end
 
@@ -193,6 +200,9 @@ class SystemRegistry < Registry
     @orphan_server_registry.reset_registry(@system_registry['OphanedServices']) 
     managed_engines_registry_tree if @system_registry['ManagedEngine'].nil?
     @managed_engines_registry.reset_registry(@system_registry['ManagedEngine']) 
+    shares_registry_tree  if @system_registry['Shares'].nil?
+   @shares_registry.reset_registry(@system_registry['Shares'])
+
     rescue StandardError => e
         log_exception(e)
   end
@@ -228,6 +238,7 @@ class SystemRegistry < Registry
     @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
     @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
     @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
+    @system_registry << Tree::TreeNode.new('Shares', 'Shared Services ')
     save_tree
     @system_registry 
   rescue StandardError => e
@@ -241,6 +252,7 @@ class SystemRegistry < Registry
         @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
         @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
         @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
+        @system_registry << Tree::TreeNode.new('Shares', 'Shared Services ')
         save_tree
         @system_registry 
       rescue StandardError => e
