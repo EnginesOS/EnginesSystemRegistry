@@ -16,7 +16,7 @@ class SystemRegistry < Registry
   
   require_relative '../system_utils.rb'
   
-  require_relatice 'shares.rb'
+  require_relative 'shares.rb'
   include Shares
   
   require_relative 'configurations.rb'
