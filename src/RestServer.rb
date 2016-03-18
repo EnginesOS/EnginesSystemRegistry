@@ -17,7 +17,7 @@ begin
   require_relative 'api/orphan_services.rb'
   require_relative 'api/managed_engines.rb'
   require_relative 'api/subservices.rb'
-
+  require_relative 'api/shares.rb'
 
 
 def log_exception(e)
