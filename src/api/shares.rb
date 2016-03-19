@@ -1,6 +1,8 @@
 require_relative 'utils.rb'
 
 get '/v0/system_registry/shares/tree' do
+  p :sgare
+  p  @@system_registry.shares_registry_tree.to_json
   @@system_registry.shares_registry_tree.to_json
 end
  
