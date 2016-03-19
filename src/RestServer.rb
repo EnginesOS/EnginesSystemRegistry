@@ -17,10 +17,8 @@ begin
   require_relative 'api/orphan_services.rb'
   require_relative 'api/managed_engines.rb'
   require_relative 'api/subservices.rb'
+  require_relative 'api/shares.rb'
 
-rescue StandardError=>e
-  log_exception(e)
-end
 
 def log_exception(e)
   e_str = e.to_s()
@@ -34,4 +32,5 @@ def log_exception(e)
   f.puts(e_str)
   f.close
   return false
+end
 end
