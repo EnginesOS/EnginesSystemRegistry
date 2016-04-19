@@ -6,7 +6,7 @@ class ManagedEnginesRegistry < SubRegistry
     engine_node = managed_engines_type_registry(params)
     return log_error_mesg('Failed to find engine type node', params) unless engine_node.is_a?(Tree::TreeNode)
     engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
-    return log_error_mesg('Failed to find in managed service tree', params) if !engine_node.is_a?(Tree::TreeNode)
+    return log_error_mesg('Failed to find in managed service tree type', params) if !engine_node.is_a?(Tree::TreeNode)
     engine_node = get_type_path_node(engine_node, params[:type_path]) if params.key?(:type_path)
     return log_error_mesg('Failed to find type_path ' + params[:type_path] + 'in managed service tree', params) if !engine_node.is_a?(Tree::TreeNode)
     if params.key?(:service_handle) && !params[:service_handle].nil?
