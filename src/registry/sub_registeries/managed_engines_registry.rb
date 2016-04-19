@@ -21,8 +21,8 @@ class ManagedEnginesRegistry < SubRegistry
     return log_error_mesg('missing parrameters parent_engine', params) unless params.key?(:parent_engine)
     return log_error_mesg('missing parrameters type_path', params) unless params.key?(:type_path)
     return log_error_mesg('missing parrameters service_handle', params) unless params.key?(:service_handle)
-    return log_error_mesg('missing parrameters container_type', params) unless params.key?(:container_type)
-    return log_error_mesg('missing parrameters service_container_name', params) unless params.key?(:service_container_name)
+   # return log_error_mesg('missing parrameters container_type', params) unless params.key?(:container_type)
+   # return log_error_mesg('missing parrameters service_container_name', params) unless params.key?(:service_container_name)
     SystemUtils.debug_output('find_engine_services_hash', params)
     engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
     return log_error_mesg('Failed to find parent engine in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
