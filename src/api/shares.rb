@@ -8,7 +8,7 @@ end
  
       
 post '/v0/system_registry/shares/add' do
-  p RegistryUtils.symbolize_keys(params)
+  
  if @@system_registry.add_to_shares_registry(RegistryUtils.symbolize_keys(params)).to_json
   status(202)
 else
