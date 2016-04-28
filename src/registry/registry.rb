@@ -67,7 +67,8 @@ class Registry
   def get_all_leafs_service_hashes(branch)
     ret_val = []
       if branch.children.count == 0
-        return branch.content
+        return branch.content if branch.content.is_a?(Hash)
+        return ret_val
       end
     # SystemUtils.debug_output('top node',branch.name)
     branch.children.each do |sub_branch|
