@@ -77,7 +77,7 @@ class ServicesRegistry < SubRegistry
   def get_registered_against_service(params)
     hashes = []
     services = find_service_consumers(params)
-    return get_all_leafs_service_hashes(service_tree) if service_tree.is_a?(Tree::TreeNode)
+    return get_all_leafs_service_hashes(services) if services.is_a?(Tree::TreeNode)
     return services
   end
 
