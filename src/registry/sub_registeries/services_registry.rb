@@ -75,8 +75,9 @@ class ServicesRegistry < SubRegistry
 
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
-    hashes = []
+
     services = find_service_consumers(params)
+    
     return get_all_leafs_service_hashes(services) if services.is_a?(Tree::TreeNode)
     return services
   end
