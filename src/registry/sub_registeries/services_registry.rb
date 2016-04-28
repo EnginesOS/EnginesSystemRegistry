@@ -120,7 +120,10 @@ def find_service_consumers(service_query_hash)
   return service_path_tree if service_query_hash[:parent_engine].nil? || service_query_hash.key?(:parent_engine) == false
   services = service_path_tree[service_query_hash[:parent_engine]]
   return log_error_mesg('Failed to find matching parent_engine', service_query_hash) if services.is_a?(Tree::TreeNode) == false
-  return log_error_mesg('find_service_consumers_no_service_handle', service_query_hash) if service_query_hash[:service_handle].nil? ||service_query_hash.key?(:service_handle) == false 
+  
+  if service_query_hash[:service_handle].nil? ||service_query_hash.key?(:service_handle) == false
+    return get_all_leafs_service_hashes(services)
+  end 
   SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
   service = services[service_query_hash[:service_handle]]
   return log_error_mesg('failed to find match in services tree', service_query_hash)if service.nil?
