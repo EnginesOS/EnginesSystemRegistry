@@ -5,7 +5,7 @@ begin
   require 'rubytree'
 
   require_relative 'registry/system_registry/system_registry.rb'
-
+  require_relative 'errors/engines_registry_error.rb'
   set :sessions, true
   set :logging, true
   set :run, true
