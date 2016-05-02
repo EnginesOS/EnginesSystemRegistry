@@ -5,7 +5,6 @@ class EnginesRegistryError < EnginesError
     def initialize(message, type, *objs )
       super
         @sub_system = 'engines_registry'
-        @registry_source = error_hash[:source]
         @params = objs
       end
       
