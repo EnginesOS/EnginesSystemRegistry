@@ -30,6 +30,7 @@ class ManagedEnginesRegistry < SubRegistry
     return log_error_mesg('Failed to find type_path ' + params[:type_path] + 'in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
     engine_node = engine_node[params[:service_handle]]
     return log_error_mesg('Failed to find service_handle ' + params[:service_handle] + 'in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
+    return log_warning_mesg('Registry Entry Not found') unless engine_node.content.is_a?(Hash)
     return engine_node.content
   end
 

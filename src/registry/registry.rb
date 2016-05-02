@@ -141,7 +141,13 @@ class Registry
     @last_error = msg + ':' + obj_str  
     return EnginesRegistryError.new(msg, :error, *objects)
   end
-
+  
+def log_warning_mesg(msg, *objects)
+   obj_str = object.to_s.slice(0, 256)
+   @last_error = msg + ':' + obj_str  
+   return EnginesRegistryError.new(msg, :warning, *objects)
+ end
+ 
   def log_exception(e, *objs)
     @last_error = e.to_s.slice(0, 256)   
     return EnginesRegistryError.new(e.to_s, :exception, *objs)
