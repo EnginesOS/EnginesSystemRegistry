@@ -10,7 +10,7 @@ class EnginesRegistryError < EnginesError
       
   def to_json(opt=nil)
   #FixMe this is a kludge
-      '{"error_type":"' + @error_type.to_s + '","error_mesg":"' + @error_mesg.to_s + '","sub_system":"' + @sub_system.to_s + '","source":"' + @source.to_s + '","params":"' + @params.to_s + '"}'
+      '{"error_type":"' + @error_type.to_s + '","error_mesg":"' + @error_mesg.to_s + '","sub_system":"' + @sub_system.to_s + '","source":"' + @source.to_json + '","params":"' + @params.to_s + '"}'
   end
   
  
