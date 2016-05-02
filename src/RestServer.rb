@@ -26,7 +26,9 @@ def process_result(result)
   else
     status(404)
   end    
+ p result.to_json
   result.to_json
+ 
 end
 
 def log_exception(e, *obj)
