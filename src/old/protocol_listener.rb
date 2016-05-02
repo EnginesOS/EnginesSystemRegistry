@@ -33,8 +33,8 @@ class ProtocolListener
         response_object = @system_registry.public_send(method_symbol, request)
       end
     rescue StandardError => e
-      SystemUtils.log_error_mesg( 'with ' + request.to_s + ' ' + command.to_s + @system_registry.last_error.to_s, command_hash)
-      SystemUtils.log_exception(e)
+      log_error_mesg( 'with ' + request.to_s + ' ' + command.to_s + @system_registry.last_error.to_s, command_hash)
+      log_exception(e)
       response_hash[:reply_object] = false.to_yaml
       response_hash[:last_error] = e.to_s
       return response_hash

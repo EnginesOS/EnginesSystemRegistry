@@ -166,7 +166,7 @@ class NetworkListener
     end
     return true
     rescue StandardError => e
-          return SystemUtils.log_exception(e)
+          return log_exception(e)
   end
 
   def build_mesg(mesg_str)
@@ -190,7 +190,7 @@ class NetworkListener
     hash_request = YAML::load(request)
     return hash_request # symbolize_top_level_keys(hash_request)
     rescue StandardError => e
-          return SystemUtils.log_exception(e)
+          return log_exception(e)
   end
 
   def symbolize_top_level_keys(hash)
@@ -240,6 +240,6 @@ class NetworkListener
     BasicSocket.do_not_reverse_lookup = true
     TCPServer.new(host, port)
     rescue StandardError => e
-          return SystemUtils.log_exception(e)
+          log_exception(e)
   end
 end

@@ -19,8 +19,17 @@ begin
   require_relative 'api/subservices.rb'
   require_relative 'api/shares.rb'
 
+ 
+def process_result(result)
+  unless result.is_a?(EnginesRegistryError)
+    status(202)
+  else
+    status(404)
+  end    
+  result.to_json
+end
 
-def log_exception(e)
+def log_exception(e, *obj)
   e_str = e.to_s()
   e.backtrace.each do |bt|
     e_str += bt + ' \n'

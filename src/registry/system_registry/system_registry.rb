@@ -226,7 +226,7 @@ class SystemRegistry < Registry
     rescue StandardError => e
       puts e.message + ' with ' + tree_data.to_s
       log_exception(e)
-      return nil
+
     end
   end
 
