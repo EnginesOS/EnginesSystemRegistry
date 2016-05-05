@@ -3,7 +3,7 @@ class EnginesRegistryError < EnginesError
  
   
     def initialize(message, type, *objs )
-      super
+      super(message, type)
         @sub_system = 'engines_registry'
         @params = objs
       end
@@ -15,3 +15,4 @@ class EnginesRegistryError < EnginesError
   
  
 end
+""
