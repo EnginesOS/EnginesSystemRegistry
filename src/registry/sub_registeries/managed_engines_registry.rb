@@ -11,6 +11,9 @@ class ManagedEnginesRegistry < SubRegistry
     return log_error_mesg('Failed to find type_path ' + params[:type_path] + 'in managed service tree', params) if !engine_node.is_a?(Tree::TreeNode)
     if params.key?(:service_handle) && !params[:service_handle].nil?
       engine_node = engine_node[params[:service_handle]]
+        p :OOO
+        p engine_node
+        p params
       return log_error_mesg('Failed to find service_handle ' + params[:service_handle] + 'in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
     end
     return order_hashes_in_priotity(get_all_leafs_service_hashes(engine_node)) unless params.key?(:persistent)
