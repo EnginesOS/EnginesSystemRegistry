@@ -1,7 +1,7 @@
 class ManagedEnginesRegistry < SubRegistry
   # @return all service_hashs for :engine_name
   def find_engine_services_hashes(params)
-    SystemUtils.debug_output('find_engine_services_hashes', params)
+    SystemUtils.debug_output('find engine services hashes', params)
     p :OOO_001  
     params[:parent_engine] = params[:engine_name] if params.key?(:engine_name)
     engine_node = managed_engines_type_registry(params)
