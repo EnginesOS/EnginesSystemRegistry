@@ -5,24 +5,24 @@ class ManagedEnginesRegistry < SubRegistry
 
     params[:parent_engine] = params[:engine_name] if params.key?(:engine_name)
     engine_node = managed_engines_type_registry(params)
-    SystemUtils.debug_output('find engine services hashes.engine_node .1')  
+    SystemUtils.debug_output('find engine services hashes.engine_node .1', engine_node)  
     return log_error_mesg('Failed to find engine type node', params) unless engine_node.is_a?(Tree::TreeNode)
     engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
     return log_error_mesg('Failed to find in managed service type tree', params) if !engine_node.is_a?(Tree::TreeNode)
     engine_node = get_type_path_node(engine_node, params[:type_path]) if params.key?(:type_path)
     return log_error_mesg('Failed to find type_path ' + params[:type_path] + 'in managed service tree', params) if !engine_node.is_a?(Tree::TreeNode)
-  SystemUtils.debug_output('find engine services hashes.engine_node .2')  
+  SystemUtils.debug_output('find engine services hashes.engine_node .2', engine_node)  
     if params.key?(:service_handle) && !params[:service_handle].nil?
       
       engine_node = engine_node[params[:service_handle]]
-  SystemUtils.debug_output('find engine services hashes.engine_node .3')  
+  SystemUtils.debug_output('find engine services hashes.engine_node .3',engine_node )  
         p :OOO
         p engine_node
         p params
       return log_error_mesg('Failed to find service_handle ' + params[:service_handle] + 'in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
     end
 p :OO9
-SystemUtils.debug_output('find engine services hashes.engine_node .4')  
+SystemUtils.debug_output('find engine services hashes.engine_node .4', engine_node)  
     return order_hashes_in_priotity(get_all_leafs_service_hashes(engine_node)) unless params.key?(:persistent)
     return order_hashes_in_priotity(get_matched_leafs(engine_node, :persistent, params[:persistent]))
   end
