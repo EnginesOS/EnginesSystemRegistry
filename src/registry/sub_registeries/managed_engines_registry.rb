@@ -20,6 +20,7 @@ class ManagedEnginesRegistry < SubRegistry
         p engine_node
         p params
       return log_error_mesg('Failed to find service_handle ' + params[:service_handle] + 'in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
+      return engine_node.content
     end
 p :OO9
 SystemUtils.debug_output('find engine services hashes.engine_node .4', engine_node)  
