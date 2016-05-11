@@ -87,6 +87,7 @@ class Registry
   def order_hashes_in_priotity(hashes)
     priority = []
     standard = []
+    service_hash = nil
     hashes.each do |service_hash|
       if !service_hash.key?(:priority) \
       || service_hash[:priority] == 0
@@ -95,7 +96,12 @@ class Registry
         priority.push(service_hash)
       end
     end
-    return priority.concat(standard)
+    return priority.concat(standard)  
+  rescue StandardError => e
+    p :exception
+    p service_hash
+    p hashes
+    log_exception(e)
   end
 
   # @branch the [TreeNode] under which to search
