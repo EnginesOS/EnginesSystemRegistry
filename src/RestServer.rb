@@ -19,6 +19,9 @@ begin
   require_relative 'api/subservices.rb'
   require_relative 'api/shares.rb'
 
+  def system_registry
+    @@system_registry
+  end
  
 def process_result(result)
   unless result.is_a?(EnginesRegistryError)
