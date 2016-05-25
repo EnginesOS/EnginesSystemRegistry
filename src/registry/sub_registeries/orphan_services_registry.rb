@@ -122,6 +122,7 @@ private
     type_path = params[:type_path]
     type = get_type_path_node(provider_tree, type_path)
     return log_error_mesg('No Orphan Matching type_path', params) unless type.is_a?(Tree::TreeNode)
+    return type unless params.key?(:parent_engine)
     types_for_engine = type[params[:parent_engine]]
     if types_for_engine.is_a?(Array)
       types_for_engine.each do |engine_type|
