@@ -19,7 +19,7 @@ STDERR.puts @error_type.to_s
     STDERR.puts @sub_system.to_s 
     STDERR.puts @source.to_s
 #FixMe this is a kludge
-    STDERR.puts '{"error_type":"' + @error_type.to_s + '","error_mesg":"' + @error_mesg.to_s + '","sub_system":"' + @sub_system.to_s + '","source":' + @source.to_s + '}'
+    STDERR.puts '{"error_type":"' + @error_type.to_s + '","error_mesg":"' + @error_mesg.to_s + '","sub_system":"' + @sub_system.to_s + '","source":' + @source.to_json + '}'
     '{"error_type":"' + @error_type.to_s + '","error_mesg":"' + @error_mesg.to_s + '","sub_system":"' + @sub_system.to_s + '","source":' + @source.to_json + '}'
 end
 end
