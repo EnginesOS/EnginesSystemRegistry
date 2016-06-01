@@ -1,7 +1,7 @@
 require_relative 'utils.rb'
 
 get '/v0/system_registry/engines/tree' do
-  process_result(system_registry.managed_engines_registry_tree.to_json)
+  process_result(system_registry.managed_engines_registry_tree)
 end
 
 get '/v0/system_registry/engine/service/' do
