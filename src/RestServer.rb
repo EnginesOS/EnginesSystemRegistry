@@ -30,7 +30,7 @@ def process_result(result)
     status(404)
   end    
  
-  STDERR.puts result.to_s
+ # STDERR.puts result.to_s
   result.to_json
 end
 
