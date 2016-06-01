@@ -32,6 +32,8 @@ def process_result(result)
  
  # STDERR.puts result.to_s
   result.to_json
+rescue StandardError => e
+  log_exception(e, result)
 end
 
 def log_exception(e, *obj)
