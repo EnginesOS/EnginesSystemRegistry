@@ -30,8 +30,9 @@ class ManagedEnginesRegistry < SubRegistry
   #  return log_error_mesg('missing parrameters service_container_name', params) unless params.key?(:service_container_name)
     SystemUtils.debug_output('find_engine_services_hash', params)
     engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
-SystemUtils.debug_output('find_engine_services_hash', engine_node.content)
+
     return log_error_mesg('Failed to find parent engine in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
+SystemUtils.debug_output('find_engine_services_hash', engine_node.content.to_s)
     engine_node = get_type_path_node(engine_node, params[:type_path])
     return log_error_mesg('Failed to find type_path ' + params[:type_path] + 'in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
     engine_node = engine_node[params[:service_handle]]

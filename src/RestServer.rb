@@ -29,8 +29,6 @@ def process_result(result)
   else
     status(404)
   end    
- 
- # STDERR.puts result.to_s
   result.to_json
 rescue StandardError => e
   log_exception(e, result)
