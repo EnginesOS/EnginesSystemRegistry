@@ -116,7 +116,7 @@ def find_service_consumers(service_query_hash)
   end
   return log_error_mesg('no Provider tree', service_query_hash) if provider_tree.is_a?(Tree::TreeNode) == false
   service_path_tree = get_type_path_node(provider_tree, service_query_hash[:type_path])
-  return log_error_mesg('Failed to find matching service path', service_query_hash) if service_path_tree.is_a?(Tree::TreeNode) == false
+  return [] if service_path_tree.is_a?(Tree::TreeNode) == false
   return service_path_tree if service_query_hash[:parent_engine].nil? || service_query_hash.key?(:parent_engine) == false
   services = service_path_tree[service_query_hash[:parent_engine]]
   return log_error_mesg('Failed to find matching parent_engine', service_query_hash) if services.is_a?(Tree::TreeNode) == false
