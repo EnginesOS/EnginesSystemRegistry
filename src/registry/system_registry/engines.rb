@@ -24,8 +24,8 @@ module Engines
    
    def get_engine_nonpersistent_services(params)
      clear_error
-     p :get_engine_nonpersistent_services
-     p params
+  #   p :get_engine_nonpersistent_services
+   #  p params
      test_engines_registry_result(@managed_engines_registry.get_engine_persistence_services(params, false))
    end
  

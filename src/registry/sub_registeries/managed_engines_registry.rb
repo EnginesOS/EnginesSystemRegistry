@@ -10,8 +10,8 @@ class ManagedEnginesRegistry < SubRegistry
     engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
     return log_error_mesg('Failed to find in managed service type tree', params) if !engine_node.is_a?(Tree::TreeNode)
     engine_node = get_type_path_node(engine_node, params[:type_path]) if params.key?(:type_path)
-    return log_error_mesg('Failed to find type_path ' + params[:type_path] + 'in managed service tree', params) if !engine_node.is_a?(Tree::TreeNode)
- 
+    return [] if !engine_node.is_a?(Tree::TreeNode)
+  #log_error_mesg('Failed to find type_path ' + params[:type_path] + 'in managed service tree', params)
     if params.key?(:service_handle) && !params[:service_handle].nil?      
       engine_node = engine_node[params[:service_handle]]
       return log_error_mesg('Failed to find service_handle ' + params[:service_handle] + 'in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
@@ -52,12 +52,12 @@ SystemUtils.debug_output('find_engine_services_hash', engine_node.content.to_s)
     end
     services.children.each do |service|
       SystemUtils.debug_output(:finding_match_for, service.content)
-      STDERR.puts :serach_4_persistence
-      STDERR.puts persistence.to_s + ':' + persistence.class.name
+   #   STDERR.puts :serach_4_persistence
+     # STDERR.puts persistence.to_s + ':' + persistence.class.name
       matches = get_matched_leafs(service, :persistent, persistence)
       SystemUtils.debug_output('matches', matches)
       leafs = leafs.concat(matches)
-      p leafs
+     # p leafs
     end
     return order_hashes_in_priotity(leafs)
   end
@@ -70,8 +70,8 @@ SystemUtils.debug_output('find_engine_services_hash', engine_node.content.to_s)
   # @return boolean
   # overwrites
   def add_to_managed_engines_registry(service_hash)
-    p :add_to_managed_engines_registry
-    p service_hash.to_s
+  #  p :add_to_managed_engines_registry
+  #  p service_hash.to_s
     return log_error_mesg('no_parent_engine_key', service_hash) if service_hash[:parent_engine].nil? || !service_hash.key?(:parent_engine)
     engines_type_tree = managed_engines_type_registry(service_hash)
     return log_error_mesg('no_type tree ', service_hash) unless engines_type_tree.is_a?(Tree::TreeNode)
