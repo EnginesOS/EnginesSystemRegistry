@@ -66,6 +66,10 @@ class Registry
   # @return [Array] of all service_hash(s) below this branch
   def get_all_leafs_service_hashes(branch)
     ret_val = []
+      if branch.children.count == 0
+        return branch.content if branch.content.is_a?(Hash)
+        return ret_val
+      end
     # SystemUtils.debug_output('top node',branch.name)
     branch.children.each do |sub_branch|
       #    SystemUtils.debug_output('on node',sub_branch.name)
@@ -83,6 +87,7 @@ class Registry
   def order_hashes_in_priotity(hashes)
     priority = []
     standard = []
+    service_hash = nil
     hashes.each do |service_hash|
       if !service_hash.key?(:priority) \
       || service_hash[:priority] == 0
@@ -91,7 +96,12 @@ class Registry
         priority.push(service_hash)
       end
     end
-    return priority.concat(standard)
+    return priority.concat(standard)  
+  rescue StandardError => e
+    p :exception
+    p service_hash
+    p hashes
+    log_exception(e)
   end
 
   # @branch the [TreeNode] under which to search
@@ -132,16 +142,22 @@ class Registry
     log_exception(e)
   end
 
-  def log_error_mesg(msg, object)
-    obj_str = object.to_s.slice(0, 256)
-    @last_error = msg + ':' + obj_str
-    SystemUtils.log_error_mesg(msg, object)
-    return false
+  def log_error_mesg(msg, *objects)
+    obj_str = objects.to_s.slice(0, 256)
+    @last_error = msg + ':' + obj_str  
+   STDERR.puts @last_error.to_s
+    return EnginesRegistryError.new(msg, :error, *objects)
   end
-
-  def log_exception(e)
-    @last_error = e.to_s.slice(0, 256)
-    SystemUtils.log_exception(e)
-    return false
+  
+def log_warning_mesg(msg, *objects)
+   obj_str = objects.to_s.slice(0, 256)
+   @last_error = msg + ':' + obj_str  
+   return EnginesRegistryError.new(msg, :warning, *objects)
+ end
+ 
+  def log_exception(e, *objs)
+    @last_error = e.to_s.slice(0, 256)   
+    STDERR.puts @last_error.to_s
+    return EnginesRegistryError.new(e.to_s, :exception, *objs)
   end
 end

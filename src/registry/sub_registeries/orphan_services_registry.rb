@@ -19,7 +19,7 @@ class OrphanServicesRegistry < SubRegistry
   # Saves the service_hash in the orphaned service registry
   # @return result
   def orphanate_service(service_hash)
-    STDERR.puts :Orphanate
+   # STDERR.puts :Orphanate
     provider_tree = orphaned_services_registry[service_hash[:publisher_namespace]]
     unless provider_tree.is_a?(Tree::TreeNode)
       provider_tree = Tree::TreeNode.new(service_hash[:publisher_namespace], service_hash[:publisher_namespace])
@@ -33,14 +33,14 @@ class OrphanServicesRegistry < SubRegistry
         engine_node = Tree::TreeNode.new(service_hash[:parent_engine], 'Belonged to ' + service_hash[:parent_engine])
         type_node << engine_node
       end
-      STDERR.puts :add_orpha
-  STDERR.puts service_hash.to_s
-  STDERR.puts :at
-  STDERR.puts engine_node.to_s
+#      STDERR.puts :add_orpha
+ # STDERR.puts service_hash.to_s
+ # STDERR.puts :at
+ # STDERR.puts engine_node.to_s
       engine_node << Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       return true
     end
-STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
+#STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
     return false
   end
 
@@ -122,6 +122,7 @@ private
     type_path = params[:type_path]
     type = get_type_path_node(provider_tree, type_path)
     return log_error_mesg('No Orphan Matching type_path', params) unless type.is_a?(Tree::TreeNode)
+    return log_error_mesg('Missing parent engine to match to', params) unless params.key?(:parent_engine)
     types_for_engine = type[params[:parent_engine]]
     if types_for_engine.is_a?(Array)
       types_for_engine.each do |engine_type|
@@ -130,7 +131,7 @@ private
           next
         end
         unless engine_type[params[:service_handle]].nil?
-           p :matchin_search
+         #  p :matchin_search
           return type[params[:service_handle]]
         else
           log_error_mesg('params nil service_handle', params)
@@ -139,7 +140,7 @@ private
       log_error_mesg('No Matching Orphan found in search', params)
       return false
     elsif types_for_engine.nil?
-      p :No_orphan_types
+    #  p :No_orphan_types
       return false
     else
         return types_for_engine[params[:service_handle]] unless types_for_engine[params[:service_handle]].nil?

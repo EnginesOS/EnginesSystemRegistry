@@ -149,9 +149,8 @@ class SystemUtils
         return res
       end
     rescue StandardError => e
-      SystemUtils.log_exception(e)
-      SystemUtils.log_error_mesg('StandardError Error in SystemUtils.run_system(cmd): ', res)
-      return 'StandardError Error in SystemUtils.run_system(cmd): ' + e.to_s
+
+      return log_exception(e, cmd)
     end
   end
 
@@ -170,7 +169,7 @@ class SystemUtils
     end
     return retval
   rescue StandardError => e
-    SystemUtils.log_exception(e)
+log_exception(e, hash_string)
   end
 
   # Execute @param cmd [String]
@@ -236,9 +235,10 @@ class SystemUtils
       SystemUtils.debug_output('Run ' + cmd + ' ResultCode:' + $CHILD_STATUS.to_s + ' Output:', res)
       return res
     rescue StandardError => e
-      SystemUtils.log_exception(e)
+
       SystemUtils.log_error_mesg('StandardError Error in SystemUtils.run_system(cmd): ', res)
-      return 'StandardError Error in SystemUtils.run_system(cmd): ' + e.to_s
+     
+      SystemUtils.log_exception(e,cmd )
     end
   end
 

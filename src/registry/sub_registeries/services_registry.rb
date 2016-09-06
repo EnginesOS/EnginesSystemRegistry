@@ -75,10 +75,11 @@ class ServicesRegistry < SubRegistry
 
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
-    hashes = []
-    service_tree = find_service_consumers(params)
-    hashes = get_all_leafs_service_hashes(service_tree) if service_tree.is_a?(Tree::TreeNode)
-    return hashes
+
+    services = find_service_consumers(params)
+    
+    return get_all_leafs_service_hashes(services) if services.is_a?(Tree::TreeNode)
+    return services
   end
 
   # remove the service matching the service_hash from the tree
@@ -115,11 +116,14 @@ def find_service_consumers(service_query_hash)
   end
   return log_error_mesg('no Provider tree', service_query_hash) if provider_tree.is_a?(Tree::TreeNode) == false
   service_path_tree = get_type_path_node(provider_tree, service_query_hash[:type_path])
-  return log_error_mesg('Failed to find matching service path', service_query_hash) if service_path_tree.is_a?(Tree::TreeNode) == false
+  return [] if service_path_tree.is_a?(Tree::TreeNode) == false
   return service_path_tree if service_query_hash[:parent_engine].nil? || service_query_hash.key?(:parent_engine) == false
   services = service_path_tree[service_query_hash[:parent_engine]]
   return log_error_mesg('Failed to find matching parent_engine', service_query_hash) if services.is_a?(Tree::TreeNode) == false
-  return log_error_mesg('find_service_consumers_no_service_handle', service_query_hash) if service_query_hash[:service_handle].nil? ||service_query_hash.key?(:service_handle) == false 
+  
+  if service_query_hash[:service_handle].nil? ||service_query_hash.key?(:service_handle) == false
+    return get_all_leafs_service_hashes(services)
+  end 
   SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
   service = services[service_query_hash[:service_handle]]
   return log_error_mesg('failed to find match in services tree', service_query_hash)if service.nil?
@@ -129,7 +133,8 @@ private
 # @service_query_hash :publisher_namespace , :type_path , :service_handle
 def get_service_entry(service_query_hash)
   tree_node = find_service_consumers(service_query_hash)
-  return tree_node.content if tree_node.is_a?(Tree::TreeNode) 
-  log_error_mesg('get service_ entry failed ', service_query_hash)
+  return log_error_mesg('get service_ entry failed ', service_query_hash) unless tree_node.is_a?(Tree::TreeNode)   
+  return tree_node.content if tree_node.content.is_a?(Hash)
+  log_warning_mesg('Registry Entry Not found')
 end
 end

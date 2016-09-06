@@ -1,44 +1,27 @@
 require_relative 'utils.rb'
 get '/v0/system_registry/services/orphans/tree' do
-  @@system_registry.orphaned_services_registry_tree.to_json
+  process_result(system_registry.orphaned_services_registry_tree)
 end
 
 get '/v0/system_registry/services/orphans/' do
-  @@system_registry.get_orphaned_services(RegistryUtils.symbolize_keys(params)).to_json
+  process_result(system_registry.get_orphaned_services(RegistryUtils.symbolize_keys(params)))
 end
 
 get '/v0/system_registry/services/orphan/' do
-  @@system_registry.retrieve_orphan(RegistryUtils.symbolize_keys(params)).to_json
+  process_result(system_registry.retrieve_orphan(RegistryUtils.symbolize_keys(params)))
 end
 
 post '/v0/system_registry/services/orphans/add' do
-  p RegistryUtils.symbolize_keys(params)
-  if @@system_registry.orphanate_service(RegistryUtils.symbolize_keys(params)).to_json
-    status(202)
-  else
-    status(404)
-  end
+  process_result(system_registry.orphanate_service(RegistryUtils.symbolize_keys(params)))
 end
 
 post '/v0/system_registry/services/orphans/return' do
-  p  :rollback_orphaned_service
-  p params
-  if @@system_registry.rollback_orphaned_service(RegistryUtils.symbolize_keys(params)).to_json
-    status(202)
-  else
-    status(404)
-  end
+  process_result(system_registry.rollback_orphaned_service(RegistryUtils.symbolize_keys(params)))
 
 end
 
 delete '/v0/system_registry/services/orphans/del' do
-  p :release_orphan
-  p RegistryUtils.symbolize_keys(params)
-  if @@system_registry.release_orphan(RegistryUtils.symbolize_keys(params)).to_json
-    status(202)
-  else
-    status(404)
-  end
+  process_result(system_registry.release_orphan(RegistryUtils.symbolize_keys(params)))
 end
 
 #reparent_orphan

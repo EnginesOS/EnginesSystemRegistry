@@ -6,5 +6,5 @@ get '/v0/system_registry/status/' do
  end
  
 get '/v0/system_registry/tree' do
-  @@system_registry.system_registry_tree.to_json
+  process_result(system_registry.system_registry_tree)
  end

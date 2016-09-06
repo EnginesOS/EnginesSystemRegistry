@@ -13,7 +13,7 @@ class SystemRegistry < Registry
   require_relative '../sub_registeries/services_registry.rb'
   require_relative '../sub_registeries/orphan_services_registry.rb'
   require_relative '../sub_registeries/shares_registry.rb'
-  
+  require_relative '../../errors/engines_registry_error.rb'
   require_relative '../system_utils.rb'
   
   require_relative 'shares.rb'
@@ -226,7 +226,7 @@ class SystemRegistry < Registry
     rescue StandardError => e
       puts e.message + ' with ' + tree_data.to_s
       log_exception(e)
-      return nil
+
     end
   end
 

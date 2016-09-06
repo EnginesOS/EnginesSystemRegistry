@@ -9,7 +9,8 @@ module Services
      clear_error
      tree_node = find_service_consumers(service_query_hash)
      return false  if !tree_node.is_a?(Tree::TreeNode)
-     return tree_node.content
+     return tree_node.content if tree_node.content.is_a?(Hash)
+    log_warning_mesg('Service Entry Not found')
    end
    
  

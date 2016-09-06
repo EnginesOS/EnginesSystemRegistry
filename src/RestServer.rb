@@ -5,7 +5,7 @@ begin
   require 'rubytree'
 
   require_relative 'registry/system_registry/system_registry.rb'
-
+  require_relative 'errors/engines_registry_error.rb'
   set :sessions, true
   set :logging, true
   set :run, true
@@ -19,8 +19,22 @@ begin
   require_relative 'api/subservices.rb'
   require_relative 'api/shares.rb'
 
+  def system_registry
+    @@system_registry
+  end
+ 
+def process_result(result)
+  unless result.is_a?(EnginesRegistryError)
+    status(202)
+  else
+    status(404)
+  end    
+  result.to_json
+rescue StandardError => e
+  log_exception(e, result)
+end
 
-def log_exception(e)
+def log_exception(e, *obj)
   e_str = e.to_s()
   e.backtrace.each do |bt|
     e_str += bt + ' \n'
