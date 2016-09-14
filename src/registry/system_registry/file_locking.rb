@@ -5,6 +5,7 @@ def lock_tree
      sleep 1
      sleep 1 if File.exist?(@@RegistryLock)
      p :REGISTRY_LOCKED
+     sleep 1 if File.exist?(@@RegistryLock)
       log_error_mesg("Failed to lock",@@RegistryLock) if File.exist?(@@RegistryLock)
       return true
    end
