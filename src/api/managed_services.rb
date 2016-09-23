@@ -4,7 +4,7 @@ get '/v0/system_registry/services/tree' do
   process_result(system_registry.services_registry_tree)
 end
 # clear_service_from_registry(service_hash)
-    rest_delete '/v0/system_registry/services/clear' do
+    delete '/v0/system_registry/services/clear' do
       p = RegistryUtils.symbolize_keys(params)  
       process_result(system_registry.clear_service_from_registry(p))
     end
