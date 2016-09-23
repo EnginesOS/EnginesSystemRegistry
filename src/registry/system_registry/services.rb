@@ -6,6 +6,7 @@ module Services
 
   def clear_service_from_registry(p)
     clear_error
+    STDERR.puts('REMOVING services ' + p.to_s )
     #params[:parent_engine]  params :container_type] == 'service'
     #find  this services non persistent
     case p[:persistence]
