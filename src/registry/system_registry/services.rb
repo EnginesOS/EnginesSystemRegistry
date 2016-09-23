@@ -12,7 +12,7 @@ module Services
     case p[:persistence]
     when 'non_persistent'
       services = get_engine_nonpersistent_services(p)
-      STDERR.puts('REMOVING non persistent services' )
+      STDERR.puts('REMOVING non persistent services ' + services.to_s)
     when 'persistent'
       services = get_engine_persistent_services(p)
     when 'both'
@@ -24,6 +24,7 @@ module Services
     services.each do |service |     
       remove_from_services_registry(service)
       remove_from_managed_engines_registry(service)
+      STDERR.puts('REMOVed  persistent services ' + service.to_s)
     end
   end
 
