@@ -23,7 +23,7 @@ module Services
     return services if services.is_a?(EnginesError)
     services.each do |service |     
       remove_from_services_registry(service)
-      remove_from_engine_registry(service)
+      remove_from_managed_engines_registry(service)
     end
   end
 
