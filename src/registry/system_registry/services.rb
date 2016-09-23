@@ -11,6 +11,7 @@ module Services
     case p[:persistence]
     when :non_persistent
       services = get_engine_nonpersistent_services(p)
+      STDERR.puts('REMOVING non persistent services' )
     when :persistent
       services = get_engine_persistent_services(p)
     when :both
@@ -21,6 +22,7 @@ module Services
     return services if services.is_a?(EnginesError)
     services.each do |service |     
       remove_from_services_registry(service)
+      remove_from_engine_registry(service)
     end
   end
 
