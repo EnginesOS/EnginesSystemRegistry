@@ -10,12 +10,12 @@ module Services
     #params[:parent_engine]  params :container_type] == 'service'
     #find  this services non persistent
     case p[:persistence]
-    when :non_persistent
+    when 'non_persistent'
       services = get_engine_nonpersistent_services(p)
       STDERR.puts('REMOVING non persistent services' )
-    when :persistent
+    when 'persistent'
       services = get_engine_persistent_services(p)
-    when :both
+    when 'both'
       services = get_engine_services(p)
     end
    
