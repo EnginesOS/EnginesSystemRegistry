@@ -3,7 +3,8 @@ begin
   require 'sinatra'
   require 'yajl'
   require 'rubytree'
-
+  require 'gctools/oobgc'
+  
   require_relative 'registry/system_registry/system_registry.rb'
   require_relative 'errors/engines_registry_error.rb'
   set :sessions, true
@@ -11,6 +12,11 @@ begin
   set :run, true
 
   @@system_registry = SystemRegistry.new
+  
+  after do
+    GC::OOB.run()
+  end
+  
   require_relative 'api/registry_info.rb'
   require_relative 'api/configurations.rb'
   require_relative 'api/managed_services.rb'
