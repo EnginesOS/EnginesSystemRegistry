@@ -60,5 +60,8 @@ class SharesRegistry < SubRegistry
 
     return  service_node = engine_node.remove_class_variable(service_hash[:service_handle])
 
+rescue StandardError => e
+  puts e.message
+  log_exception(e)
   end
 end
