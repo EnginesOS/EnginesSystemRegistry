@@ -107,7 +107,7 @@ SystemUtils.debug_output('find_engine_services_hash', engine_node.content.to_s)
   def remove_from_engine_registry(service_hash)
     service_node = find_engine_services(service_hash)
     return remove_tree_entry(service_node) if service_node.is_a?(Tree::TreeNode)
-    log_error_mesg('Failed to find service node to remove service from engine registry ', service_hash)
+    
     return true # failure to find ok
   end
 
