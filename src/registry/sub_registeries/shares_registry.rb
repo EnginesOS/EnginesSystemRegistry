@@ -60,8 +60,9 @@ class SharesRegistry < SubRegistry
 
     return  service_node = engine_node[service_hash[:service_handle]]
     return log_error_mesg('Failed to find service_handle node to remove service from shares registry ', service_hash)  if service_node.is_a?(Tree::TreeNode) == false
-    return remove_tree_entry(service_node) 
-
+    return save_tree if remove_tree_entry(service_node)
+return log_error_mesg('Failed to remove share service_node ' )
+    
 rescue StandardError => e
   puts e.message
   log_exception(e)
