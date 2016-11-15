@@ -58,7 +58,9 @@ class SharesRegistry < SubRegistry
     engine_node = service_type_node[service_hash[:parent_engine]]
     return false  if engine_node.is_a?(Tree::TreeNode) == false
 
-    return  service_node = engine_node.remove_class_variable(service_hash[:service_handle])
+    return  service_node = engine_node[service_hash[:service_handle]]
+    return false  if service_node.is_a?(Tree::TreeNode) == false
+    return remove_tree_entry(service_node) 
 
 rescue StandardError => e
   puts e.message
