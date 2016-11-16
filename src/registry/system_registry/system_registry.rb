@@ -69,17 +69,10 @@ class SystemRegistry < Registry
 
   def orphanate_service(service_hash)
     take_snap_shot
-    #    service_hash = test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(service_query_hash))
-    #    if service_hash == nil
-    #      log_error_mesg(@orphan_server_registry.last_error.to_s)
-    #      return false
-    #    end
-    p :oprhanicate_now
+
     if test_orphans_registry_result( @orphan_server_registry.orphanate_service(service_hash))
-      p :oprhanicateed
       save_tree
       if test_services_registry_result(@services_registry.remove_from_services_registry(service_hash))
-        p :remove_from_service_tree
         return save_tree
       else
         @orphan_server_registry.release_orphan(service_hash)
@@ -101,15 +94,7 @@ class SystemRegistry < Registry
       end
       roll_back
     end
-  #  def  find_engine_services_hashes(params)
-  #    clear_error
-  #    test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
-  #  end
-
- 
-
   
-
   def system_registry_tree    
 
     current_mod_time = File.mtime(@@service_tree_file) unless @last_tree_mod_time == nil 
@@ -128,13 +113,9 @@ class SystemRegistry < Registry
   end
   
   def sync
-    p :SYNC
     system_registry_tree    
   end
 
- 
- 
- 
   def update_managed_engine_service(service_query_hash)
       p :NYI
     return false
@@ -163,24 +144,7 @@ class SystemRegistry < Registry
     p ':++++++++++++++++++++++++++++++++++'
     p ':____________ROLL_BACK_____________:'
     p '++++++++++++++++++++++++++++++++++'
-    #
-    #    if @snap_shot.is_a?(Tree::TreeNode)
-    #      @system_registry = @snap_shot
-    #    end
-    #perhaps just reload
-#    @configuration_registry.roll_back
-#    @system_registry ['Configurations'] = @configuration_registry.registry
-#    
-#    @services_registry.roll_back
-#    @system_registry['Services'] = @services_registry.registry
-#      
-#    @managed_engines_registry.roll_back
-#    @system_registry['ManagedEngine'] = @managed_engines_registry.registry
-#    
-#    @orphan_server_registry.roll_back
-#    @system_registry['OphanedServices'] = @orphan_server_registry.registry
-    
-  #  unlock_tree unlock occurs in load tree
+  
     unlock_tree
     @system_registry = load_tree
     set_registries
@@ -192,8 +156,7 @@ class SystemRegistry < Registry
   # set @registry to the appropirate tree Node for eaach sub resgistry
   # creates node if nil via_xxx_yyy_tree
   def set_registries      
-    p :system_registry_as_a_str
-    p @system_registry.to_s
+
     configuration_registry_tree if @system_registry['Configurations'].nil?
     @configuration_registry.reset_registry(@system_registry['Configurations'])      
     services_registry_tree if @system_registry['Services'].nil?

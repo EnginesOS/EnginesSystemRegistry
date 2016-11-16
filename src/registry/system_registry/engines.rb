@@ -6,21 +6,13 @@ module Engines
      clear_error
      test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
    end
-   # Returns Treenodes
-   #  def find_engine_services(params)
-   #    clear_error
-   #    test_engines_registry_result(@managed_engines_registry.find_engine_services(params))
-   #  end
+
  
    def find_engine_service_hash(params)
      clear_error
      test_engines_registry_result(@managed_engines_registry.find_engine_service_hash(params))
    end
  
- #  def  get_active_persistent_services(params)
- #    clear_error
- #    test_engines_registry_result(@managed_engines_registry.get_active_persistent_services(params, false))
- #  end
    
    def get_engine_nonpersistent_services(params)
      clear_error
