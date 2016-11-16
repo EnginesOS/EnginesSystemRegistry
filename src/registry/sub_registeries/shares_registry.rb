@@ -26,11 +26,11 @@ class SharesRegistry < SubRegistry
     end
     service_node = engine_node[service_hash[:service_handle]]
     if service_node.is_a?(Tree::TreeNode) == false
-      SystemUtils.debug_output(:create_new_share_regstry_entry, service_hash)
+      #  SystemUtils.debug_output(:create_new_share_regstry_entry, service_hash)
       service_node = Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       engine_node << service_node
     elsif is_persistent?(service_hash) == false
-      SystemUtils.debug_output(:reattach_share_service_persistent_false, service_hash)
+      #   SystemUtils.debug_output(:reattach_share_service_persistent_false, service_hash)
       service_node.content = service_hash
     else
       log_error_mesg('Service share Node existed', service_hash[:service_handle])

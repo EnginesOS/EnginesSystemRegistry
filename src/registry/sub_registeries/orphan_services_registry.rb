@@ -75,7 +75,7 @@ class OrphanServicesRegistry < SubRegistry
   # :path_type :publisher_namespace
   def get_orphaned_services(params)
     leafs = []
-    SystemUtils.debug_output(:looking_for_orphans, params)
+    # SystemUtils.debug_output(:looking_for_orphans, params)
     orphans = find_orphan_consumers(params)
     if orphans.is_a?(Tree::TreeNode)
       leafs = get_matched_leafs(orphans, :persistent, true)

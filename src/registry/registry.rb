@@ -116,8 +116,8 @@ class Registry
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash)
           ret_val.push(sub_branch.content) if sub_branch.content[label] == value
-        else
-          SystemUtils.debug_output('Leaf Content not a hash ', sub_branch.content)
+        #  else
+        #   SystemUtils.debug_output('Leaf Content not a hash ', sub_branch.content)
         end
       else # children.count > 0
         ret_val.concat(get_matched_leafs(sub_branch, label, value))

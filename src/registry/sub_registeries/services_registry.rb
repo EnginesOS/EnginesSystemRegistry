@@ -37,11 +37,11 @@ class ServicesRegistry < SubRegistry
     end
     service_node = engine_node[service_hash[:service_handle]]
     if service_node.is_a?(Tree::TreeNode) == false
-      SystemUtils.debug_output(:create_new_service_regstry_entry, service_hash)
+      #  SystemUtils.debug_output(:create_new_service_regstry_entry, service_hash)
       service_node = Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       engine_node << service_node
     elsif is_persistent?(service_hash) == false
-      SystemUtils.debug_output(:reattachexistsing_service_persistent_false, service_hash)
+      #  SystemUtils.debug_output(:reattachexistsing_service_persistent_false, service_hash)
       service_node.content = service_hash
     else
       p :failed
@@ -121,7 +121,7 @@ class ServicesRegistry < SubRegistry
     if service_query_hash[:service_handle].nil? ||service_query_hash.key?(:service_handle) == false
       return get_all_leafs_service_hashes(services)
     end
-    SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
+# SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
     service = services[service_query_hash[:service_handle]]
     return log_error_mesg('failed to find match in services tree', service_query_hash)if service.nil?
     return service
