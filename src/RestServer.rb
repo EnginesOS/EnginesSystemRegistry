@@ -4,7 +4,7 @@ begin
   require 'yajl'
   require 'rubytree'
   require 'gctools/oobgc'
-  
+
   require_relative 'registry/system_registry/system_registry.rb'
   require_relative 'errors/engines_registry_error.rb'
   set :sessions, true
@@ -12,11 +12,11 @@ begin
   set :run, true
 
   @@system_registry = SystemRegistry.new
-  
+
   after do
     GC::OOB.run()
   end
-  
+
   require_relative 'api/registry_info.rb'
   require_relative 'api/configurations.rb'
   require_relative 'api/managed_services.rb'
@@ -28,29 +28,29 @@ begin
   def system_registry
     @@system_registry
   end
- 
-def process_result(result)
-  unless result.is_a?(EnginesRegistryError)
-    status(202)
-  else
-    status(404)
-  end    
-  result.to_json
-rescue StandardError => e
-  log_exception(e, result)
-end
 
-def log_exception(e, *obj)
-  e_str = e.to_s()
-  e.backtrace.each do |bt|
-    e_str += bt + ' \n'
+  def process_result(result)
+    unless result.is_a?(EnginesRegistryError)
+      status(202)
+    else
+      status(404)
+    end
+    result.to_json
+  rescue StandardError => e
+    log_exception(e, result)
   end
-  @@last_error = e_str
-  STDERR.puts e_str
-  SystemUtils.log_output(e_str, 10)
-  f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
-  f.puts(e_str)
-  f.close
-  return false
-end
+
+  def log_exception(e, *obj)
+    e_str = e.to_s()
+    e.backtrace.each do |bt|
+      e_str += bt + ' \n'
+    end
+    @@last_error = e_str
+    STDERR.puts e_str
+    SystemUtils.log_output(e_str, 10)
+    f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
+    f.puts(e_str)
+    f.close
+    return false
+  end
 end

@@ -1,6 +1,4 @@
 module Orphans
-  
- 
   def orphaned_services_registry_tree
     clear_error
     return false if !check_system_registry_tree
@@ -27,8 +25,6 @@ module Orphans
     test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(params))
   end
 
-  
-
   def release_orphan(params)
     take_snap_shot
     return save_tree if test_orphans_registry_result(@orphan_server_registry.release_orphan(params))
@@ -38,9 +34,9 @@ module Orphans
 
   def rollback_orphaned_service(params)
     clear_error
-       test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
+    test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
   end
-   
+
   def get_orphaned_services(params)
     clear_error
     test_orphans_registry_result(@orphan_server_registry.get_orphaned_services(params))
@@ -51,6 +47,4 @@ module Orphans
   #    test_orphans_registry_result(@orphan_server_registry.find_orphan_consumers(params))
   #  end
 
- 
-  
 end

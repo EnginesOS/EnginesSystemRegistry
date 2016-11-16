@@ -1,5 +1,4 @@
 class ConfigurationsRegistry < SubRegistry
-
   # @return [Array] of configurations registered against service_name
   # return empty [Array] if none
   def get_service_configurations_hashes(service_name)
@@ -23,7 +22,7 @@ class ConfigurationsRegistry < SubRegistry
     return true
   end
 
-  # Remove service configuration matching the [Hash] service_configuration_hash 
+  # Remove service configuration matching the [Hash] service_configuration_hash
   # required keys are :service_name :configurator_name
   # @return boolean indicating failure
   #

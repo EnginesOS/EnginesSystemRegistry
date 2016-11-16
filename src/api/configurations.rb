@@ -22,5 +22,4 @@ end
 
 delete '/v0/system_registry/services/configurations/del' do
   process_result(system_registry.rm_service_configuration(RegistryUtils.symbolize_keys(params)))
-
 end

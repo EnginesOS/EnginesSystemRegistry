@@ -28,6 +28,6 @@ delete '/v0/system_registry/engine/services/del' do
   process_result( system_registry.remove_from_managed_engines_registry(RegistryUtils.symbolize_keys(params)))
 end
 
-put  '/v0/system_registry/engine/service/update' do
+put '/v0/system_registry/engine/service/update' do
   process_result( system_registry.update_managed_engine_service(RegistryUtils.symbolize_keys(params)))
 end 
