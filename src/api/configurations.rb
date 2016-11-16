@@ -5,7 +5,6 @@ get '/v0/system_registry/services/configurations/tree' do
 end
 
 get '/v0/system_registry/service/configurations/' do
-  p params.to_s
   process_result(system_registry.get_service_configurations_hashes(params['service_name']))
 end
 

@@ -4,13 +4,11 @@ get '/v0/system_registry/services/tree' do
   process_result(system_registry.services_registry_tree)
 end
 # clear_service_from_registry(service_hash)
-    delete '/v0/system_registry/services/clear' do
-      p = RegistryUtils.symbolize_keys(params)  
-      process_result(system_registry.clear_service_from_registry(p))
+    delete '/v0/system_registry/services/clear' do   
+      process_result(system_registry.clear_service_from_registry(RegistryUtils.symbolize_keys(params)))
     end
 get '/v0/system_registry/service/registered/engines/' do
-  p = RegistryUtils.symbolize_keys(params)  
-  process_result(system_registry.all_engines_registered_to(p[:service_type]))
+  process_result(system_registry.all_engines_registered_to(RegistryUtils.symbolize_keys(params)[:service_type]))
 end
 
 get '/v0/system_registry/service/consumers/' do
@@ -34,7 +32,6 @@ get '/v0/system_registry/service/is_registered' do
 end
 
 post '/v0/system_registry/services/add' do
-  p RegistryUtils.symbolize_keys(params)
   process_result(system_registry.add_to_services_registry(RegistryUtils.symbolize_keys(params)))
 end
 
