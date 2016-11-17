@@ -66,10 +66,10 @@ class Registry
   # @return [Array] of all service_hash(s) below this branch
   def get_all_leafs_service_hashes(branch)
     ret_val = []
-      if branch.children.count == 0
-        return branch.content if branch.content.is_a?(Hash)
-        return ret_val
-      end
+    if branch.children.count == 0
+      return branch.content if branch.content.is_a?(Hash)
+      return ret_val
+    end
     # SystemUtils.debug_output('top node',branch.name)
     branch.children.each do |sub_branch|
       #    SystemUtils.debug_output('on node',sub_branch.name)
@@ -96,7 +96,7 @@ class Registry
         priority.push(service_hash)
       end
     end
-    return priority.concat(standard)  
+    return priority.concat(standard)
   rescue StandardError => e
     p :exception
     p service_hash
@@ -116,8 +116,8 @@ class Registry
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash)
           ret_val.push(sub_branch.content) if sub_branch.content[label] == value
-        else
-          SystemUtils.debug_output('Leaf Content not a hash ', sub_branch.content)
+        #  else
+        #   SystemUtils.debug_output('Leaf Content not a hash ', sub_branch.content)
         end
       else # children.count > 0
         ret_val.concat(get_matched_leafs(sub_branch, label, value))
@@ -144,19 +144,19 @@ class Registry
 
   def log_error_mesg(msg, *objects)
     obj_str = objects.to_s.slice(0, 256)
-    @last_error = msg + ':' + obj_str  
-   STDERR.puts @last_error.to_s
+    @last_error = msg + ':' + obj_str
+    STDERR.puts @last_error.to_s
     return EnginesRegistryError.new(msg, :error, *objects)
   end
-  
-def log_warning_mesg(msg, *objects)
-   obj_str = objects.to_s.slice(0, 256)
-   @last_error = msg + ':' + obj_str  
-   return EnginesRegistryError.new(msg, :warning, *objects)
- end
- 
+
+  def log_warning_mesg(msg, *objects)
+    obj_str = objects.to_s.slice(0, 256)
+    @last_error = msg + ':' + obj_str
+    return EnginesRegistryError.new(msg, :warning, *objects)
+  end
+
   def log_exception(e, *objs)
-    @last_error = e.to_s.slice(0, 256)   
+    @last_error = e.to_s.slice(0, 256)
     STDERR.puts @last_error.to_s
     return EnginesRegistryError.new(e.to_s, :exception, *objs)
   end

@@ -10,16 +10,15 @@ class OrphanServicesRegistry < SubRegistry
     log_error_mesg('failed to remove tree entry for ', orphan)
   end
 
-
   def rollback_orphaned_service(params)
     clear_error
-       test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
+    test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
   end
-  
+
   # Saves the service_hash in the orphaned service registry
   # @return result
   def orphanate_service(service_hash)
-   # STDERR.puts :Orphanate
+    # STDERR.puts :Orphanate
     provider_tree = orphaned_services_registry[service_hash[:publisher_namespace]]
     unless provider_tree.is_a?(Tree::TreeNode)
       provider_tree = Tree::TreeNode.new(service_hash[:publisher_namespace], service_hash[:publisher_namespace])
@@ -33,14 +32,14 @@ class OrphanServicesRegistry < SubRegistry
         engine_node = Tree::TreeNode.new(service_hash[:parent_engine], 'Belonged to ' + service_hash[:parent_engine])
         type_node << engine_node
       end
-#      STDERR.puts :add_orpha
- # STDERR.puts service_hash.to_s
- # STDERR.puts :at
- # STDERR.puts engine_node.to_s
+      #      STDERR.puts :add_orpha
+      # STDERR.puts service_hash.to_s
+      # STDERR.puts :at
+      # STDERR.puts engine_node.to_s
       engine_node << Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       return true
     end
-#STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
+    #STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
     return false
   end
 
@@ -76,7 +75,7 @@ class OrphanServicesRegistry < SubRegistry
   # :path_type :publisher_namespace
   def get_orphaned_services(params)
     leafs = []
-    SystemUtils.debug_output(:looking_for_orphans, params)
+    # SystemUtils.debug_output(:looking_for_orphans, params)
     orphans = find_orphan_consumers(params)
     if orphans.is_a?(Tree::TreeNode)
       leafs = get_matched_leafs(orphans, :persistent, true)
@@ -84,7 +83,7 @@ class OrphanServicesRegistry < SubRegistry
     return leafs
   end
 
-private
+  private
 
   # @returns a [TreeNode] to the depth of the search
   # @service_query_hash :publisher_namespace
@@ -112,7 +111,6 @@ private
     return service_path_tree
   end
 
-  
   # @return [TreeNode] of Oprhaned Serivce that matches the supplied params
   # @param params { :type_path , :service_handle}
   # @return nil on no match
@@ -131,7 +129,7 @@ private
           next
         end
         unless engine_type[params[:service_handle]].nil?
-         #  p :matchin_search
+          #  p :matchin_search
           return type[params[:service_handle]]
         else
           log_error_mesg('params nil service_handle', params)
@@ -140,12 +138,12 @@ private
       log_error_mesg('No Matching Orphan found in search', params)
       return false
     elsif types_for_engine.nil?
-    #  p :No_orphan_types
+      #  p :No_orphan_types
       return false
     else
-        return types_for_engine[params[:service_handle]] unless types_for_engine[params[:service_handle]].nil?
-        log_error_mesg('No Matching Orphan', params)
-        return false
+      return types_for_engine[params[:service_handle]] unless types_for_engine[params[:service_handle]].nil?
+      log_error_mesg('No Matching Orphan', params)
+      return false
     end
   end
 end

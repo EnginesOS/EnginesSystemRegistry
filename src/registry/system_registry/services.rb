@@ -16,10 +16,10 @@ module Services
     when 'both'
       services = get_engine_services(p)
     end
-   
+
     return true if services.nil?
     return services if services.is_a?(EnginesError)
-    services.each do |service|     
+    services.each do |service|
       remove_from_managed_engines_registry(service)
     end
   end

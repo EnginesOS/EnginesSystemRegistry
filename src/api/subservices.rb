@@ -5,8 +5,7 @@ get '/v0/system_registry/subservices/tree' do
 end
 
 get '/v0/system_registry/subservice/registered/engines/' do
-  p = RegistryUtils.symbolize_keys(params)
-  process_result(system_registry.all_subservices_registered_to(p[:subservice_type]))
+  process_result(system_registry.all_subservices_registered_to(RegistryUtils.symbolize_keys(params)[:subservice_type]))
 end
 
 get '/v0/system_registry/subservice/consumers/' do
@@ -26,7 +25,6 @@ get '/v0/system_registry/subservice/is_registered' do
 end
 
 post '/v0/system_registry/subservices/add' do
-  p RegistryUtils.symbolize_keys(params)
   process_result(system_registry.add_to_subservices_registry(RegistryUtils.symbolize_keys(params)))
 end
 
