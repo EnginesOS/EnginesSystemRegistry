@@ -5,7 +5,7 @@ get '/v0/system_registry/services/configurations/tree' do
 end
 
 get '/v0/system_registry/service/configurations/' do
-  STDERR.puts("params " + params.to_s)
+  STDERR.puts("get service cofngi params " + params.to_s)
   process_result(system_registry.get_service_configurations_hashes(params['service_name']))
 end
 
