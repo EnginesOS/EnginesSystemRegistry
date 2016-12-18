@@ -22,6 +22,7 @@ get '/v0/system_registry/engine/services/persistent/' do
 end
 
 post '/v0/system_registry/engine/services/add' do
+  STDERR.puts( ' ADD to managed engines ' + RegistryUtils.symbolize_keys(params).to_s)
   process_result(system_registry.add_to_managed_engines_registry(RegistryUtils.symbolize_keys(params)))
 end
 
