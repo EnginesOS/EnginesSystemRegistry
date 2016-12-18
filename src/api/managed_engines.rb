@@ -13,6 +13,7 @@ get '/v0/system_registry/engine/services/' do
 end
 
 get '/v0/system_registry/engine/services/nonpersistent/' do
+  STDERR.puts( ' non persist ' + params.to_s)
   process_result(system_registry.get_engine_nonpersistent_services(RegistryUtils.symbolize_keys(params)))
 end
 
