@@ -11,7 +11,7 @@ begin
   set :logging, true
   set :run, true
 
-  $system_registry = SystemRegistry.new
+  @@system_registry = SystemRegistry.new
 
   after do
     GC::OOB.run()
