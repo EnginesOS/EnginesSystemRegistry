@@ -11,7 +11,7 @@ begin
   set :logging, true
   set :run, true
 
-  @@system_registry = SystemRegistry.new
+  $system_registry = SystemRegistry.new
 
   after do
     GC::OOB.run()
@@ -26,7 +26,7 @@ begin
   require_relative 'api/shares.rb'
 
   def system_registry
-    @@system_registry
+    $system_registry
   end
 
   def process_result(result)
