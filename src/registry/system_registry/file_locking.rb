@@ -18,5 +18,5 @@ def lock_tree
 end
 
 def unlock_tree
-  File.delete(@RegistryLock) if File.exist?(@RegistryLock)
+  File.delete(registry_lock) if File.exist?(registry_lock)
 end
