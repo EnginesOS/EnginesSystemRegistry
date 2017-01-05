@@ -28,6 +28,17 @@ class RegistryUtils
       result
     }
   end
+def  RegistryUtils.as_hash(tree)
+   h = { }
+   return ({:name => 'No tree'}) if tree.nil?
+    h[:name] = tree.name
+    h[:content] = tree.content
+    h[:children] =  []
+   tree.children do |child|
+     h[:children].push(as_hash(child))
+   end
+   h
+   end
 
   def RegistryUtils.log_exception(e)
     e_str = e.to_s()
