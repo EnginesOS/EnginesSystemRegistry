@@ -32,8 +32,9 @@ get '/v0/system_registry/service/is_registered' do
 end
 
 post '/v0/system_registry/services/add' do
-  STDERR.puts( ' ADD to services ' + params.to_s + ' parsed as '  + RegistryUtils.symbolize_keys(params).to_s)
-  process_result(system_registry.add_to_services_registry(RegistryUtils.symbolize_keys(params)))
+  p_params = post_params(request)
+  STDERR.puts( ' ADD to services ' + params.to_s + ' parsed as '  + p_params.to_s)
+  process_result(system_registry.add_to_services_registry(p_params))
 end
 
 put '/v0/system_registry/service/update' do
