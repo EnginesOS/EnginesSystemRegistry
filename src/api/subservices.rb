@@ -25,7 +25,8 @@ get '/v0/system_registry/subservice/is_registered' do
 end
 
 post '/v0/system_registry/subservices/add' do
-  process_result(system_registry.add_to_subservices_registry(RegistryUtils.symbolize_keys(params)))
+  p_params = post_params(request)
+  process_result(system_registry.add_to_subservices_registry(p_params))
 end
 
 put '/v0/system_registry/subservice/update' do

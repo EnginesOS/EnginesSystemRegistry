@@ -14,6 +14,7 @@ get '/v0/system_registry/services/configuration/' do
 end
 
 post '/v0/system_registry/services/configurations/add' do
+  STDERR.puts( ' ADD to configurations ' + params.to_s + ' parsed as ' +  p_params.to_s)
  p_params = post_params(request)
   process_result(system_registry.add_service_configuration(p_params))
 end

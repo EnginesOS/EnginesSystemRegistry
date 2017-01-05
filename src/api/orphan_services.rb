@@ -12,7 +12,8 @@ get '/v0/system_registry/services/orphan/' do
 end
 
 post '/v0/system_registry/services/orphans/add' do
-  process_result(system_registry.orphanate_service(RegistryUtils.symbolize_keys(params)))
+  p_params = post_params(request)
+  process_result(system_registry.orphanate_service(p_params ))
 end
 
 post '/v0/system_registry/services/orphans/return' do

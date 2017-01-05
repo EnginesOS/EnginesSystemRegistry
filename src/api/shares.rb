@@ -5,10 +5,12 @@ get '/v0/system_registry/shares/tree' do
 end
 
 post '/v0/system_registry/shares/add' do
-  process_result(system_registry.add_to_shares_registry(RegistryUtils.symbolize_keys(params)))
+  p_params = post_params(request)
+  process_result(system_registry.add_to_shares_registry(p_params))
 end
 
 post '/v0/system_registry/shares/del' do
-  process_result( system_registry.remove_from_shares_registry(RegistryUtils.symbolize_keys(params)))
+  p_params = post_params(request)
+  process_result( system_registry.remove_from_shares_registry(p_params))
 end
 
