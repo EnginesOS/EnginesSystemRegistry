@@ -14,7 +14,8 @@ get '/v0/system_registry/services/configuration/' do
 end
 
 post '/v0/system_registry/services/configurations/add' do
-  process_result(system_registry.add_service_configuration(RegistryUtils.symbolize_keys(params)))
+ p_params = post_params(request)
+  process_result(system_registry.add_service_configuration(p_params))
 end
 
 put '/v0/system_registry/services/configuration/update' do

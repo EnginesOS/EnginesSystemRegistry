@@ -16,7 +16,9 @@ begin
   after do
     GC::OOB.run()
   end
+  
 
+  
   require_relative 'api/registry_info.rb'
   require_relative 'api/configurations.rb'
   require_relative 'api/managed_services.rb'
@@ -29,6 +31,20 @@ begin
     $system_registry
   end
 
+  def post_params(request)
+    json_parser.parse(request.env["rack.input"].read)
+  rescue StandardError => e
+    log_error(request, e, e.backtrace.to_s)
+    {}
+  end
+  
+  
+  def json_parser
+     @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+     @json_parser
+   end
+   
+   
   def process_result(result)
     unless result.is_a?(EnginesRegistryError)
       status(202)
