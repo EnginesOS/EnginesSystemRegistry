@@ -1,7 +1,7 @@
 require_relative 'utils.rb'
 
 get '/v0/system_registry/services/tree' do
-  process_result(system_registry.services_registry_tree)
+  process_result(RegistryUtils.as_hash(system_registry.services_registry_tree))
 end
 # clear_service_from_registry(service_hash)
 delete '/v0/system_registry/services/clear' do
