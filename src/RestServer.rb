@@ -13,9 +13,9 @@ begin
 
   $system_registry = SystemRegistry.new
 
-  after do
-    GC::OOB.run()
-  end
+#  after do
+  #  GC::OOB.run()
+ # end
   
 
   
