@@ -13,9 +13,9 @@ begin
 
   $system_registry = SystemRegistry.new
 
-  after do
-    GC::OOB.run()
-  end
+#  after do
+  #  GC::OOB.run()
+ # end
   
 
   
@@ -51,8 +51,8 @@ begin
     else
       status(404)
     end
-    Yajl::Encoder.encode(result)
-   # result.to_json
+   # Yajl::Encoder.encode(result)
+   result.to_json
   rescue StandardError => e
     log_exception(e, result)
   end
