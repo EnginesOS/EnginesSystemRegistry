@@ -4,7 +4,7 @@ begin
   require 'yajl'
   require 'rubytree'
   require 'gctools/oobgc'
-
+  require 'ffi_yajl'
   require_relative 'registry/system_registry/system_registry.rb'
   require_relative 'errors/engines_registry_error.rb'
   set :sessions, true
@@ -40,7 +40,8 @@ begin
   
   
   def json_parser
-     @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+    #  @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+    @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) 
      @json_parser
    end
    
@@ -51,8 +52,8 @@ begin
     else
       status(404)
     end
-   # Yajl::Encoder.encode(result)
-   result.to_json
+    FFI_Yajl::Encoder.encode(result)
+    # result.to_json
   rescue StandardError => e
     log_exception(e, result)
   end
