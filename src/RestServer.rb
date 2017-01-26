@@ -32,7 +32,8 @@ begin
   end
 
   def post_params(request)
-    json_parser.parse(request.env["rack.input"].read)
+   # json_parser.parse(request.env["rack.input"].read)
+    JSON.parse(request.env["rack.input"].read)
   rescue StandardError => e
     log_error(request, e, e.backtrace.to_s)
     {}
