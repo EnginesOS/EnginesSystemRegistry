@@ -23,7 +23,7 @@ end
 
 post '/v0/system_registry/engine/services/add' do
   p_params = post_params(request)
- # STDERR.puts( ' ADD to managed engines ' + params.to_s + ' parsed as ' +  p_params.to_s)
+  STDERR.puts( ' ADD to managed engines ' + params.to_s + ' parsed as ' +  p_params.to_s)
   process_result(system_registry.add_to_managed_engines_registry(p_params))
 end
 
