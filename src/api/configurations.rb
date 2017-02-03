@@ -20,6 +20,7 @@ post '/v0/system_registry/services/configurations/add' do
 end
 
 put '/v0/system_registry/services/configuration/update' do
+  STDERR.puts( ' update to configuration ' + params.to_s )
   process_result(system_registry.update_service_configuration(RegistryUtils.symbolize_keys(params) ))
 end
 
