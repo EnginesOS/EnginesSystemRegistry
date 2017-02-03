@@ -5,7 +5,7 @@ get '/v0/system_registry/services/configurations/tree' do
 end
 
 get '/v0/system_registry/service/configurations/' do
-  STDERR.puts("get service cofngi params " + params.to_s)
+ # STDERR.puts("get service cofngi params " + params.to_s)
   process_result(system_registry.get_service_configurations_hashes(params['service_name']))
 end
 
@@ -14,13 +14,13 @@ get '/v0/system_registry/services/configuration/' do
 end
 
 post '/v0/system_registry/services/configurations/add' do
-  STDERR.puts( ' ADD to configurations ' + params.to_s + ' parsed as ' +  p_params.to_s)
+#  STDERR.puts( ' ADD to configurations ' + params.to_s + ' parsed as ' +  p_params.to_s)
  p_params = post_params(request)
   process_result(system_registry.add_service_configuration(p_params))
 end
 
 post '/v0/system_registry/services/configuration/update' do
-  STDERR.puts( ' update to configuration ' + params.to_s )
+#  STDERR.puts( ' update to configuration ' + params.to_s )
   p_params = post_params(request)
   process_result(system_registry.update_service_configuration(RegistryUtils.symbolize_keys(p_params ) ))
 end
