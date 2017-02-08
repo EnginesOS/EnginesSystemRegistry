@@ -11,12 +11,12 @@ end
 
 get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_handle/*' do
   hash = {}
-  hash[:type_path] =  splats[0]
+  hash[:type_path] =   params['splat'][0]
 hash[:container_type] = params['container_type']
 hash[:parent_engine] = params['parent_engine']
 hash[:service_handle] = params['service_handle']
 process_result(system_registry.find_engine_service_hash(hash))
-  
+STDERR.puts("________FIND ENGINE SERVICE HASHS given " + params.to_s + ' USE ' + hash.to_s)
   end 
 
 
@@ -41,7 +41,7 @@ end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
-  STDERR.puts("FIND ENGINE SERVICE HASHeS " + params.to_s )
+  STDERR.puts("FIND ENGINE SERVICES HASHeS " + params.to_s )
   process_result(system_registry.find_engine_services_hashes(RegistryUtils.symbolize_keys(params)))
  end
 
@@ -61,7 +61,7 @@ get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
     
   #end
   #:parent_engine :type_path |:service_handle|
-        STDERR.puts("FIND ENGINE SERVICE HASHS given " + params.to_s + ' USE ' + hash.to_s)
+        STDERR.puts("FIND ENGINE SERVICES HASHS given " + params.to_s + ' USE ' + hash.to_s)
   process_result(system_registry.find_engine_services_hashes(hash))
 end
 
