@@ -29,13 +29,13 @@ post '/v0/system_registry/engine/services/add' do
   process_result(system_registry.add_to_managed_engines_registry(p_params))
 end
 #/v0/system_registry/engine/services/:parent_engine/:type_path
-get '/v0/system_registry/engine/services/:engine/:container_type' do
+get '/v0/system_registry/engine/services/:container_type/:engine' do
   
   process_result(system_registry.find_engine_services_hashes(params))
  end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
-get '/v0/system_registry/engine/services/:engine/:container_type/*' do
+get '/v0/system_registry/engine/services/:container_type/:engine/*' do
 #  def self.service_hash_from_params(params, search)
     splats = params['splat']
     hash = {}
