@@ -31,7 +31,7 @@ end
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
   
-  process_result(system_registry.find_engine_services_hashes(params))
+  process_result(system_registry.find_engine_services_hashes(RegistryUtils.symbolize_keys(params)))
  end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
