@@ -15,8 +15,9 @@ get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_
 hash[:container_type] = params['container_type']
 hash[:parent_engine] = params['parent_engine']
 hash[:service_handle] = params['service_handle']
-process_result(system_registry.find_engine_service_hash(hash))
 STDERR.puts("________FIND ENGINE SERVICE HASHS given " + params.to_s + ' USE ' + hash.to_s)
+process_result(system_registry.find_engine_service_hash(hash))
+
   end 
 
 
