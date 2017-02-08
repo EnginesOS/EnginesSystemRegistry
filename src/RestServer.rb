@@ -53,8 +53,8 @@ begin
     else
       status(404)
     end
-    FFI_Yajl::Encoder.encode(result)
-    # result.to_json
+    #  FFI_Yajl::Encoder.encode(result)
+    result.to_json
   rescue StandardError => e
     log_exception(e, result)
   end
