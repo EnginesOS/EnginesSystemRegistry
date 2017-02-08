@@ -29,7 +29,7 @@ post '/v0/system_registry/engine/services/add' do
   process_result(system_registry.add_to_managed_engines_registry(p_params))
 end
 #/v0/system_registry/engine/services/:parent_engine/:type_path
-get '/v0/system_registry/engine/services/:container_type/:engine' do
+get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
   
   process_result(system_registry.find_engine_services_hashes(params))
  end
