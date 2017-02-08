@@ -21,8 +21,8 @@ begin
   
   require_relative 'api/registry_info.rb'
   require_relative 'api/configurations.rb'
-  require_relative 'api/managed_services.rb'
   require_relative 'api/orphan_services.rb'
+  require_relative 'api/managed_services.rb'
   require_relative 'api/managed_engines.rb'
   require_relative 'api/subservices.rb'
   require_relative 'api/shares.rb'
@@ -33,7 +33,7 @@ begin
 
   def post_params(request)
    # json_parser.parse(request.env["rack.input"].read)
-    JSON.parse(request.env["rack.input"].read)
+    RegistryUtils.symbolize_keys( JSON.parse(request.env["rack.input"].read, :create_additons => true ))
   rescue StandardError => e
     log_error(request, e, e.backtrace.to_s)
     {}
@@ -53,8 +53,8 @@ begin
     else
       status(404)
     end
-    FFI_Yajl::Encoder.encode(result)
-    # result.to_json
+    #  FFI_Yajl::Encoder.encode(result)
+    result.to_json
   rescue StandardError => e
     log_exception(e, result)
   end

@@ -3,7 +3,9 @@ module Engines
   # ENGINE STUFF
   def find_engine_services_hashes(params)
     clear_error
-    test_engines_registry_result(@managed_engines_registry.find_engine_services_hashes(params))
+    r = @managed_engines_registry.find_engine_services_hashes(params)
+    STDERR.puts("FIND_engine_services_hashes " + r.to_s)
+    test_engines_registry_result(r)
   end
 
   def find_engine_service_hash(params)
