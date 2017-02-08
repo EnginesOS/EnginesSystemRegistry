@@ -11,7 +11,8 @@ end
 
 get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_handle/*' do
   hash = {}
-  hash[:type_path] =   params['splat'][0]
+  splats = params['splat']
+  hash[:type_path] =   splats[0]
 hash[:container_type] = params['container_type']
 hash[:parent_engine] = params['parent_engine']
 hash[:service_handle] = params['service_handle']
