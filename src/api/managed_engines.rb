@@ -50,6 +50,7 @@ get '/v0/system_registry/engine/services/:container_type/:engine/*' do
     
   #end
   #:parent_engine :type_path |:service_handle|
+        STDERR.puts("FIND ENGINE SERVICE HASHS " + params.to_s + ' ' + hash.to_s)
   process_result(system_registry.find_engine_services_hashes(hash))
 end
 
