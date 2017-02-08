@@ -29,17 +29,18 @@ post '/v0/system_registry/engine/services/add' do
   process_result(system_registry.add_to_managed_engines_registry(p_params))
 end
 #/v0/system_registry/engine/services/:parent_engine/:type_path
-get '/v0/system_registry/engine/services/:engine' do
+get '/v0/system_registry/engine/services/:engine/:container_type' do
   
   process_result(system_registry.find_engine_services_hashes(params))
  end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
-get '/v0/system_registry/engine/services/:engine/*' do
+get '/v0/system_registry/engine/services/:engine/:container_type/*' do
 #  def self.service_hash_from_params(params, search)
     splats = params['splat']
     hash = {}
   hash[:parent_engine] =  params[:engine]
+  hash[:container_type] =  params[:container_type]
    # unless search
    #   hash[:type_path] = File.dirname(splats[0])
    #   hash[:service_handle] = File.basename(splats[0])
