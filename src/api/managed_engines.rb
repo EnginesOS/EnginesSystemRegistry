@@ -19,7 +19,16 @@ STDERR.puts("________FIND ENGINE SERVICE HASHS given " + params.to_s + ' USE ' +
 process_result(system_registry.find_engine_service_hash(hash))
 
   end 
+  
+delete '/v0/system_registry/engine/services/del' do
+  # :publisher_namespace :type_path :parent_engine :service_handle
+  process_result( system_registry.remove_from_managed_engines_registry(RegistryUtils.symbolize_keys(params)))
+end
 
+put '/v0/system_registry/engine/service/update' do
+  # :publisher_namespace :type_path :parent_engine :service_handle + post
+  process_result( system_registry.update_managed_engine_service(RegistryUtils.symbolize_keys(params)))
+end 
 
 
 get '/v0/system_registry/engine/services/nonpersistent/' do
@@ -42,7 +51,7 @@ end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
-  STDERR.puts("FIND ENGINE SERVICES HASHeS " + params.to_s )
+  STDERR.puts("FIND ENGINE SERVICES HASHeS /v0/system_registry/engine/services/:container_type/:parent_engine" + params.to_s )
   process_result(system_registry.find_engine_services_hashes(RegistryUtils.symbolize_keys(params)))
  end
 
@@ -66,12 +75,3 @@ get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
   process_result(system_registry.find_engine_services_hashes(hash))
 end
 
-delete '/v0/system_registry/engine/services/del' do
-  # :publisher_namespace :type_path :parent_engine :service_handle
-  process_result( system_registry.remove_from_managed_engines_registry(RegistryUtils.symbolize_keys(params)))
-end
-
-put '/v0/system_registry/engine/service/update' do
-  # :publisher_namespace :type_path :parent_engine :service_handle + post
-  process_result( system_registry.update_managed_engine_service(RegistryUtils.symbolize_keys(params)))
-end 
