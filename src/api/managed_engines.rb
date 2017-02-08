@@ -28,6 +28,11 @@ post '/v0/system_registry/engine/services/add' do
   STDERR.puts( ' ADD to managed engines ' + params.to_s + ' parsed as ' +  p_params.to_s)
   process_result(system_registry.add_to_managed_engines_registry(p_params))
 end
+#/v0/system_registry/engine/services/:parent_engine/:type_path
+get '/v0/system_registry/engine/services/:engine' do
+  
+  process_result(system_registry.find_engine_services_hashes(params))
+ end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:engine/*' do
