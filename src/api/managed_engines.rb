@@ -4,10 +4,20 @@ get '/v0/system_registry/engines/tree' do
   process_result(RegistryUtils.as_hash(system_registry.managed_engines_registry_tree))
 end
 
-get '/v0/system_registry/engine/service/' do
+#get '/v0/system_registry/engine/service/' do
  # :publisher_namespace :type_path :parent_engine :service_handle
-  process_result(system_registry.find_engine_service_hash(RegistryUtils.symbolize_keys(params)))
-end
+ # process_result(system_registry.find_engine_service_hash(RegistryUtils.symbolize_keys(params)))
+#end
+
+get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_handle/*' do
+  hash = {}
+  hash[:type_path] =  splats[0]
+hash[:container_type] = params['container_type']
+hash[:parent_engine] = params['parent_engine']
+hash[:service_handle] = params['service_handle']
+process_result(system_registry.find_engine_service_hash(hash))
+  
+  end 
 
 
 
@@ -28,9 +38,10 @@ post '/v0/system_registry/engine/services/add' do
   STDERR.puts( ' ADD to managed engines ' + params.to_s + ' parsed as ' +  p_params.to_s)
   process_result(system_registry.add_to_managed_engines_registry(p_params))
 end
+
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
-  STDERR.puts("FIND ENGINE SERVICE HASHS " + params.to_s )
+  STDERR.puts("FIND ENGINE SERVICE HASHeS " + params.to_s )
   process_result(system_registry.find_engine_services_hashes(RegistryUtils.symbolize_keys(params)))
  end
 
@@ -50,7 +61,7 @@ get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
     
   #end
   #:parent_engine :type_path |:service_handle|
-        STDERR.puts("FIND ENGINE SERVICE HASHS " + params.to_s + ' ' + hash.to_s)
+        STDERR.puts("FIND ENGINE SERVICE HASHS given " + params.to_s + ' USE ' + hash.to_s)
   process_result(system_registry.find_engine_services_hashes(hash))
 end
 
