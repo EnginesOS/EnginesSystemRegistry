@@ -8,6 +8,7 @@ get '/v0/system_registry/services/orphans/' do
 end
 
 get '/v0/system_registry/services/orphan/' do
+  STDERR.puts( 'ORPHAN get params ' + params.to_s)
   process_result(system_registry.retrieve_orphan(RegistryUtils.symbolize_keys(params)))
 end
 
