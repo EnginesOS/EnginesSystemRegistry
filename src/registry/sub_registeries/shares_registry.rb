@@ -47,18 +47,22 @@ class SharesRegistry < SubRegistry
   end
 
   def remove_from_shares_registry(service_hash)
+    
+    STDERR.puts(" \nat 1 " + service_hash.to_s)
     owner_node = service_provider_tree(service_hash[:service_owner]) # managed_service_tree[service_hash[:publisher_namespace] ]
     return log_error_mesg('Failed to find service_owner node to remove service from shares registry ', service_hash)  if owner_node.is_a?(Tree::TreeNode) == false
-
+    STDERR.puts(" \nat 2 " + service_hash.to_s)
     provider_node = owner_node[service_hash[:publisher_namespace]] # managed_service_tree[service_hash[:publisher_namespace] ]
     return log_error_mesg('Failed to find publisher_namespace node to remove service from shares registry ', service_hash)   if provider_node.is_a?(Tree::TreeNode) == false
-
+STDERR.puts(" \nat 3 " + service_hash.to_s)
     service_type_node = create_type_path_node(provider_node, service_hash[:type_path])
     return log_error_mesg('Failed to find type_path node to remove service from shares registry ', service_hash)  if service_type_node.is_a?(Tree::TreeNode) == false
+STDERR.puts(" \nat 4 " + service_hash.to_s)
     engine_node = service_type_node[service_hash[:parent_engine]]
     return log_error_mesg('Failed to find parent_engine node to remove service from shares registry ', service_hash)  if engine_node.is_a?(Tree::TreeNode) == false
-
-    return  service_node = engine_node[service_hash[:service_handle]]
+STDERR.puts(" \nat 5 " + service_hash.to_s)
+ service_node = engine_node[service_hash[:service_handle]]
+STDERR.puts(" \nat 6 " + service_hash.to_s)
     return log_error_mesg('Failed to find service_handle node to remove service from shares registry ', service_hash)  if service_node.is_a?(Tree::TreeNode) == false
 log_error_mesg(' node to remove service from shares registry ', service_hash)
     return save_tree if remove_tree_entry(service_node)
