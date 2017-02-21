@@ -65,7 +65,7 @@ STDERR.puts(" \nat 5 " + service_hash.to_s)
 STDERR.puts(" \nat 6 " + service_hash.to_s)
     return log_error_mesg('Failed to find service_handle node to remove service from shares registry ', service_hash)  if service_node.is_a?(Tree::TreeNode) == false
 log_error_mesg(' node to remove service from shares registry ', service_hash)
-    return save_tree if remove_tree_entry(service_node)
+    return true if remove_tree_entry(service_node)
 return log_error_mesg('FAILED to remove share service_node ' )
     
 rescue StandardError => e
