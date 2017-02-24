@@ -4,7 +4,7 @@ get '/v0/system_registry/services/orphans/tree' do
 end
 
 
-post '/v0/system_registry/services/orphans/add/:parent_engine]/:service_handle/:publisher_namespace/*' do
+post '/v0/system_registry/services/orphans/add/:parent_engine/:service_handle/:publisher_namespace/*' do
   splats = params['splat']
   p_params[:type_path] =   splats[0]
   p_params = post_params(request)
@@ -13,7 +13,7 @@ post '/v0/system_registry/services/orphans/add/:parent_engine]/:service_handle/:
   process_result(system_registry.orphanate_service(p_params ))
 end
 
-post '/v0/system_registry/services/orphans/return/:parent_engine]/:service_handle/:publisher_namespace/*' do
+post '/v0/system_registry/services/orphans/return/:parent_engine/:service_handle/:publisher_namespace/*' do
   p_params = post_params(request)
   p_params.merge(params)
   p_params = params['splat']
@@ -22,7 +22,7 @@ post '/v0/system_registry/services/orphans/return/:parent_engine]/:service_handl
 
 end
 
-delete '/v0/system_registry/services/orphans/del/:service_handle]/:parent_engine/:publisher_namespace/*' do
+delete '/v0/system_registry/services/orphans/del/:service_handle/:parent_engine/:publisher_namespace/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
   process_result(system_registry.release_orphan(params))
@@ -35,7 +35,7 @@ get '/v0/system_registry/services/orphans/:publisher_namespace/*' do
   process_result(system_registry.get_orphaned_services(params))
 end
 
-get '/v0/system_registry/services/orphan/:parent_engine]/:service_handle/:publisher_namespace/*' do
+get '/v0/system_registry/services/orphan/:parent_engine/:service_handle/:publisher_namespace/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
   STDERR.puts( 'ORPHAN get params ' + params.to_s)
