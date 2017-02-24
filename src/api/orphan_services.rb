@@ -9,6 +9,7 @@ post '/v0/system_registry/services/orphans/add/:parent_engine]/:service_handle/:
   p_params[:type_path] =   splats[0]
   p_params = post_params(request)
   p_params.merge(params)
+  STDERR.puts('Noew ORPHAN ' + p_params.to_s + ' ' + params.to_s)
   process_result(system_registry.orphanate_service(p_params ))
 end
 
