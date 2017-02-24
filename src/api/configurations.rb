@@ -4,13 +4,13 @@ get '/v0/system_registry/services/configurations/tree' do
   process_result(RegistryUtils.as_hash(system_registry.service_configurations_registry_tree))
 end
 
-get '/v0/system_registry/service/configurations/' do
+get '/v0/system_registry/service/configurations/:service_name' do
  # STDERR.puts("get service cofngi params " + params.to_s)
-  process_result(system_registry.get_service_configurations_hashes(params['service_name']))
+  process_result(system_registry.get_service_configurations_hashes(params[:service_name]))
 end
 
-get '/v0/system_registry/services/configuration/' do
-  process_result(system_registry.get_service_configuration(RegistryUtils.symbolize_keys(params)))
+get '/v0/system_registry/services/configuration/:service_name/:configurator_name' do
+  process_result(system_registry.get_service_configuration(params))
 end
 
 post '/v0/system_registry/services/configurations/add' do
