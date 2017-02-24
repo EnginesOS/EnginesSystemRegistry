@@ -13,18 +13,20 @@ get '/v0/system_registry/services/configuration/:service_name/:configurator_name
   process_result(system_registry.get_service_configuration(params))
 end
 
-post '/v0/system_registry/services/configurations/add' do
+post '/v0/system_registry/services/configurations/add/:service_name/:configurator_name' do
 #  STDERR.puts( ' ADD to configurations ' + params.to_s + ' parsed as ' +  p_params.to_s)
  p_params = post_params(request)
+  p_params.merge(params)
   process_result(system_registry.add_service_configuration(p_params))
 end
 
-post '/v0/system_registry/services/configuration/update' do
+post '/v0/system_registry/services/configuration/update/:service_name/:configurator_name' do
 #  STDERR.puts( ' update to configuration ' + params.to_s )
   p_params = post_params(request)
+  p_params.merge(params)
   process_result(system_registry.update_service_configuration(RegistryUtils.symbolize_keys(p_params ) ))
 end
 
-delete '/v0/system_registry/services/configurations/del' do
+delete '/v0/system_registry/services/configurations/del/:service_name/:configurator_name' do
   process_result(system_registry.rm_service_configuration(RegistryUtils.symbolize_keys(params)))
 end
