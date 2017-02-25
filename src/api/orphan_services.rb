@@ -4,11 +4,12 @@ end
 
 post '/v0/system_registry/services/orphans/add/:parent_engine/:service_handle/:publisher_namespace/*' do
   splats = params['splat']
+  params[:type_path] =   splats[0] 
+  p_params = post_params(request)
+  params.merge(p_params)
   cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace])
-  cparams[:type_path] =   splats[0]
-  cparams = post_params(request)
   #cparams.merge(params)
-  STDERR.puts('New ORPHAN ' +  cparams.to_s + ' ' + params.to_s)
+  STDERR.puts('New ORPHAN ' +  cparams.to_s + ' _ ' + params.to_s)
   process_result(system_registry.orphanate_service( cparams ))
 end
 
