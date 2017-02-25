@@ -119,6 +119,7 @@ STDERR.puts service_query_hash.to_s
       return false
     end
 STDERR.puts :find_orpha     
+STDERR.puts service_path_tree.to_s
     return service_path_tree
   end
 
