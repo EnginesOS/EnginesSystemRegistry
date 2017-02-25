@@ -94,6 +94,7 @@ class OrphanServicesRegistry < SubRegistry
   # @service_query_hash :publisher_namespace , :type_path
   # @service_query_hash :publisher_namespace , :type_path , :service_handle
   def find_orphan_consumers(service_query_hash)
+    return service_query_hash unless service_query_hash.is_a?(Hash)
     if !service_query_hash.key?(:publisher_namespace) || service_query_hash[:publisher_namespace].nil?
       log_error_mesg('no_publisher_namespace', service_query_hash)
       return false

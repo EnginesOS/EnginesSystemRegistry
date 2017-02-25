@@ -19,7 +19,7 @@ post '/v0/system_registry/services/orphans/return/:parent_engine/:service_handle
   p_params = params['splat']
   p_params.merge(params)
   params[:type_path] =   splats[0]
-  cparams =  RegistryUtils::Params.assemble_params(p_params, [:parent_engine,:service_handle,:publisher_namespace],  :all)
+  cparams =  RegistryUtils::Params.assemble_params(p_params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all)
   process_result(system_registry.rollback_orphaned_service(RegistryUtils.symbolize_keys(params)))
 
 end
@@ -36,7 +36,7 @@ get '/v0/system_registry/services/orphans/:publisher_namespace/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
 STDERR.puts('GET ORPHAN ' +   params.to_s)
-  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace])
+  cparams =  RegistryUtils::Params.assemble_params(params, [:type_path,:publisher_namespace])
   process_result(system_registry.get_orphaned_services(cparams))
 end
 
