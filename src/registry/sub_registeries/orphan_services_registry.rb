@@ -111,7 +111,8 @@ STDERR.puts :find_orpha
       log_error_mesg('found no match for provider in orphans', service_query_hash[:publisher_namespace])
       return false
     end
-STDERR.puts :find_orpha     
+STDERR.puts :find_orpha      
+STDERR.puts service_query_hash.to_s
     service_path_tree = get_type_path_node(provider_tree, service_query_hash[:type_path])
     unless service_path_tree.is_a?(Tree::TreeNode)
       log_error_mesg('Failed to find orphan matching service path', service_query_hash)
