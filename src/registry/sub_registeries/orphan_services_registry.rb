@@ -82,8 +82,13 @@ class OrphanServicesRegistry < SubRegistry
     # SystemUtils.debug_output(:looking_for_orphans, params)
     orphans = find_orphan_consumers(params)
     if orphans.is_a?(Tree::TreeNode)
+      STDERR.puts :find_orpha     
+      STDERR.puts orphans.to_s
       leafs = get_matched_leafs(orphans, :persistent, true)
+      
     end
+    STDERR.puts :find_orpha     
+    STDERR.puts leafs.to_s
     return leafs
   end
 
