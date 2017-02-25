@@ -8,7 +8,7 @@ post '/v0/system_registry/services/orphans/add/:parent_engine/:service_handle/:p
   p_params = post_params(request)
   params.merge(p_params)
 STDERR.puts('New ORPHAN ' +  p_params.to_s + ' _ ' + params.to_s)
-  cparams =  RegistryUtils::Params.assemble_params(cparams, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all)
+  cparams =  RegistryUtils::Params.assemble_params(cparams, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
   #cparams.merge(params)
 STDERR.puts('New ORPHAN ' +  cparams.to_s)
   process_result(system_registry.orphanate_service(cparams ))
@@ -19,7 +19,7 @@ post '/v0/system_registry/services/orphans/return/:parent_engine/:service_handle
   p_params = params['splat']
   p_params.merge(params)
   p_params[:type_path] =   splats[0]
-  cparams =  RegistryUtils::Params.assemble_params(p_params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all)
+  cparams =  RegistryUtils::Params.assemble_params(p_params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
   process_result(system_registry.rollback_orphaned_service(RegistryUtils.symbolize_keys(cparams)))
 
 end
