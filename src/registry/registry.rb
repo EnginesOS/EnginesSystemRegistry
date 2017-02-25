@@ -113,7 +113,8 @@ class Registry
     # SystemUtils.debug_output('top node',branch.name)
     branch.children.each do |sub_branch|
         SystemUtils.debug_output('sub node',sub_branch.name)
-      SystemUtils.debug_output('sub node',sub_branch.content[label])
+      SystemUtils.debug_output('sub node',sub_branch.content)
+      SystemUtils.debug_output('sub node',sub_branch.content.class.name)
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash)
           ret_val.push(sub_branch.content) if sub_branch.content[label] == value
