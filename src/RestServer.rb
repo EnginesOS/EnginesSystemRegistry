@@ -37,7 +37,7 @@ begin
    # json_parser.parse(request.env["rack.input"].read)
     RegistryUtils.symbolize_keys( JSON.parse(request.env["rack.input"].read, :create_additons => true ))
   rescue StandardError => e
-    log_error(request, e, e.backtrace.to_s)
+    log_error_mesg(request, e, e.backtrace.to_s)
     {}
   end
   
