@@ -1,4 +1,3 @@
-require_relative 'utils.rb'
 
 get '/v0/system_registry/status/' do
   'true'

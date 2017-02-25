@@ -1,4 +1,4 @@
-require_relative 'utils.rb'
+
 get '/v0/system_registry/services/orphans/tree' do
   process_result(RegistryUtils.as_hash(system_registry.orphaned_services_registry_tree))
 end
@@ -6,7 +6,7 @@ end
 
 post '/v0/system_registry/services/orphans/add/:parent_engine/:service_handle/:publisher_namespace/*' do
   splats = params['splat']
-  cparams =  Utils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace]) 
+  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace]) 
   cparams[:type_path] =   splats[0]
 cparams = post_params(request)
 #cparams.merge(params)
@@ -19,7 +19,7 @@ post '/v0/system_registry/services/orphans/return/:parent_engine/:service_handle
   p_params = params['splat']
   p_params.merge(params)
   params[:type_path] =   splats[0]
-cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:service_handle,:publisher_namespace],  :all) 
+cparams =  RegistryUtils::Params.assemble_params(p_params, [:parent_engine,:service_handle,:publisher_namespace],  :all) 
   process_result(system_registry.rollback_orphaned_service(RegistryUtils.symbolize_keys(params)))
 
 end
@@ -28,7 +28,7 @@ delete '/v0/system_registry/services/orphans/del/:service_handle/:parent_engine/
   splats = params['splat']
     
   params[:type_path] =   splats[0]
-cparams =  Utils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace]) 
+cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace]) 
   process_result(system_registry.release_orphan(cparams))
 end
 
@@ -36,14 +36,14 @@ end
 get '/v0/system_registry/services/orphans/:publisher_namespace/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
-cparams =  Utils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace]) 
+cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace]) 
   process_result(system_registry.get_orphaned_services(cparams))
 end
 
 get '/v0/system_registry/services/orphan/:parent_engine/:service_handle/:publisher_namespace/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
-cparams =  Utils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace]) 
+cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace]) 
   STDERR.puts( 'ORPHAN get params ' + cparams.to_s)
   process_result(system_registry.retrieve_orphan(cparams))
 end

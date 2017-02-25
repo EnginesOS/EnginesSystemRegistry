@@ -6,6 +6,7 @@ begin
   require 'gctools/oobgc'
   require 'ffi_yajl'
   require_relative 'registry/system_registry/system_registry.rb'
+  require_relative 'utils/registry_utils.rb'
   require_relative 'errors/engines_registry_error.rb'
   set :sessions, true
   set :logging, true
@@ -18,8 +19,7 @@ begin
  # end
   
 
-  require_relative 'utils/params.rb'
-  include Params
+  
   
   require_relative 'api/registry_info.rb'
   require_relative 'api/configurations.rb'
