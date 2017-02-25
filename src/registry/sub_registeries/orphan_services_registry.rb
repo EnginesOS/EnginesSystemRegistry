@@ -4,6 +4,7 @@ class OrphanServicesRegistry < SubRegistry
   # @ remove from both the service registry and orphan registery
   # @param params { :type_path , :service_handle}
   def release_orphan(params)
+    return service_query_hash unless service_query_hash.is_a?(Hash)
     orphan = retrieve_orphan_node(params)
     return log_error_mesg('No Orphan found to release', params) if !orphan.is_a?(Tree::TreeNode)
     return true if remove_tree_entry(orphan)
@@ -18,6 +19,7 @@ class OrphanServicesRegistry < SubRegistry
   # Saves the service_hash in the orphaned service registry
   # @return result
   def orphanate_service(service_hash)
+    return service_query_hash unless service_query_hash.is_a?(Hash)
     # STDERR.puts :Orphanate  
     STDERR.puts :add_orpha
     
@@ -48,6 +50,7 @@ class OrphanServicesRegistry < SubRegistry
   end
 
   def retrieve_orphan(params)
+    return service_query_hash unless service_query_hash.is_a?(Hash)
     orphan = retrieve_orphan_node(params)
     return orphan.content if orphan.is_a?(Tree::TreeNode)
     return orphan
@@ -63,6 +66,7 @@ class OrphanServicesRegistry < SubRegistry
   # @return new service_hash
   # does not modfiey the tree
   def reparent_orphan(params)
+    return service_query_hash unless service_query_hash.is_a?(Hash)
     orphan = retrieve_orphan_node(params)
     if orphan
       content = orphan.content
