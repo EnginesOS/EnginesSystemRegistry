@@ -11,7 +11,7 @@ STDERR.puts('New ORPHAN ' +  p_params.to_s + ' _ ' + params.to_s)
   cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace])
   #cparams.merge(params)
 
-  process_result(system_registry.orphanate_service( cparams ))
+  process_result(system_registry.orphanate_service(cparams ))
 end
 
 post '/v0/system_registry/services/orphans/return/:parent_engine/:service_handle/:publisher_namespace/*' do

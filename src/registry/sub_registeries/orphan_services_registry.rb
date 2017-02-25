@@ -32,10 +32,10 @@ class OrphanServicesRegistry < SubRegistry
         engine_node = Tree::TreeNode.new(service_hash[:parent_engine], 'Belonged to ' + service_hash[:parent_engine])
         type_node << engine_node
       end
-      #      STDERR.puts :add_orpha
+            STDERR.puts :add_orpha
       # STDERR.puts service_hash.to_s
       # STDERR.puts :at
-      # STDERR.puts engine_node.to_s
+       STDERR.puts engine_node.to_s
       engine_node << Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       return true
     end
