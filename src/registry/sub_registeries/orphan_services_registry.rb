@@ -18,12 +18,16 @@ class OrphanServicesRegistry < SubRegistry
   # Saves the service_hash in the orphaned service registry
   # @return result
   def orphanate_service(service_hash)
-    # STDERR.puts :Orphanate
+    # STDERR.puts :Orphanate  
+    STDERR.puts :add_orpha
+    
     provider_tree = orphaned_services_registry[service_hash[:publisher_namespace]]
+  STDERR.puts :add_orpha     
     unless provider_tree.is_a?(Tree::TreeNode)
       provider_tree = Tree::TreeNode.new(service_hash[:publisher_namespace], service_hash[:publisher_namespace])
       orphaned_services_registry << provider_tree
     end
+  STDERR.puts :add_orpha
     if service_hash.key?(:service_handle) && service_hash.key?(:type_path)
       type_node = create_type_path_node(provider_tree, service_hash[:type_path])
       # INSERT Enginename here
@@ -32,14 +36,14 @@ class OrphanServicesRegistry < SubRegistry
         engine_node = Tree::TreeNode.new(service_hash[:parent_engine], 'Belonged to ' + service_hash[:parent_engine])
         type_node << engine_node
       end
-            STDERR.puts :add_orpha
+         
       # STDERR.puts service_hash.to_s
       # STDERR.puts :at
        STDERR.puts engine_node.to_s
       engine_node << Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       return true
     end
-    #STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
+    STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
     return false
   end
 
