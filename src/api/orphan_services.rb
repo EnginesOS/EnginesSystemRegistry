@@ -6,40 +6,46 @@ end
 
 post '/v0/system_registry/services/orphans/add/:parent_engine/:service_handle/:publisher_namespace/*' do
   splats = params['splat']
-  p_params[:type_path] =   splats[0]
-  p_params = post_params(request)
-  p_params.merge(params)
-  STDERR.puts('Noew ORPHAN ' + p_params.to_s + ' ' + params.to_s)
-  process_result(system_registry.orphanate_service(p_params ))
+  cparams =  Utils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace]) 
+  cparams[:type_path] =   splats[0]
+cparams = post_params(request)
+#cparams.merge(params)
+  STDERR.puts('New ORPHAN ' +  cparams.to_s + ' ' + params.to_s)
+  process_result(system_registry.orphanate_service( cparams ))
 end
 
 post '/v0/system_registry/services/orphans/return/:parent_engine/:service_handle/:publisher_namespace/*' do
   p_params = post_params(request)
-  p_params.merge(params)
   p_params = params['splat']
+  p_params.merge(params)
   params[:type_path] =   splats[0]
+cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:service_handle,:publisher_namespace],  :all) 
   process_result(system_registry.rollback_orphaned_service(RegistryUtils.symbolize_keys(params)))
 
 end
 
 delete '/v0/system_registry/services/orphans/del/:service_handle/:parent_engine/:publisher_namespace/*' do
   splats = params['splat']
+    
   params[:type_path] =   splats[0]
-  process_result(system_registry.release_orphan(params))
+cparams =  Utils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace]) 
+  process_result(system_registry.release_orphan(cparams))
 end
 
 
 get '/v0/system_registry/services/orphans/:publisher_namespace/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
-  process_result(system_registry.get_orphaned_services(params))
+cparams =  Utils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace]) 
+  process_result(system_registry.get_orphaned_services(cparams))
 end
 
 get '/v0/system_registry/services/orphan/:parent_engine/:service_handle/:publisher_namespace/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
-  STDERR.puts( 'ORPHAN get params ' + params.to_s)
-  process_result(system_registry.retrieve_orphan(params))
+cparams =  Utils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path,:publisher_namespace]) 
+  STDERR.puts( 'ORPHAN get params ' + cparams.to_s)
+  process_result(system_registry.retrieve_orphan(cparams))
 end
 #reparent_orphan
 

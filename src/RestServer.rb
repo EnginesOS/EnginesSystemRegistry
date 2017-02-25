@@ -18,6 +18,8 @@ begin
  # end
   
 
+  require_relative 'utils/params.rb'
+  include Params
   
   require_relative 'api/registry_info.rb'
   require_relative 'api/configurations.rb'
