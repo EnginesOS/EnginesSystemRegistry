@@ -10,7 +10,7 @@ end
 get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_handle/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
-  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:type_path],  :all,nil)
+  cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,nil)
   process_result(system_registry.find_engine_service_hash(cparams))
 
 end
