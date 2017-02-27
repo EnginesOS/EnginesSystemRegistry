@@ -1,4 +1,8 @@
 class RegistryUtils
+  
+  require_relative 'params.rb'
+
+ 
   def RegistryUtils.boolean_if_true_false_str(r)
     return true if r == 'true'
     return false if r == 'false'
