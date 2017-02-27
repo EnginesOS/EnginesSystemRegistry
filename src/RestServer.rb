@@ -6,6 +6,7 @@ begin
   require 'gctools/oobgc'
   require 'ffi_yajl'
   require_relative 'registry/system_registry/system_registry.rb'
+  require_relative 'utils/registry_utils.rb'
   require_relative 'errors/engines_registry_error.rb'
   set :sessions, true
   set :logging, true
@@ -18,6 +19,7 @@ begin
  # end
   
 
+  
   
   require_relative 'api/registry_info.rb'
   require_relative 'api/configurations.rb'
@@ -35,7 +37,7 @@ begin
    # json_parser.parse(request.env["rack.input"].read)
     RegistryUtils.symbolize_keys( JSON.parse(request.env["rack.input"].read, :create_additons => true ))
   rescue StandardError => e
-    log_error(request, e, e.backtrace.to_s)
+    log_error_mesg(request, e, e.backtrace.to_s)
     {}
   end
   

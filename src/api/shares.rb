@@ -1,4 +1,4 @@
-require_relative 'utils.rb'
+
 
 get '/v0/system_registry/shares/tree' do
   process_result(RegistryUtils.as_hash(system_registry.shares_registry_tree))
