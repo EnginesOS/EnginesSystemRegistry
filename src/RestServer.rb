@@ -44,7 +44,7 @@ begin
   
   def json_parser
     #  @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
-    @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) 
+    @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true})  if @json_parser.nil?
      @json_parser
    end
    
