@@ -1,7 +1,7 @@
 begin
 
   require 'sinatra'
-  require 'yajl'
+ # require 'yajl'
   require 'rubytree'
   require 'gctools/oobgc'
   require 'ffi_yajl'
@@ -34,8 +34,8 @@ begin
   end
 
   def post_params(request)
-   # json_parser.parse(request.env["rack.input"].read)
-    RegistryUtils.symbolize_keys( JSON.parse(request.env["rack.input"].read, :create_additons => true ))
+    json_parser.parse(request.env["rack.input"].read)
+   # RegistryUtils.symbolize_keys( JSON.parse(request.env["rack.input"].read, :create_additons => true ))
   rescue StandardError => e
     log_error_mesg(request, e, e.backtrace.to_s)
     {}
@@ -44,7 +44,7 @@ begin
   
   def json_parser
     #  @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
-    @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) 
+    @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true})  if @json_parser.nil?
      @json_parser
    end
    
