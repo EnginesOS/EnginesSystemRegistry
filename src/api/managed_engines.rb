@@ -46,18 +46,22 @@ end
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
 
-  process_result(system_registry.find_engine_services_hashes(RegistryUtils.symbolize_keys(params)))
+    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine],  :all,nil)
+  process_result(system_registry.find_engine_services_hashes(cparams))
 end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
   #  def self.service_hash_from_params(params, search)
   splats = params['splat']
-  hash = {}
-  hash[:parent_engine] =  params[:parent_engine]
-  hash[:container_type] =  params[:container_type]
-  hash[:type_path] =  splats[0]
-
-  process_result(system_registry.find_engine_services_hashes(hash))
+   params[:type_path] =   splats[0]
+   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:type_path],  :all,nil)
+#  splats = params['splat']
+#  hash = {}
+#  hash[:parent_engine] =  params[:parent_engine]
+#  hash[:container_type] =  params[:container_type]
+  #hash[:type_path] =  splats[0]
+#
+  process_result(system_registry.find_engine_services_hashes(cparams))
 end
 
