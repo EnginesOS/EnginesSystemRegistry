@@ -34,7 +34,7 @@ post '/v0/system_registry/services/configuration/update/:service_name/:configura
   p_params = post_params(request)
    params.merge!(p_params)
    cparams =  RegistryUtils::Params.assemble_params(params, [:service_name,:configurator_name],  :all,:all)
-  STDERR.puts( ' update to configuration ' + cparams.to_s )
+  STDERR.puts( ' update to configuration ' + cparams.to_s + ':' + params.to_s)
   process_result(system_registry.update_service_configuration(cparams))
 end
 
