@@ -7,7 +7,7 @@ post '/v0/system_registry/services/orphans/add/:parent_engine/:service_handle/:p
   params[:type_path] =   splats[0] 
   p_params = post_params(request)
   params.merge!(p_params)
-  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
+  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,:all)
 
   process_result(system_registry.orphanate_service(cparams ))
 end
@@ -17,7 +17,7 @@ post '/v0/system_registry/services/orphans/return/:parent_engine/:service_handle
    params[:type_path] =   splats[0] 
    p_params = post_params(request)
    params.merge!(p_params)
-   cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
+   cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,:all)
 
   process_result(system_registry.rollback_orphaned_service(cparams))
 
