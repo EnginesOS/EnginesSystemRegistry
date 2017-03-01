@@ -50,7 +50,7 @@ put '/v0/system_registry/service/update/:container_type/:parent_engine/:service_
   splats = params['splat']
     params[:type_path] =   splats[0]
     cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
-STDERR.puts( ' UPDATE to services parsed as '  + carams.to_s)
+STDERR.puts( ' UPDATE to services parsed as '  + cparams.to_s)
   process_result(system_registry.update_attached_service(cparams))
 end
 
@@ -60,7 +60,7 @@ delete '/v0/system_registry/services/del/:container_type/:parent_engine/:service
   splats = params['splat']
     params[:type_path] =   splats[0]
     cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
-STDERR.puts( ' ERM to services parsed as '  + carams.to_s)
+STDERR.puts( ' ERM to services parsed as '  + cparams.to_s)
   process_result(system_registry.remove_from_services_registry(cparams))
 end
 
