@@ -16,13 +16,13 @@ get '/v0/system_registry/services/configuration/:service_name/:configurator_name
 end
 
 post '/v0/system_registry/services/configurations/add/:service_name/:configurator_name' do
-  #  STDERR.puts( ' ADD to configurations ' + params.to_s + ' parsed as ' +  p_params.to_s)
+    STDERR.puts( ' ADD to configurations ' + params.to_s + ' parsed as ' +  p_params.to_s)
 
   p_params = post_params(request)
   params.merge!(p_params)
 
   cparams =  RegistryUtils::Params.assemble_params(params, [:service_name,:configurator_name],  :all,:all)
-cparams[:no_save] = false unless cparams.key(:no_save)
+cparams[:no_save] = false unless cparams.key?(:no_save)
  # STDERR.puts( ' add to configuration ' + cparams.to_s )
 #  p_params = post_params(request)
 #  p_params.merge(params)
