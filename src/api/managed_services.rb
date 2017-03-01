@@ -51,10 +51,11 @@ end
 
 delete '/v0/system_registry/services/del/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
   #:publisher_namespace :type_path :parent_engine :service_handle 
+  STDERR.puts( ' EM to services ' + params.to_s )
   splats = params['splat']
     params[:type_path] =   splats[0]
     cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
-STDERR.puts( ' EM to services ' + params.to_s + ' parsed as '  + carams.to_s)
+STDERR.puts( ' EM to services parsed as '  + carams.to_s)
   process_result(system_registry.remove_from_services_registry(cparams))
 end
 
