@@ -44,18 +44,23 @@ post '/v0/system_registry/services/add' do
   process_result(system_registry.add_to_services_registry(p_params))
 end
 
-put '/v0/system_registry/service/update' do
+put '/v0/system_registry/service/update/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
   #:publisher_namespace :type_path :parent_engine :service_handle + post
-  process_result(system_registry.update_attached_service(RegistryUtils.symbolize_keys(params)))
+  STDERR.puts( ' UPDATE to services ' + params.to_s )
+  splats = params['splat']
+    params[:type_path] =   splats[0]
+    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
+STDERR.puts( ' UPDATE to services parsed as '  + carams.to_s)
+  process_result(system_registry.update_attached_service(cparams))
 end
 
 delete '/v0/system_registry/services/del/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
   #:publisher_namespace :type_path :parent_engine :service_handle 
-  STDERR.puts( ' EM to services ' + params.to_s )
+  STDERR.puts( ' RM to services ' + params.to_s )
   splats = params['splat']
     params[:type_path] =   splats[0]
     cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
-STDERR.puts( ' EM to services parsed as '  + carams.to_s)
+STDERR.puts( ' ERM to services parsed as '  + carams.to_s)
   process_result(system_registry.remove_from_services_registry(cparams))
 end
 
