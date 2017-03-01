@@ -15,9 +15,12 @@ get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_
 
 end
 
-delete '/v0/system_registry/engine/services/del' do
+delete '/v0/system_registry/engine/services/del/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
   # :publisher_namespace :type_path :parent_engine :service_handle
-  process_result( system_registry.remove_from_managed_engines_registry(RegistryUtils.symbolize_keys(params)))
+  splats = params['splat']
+   params[:type_path] =   splats[0]
+   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
+  process_result( system_registry.remove_from_managed_engines_registry(cparams))
 end
 
 put '/v0/system_registry/engine/service/update' do
