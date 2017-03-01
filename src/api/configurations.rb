@@ -20,8 +20,8 @@ post '/v0/system_registry/services/configurations/add/:service_name/:configurato
 
   p_params = post_params(request)
   params.merge!(p_params)
-  cparams =  RegistryUtils::Params.assemble_params(params, [:service_name,:configurator_name],  :all,nil)
-
+  cparams =  RegistryUtils::Params.assemble_params(params, [:service_name,:configurator_name],  :all,:all)
+  STDERR.puts( ' add to configuration ' + cparams.to_s )
 #  p_params = post_params(request)
 #  p_params.merge(params)
   process_result(system_registry.add_service_configuration(cparams))
@@ -33,7 +33,7 @@ post '/v0/system_registry/services/configuration/update/:service_name/:configura
 #  p_params.merge(params)
   p_params = post_params(request)
    params.merge!(p_params)
-   cparams =  RegistryUtils::Params.assemble_params(params, [:service_name,:configurator_name],  :all,nil)
+   cparams =  RegistryUtils::Params.assemble_params(params, [:service_name,:configurator_name],  :all,:all)
   STDERR.puts( ' update to configuration ' + cparams.to_s )
   process_result(system_registry.update_service_configuration(cparams))
 end
