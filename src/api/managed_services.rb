@@ -44,12 +44,14 @@ post '/v0/system_registry/services/add' do
   process_result(system_registry.add_to_services_registry(p_params))
 end
 
-put '/v0/system_registry/service/update/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
+post '/v0/system_registry/service/update/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
   #:publisher_namespace :type_path :parent_engine :service_handle + post
   STDERR.puts( ' UPDATE to services ' + params.to_s )
   splats = params['splat']
     params[:type_path] =   splats[0]
-    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path,:variables],  :all,:all)
+p_params = post_params(request)
+ params.merge!(p_params)
+    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,:all)
 STDERR.puts( ' UPDATE to services parsed as '  + cparams.to_s)
   process_result(system_registry.update_attached_service(cparams))
 end
