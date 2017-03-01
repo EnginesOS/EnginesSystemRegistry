@@ -21,7 +21,9 @@ post '/v0/system_registry/services/configurations/add/:service_name/:configurato
    params[:type_path] =   splats[0] 
   p_params = post_params(request)
   params.merge!(p_params)
+
   cparams =  RegistryUtils::Params.assemble_params(params, [:service_name,:configurator_name,:publisher_namespace,:type_path],  :all,:all)
+cparams[:no_save] = false unless cparams.key(:no_save)
  # STDERR.puts( ' add to configuration ' + cparams.to_s )
 #  p_params = post_params(request)
 #  p_params.merge(params)
