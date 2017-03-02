@@ -49,11 +49,18 @@ get '/v0/system_registry/engine/services/persistent/:container_type/:parent_engi
   process_result(system_registry.get_engine_persistent_services(cparams))
 end
 
-post '/v0/system_registry/engine/services/add' do
+post '/v0/system_registry/engine/services/add/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
+  #/v0/system_registry/engine/services/add/
   # :publisher_namespace :type_path :parent_engine :service_handle + post
+  # p_params = post_params(request)
+  splats = params['splat']
+   params[:type_path] =   splats[0] 
   p_params = post_params(request)
-  STDERR.puts( ' ADD to managed engines ' + params.to_s + ' parsed as ' +  p_params.to_s)
-  process_result(system_registry.add_to_managed_engines_registry(p_params))
+   params.merge!(p_params)
+ 
+   cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path],  :all,:all)
+  STDERR.puts( ' ADD to managed engines ' + params.to_s + ' parsed as ' +  cparams.to_s)
+  process_result(system_registry.add_to_managed_engines_registry(cparams))
 end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
