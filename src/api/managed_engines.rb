@@ -10,7 +10,7 @@ end
 get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_handle/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
-  cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,nil)
+  cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,:all)
 STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
   process_result(system_registry.find_engine_service_hash(cparams))
 
@@ -20,7 +20,7 @@ delete '/v0/system_registry/engine/services/del/:container_type/:parent_engine/:
   # :publisher_namespace :type_path :parent_engine :service_handle
   splats = params['splat']
    params[:type_path] =   splats[0]
-   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:publisher_namespace,:service_handle,:type_path],  :all,nil)
+   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:publisher_namespace,:service_handle,:type_path],  :all,:all)
 STDERR.puts( ' DEL FRO managed engines ' + cparams.to_s)
   process_result( system_registry.remove_from_managed_engines_registry(cparams))
 end
