@@ -34,7 +34,7 @@ end
 get '/v0/system_registry/services/orphans/:publisher_namespace/*' do
   splats = params['splat']
   params[:type_path] =   splats[0]
-STDERR.puts('GET ORPHANS ' +   params.to_s)
+  STDERR.puts('GET ORPHANS ' +   params.to_s)
   cparams =  RegistryUtils::Params.assemble_params(params, [:type_path,:publisher_namespace])
   process_result(system_registry.get_orphaned_services(cparams))
 end
