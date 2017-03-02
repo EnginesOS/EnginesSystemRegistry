@@ -16,18 +16,20 @@ STDERR.puts( ' GET FROM managed engines ' + cparams.to_s)
 
 end
 
-delete '/v0/system_registry/engine/services/del/:container_type/:parent_engine/:service_handle/*' do
+delete '/v0/system_registry/engine/services/del/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
   # :publisher_namespace :type_path :parent_engine :service_handle
   splats = params['splat']
    params[:type_path] =   splats[0]
-   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,nil)
+   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:publisher_namespace,:service_handle,:type_path],  :all,nil)
 STDERR.puts( ' DEL FRO managed engines ' + cparams.to_s)
   process_result( system_registry.remove_from_managed_engines_registry(cparams))
 end
 
-put '/v0/system_registry/engine/service/update/:container_type/:parent_engine/:service_handle/*' do
+post '/v0/system_registry/engine/service/update/:container_type/:parent_engine/:service_handle/*' do
   # :publisher_namespace :type_path :parent_engine :service_handle + post
   splats = params['splat']
+  p_params = post_params(request)
+  params.merge!(p_params)
   params[:type_path] =   splats[0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,:all)
   STDERR.puts( ' UPDATE FROM managed engines ' + cparams.to_s) 
