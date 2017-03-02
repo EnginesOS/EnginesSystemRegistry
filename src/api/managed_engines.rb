@@ -36,16 +36,16 @@ post '/v0/system_registry/engine/service/update/:container_type/:parent_engine/:
   process_result( system_registry.update_managed_engine_service(cparams))
 end
 
-get '/v0/system_registry/engine/services/nonpersistent/:parent_engine' do
+get '/v0/system_registry/engine/services/nonpersistent/:container_type/:parent_engine' do
   #:parent_engine
   # STDERR.puts( ' NON PERS ' + RegistryUtils.symbolize_keys(params).to_s)
-  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine],  :all,nil)
+  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:container_type],  :all,nil)
   process_result(system_registry.get_engine_nonpersistent_services(cparams))
 end
 
-get '/v0/system_registry/engine/services/persistent/:parent_engine' do
+get '/v0/system_registry/engine/services/persistent/:container_type/:parent_engine' do
   #:parent_engine
-  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine],  :all,nil)
+  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:container_type],  :all,nil)
   process_result(system_registry.get_engine_persistent_services(cparams))
 end
 
