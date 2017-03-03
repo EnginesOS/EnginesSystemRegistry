@@ -8,8 +8,8 @@ end
 #end
 
 get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_handle/*' do
-  splats = params['splat']
-  params[:type_path] =   splats[0]
+#  splats = params['splat']
+  params[:type_path] =    params['splat'][0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,:all)
 STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
   process_result(system_registry.find_engine_service_hash(cparams))
@@ -18,8 +18,8 @@ end
 
 delete '/v0/system_registry/engine/services/del/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
   # :publisher_namespace :type_path :parent_engine :service_handle
-  splats = params['splat']
-   params[:type_path] =   splats[0]
+  # splats = params['splat']
+   params[:type_path] =    params['splat'][0]
    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:publisher_namespace,:service_handle,:type_path],  :all,:all)
 STDERR.puts( ' DEL FRO managed engines ' + cparams.to_s)
   process_result( system_registry.remove_from_managed_engines_registry(cparams))
@@ -27,10 +27,10 @@ end
 
 post '/v0/system_registry/engine/service/update/:container_type/:parent_engine/:service_handle/*' do
   # :publisher_namespace :type_path :parent_engine :service_handle + post
-  splats = params['splat']
+# splats = params['splat']
   p_params = post_params(request)
   params.merge!(p_params)
-  params[:type_path] =   splats[0]
+  params[:type_path] =    params['splat'][0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,:all)
   STDERR.puts( ' UPDATE FROM managed engines ' + cparams.to_s) 
   process_result( system_registry.update_managed_engine_service(cparams))
@@ -53,8 +53,8 @@ post '/v0/system_registry/engine/services/add/:container_type/:parent_engine/:se
   #/v0/system_registry/engine/services/add/
   # :publisher_namespace :type_path :parent_engine :service_handle + post
   # p_params = post_params(request)
-  splats = params['splat']
-   params[:type_path] =   splats[0] 
+ # splats = params['splat']
+   params[:type_path] =    params['splat'][0] 
   p_params = post_params(request)
    params.merge!(p_params)
  
@@ -73,8 +73,8 @@ end
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
   #  def self.service_hash_from_params(params, search)
-  splats = params['splat']
-   params[:type_path] =   splats[0]
+ # splats = params['splat']
+   params[:type_path] =    params['splat'][0]
    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:type_path],  :all,nil)
 STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
 #  splats = params['splat']
