@@ -12,24 +12,24 @@ end
 
 get '/v0/system_registry/service/registered/engines/:service_type' do
   #:publisher_namespace :type_path
-  splats = params['splat']
-    params[:type_path] =   splats[0]
+ #  splats = params['splat']
+  #  params[:type_path] =   splats[0]
 cparams =  RegistryUtils::Params.assemble_params(params, [:service_type], :all,:all) 
   process_result(system_registry.all_engines_registered_to(cparams ))#RegistryUtils.symbolize_keys(params)[:service_type]))
 end
 
 get '/v0/system_registry/service/consumers/:publisher_namespace/*' do
   #:publisher_namespace :type_path
-  splats = params['splat']
-    params[:type_path] =   splats[0]
+ # splats = params['splat']
+    params[:type_path] =    params['splat'][0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:publisher_namespace,:type_path], :all,:all) 
   process_result(system_registry.find_service_consumers(cparams))
 end
 
 get '/v0/system_registry/service/registered/:publisher_namespace/*' do
-  #:publisher_namespace :type_path
-  splats = params['splat']
-    params[:type_path] =   splats[0]
+   #:publisher_namespace :type_path
+  # splats = params['splat']
+    params[:type_path] =    params['splat'][0]
    cparams =  RegistryUtils::Params.assemble_params(params, [:publisher_namespace,:type_path], :all,:all) 
   process_result(system_registry.get_registered_against_service(cparams))
 end
@@ -40,8 +40,8 @@ end
 
 get '/v0/system_registry/service/is_registered/:parent_engine/:service_handle/:publisher_namespace/*' do
   #:publisher_namespace :type_path :parent_engine :service_handle
-  splats = params['splat']
-   params[:type_path] =   splats[0]
+  #splats = params['splat']
+   params[:type_path] =    params['splat'][0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,:all)
   process_result(system_registry.service_is_registered?(cparams))
 end
