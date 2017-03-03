@@ -46,35 +46,35 @@ end
 
 post '/v0/system_registry/services/add/:parent_engine/:service_handle/:publisher_namespace/*' do
   #:publisher_namespace :type_path :parent_engine :service_handle + post
-  STDERR.puts( ' ADD to services ' + params.to_s )
+  #STDERR.puts( ' ADD to services ' + params.to_s )
  # splats = params['splat']
   params[:type_path] =    params['splat'][0]
   p_params = post_params(request)
   params.merge!(p_params)
   cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,:all)
-  STDERR.puts( ' ADD to services ' + params.to_s + ' parsed as '  + p_params.to_s)
+#  STDERR.puts( ' ADD to services ' + params.to_s + ' parsed as '  + p_params.to_s)
   process_result(system_registry.add_to_services_registry(cparams))
 end
 
 post '/v0/system_registry/service/update/:parent_engine/:service_handle/:publisher_namespace/*' do
   #:publisher_namespace :type_path :parent_engine :service_handle + post
-  STDERR.puts( ' UPDATE to services ' + params.to_s )
+ # STDERR.puts( ' UPDATE to services ' + params.to_s )
 #  splats = params['splat']
   params[:type_path] =    params['splat'][0]
   p_params = post_params(request)
   params.merge!(p_params)
   cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,:all)
-  STDERR.puts( ' UPDATE to services parsed as '  + cparams.to_s)
+ # STDERR.puts( ' UPDATE to services parsed as '  + cparams.to_s)
   process_result(system_registry.update_attached_service(cparams))
 end
 
 delete '/v0/system_registry/services/del/:parent_engine/:service_handle/:publisher_namespace/*' do
   #:publisher_namespace :type_path :parent_engine :service_handle
-  STDERR.puts( ' RM to services ' + params.to_s )
+ # STDERR.puts( ' RM to services ' + params.to_s )
 #  splats = params['splat']
   params[:type_path] =    params['splat'][0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace,:type_path],  :all,nil)
-  STDERR.puts( ' ERM to services parsed as '  + cparams.to_s)
+ # STDERR.puts( ' ERM to services parsed as '  + cparams.to_s)
   process_result(system_registry.remove_from_services_registry(cparams))
 end
 

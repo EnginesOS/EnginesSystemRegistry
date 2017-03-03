@@ -11,7 +11,7 @@ get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_
 #  splats = params['splat']
   params[:type_path] =    params['splat'][0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,:all)
-STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
+#STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
   process_result(system_registry.find_engine_service_hash(cparams))
 
 end
@@ -21,7 +21,7 @@ delete '/v0/system_registry/engine/services/del/:container_type/:parent_engine/:
   # splats = params['splat']
    params[:type_path] =    params['splat'][0]
    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:publisher_namespace,:service_handle,:type_path],  :all,:all)
-STDERR.puts( ' DEL FRO managed engines ' + cparams.to_s)
+#STDERR.puts( ' DEL FRO managed engines ' + cparams.to_s)
   process_result( system_registry.remove_from_managed_engines_registry(cparams))
 end
 
@@ -32,7 +32,7 @@ post '/v0/system_registry/engine/service/update/:container_type/:parent_engine/:
   params.merge!(p_params)
   params[:type_path] =    params['splat'][0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,:all)
-  STDERR.puts( ' UPDATE FROM managed engines ' + cparams.to_s) 
+ # STDERR.puts( ' UPDATE FROM managed engines ' + cparams.to_s) 
   process_result( system_registry.update_managed_engine_service(cparams))
 end
 
@@ -59,7 +59,7 @@ post '/v0/system_registry/engine/services/add/:container_type/:parent_engine/:se
    params.merge!(p_params)
  
    cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path],  :all,:all)
-  STDERR.puts( ' ADD to managed engines ' + params.to_s + ' parsed as ' +  cparams.to_s)
+  #STDERR.puts( ' ADD to managed engines ' + params.to_s + ' parsed as ' +  cparams.to_s)
   process_result(system_registry.add_to_managed_engines_registry(cparams))
 end
 
@@ -76,7 +76,7 @@ get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
  # splats = params['splat']
    params[:type_path] =    params['splat'][0]
    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:type_path],  :all,nil)
-STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
+#STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
 #  splats = params['splat']
 #  hash = {}
 #  hash[:parent_engine] =  params[:parent_engine]

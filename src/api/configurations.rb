@@ -16,7 +16,7 @@ get '/v0/system_registry/services/configuration/:service_name/:configurator_name
 end
 
 post '/v0/system_registry/services/configurations/add/:service_name/:configurator_name' do
-    STDERR.puts( ' ADD to configurations ' + params.to_s + ' parsed as ' +  p_params.to_s)
+  #  STDERR.puts( ' ADD to configurations ' + params.to_s + ' parsed as ' +  p_params.to_s)
 
   p_params = post_params(request)
   params.merge!(p_params)
