@@ -120,7 +120,7 @@ class SystemRegistry < Registry
        @h[:content] = tree.content
       @h[:children] =  []
       tree.children do |child|
-        @h[:children].push(as_hash(child))
+        @h[:children].push(registry_as_hash(child))
       end
       @h
       end
