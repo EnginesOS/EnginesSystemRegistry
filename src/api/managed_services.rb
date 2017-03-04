@@ -1,5 +1,5 @@
 get '/v0/system_registry/services/tree' do
-  process_result(registry_as_hash(system_registry.services_registry_tree))
+  process_result($system_registry.registry_as_hash(system_registry.services_registry_tree))
 end
 # clear_service_from_registry(service_hash)
 delete '/v0/system_registry/services/clear/:container_type/:parent_engine/:persistence' do
