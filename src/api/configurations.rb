@@ -1,7 +1,8 @@
 
 
 get '/v0/system_registry/services/configurations/tree' do
-  process_result($system_registry.registry_as_hash(system_registry.service_configurations_registry_tree))
+  process_result(RegistryUtils.as_hash(system_registry.service_configurations_registry_tree))
+  #process_result($system_registry.registry_as_hash(system_registry.service_configurations_registry_tree))
 end
 
 get '/v0/system_registry/service/configurations/:service_name' do

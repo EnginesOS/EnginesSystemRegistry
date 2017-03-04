@@ -1,7 +1,8 @@
 
 
 get '/v0/system_registry/subservices/tree' do
-  process_result($system_registry.registry_as_hash(system_registry.subservices_registry_tree))
+  process_result(RegistryUtils.as_hash(system_registry.subservices_registry_tree))
+    # process_result($system_registry.registry_as_hash(system_registry.subservices_registry_tree))
 end
 
 get '/v0/system_registry/subservice/registered/engines/' do
