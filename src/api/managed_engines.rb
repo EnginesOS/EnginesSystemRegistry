@@ -1,6 +1,6 @@
 get '/v0/system_registry/engines/tree' do
-  #process_result(RegistryUtils.as_hash(system_registry.managed_engines_registry_tree))
-  process_result($system_registry.registry_as_hash(system_registry.managed_engines_registry_tree))
+  process_result(RegistryUtils.as_hash(system_registry.managed_engines_registry_tree))
+ # process_result($system_registry.registry_as_hash(system_registry.managed_engines_registry_tree))
 end
 
 #get '/v0/system_registry/engine/service/' do
