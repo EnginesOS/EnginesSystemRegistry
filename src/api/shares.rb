@@ -1,8 +1,8 @@
 
 
 get '/v0/system_registry/shares/tree' do
-  process_result(RegistryUtils.as_hash(system_registry.shares_registry_tree))
-    # process_result($system_registry.registry_as_hash(system_registry.shares_registry_tree))
+ # process_result(RegistryUtils.as_hash(system_registry.shares_registry_tree))
+     process_result($system_registry.registry_as_hash(system_registry.shares_registry_tree))
 end
 
 post '/v0/system_registry/shares/add' do

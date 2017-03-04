@@ -114,14 +114,7 @@ class SystemRegistry < Registry
   end
 
   def  registry_as_hash(tree)
-      @h = { }
-      return ({:name => 'No tree'}) if tree.nil?
-       @h[:name] = tree.name
-       @h[:content] = tree.content
-      @h[:children] =  []
-      tree.children do |child|
-        @h[:children].push(registry_as_hash(child))
-      end
+      @h = RegistryUtils.as_hash(tree)
       @h
       end
       
