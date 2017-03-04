@@ -113,6 +113,18 @@ class SystemRegistry < Registry
     return false
   end
 
+  def  registry_as_hash(tree)
+      @h = { }
+      return ({:name => 'No tree'}) if tree.nil?
+       @h[:name] = tree.name
+       @h[:content] = tree.content
+      @h[:children] =  []
+      tree.children do |child|
+        @h[:children].push(as_hash(child))
+      end
+      @h
+      end
+      
   private
 
   require_relative 'file_locking.rb'
@@ -214,17 +226,7 @@ class SystemRegistry < Registry
     log_exception(e)
   end
 
-  def  registry_as_hash(tree)
-     @h = { }
-     return ({:name => 'No tree'}) if tree.nil?
-      @h[:name] = tree.name
-      @h[:content] = tree.content
-     @h[:children] =  []
-     tree.children do |child|
-       @h[:children].push(as_hash(child))
-     end
-     @h
-     end
+ 
   
   # @sets the service_tree and load mod time
   def load_tree
