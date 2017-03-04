@@ -1,5 +1,5 @@
 get '/v0/system_registry/services/orphans/tree' do
-  process_result(RegistryUtils.as_hash(system_registry.orphaned_services_registry_tree))
+  process_result(registry_as_hash(system_registry.orphaned_services_registry_tree))
 end
 
 post '/v0/system_registry/services/orphans/add/:parent_engine/:service_handle/:publisher_namespace/*' do
