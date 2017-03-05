@@ -45,6 +45,7 @@ class ManagedEnginesRegistry < SubRegistry
   def get_engine_persistence_services(params, persistence) # params is :engine_name
     leafs = []
     params[:parent_engine] = params[:engine_name] unless params.key?(:parent_engine)
+    
     services = find_engine_services(params)
     unless services.is_a?(Tree::TreeNode)
       log_error_mesg('Failed to find engine in persistent service', params)
