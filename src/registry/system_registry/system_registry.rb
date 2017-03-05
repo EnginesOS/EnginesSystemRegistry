@@ -113,6 +113,11 @@ class SystemRegistry < Registry
     return false
   end
 
+  def  registry_as_hash(tree)
+      @h = RegistryUtils.as_hash(tree)
+      @h
+      end
+      
   private
 
   require_relative 'file_locking.rb'
@@ -214,6 +219,8 @@ class SystemRegistry < Registry
     log_exception(e)
   end
 
+ 
+  
   # @sets the service_tree and load mod time
   def load_tree
     clear_error
