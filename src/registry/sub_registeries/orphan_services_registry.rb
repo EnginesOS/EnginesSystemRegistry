@@ -21,15 +21,15 @@ class OrphanServicesRegistry < SubRegistry
   def orphanate_service(service_hash)
     return service_hash unless service_hash.is_a?(Hash)
     # STDERR.puts :Orphanate  
-    STDERR.puts :add_orpha
+ #   STDERR.puts :add_orpha
     
     provider_tree = orphaned_services_registry[service_hash[:publisher_namespace]]
-  STDERR.puts :add_orpha     
+#  STDERR.puts :add_orpha     
     unless provider_tree.is_a?(Tree::TreeNode)
       provider_tree = Tree::TreeNode.new(service_hash[:publisher_namespace], service_hash[:publisher_namespace])
       orphaned_services_registry << provider_tree
     end
-  STDERR.puts :add_orpha
+#  STDERR.puts :add_orpha
     if service_hash.key?(:service_handle) && service_hash.key?(:type_path)
       type_node = create_type_path_node(provider_tree, service_hash[:type_path])
       # INSERT Enginename here
@@ -41,11 +41,11 @@ class OrphanServicesRegistry < SubRegistry
          
       # STDERR.puts service_hash.to_s
       # STDERR.puts :at
-       STDERR.puts engine_node.to_s
+     #  STDERR.puts engine_node.to_s
       engine_node << Tree::TreeNode.new(service_hash[:service_handle], service_hash)
       return true
     end
-    STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
+   # STDERR.puts service_hash.to_s + 'nNOT ORPAH orphaned '
     return false
   end
 
@@ -86,13 +86,13 @@ class OrphanServicesRegistry < SubRegistry
     # SystemUtils.debug_output(:looking_for_orphans, params)
     orphans = find_orphan_consumers(params)
     if orphans.is_a?(Tree::TreeNode)
-      STDERR.puts :find_orpha     
-      STDERR.puts orphans.to_s
+    #  STDERR.puts :find_orpha     
+   #   STDERR.puts orphans.to_s
       leafs = get_matched_leafs(orphans, :persistent, true)
       
     end
-    STDERR.puts :find_orpha     
-    STDERR.puts leafs.to_s
+  #  STDERR.puts :find_orpha     
+  #  STDERR.puts leafs.to_s
     return leafs
   end
 
@@ -104,31 +104,31 @@ class OrphanServicesRegistry < SubRegistry
   # @service_query_hash :publisher_namespace , :type_path , :service_handle
   def find_orphan_consumers(service_query_hash)
     return service_query_hash unless service_query_hash.is_a?(Hash)
-    STDERR.puts :find_orpha     
+  #  STDERR.puts :find_orpha     
     if !service_query_hash.key?(:publisher_namespace) || service_query_hash[:publisher_namespace].nil?
       log_error_mesg('no_publisher_namespace', service_query_hash)
       return false
     end
-    STDERR.puts :find_orpha     
+ #   STDERR.puts :find_orpha     
     provider_tree = orphaned_services_registry[service_query_hash[:publisher_namespace]]
     if !service_query_hash.key?(:type_path) || service_query_hash[:type_path].nil?
       log_error_mesg('find_service_consumers_no_type_path', service_query_hash)
       return provider_tree
     end
-STDERR.puts :find_orpha     
+#STDERR.puts :find_orpha     
     if provider_tree.nil?
       log_error_mesg('found no match for provider in orphans', service_query_hash[:publisher_namespace])
       return false
     end
-STDERR.puts :find_orpha      
-STDERR.puts service_query_hash.to_s
+#STDERR.puts :find_orpha      
+#STDERR.puts service_query_hash.to_s
     service_path_tree = get_type_path_node(provider_tree, service_query_hash[:type_path])
     unless service_path_tree.is_a?(Tree::TreeNode)
       log_error_mesg('Failed to find orphan matching service path', service_query_hash)
       return false
     end
-STDERR.puts :find_orpha     
-STDERR.puts service_path_tree.to_s
+#STDERR.puts :find_orpha     
+#STDERR.puts service_path_tree.to_s
     return service_path_tree
   end
 

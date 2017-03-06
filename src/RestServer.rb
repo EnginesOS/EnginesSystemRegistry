@@ -17,10 +17,7 @@ begin
 #  after do
   #  GC::OOB.run()
  # end
-  
 
-  
-  
   require_relative 'api/registry_info.rb'
   require_relative 'api/configurations.rb'
   require_relative 'api/orphan_services.rb'
@@ -37,8 +34,7 @@ begin
     json_parser.parse(request.env["rack.input"].read)
    # RegistryUtils.symbolize_keys( JSON.parse(request.env["rack.input"].read, :create_additons => true ))
   rescue StandardError => e
-    log_error_mesg(request, e, e.backtrace.to_s)
-    {}
+    log_error_mesg(request, e, e.backtrace.to_s)  
   end
   
   
