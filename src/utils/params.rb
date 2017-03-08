@@ -1,13 +1,13 @@
 
 
 module Params
-  def self.assemble_params(params, address_params, required_params=[], accept_params=nil )
+  def self.assemble_params(params, address_params, required_params=nil, accept_params=nil )
     return  nil if params.nil?
-    params = RegistryUtils.symbolize_keys(params)
+    #params = RegistryUtils.symbolize_keys(params)
     a_params = self.address_params(params, address_params)
     return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
 
-    unless required_params.empty?
+    unless  required_params.nil? || required_params.empty?
       if required_params == :all
         a_params.merge!(params[:api_vars]) if params.key?(:api_vars)
         return a_params
