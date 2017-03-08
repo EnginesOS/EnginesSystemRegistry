@@ -1,7 +1,7 @@
 class SharesRegistry < SubRegistry
-  def service_provider_tree(publisher)
-    return @registry[publisher] if @registry.is_a?(Tree::TreeNode)
-  end
+#  def service_provider_tree(publisher)
+#    return @registry[publisher] if @registry.is_a?(Tree::TreeNode)    
+#  end
 
   def add_to_shares_registry(service_hash)
 

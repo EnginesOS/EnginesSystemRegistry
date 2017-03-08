@@ -4,12 +4,10 @@ class Registry
   attr_reader :last_error
   # handle missing persistent key as not persistence kludge to catch gui bug
   
-  
 
-  
   def is_persistent?(hash)
     return true if hash.key?(:persistent) && hash[:persistent]
-    return false
+     false
   end
 
   # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
@@ -40,7 +38,7 @@ class Registry
         service_node = Tree::TreeNode.new(type_path, type_path)
         parent_node << service_node
       end
-      return service_node
+       service_node
     end
     log_error_mesg('create_type_path failed', type_path)
   end
@@ -62,7 +60,7 @@ class Registry
       sub_node = sub_node[sub_path]
       return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
     end
-    return sub_node
+     sub_node
   rescue StandardError => e
     log_exception(e)
   end
@@ -83,7 +81,7 @@ class Registry
         ret_val.concat(get_all_leafs_service_hashes(sub_branch))
       end
     end
-    return order_hashes_in_priotity(ret_val)
+    order_hashes_in_priotity(ret_val)
   rescue StandardError => e
     log_exception(e)
   end
@@ -100,7 +98,7 @@ class Registry
         priority.push(service_hash)
       end
     end
-    return priority.concat(standard)
+    priority.concat(standard)
   rescue StandardError => e
     p :exception
     p service_hash
@@ -129,7 +127,7 @@ class Registry
         ret_val.concat(get_matched_leafs(sub_branch, label, value))
       end # if children.count == 0
     end # do
-    return ret_val
+     ret_val
   end
 
   # param remove [TreeNode] from the @servicetree
@@ -143,7 +141,7 @@ class Registry
     unless parent_node.has_children?
       return log_error_mesg("failed to remove tree Entry",parent_node) unless remove_tree_entry(parent_node)
     end
-    return true
+     true
   rescue StandardError => e
     log_exception(e)
   end
@@ -152,18 +150,18 @@ class Registry
     obj_str = objects.to_s.slice(0, 256)
     @last_error = msg + ':' + obj_str
     STDERR.puts @last_error.to_s
-    return EnginesRegistryError.new(msg, :error, *objects)
+     EnginesRegistryError.new(msg, :error, *objects)
   end
 
   def log_warning_mesg(msg, *objects)
     obj_str = objects.to_s.slice(0, 256)
     @last_error = msg + ':' + obj_str
-    return EnginesRegistryError.new(msg, :warning, *objects)
+     EnginesRegistryError.new(msg, :warning, *objects)
   end
 
   def log_exception(e, *objs)
     @last_error = e.to_s.slice(0, 256)
     STDERR.puts @last_error.to_s
-    return EnginesRegistryError.new(e.to_s, :exception, *objs)
+     EnginesRegistryError.new(e.to_s, :exception, *objs)
   end
 end

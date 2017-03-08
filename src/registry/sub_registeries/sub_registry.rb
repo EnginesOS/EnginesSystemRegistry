@@ -5,6 +5,14 @@ class SubRegistry < Registry
     @registry = registry
   end
 
+  
+    def service_provider_tree(publisher)
+      return @registry[publisher] if @registry.is_a?(Tree::TreeNode)    
+    end
+  
+  
+  
+  
   def reset_registry(registry)
     @registry = registry
   end
