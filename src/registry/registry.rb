@@ -58,7 +58,7 @@ class Registry
   # @param parent_node the branch to search under
   # @param type_path the dir path format as in dns or database/sql/mysql
   def get_type_path_node(parent_node, type_path, publisher = nil)
-    i
+    
     if type_path.nil? || !parent_node.is_a?(Tree::TreeNode)
       log_error_mesg('get_type_path_node_passed_a_nil path:' + type_path.to_s, parent_node.to_s)
       return false
