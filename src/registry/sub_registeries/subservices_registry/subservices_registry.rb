@@ -8,7 +8,7 @@ class SubservicesRegistry < SubRegistry
 
   private
   def match_node_path(st, params, keys = [:engine_name,:service_handle,:sub_hand], optional = nil)
-    match_nstp_path_node_keys(st, params, keys, optional)
+    match_node_keys(st, params, keys, optional)   
   end
 
 #  # stn is already the branch publisher_ns,type_
@@ -34,32 +34,8 @@ class SubservicesRegistry < SubRegistry
     log_exception(e, params)
   end
   
-#  def add_to_tree(tree_node, params, address_keys, unique = nil)
-#    add_to_tree_nstp_path(spt, params, address_keys, unique)
-#  end
-  
-  def add_to_subservices(spt,params)
-  
-    add_to_tree_nstp_path(spt, params, [:engine_name,:service_handle], :sub_hand)
-#    ste = spt[:engine_name]
-#    unless ste.is_a?(Tree::TreeNode)
-#      ste = Tree::TreeNode.new( service_hash[:type_path] + ':' + service_hash[:engine_name])
-#      spt << ste
-#    end
-#    stes = ste[:service_handle]
-#    unless stes.is_a?(Tree::TreeNode)
-#      stes = Tree::TreeNode.new(service_hash[:engine_name]+ ':' + service_hash[:service_handle])
-#      ste << stes
-#    end
-#    stess = stes[:sub_hand]
-#    if stess.is_a?(Tree::TreeNode)
-#      return log_error('Sub Service already exists ', params)
-#    end
-#    stess = Tree::TreeNode.new(service_hash[:service_handle]+ ':' + service_hash[:sub_hand])
-#    stes << stess
-#    return log_error('Sub Service node branch found',params) if stn.has_children?
-#    stess.content = params
-#    true
+  def add_to_subservices(spt,params)  
+    add_to_tree_path(spt, params, [:engine_name,:service_handle], :sub_hand)
   rescue StandardError => e
     log_exception(e, params)
   end

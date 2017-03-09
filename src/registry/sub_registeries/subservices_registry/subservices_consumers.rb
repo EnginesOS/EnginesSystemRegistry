@@ -1,36 +1,37 @@
 module SubservicesConsumers
-  # required[publisher_namespace,:type_path] optional [ :engine_name,:service_handle,:sub_hand]
-  def find_subservice_consumers(params)
+  # required[:service_name] optional [ :engine_name,:service_handle,:sub_hand]
+  def all_subservices_registered_to(params)
     all_registered_to(subservices_consumers, params)
   end
+  
 
-  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
-  def add_to_consumers(params)
+  # required[:service_name :engine_name,:service_handle,:sub_hand]
+  def add_to_subservices_registry(params)
     add_to_subservices(subservices_consumers, retrive_consumer(params))
   end
 
-  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
-  def update_attached_consumers(params)
+  # required[:service_name :engine_name,:service_handle,:sub_hand]
+  def update_attached_subservice(params)
     update_attached(subservices_consumers, retrive_consumer(params))
   end
 
-  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
+  # required[:service_name :engine_name,:service_handle,:sub_hand]
   def retrive_consumer(params)
     params
   end
 
-  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
-  def retrive_consumer_params(params)
+  # required[:service_name :engine_name,:service_handle,:sub_hand]
+  def get_subservice_entry(params)
     match_nstp_path_node_keys(subservices_consumers, params)
   end
 
-  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
-  def remove_from_consumers(params)
+  # required[:service_name :engine_name,:service_handle,:sub_hand]
+  def remove_from_subservices_registry(params)
     stn = get_type_path_node(subservices_consumers, retrive_consumer(params))
   end
 
-  # required[publisher_namespace,:type_path] optional [ :engine_name,:service_handle,:sub_hand]
-  def is_consumer_registered?(params)
+  # required[:service_name] optional [ :engine_name,:service_handle,:sub_hand]
+  def subservice_is_registered?(params)
     is_registered?(subservices_consumers,params)
   end
 
