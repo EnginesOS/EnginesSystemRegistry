@@ -9,35 +9,36 @@ class SubRegistry < Registry
     return @registry[publisher] if @registry.is_a?(Tree::TreeNode)
   end
 
-  def match_node_path_keys(st, params, keys, optional = nil)
+  def match_nstp_path_node_keys(st, params, keys, optional = nil)
     st = get_type_path_node(st, params)
     return unless st.is_a?(Tree::TreeNode)
     match_node_keys(st, params, keys, optional)
   rescue StandardError => e
     log_exception(e, params)
   end
-  
-# stn is already the branch publisher_ns,type_
+
+  # stn is already the branch publisher_ns,type_
   # will not resolve a type path
- def add_to_tree_path(tree_node, params, address_keys, unique = nil)
-   address_keys.each do |address_key|
-     new_node = tree_node[params[address_key]]
-     unless new_node.is_a?(Tree::TreeNode)
-       new_node = Tree::TreeNode.new( service_hash[address_key] )
-       tree_node << new_node
-     end
-     tree_node = new_node
-   end
-   unless unique.nil?
-     return log_error('Existing entry already exists ', params) if tree_node.key?(unique)
-     new_node = Tree::TreeNode.new( unique )     
-   end
-   new_node.content = params
-   tree_node << new_node
-   true
- rescue StandardError => e
-   log_exception(e, params)
- end
+  def add_to_tree_path(tree_node, params, address_keys, unique = nil)
+    address_keys.each do |address_key|
+      new_node = tree_node[params[address_key]]
+      unless new_node.is_a?(Tree::TreeNode)
+        new_node = Tree::TreeNode.new( service_hash[address_key] )
+        tree_node << new_node
+      end
+      tree_node = new_node
+    end
+    unless unique.nil?
+      return log_error('Existing entry already exists ', params) if tree_node.key?(unique)
+      new_node = Tree::TreeNode.new( unique )
+    end
+    new_node.content = params
+    tree_node << new_node
+    true
+  rescue StandardError => e
+    log_exception(e, params)
+  end
+
   # stn is already the branch publisher_ns,type_
   # will not resolve a type path
   def match_node_keys(stn, params,  required, optional = nil)

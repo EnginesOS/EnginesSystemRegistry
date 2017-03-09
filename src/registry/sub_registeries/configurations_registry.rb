@@ -18,7 +18,7 @@ class ConfigurationsRegistry < SubRegistry
       return log_error('Sub Service already exists ', params)
     end
     config_node = Tree::TreeNode.new(config_hash[:configurator_name], config_hash)
-  configs_node << config_node
+    configs_node << config_node
     true
   end
 

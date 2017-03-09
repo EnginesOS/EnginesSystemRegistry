@@ -7,17 +7,15 @@ class SubservicesRegistry < SubRegistry
   include SubservicesConsumers
 
   private
-  def match_node_path(st, params, keys = [:engine_name,:service_handle,:sub_hand])
-    st = get_type_path_node(st, params)
-    return unless st.is_a?(Tree::TreeNode)
-    match_node_keys(st, params, keys)
+  def match_node_path(st, params, keys = [:engine_name,:service_handle,:sub_hand], optional = nil)
+    match_nstp_path_node_keys(st, params, keys, optional)
   end
 
-  # stn is already the branch publisher_ns,type_
-  # will not resolve a type path
-  def match_node(stn, params, keys = [:engine_name,:service_handle,:sub_hand])
-    match_node_keys(stn, params, keys)
-  end
+#  # stn is already the branch publisher_ns,type_
+#  # will not resolve a type path
+#  def match_node(stn, params, keys = [:engine_name,:service_handle,:sub_hand])
+#    match_node_keys(stn, params, keys)
+#  end
 
   def is_registered?(st, params)
     st = match_node_path(st, params)
@@ -36,14 +34,13 @@ class SubservicesRegistry < SubRegistry
     log_exception(e, params)
   end
   
-  def add_to_tree(tree_node, params, address_keys)
-    spt = create_type_path_node(tree_node, params)
-    add_to_tree_path(spt, params, address_keys)
-  end
+#  def add_to_tree(tree_node, params, address_keys, unique = nil)
+#    add_to_tree_nstp_path(spt, params, address_keys, unique)
+#  end
   
   def add_to_subservices(spt,params)
   
-    add_to_tree(spt, params, [:engine_name,:service_handle], :sub_hand)
+    add_to_tree_nstp_path(spt, params, [:engine_name,:service_handle], :sub_hand)
 #    ste = spt[:engine_name]
 #    unless ste.is_a?(Tree::TreeNode)
 #      ste = Tree::TreeNode.new( service_hash[:type_path] + ':' + service_hash[:engine_name])
