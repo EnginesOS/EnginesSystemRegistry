@@ -12,7 +12,7 @@ get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_
 #  splats = params['splat']
   params[:type_path] =    params['splat'][0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,:all)
-#STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
+STDERR.puts( ' GET FROM managed engines ' + cparams.to_s + ' from ' + params.to_s) 
   process_result(system_registry.find_engine_service_hash(cparams))
 
 end
