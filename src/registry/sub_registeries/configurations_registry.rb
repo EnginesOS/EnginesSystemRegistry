@@ -2,24 +2,24 @@ class ConfigurationsRegistry < SubRegistry
   # @return [Array] of configurations registered against service_name
   # return empty [Array] if none
   def get_service_configurations_hashes(service_name)
-    configurations = get_service_configurations(service_name)
-    return [] unless configurations.is_a?(Tree::TreeNode)
-    get_all_leafs_service_hashes(configurations)
+    configs_node = get_service_configurations(service_name)
+    return false unless configs_node.is_a?(Tree::TreeNode)
+    get_all_leafs_service_hashes(configs_node)
   end
 
   # add the service configuration in the [Hash] service_configuration_hash
   # required keys are :service_name :configurator_name :publisher_namespace :type_path :variables
-  def add_service_configuration(service_configuration_hash)
-    configurations = get_service_configurations(service_configuration_hash[:service_name])
-    if !configurations.is_a?(Tree::TreeNode)
-      configurations = Tree::TreeNode.new(service_configuration_hash[:service_name], ' Configurations for :' + service_configuration_hash[:service_name])
-      @registry << configurations
-    elsif configurations[service_configuration_hash[:configurator_name]]
-      return false
+  def add_service_configuration(config_hash)
+    configs_node = get_service_configurations(config_hash[:service_name])
+    if !configs_node.is_a?(Tree::TreeNode)
+      configs_node = Tree::TreeNode.new(config_hash[:service_name], ' Configurations for:' + config_hash[:service_name])
+      @registry << configs_node
+    elsif configs_node[config_hash[:configurator_name]]
+      return log_error('Sub Service already exists ', params)
     end
-    configuration = Tree::TreeNode.new(service_configuration_hash[:configurator_name], service_configuration_hash)
-    configurations << configuration
-    return true
+    config_node = Tree::TreeNode.new(config_hash[:configurator_name], config_hash)
+  configs_node << config_node
+    true
   end
 
   # Remove service configuration matching the [Hash] service_configuration_hash
@@ -45,6 +45,7 @@ class ConfigurationsRegistry < SubRegistry
     else
       return add_service_configuration(service_configuration_hash)
     end
+    false
   end
 
   # @return a service_configuration_hash addressed by :service_name :configuration_name
@@ -54,7 +55,7 @@ class ConfigurationsRegistry < SubRegistry
     return get_all_leafs_service_hashes(service_configurations) if !service_configuration_hash.key?(:configurator_name)
     service_configuration = service_configurations[service_configuration_hash[:configurator_name]]
     return service_configuration.content if service_configuration.is_a?(Tree::TreeNode)
-    return false
+    false
   end
 
   private
@@ -64,6 +65,6 @@ class ConfigurationsRegistry < SubRegistry
     return false unless @registry.is_a?(Tree::TreeNode)
     service_configurations = @registry[service_name]
     return service_configurations if service_configurations.is_a?(Tree::TreeNode)
-    return false
+    false
   end
 end
