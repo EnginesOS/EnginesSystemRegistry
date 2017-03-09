@@ -12,7 +12,7 @@ get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_
 #  splats = params['splat']
   params[:type_path] =    params['splat'][0]
   cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:service_handle,:type_path],  :all,:all)
-#STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
+STDERR.puts( ' GET FROM managed engines ' + cparams.to_s + ' from ' + params.to_s) 
   process_result(system_registry.find_engine_service_hash(cparams))
 
 end
@@ -40,13 +40,14 @@ end
 get '/v0/system_registry/engine/services/nonpersistent/:container_type/:parent_engine' do
   #:parent_engine
   # STDERR.puts( ' NON PERS ' + RegistryUtils.symbolize_keys(params).to_s)
-  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:container_type],  :all,nil)
+  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine, :container_type], nil, nil)
   process_result(system_registry.get_engine_nonpersistent_services(cparams))
 end
 
 get '/v0/system_registry/engine/services/persistent/:container_type/:parent_engine' do
   #:parent_engine
-  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine,:container_type],  :all,nil)
+  cparams =  RegistryUtils::Params.assemble_params(params, [:parent_engine, :container_type], :all, nil)
+  STDERR.puts( ' PERS ' + params.to_s + ' got ' + cparams.to_s)
   process_result(system_registry.get_engine_persistent_services(cparams))
 end
 
@@ -77,7 +78,7 @@ get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
  # splats = params['splat']
    params[:type_path] =    params['splat'][0]
    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:type_path],  :all,nil)
-#STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
+     STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
 #  splats = params['splat']
 #  hash = {}
 #  hash[:parent_engine] =  params[:parent_engine]

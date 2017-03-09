@@ -3,13 +3,9 @@ require 'rubytree'
 class Registry
   attr_reader :last_error
   # handle missing persistent key as not persistence kludge to catch gui bug
-  
-  
-
-  
   def is_persistent?(hash)
     return true if hash.key?(:persistent) && hash[:persistent]
-    return false
+    false
   end
 
   # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
@@ -20,6 +16,18 @@ class Registry
   def create_type_path_node(parent_node, type_path)
     return log_error_mesg('create_type_path passed a nil type_path when adding to ', parent_node) if type_path.nil?
     return log_error_mesg('parent node not a tree node ', parent_node) unless parent_node.is_a?(Tree::TreeNode)
+    if type_path.is_a?(Hash)
+      if type_path.key?(:publisher_namespace)
+        p = parent_node[:publisher_namespace]
+          unless p.is_a?(Tree::TreeNode)
+            p = Tree::TreeNode.new(service_hash[:publisher_namespace], 'Publisher:' + service_hash[:publisher_namespace] )
+            parent_node << p
+          end
+        parent_node = p
+      end
+      type_path = type_path[:type_path]
+    end
+    
     if type_path.include?('/')
       sub_paths = type_path.split('/')
       prior_node = parent_node
@@ -40,7 +48,7 @@ class Registry
         service_node = Tree::TreeNode.new(type_path, type_path)
         parent_node << service_node
       end
-      return service_node
+      service_node
     end
     log_error_mesg('create_type_path failed', type_path)
   end
@@ -49,20 +57,28 @@ class Registry
   # @return nil on error
   # @param parent_node the branch to search under
   # @param type_path the dir path format as in dns or database/sql/mysql
-  def get_type_path_node(parent_node, type_path)
+  def get_type_path_node(parent_node, type_path, publisher = nil)
+    
     if type_path.nil? || !parent_node.is_a?(Tree::TreeNode)
       log_error_mesg('get_type_path_node_passed_a_nil path:' + type_path.to_s, parent_node.to_s)
       return false
     end
+    if type_path.is_a?(Hash)
+      publisher = type_path[:publisher_namespace] if type_path.key?(:publisher_namespace)
+      type_path = type_path[:type_path] if type_path.key?(:type_path)       
+    end
+    parent_node = parent_node[publisher] unless publisher.nil?
+    return false if parent_node.nil?
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
     return parent_node[type_path]  unless type_path.include?('/')
     sub_paths = type_path.split('/')
     sub_node = parent_node
     sub_paths.each do |sub_path|
       sub_node = sub_node[sub_path]
-      return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
+      return false if sub_node.nil?
+      #     return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
     end
-    return sub_node
+    sub_node
   rescue StandardError => e
     log_exception(e)
   end
@@ -83,7 +99,7 @@ class Registry
         ret_val.concat(get_all_leafs_service_hashes(sub_branch))
       end
     end
-    return order_hashes_in_priotity(ret_val)
+    order_hashes_in_priotity(ret_val)
   rescue StandardError => e
     log_exception(e)
   end
@@ -100,7 +116,7 @@ class Registry
         priority.push(service_hash)
       end
     end
-    return priority.concat(standard)
+    priority.concat(standard)
   rescue StandardError => e
     p :exception
     p service_hash
@@ -116,20 +132,20 @@ class Registry
     ret_val = []
     # SystemUtils.debug_output('top node',branch.name)
     branch.children.each do |sub_branch|
-     #   SystemUtils.debug_output('sub node',sub_branch.name)
+      #   SystemUtils.debug_output('sub node',sub_branch.name)
       #SystemUtils.debug_output('sub node',sub_branch.content)
-     # SystemUtils.debug_output('sub node',sub_branch.content.class.name)
+      # SystemUtils.debug_output('sub node',sub_branch.content.class.name)
       if sub_branch.children.count == 0
         if sub_branch.content.is_a?(Hash)
           ret_val.push(sub_branch.content) if sub_branch.content[label] == value
-          else
+        else
           SystemUtils.debug_output('Leaf Content not a hash ', sub_branch.content)
         end
       else # children.count > 0
         ret_val.concat(get_matched_leafs(sub_branch, label, value))
       end # if children.count == 0
     end # do
-    return ret_val
+    ret_val
   end
 
   # param remove [TreeNode] from the @servicetree
@@ -143,7 +159,7 @@ class Registry
     unless parent_node.has_children?
       return log_error_mesg("failed to remove tree Entry",parent_node) unless remove_tree_entry(parent_node)
     end
-    return true
+    true
   rescue StandardError => e
     log_exception(e)
   end
@@ -152,18 +168,18 @@ class Registry
     obj_str = objects.to_s.slice(0, 256)
     @last_error = msg + ':' + obj_str
     STDERR.puts @last_error.to_s
-    return EnginesRegistryError.new(msg, :error, *objects)
+    EnginesRegistryError.new(msg, :error, *objects)
   end
 
   def log_warning_mesg(msg, *objects)
     obj_str = objects.to_s.slice(0, 256)
     @last_error = msg + ':' + obj_str
-    return EnginesRegistryError.new(msg, :warning, *objects)
+    EnginesRegistryError.new(msg, :warning, *objects)
   end
 
   def log_exception(e, *objs)
     @last_error = e.to_s.slice(0, 256)
     STDERR.puts @last_error.to_s
-    return EnginesRegistryError.new(e.to_s, :exception, *objs)
+    EnginesRegistryError.new(e.to_s, :exception, *objs)
   end
 end

@@ -8,6 +8,8 @@ begin
   require_relative 'registry/system_registry/system_registry.rb'
   require_relative 'utils/registry_utils.rb'
   require_relative 'errors/engines_registry_error.rb'
+  require_relative 'helpers/helpers.rb'
+  
   set :sessions, true
   set :logging, true
   set :run, true

@@ -1,9 +1,9 @@
 class ServicesRegistry < SubRegistry
   # Wrapper for Gui to
   # @return [TreeNode] managed_service_tree[publisher]
-  def service_provider_tree(publisher)
-    return @registry[publisher] if @registry.is_a?(Tree::TreeNode)
-  end
+#  def service_provider_tree(publisher)
+#    return @registry[publisher] if @registry.is_a?(Tree::TreeNode)
+#  end
 
   # @Boolean returns true | false if servcice hash is registered in service tree
   def service_is_registered?(service_hash)

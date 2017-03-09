@@ -7,5 +7,6 @@ class EnginesRegistryError < EnginesError
     @params = objs
   end
 
+
 end
 
