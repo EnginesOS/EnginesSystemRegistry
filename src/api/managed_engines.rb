@@ -78,7 +78,7 @@ get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
  # splats = params['splat']
    params[:type_path] =    params['splat'][0]
    cparams =  RegistryUtils::Params.assemble_params(params, [:container_type,:parent_engine,:type_path],  :all,nil)
-#STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
+     STDERR.puts( ' GET FROM managed engines ' + cparams.to_s) 
 #  splats = params['splat']
 #  hash = {}
 #  hash[:parent_engine] =  params[:parent_engine]
