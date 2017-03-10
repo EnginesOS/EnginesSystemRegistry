@@ -11,7 +11,7 @@ class SubservicesRegistry < SubRegistry
     match_node_keys(st, params, keys, optional)
   end
   def full_path
-    @full_path |= [:engine_name,:service_handle,:sub_hand]
+    @full_path ||= [:engine_name,:service_handle,:sub_hand]
   end
 
   #  # stn is already the branch publisher_ns,type_

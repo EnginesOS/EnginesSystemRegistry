@@ -38,7 +38,7 @@ class ConfigurationsRegistry < SubRegistry
   private
 
   def full_address
-    @full_address |= [:service_name, :configurator_name]
+    @full_address ||= [:service_name, :configurator_name]
   end
 
 end
