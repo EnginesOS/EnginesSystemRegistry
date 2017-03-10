@@ -39,8 +39,8 @@ end
 
 get '/v0/system_registry/engine/services/persistent/:container_type/:parent_engine' do
   STDERR.puts( ' PERS ' + params.to_s )
-  cparams =  assemble_params(params, [:parent_engine, :container_type], nil, :all)
-  STDERR.puts( ' PERS ' + params.to_s )
+  cparams =  assemble_params(params, [:parent_engine, :container_type])
+  STDERR.puts( ' PERS ' + cparams.to_s )
   process_result(system_registry.get_engine_persistent_services(cparams))
 end
 
