@@ -26,7 +26,7 @@ class SubRegistry < Registry
     match_node_keys(st, params, keys, optional)
   end
 
-  def add_to_ns_tp_tree_path(tn, params, address_keys, node_name ,unique)
+  def add_to_ns_tp_tree_path(tn, params, address_keys, node_name ,unique = true)
     tree_node = get_type_path_node(tn, params)
     add_to_tree_path(tree_node, params, address_keys, unique )
   end
