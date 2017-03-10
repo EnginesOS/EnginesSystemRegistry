@@ -23,7 +23,7 @@ class ServicesRegistry < SubRegistry
   # creates the branch path as required
   # @service_hash :publisher_namespace . :type_path . :parent_engine
   # Wover writes
-  def add_to_services_registry(service_hash)
+  def add_to_services_registry(params)
     add_to_ns_tp_tree_path(@registry, params, [:parent_engine], :service_handle)
 #    
 #    provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]
