@@ -7,8 +7,11 @@ class SubservicesRegistry < SubRegistry
   include SubservicesConsumers
 
   private
-  def match_node_path(st, params, keys = [:engine_name,:service_handle,:sub_hand], optional = nil)
+  def match_node_path(st, params, keys = full_path, optional = nil)
     match_node_keys(st, params, keys, optional)
+  end
+  def full_path
+    @full_path |= [:engine_name,:service_handle,:sub_hand]
   end
 
   #  # stn is already the branch publisher_ns,type_
@@ -18,9 +21,10 @@ class SubservicesRegistry < SubRegistry
   #  end
 
   def is_registered?(st, params)
-    st = match_node_path(st, params)
-    return false unless st.is_a?(Tree::TreeNode)
-    true
+    is_node_registered?(st, params, full_path)
+#    st = match_node_path(st, params)
+#    return false unless st.is_a?(Tree::TreeNode)
+#    true
   end
 
   # required[:publisher_namespace,:type_path ] optional

@@ -7,15 +7,16 @@ class ServicesRegistry < SubRegistry
 
   # @Boolean returns true | false if servcice hash is registered in service tree
   def service_is_registered?(service_hash)
-    provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]
-    return false unless provider_node.is_a?(Tree::TreeNode)
-    service_type_node = create_type_path_node(provider_node, service_hash[:type_path])
-    return false unless service_type_node.is_a?(Tree::TreeNode)
-    engine_node = service_type_node[service_hash[:parent_engine]]
-    return false unless engine_node.is_a?(Tree::TreeNode)
-    service_node = engine_node[service_hash[:service_handle]]
-    return false if service_node.nil?
-    return true
+    is_ns_tp_node_registered?(@registry, service_hash,[:parent_engine, :service_handle] )
+#    provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]
+#    return false unless provider_node.is_a?(Tree::TreeNode)
+#    service_type_node = create_type_path_node(provider_node, service_hash[:type_path])
+#    return false unless service_type_node.is_a?(Tree::TreeNode)
+#    engine_node = service_type_node[service_hash[:parent_engine]]
+#    return false unless engine_node.is_a?(Tree::TreeNode)
+#    service_node = engine_node[service_hash[:service_handle]]
+#    return false if service_node.nil?
+#    return true
   end
 
   # Add The service_hash to the services registry branch
@@ -23,38 +24,40 @@ class ServicesRegistry < SubRegistry
   # @service_hash :publisher_namespace . :type_path . :parent_engine
   # Wover writes
   def add_to_services_registry(service_hash)
-    provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]
-    if provider_node.is_a?(Tree::TreeNode) == false
-      provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace], 'Publisher:' + service_hash[:publisher_namespace] + ':' + service_hash[:type_path])
-      @registry << provider_node
-    end
-    service_type_node = create_type_path_node(provider_node, service_hash[:type_path])
-    return log_error_mesg('failed to create TreeNode for', service_hash) if service_type_node.is_a?(Tree::TreeNode) == false
-    engine_node = service_type_node[service_hash[:parent_engine]]
-    if engine_node.is_a?(Tree::TreeNode) == false
-      engine_node = Tree::TreeNode.new(service_hash[:parent_engine], service_hash[:parent_engine])
-      service_type_node << engine_node
-    end
-    service_node = engine_node[service_hash[:service_handle]]
-    if service_node.is_a?(Tree::TreeNode) == false
-      #  SystemUtils.debug_output(:create_new_service_regstry_entry, service_hash)
-      service_node = Tree::TreeNode.new(service_hash[:service_handle], service_hash)
-      engine_node << service_node
-    elsif is_persistent?(service_hash) == false
-      #  SystemUtils.debug_output(:reattachexistsing_service_persistent_false, service_hash)
-      service_node.content = service_hash
-    else
-      p :failed
-      log_error_mesg('Service Node existed', service_hash[:service_handle])
-      log_error_mesg('Cannot over write persistent service in services tree' + service_node.content.to_s + ' with ', service_hash)
-      # service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
-      # service_type_node << service_node
-    end
-    # FIXME: need to handle updating service
-    return true
-  rescue StandardError => e
-    puts e.message
-    log_exception(e)
+    add_to_ns_tp_tree_path(@registry, params, [:parent_engine], :service_handle)
+#    
+#    provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]
+#    if provider_node.is_a?(Tree::TreeNode) == false
+#      provider_node = Tree::TreeNode.new(service_hash[:publisher_namespace], 'Publisher:' + service_hash[:publisher_namespace] + ':' + service_hash[:type_path])
+#      @registry << provider_node
+#    end
+#    service_type_node = create_type_path_node(provider_node, service_hash[:type_path])
+#    return log_error_mesg('failed to create TreeNode for', service_hash) if service_type_node.is_a?(Tree::TreeNode) == false
+#    engine_node = service_type_node[service_hash[:parent_engine]]
+#    if engine_node.is_a?(Tree::TreeNode) == false
+#      engine_node = Tree::TreeNode.new(service_hash[:parent_engine], service_hash[:parent_engine])
+#      service_type_node << engine_node
+#    end
+#    service_node = engine_node[service_hash[:service_handle]]
+#    if service_node.is_a?(Tree::TreeNode) == false
+#      #  SystemUtils.debug_output(:create_new_service_regstry_entry, service_hash)
+#      service_node = Tree::TreeNode.new(service_hash[:service_handle], service_hash)
+#      engine_node << service_node
+#    elsif is_persistent?(service_hash) == false
+#      #  SystemUtils.debug_output(:reattachexistsing_service_persistent_false, service_hash)
+#      service_node.content = service_hash
+#    else
+#      p :failed
+#      log_error_mesg('Service Node existed', service_hash[:service_handle])
+#      log_error_mesg('Cannot over write persistent service in services tree' + service_node.content.to_s + ' with ', service_hash)
+#      # service_node = Tree::TreeNode.new(service_hash[:parent_engine],service_hash)
+#      # service_type_node << service_node
+#    end
+#    # FIXME: need to handle updating service
+#    return true
+#  rescue StandardError => e
+#    puts e.message
+#    log_exception(e)
   end
 
   def list_providers_in_use
@@ -93,11 +96,9 @@ class ServicesRegistry < SubRegistry
 
   # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
   # :path_type :publisher_namespace
-  def get_active_persistent_services(params)
-    leafs = []
+  def get_active_persistent_services(params)  
     services = find_service_consumers(params)
-    leafs = get_matched_leafs(services, :persistent, true) if services.nil? == false && services != false
-    return leafs
+   get_matched_leafs(services, :persistent, true) if services.nil? == false && services != false
   end
 
   # @returns a [TreeNode] to the depth of the search
@@ -123,7 +124,7 @@ class ServicesRegistry < SubRegistry
     end
 # SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
     service = services[service_query_hash[:service_handle]]
-    return log_error_mesg('failed to find match in services tree', service_query_hash)if service.nil?
+    return log_error_mesg('failed to find match in services tree', service_query_hash) if service.nil?
     return service
   end
   private

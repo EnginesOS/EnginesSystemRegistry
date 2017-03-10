@@ -9,10 +9,26 @@ class SubRegistry < Registry
     return @registry[publisher] if @registry.is_a?(Tree::TreeNode)
   end
 
+  def is_ns_tp_node_registered?(st, params, keys)
+    st = get_type_path_node(st, params)
+    return false unless st.is_a?(Tree::TreeNode)
+    is_node_registered?(st, params, keys)
+  end
+  
+def is_node_registered?(st, params, keys)
+    return false unless match_node_keys(st, params, keys).is_a?(Tree::TreeNode)
+    true
+  end
+  
   def match_nstp_path_node_keys(st, params, keys, optional = nil)
     st = get_type_path_node(st, params)
     return unless st.is_a?(Tree::TreeNode)
     match_node_keys(st, params, keys, optional)
+  end
+
+  def add_to_ns_tp_tree_path(tn, params, address_keys, unique = nil)
+    tree_node = get_type_path_node(tn, params)
+    add_to_tree_path(tree_node, params, address_keys, unique )
   end
 
   # stn is already the branch publisher_ns,type_
@@ -69,6 +85,7 @@ class SubRegistry < Registry
 
   def roll_back
     @registry = @snap_shot if @snap_shot.nil? == false && @snap_shot.is_a?(Tree::TreeNode)
+    unlock_tree
     false
   end
 
