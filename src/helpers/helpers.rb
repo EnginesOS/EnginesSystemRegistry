@@ -41,7 +41,7 @@ helpers do
    end
  
    def address_params(params, keys)
-     STDERR.puts( 'Address params ' + params + ' keys required ' + keys.to_s)
+     STDERR.puts( 'Address params ' + params.to_s + ' keys required ' + keys.to_s)
      match_params(params, keys, true)
    end
  
