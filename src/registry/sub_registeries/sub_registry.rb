@@ -46,9 +46,11 @@ def is_node_registered?(st, params, keys)
       STDERR.puts('Existing entry already exists ' + unique.to_s + ' ' + :error.to_s  + ':' + address_keys.to_s) unless tree_node[unique].nil?
       raise EnginesException.new('Existing entry already exists ' + unique.to_s ,:error, address_keys) unless tree_node[unique].nil?
       new_node = Tree::TreeNode.new( unique )
+      tree_node << new_node
     end
+    
     new_node.content = params
-    tree_node << new_node
+
     true
   end
 
