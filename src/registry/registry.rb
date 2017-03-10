@@ -1,5 +1,7 @@
 require 'rubytree'
+
 require_relative '../errors/engines_registry_error.rb'
+
 class Registry < EnginesRegistryError
   attr_reader :last_error
   # handle missing persistent key as not persistence kludge to catch gui bug
@@ -16,18 +18,18 @@ class Registry < EnginesRegistryError
   def create_type_path_node(parent_node, type_path)
     return log_error_mesg('create_type_path passed a nil type_path when adding to ', parent_node) if type_path.nil?
     return log_error_mesg('parent node not a tree node ', parent_node) unless parent_node.is_a?(Tree::TreeNode)
+
     if type_path.is_a?(Hash)
-      if type_path.key?(:publisher_namespace)
-        p = parent_node[:publisher_namespace]
-          unless p.is_a?(Tree::TreeNode)
-            p = Tree::TreeNode.new(service_hash[:publisher_namespace], 'Publisher:' + service_hash[:publisher_namespace] )
-            parent_node << p
-          end
-        parent_node = p
+      p = parent_node[:publisher_namespace] if type_path.key?(:publisher_namespace)
+      unless p.is_a?(Tree::TreeNode)
+        p = Tree::TreeNode.new(service_hash[:publisher_namespace], 'Publisher:' + service_hash[:publisher_namespace] )
+        parent_node << p
       end
+      parent_node = p
       type_path = type_path[:type_path]
     end
-    
+    #
+
     if type_path.include?('/')
       sub_paths = type_path.split('/')
       prior_node = parent_node
@@ -58,14 +60,14 @@ class Registry < EnginesRegistryError
   # @param parent_node the branch to search under
   # @param type_path the dir path format as in dns or database/sql/mysql
   def get_type_path_node(parent_node, type_path, publisher = nil)
-    
+
     if type_path.nil? || !parent_node.is_a?(Tree::TreeNode)
       log_error_mesg('get_type_path_node_passed_a_nil path:' + type_path.to_s, parent_node.to_s)
       return false
     end
     if type_path.is_a?(Hash)
       publisher = type_path[:publisher_namespace] if type_path.key?(:publisher_namespace)
-      type_path = type_path[:type_path] if type_path.key?(:type_path)       
+      type_path = type_path[:type_path] if type_path.key?(:type_path)
     end
     parent_node = parent_node[publisher] unless publisher.nil?
     return false if parent_node.nil?
@@ -164,5 +166,4 @@ class Registry < EnginesRegistryError
     log_exception(e)
   end
 
- 
 end
