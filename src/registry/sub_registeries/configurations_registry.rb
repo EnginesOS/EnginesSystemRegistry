@@ -13,16 +13,19 @@ class ConfigurationsRegistry < SubRegistry
   # add the service configuration in the [Hash] service_configuration_hash
   # required keys are :service_name :configurator_name :publisher_namespace :type_path :variables
   def add_service_configuration(config_hash)
-    configs_node = get_service_configurations(config_hash[:service_name])
-    if !configs_node.is_a?(Tree::TreeNode)
-      configs_node = Tree::TreeNode.new(config_hash[:service_name], ' Configurations for:' + config_hash[:service_name])
-      @registry << configs_node
-    elsif configs_node[config_hash[:configurator_name]]
-      return log_error('Sub Service already exists ', params)
-    end
-    config_node = Tree::TreeNode.new(config_hash[:configurator_name], config_hash)
-    configs_node << config_node
-    true
+    
+    add_to_tree_path(@registry, config_hash, [:service_name], :configurator_name)
+    
+#    configs_node = get_service_configurations(config_hash[:service_name])
+#    if !configs_node.is_a?(Tree::TreeNode)
+#      configs_node = Tree::TreeNode.new(config_hash[:service_name], ' Configurations for:' + config_hash[:service_name])
+#      @registry << configs_node
+#    elsif configs_node[config_hash[:configurator_name]]
+#      return log_error('Sub Service already exists ', params)
+#    end
+#    config_node = Tree::TreeNode.new(config_hash[:configurator_name], config_hash)
+#    configs_node << config_node
+#    true
   end
 
   # Remove service configuration matching the [Hash] service_configuration_hash
@@ -70,12 +73,12 @@ class ConfigurationsRegistry < SubRegistry
 
   private
 
-  # @return an [Array] of Service Configuration [Hash]es of all the service configurations for [String] service_name
-  def get_service_configurations(service_name)
-    return false unless @registry.is_a?(Tree::TreeNode)
-    service_configurations = @registry[service_name]
-    return service_configurations if service_configurations.is_a?(Tree::TreeNode)
-    false
-  end
+#  # @return an [Array] of Service Configuration [Hash]es of all the service configurations for [String] service_name
+#  def get_service_configurations(service_name)
+#    return false unless @registry.is_a?(Tree::TreeNode)
+#    service_configurations = @registry[service_name]
+#    return service_configurations if service_configurations.is_a?(Tree::TreeNode)
+#    false
+#  end
   
 end
