@@ -18,6 +18,7 @@ begin
 
   after do
     GC::OOB.run()
+    
   end
 
   require_relative 'api/registry_info.rb'

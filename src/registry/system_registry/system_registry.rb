@@ -150,6 +150,16 @@ class SystemRegistry < Registry
     log_exception(e)
   end
 
+ 
+  def dump_heap_stats
+    ObjectSpace.garbage_collect
+   # STDERR.puts('dumping heap')
+    file = File.open("/var/log/heap.dump", 'w')
+    ObjectSpace.dump_all(output: file)
+    file.close
+    return true
+  end
+  
   # set @registry to the appropirate tree Node for eaach sub resgistry
   # creates node if nil via_xxx_yyy_tree
   def set_registries
