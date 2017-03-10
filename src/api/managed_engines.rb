@@ -53,7 +53,7 @@ end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
-  params =  assemble_params(params, [:container_type,:parent_engine]) #,  :all, nil)
+  params =  assemble_params(params, [:container_type,:parent_engine],  :all, nil)
   process_result(system_registry.find_engine_services_hashes(params))
 end
 
