@@ -41,7 +41,7 @@ class SubRegistry < Registry
     r = ''
     unless required.nil?
       required.each do |match|
-        raise EnginesException('Require key missing ',:error, match) unless params.key?(match)
+        raise EnginesException('Required key missing ' + match.to_s ,:error, params) unless params.key?(match)
         stn = stn[params[match]]
         return unless stn.is_a?(Tree::TreeNode)
       end
