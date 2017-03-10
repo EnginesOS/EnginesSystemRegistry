@@ -33,12 +33,12 @@ end
 
 get '/v0/system_registry/engine/services/nonpersistent/:container_type/:parent_engine' do
   # STDERR.puts( ' NON PERS ' + RegistryUtils.symbolize_keys(params).to_s)
-  params =  assemble_params(params, [:parent_engine, :container_type], nil, nil)
+  params =  assemble_params(params, [:parent_engine, :container_type], nil, :all)
   process_result(system_registry.get_engine_nonpersistent_services(params))
 end
 
 get '/v0/system_registry/engine/services/persistent/:container_type/:parent_engine' do
-  params =  assemble_params(params, [:parent_engine, :container_type], :all, nil)
+  params =  assemble_params(params, [:parent_engine, :container_type], :all, :all)
   STDERR.puts( ' PERS ' + params.to_s )
   process_result(system_registry.get_engine_persistent_services(params))
 end
