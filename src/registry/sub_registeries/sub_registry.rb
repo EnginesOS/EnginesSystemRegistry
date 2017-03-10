@@ -21,13 +21,13 @@ class SubRegistry < Registry
     address_keys.each do |address_key|
       new_node = tree_node[params[address_key]]
       unless new_node.is_a?(Tree::TreeNode)
-        new_node = Tree::TreeNode.new( params[address_key] )
+        new_node = Tree::TreeNode.new(params[address_key])
         tree_node << new_node
       end
       tree_node = new_node
     end
     unless unique.nil?
-      raise EnginesException('Existing entry already exists ',:error, address_keys) if tree_node.key?(unique)
+      raise EnginesException('Existing entry already exists ',:error, address_keys) unless tree_node[unique].nil?
       new_node = Tree::TreeNode.new( unique )
     end
     new_node.content = params
