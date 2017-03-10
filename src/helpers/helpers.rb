@@ -43,18 +43,18 @@ helpers do
      match_params(params, keys, true)
    end
  
-   def match_params(params, keys, required = false)
+   def match_params(params, keys, is_required = false)
      return  params if keys == :all
      return nil if keys.nil?
      cparams =  {}
      if keys.is_a?(Array)
        for key in keys
          # return missing_param key unless param.key?(key)
-         return false  unless self.check_required(params, key,required )
+         return false  unless self.check_required(params, key, is_required)
          cparams[key.to_sym] = params[key] unless params[key].nil?
        end
      else
-       return false unless self.check_required(params, keys,required)
+       return false unless self.check_required(params, keys, is_required)
        cparams[keys.to_sym] = params[keys]
      end
      cparams
