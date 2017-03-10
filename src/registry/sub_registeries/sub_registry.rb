@@ -67,6 +67,7 @@ class SubRegistry < Registry
 
   def roll_back
     @registry = @snap_shot if @snap_shot.nil? == false && @snap_shot.is_a?(Tree::TreeNode)
+    false
   end
 
   def clear_error

@@ -44,7 +44,6 @@ module Subservices
     take_snap_shot
     return save_tree if @subservices_registry.add_to_subservices_registry(params)
     roll_back
-    false
   rescue StandardError => e
     roll_back
     handle_exception(e)
@@ -54,7 +53,6 @@ module Subservices
     take_snap_shot
     return save_tree if @subservices_registry.update_attached_subservice(params)
     roll_back
-    false
   rescue StandardError => e
     roll_back
     handle_exception(e)
@@ -64,7 +62,6 @@ module Subservices
     take_snap_shot
     return save_tree if @subservices_registry.remove_from_subservices_registry(params)
     roll_back
-    false
   rescue StandardError => e
     roll_back
     handle_exception(e)
