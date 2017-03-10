@@ -24,7 +24,7 @@ class ServicesRegistry < SubRegistry
   # @service_hash :publisher_namespace . :type_path . :parent_engine
   # Wover writes
   def add_to_services_registry(params)
-    return add_to_ns_tp_tree_path(@registry, params, [:parent_engine, :service_handle]) unless params[:persistent] 
+    return add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle]) unless params[:persistent] 
     add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle])
 #    
 #    provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]

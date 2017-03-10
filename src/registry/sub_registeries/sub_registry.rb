@@ -14,26 +14,26 @@ class SubRegistry < Registry
     return false unless st.is_a?(Tree::TreeNode)
     is_node_registered?(st, params, keys)
   end
-  
-def is_node_registered?(st, params, keys)
+
+  def is_node_registered?(st, params, keys)
     return false unless match_node_keys(st, params, keys).is_a?(Tree::TreeNode)
     true
   end
-  
+
   def match_nstp_path_node_keys(st, params, keys, optional = nil)
     st = get_type_path_node(st, params)
     return unless st.is_a?(Tree::TreeNode)
     match_node_keys(st, params, keys, optional)
   end
 
-  def add_to_ns_tp_tree_path(tn, params, address_keys, unique = nil)
+  def add_to_ns_tp_tree_path(tn, params, address_keys, node_name ,unique)
     tree_node = get_type_path_node(tn, params)
     add_to_tree_path(tree_node, params, address_keys, unique )
   end
 
   # stn is already the branch publisher_ns,type_
   # will not resolve a type path
-  def add_to_tree_path(tree_node, params, address_keys, unique = nil)
+  def add_to_tree_path(tree_node, params, address_keys, node_name , unique = true)
     address_keys.each do |address_key|
       new_node = tree_node[params[address_key]]
       unless new_node.is_a?(Tree::TreeNode)
@@ -42,15 +42,15 @@ def is_node_registered?(st, params, keys)
       end
       tree_node = new_node
     end
-    unless unique.nil?
-      STDERR.puts('Existing entry already exists ' + unique.to_s + ' ' + :error.to_s  + ':' + address_keys.to_s) unless tree_node[unique].nil?
-      raise EnginesException.new('Existing entry already exists ' + unique.to_s ,:error, address_keys) unless tree_node[unique].nil?
-      new_node = Tree::TreeNode.new( unique )
+    new_node = tree_node[node_name].nil?
+    unless new_node.nil?
+      STDERR.puts('Existing entry already exists ' + unique.to_s + ' ' + :error.to_s  + ':' + address_keys.to_s) if unique == true
+      raise EnginesException.new('Existing entry already exists ' + node_name.to_s ,:error, address_keys) if unique == true
+    else
+      new_node = Tree::TreeNode.new( node_name )
       tree_node << new_node
     end
-    
     new_node.content = params
-
     true
   end
 
