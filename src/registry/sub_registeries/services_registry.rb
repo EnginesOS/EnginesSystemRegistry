@@ -84,12 +84,9 @@ class ServicesRegistry < SubRegistry
   # remove the service matching the service_hash from the tree
   # @service_hash :publisher_namespace :type_path :service_handle
   def remove_from_services_registry(service_hash)
-    if @registry.is_a?(Tree::TreeNode)
       service_node = find_service_consumers(service_hash)
       return remove_tree_entry(service_node) if service_node.is_a?(Tree::TreeNode)
-      log_error_mesg('Fail to find service for removal' + service_hash.to_s, service_node)
-    end
-    log_error_mesg('Fail to remove service', service_hash)
+    raise EnginesException.new('Fail to find service for removal' + service_hash.to_s, :error, service_hash)  
   end
 
   # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
@@ -134,8 +131,8 @@ class ServicesRegistry < SubRegistry
   # @service_query_hash :publisher_namespace , :type_path , :service_handle
   def get_service_entry(service_query_hash)
     tree_node = find_service_consumers(service_query_hash)
-    return log_error_mesg('get service_ entry failed ', service_query_hash) unless tree_node.is_a?(Tree::TreeNode)
-    return tree_node.content if tree_node.content.is_a?(Hash)
-    log_warning_mesg('Registry Entry Not found')
+    raise EnginesException.new('Registry Entry Not found', :warning, service_query_hash) unless tree_node.is_a?(Tree::TreeNode)
+    raise EnginesException.new('Registry Entry Hash missing', :warning, service_query_hash) unless tree_node.content.is_a?(Hash)
+    tree_node.content 
   end
 end
