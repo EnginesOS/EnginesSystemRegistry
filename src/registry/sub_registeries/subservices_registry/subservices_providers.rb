@@ -2,36 +2,26 @@ module SubservicesProviders
   # required[:publisher_namespace,:type_path ] optional [:engine_name,:service_handle]
   def find_subservice_providers(params)
     all_registered_to(provider_node(params), params)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   # required[:publisher_namespace,:type_path ]  optional [:engine_name,:service_handle,:sub_hand]
   def is_provider_registered?(params)
     is_registered?(provider_node(params), params)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
   def add_to_providers_registry(params)
     add_to_subservices(provider_node(params), params)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
   def update_attached_providers(params)
     update_attached(provider_node(params), params)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
   def remove_from_providers_registry(params)
     remove_from_registry(provider_node(params), params)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   # required[:publisher_namespace,:type_path ] optional [:engine_name,:service_handle]
@@ -42,8 +32,6 @@ module SubservicesProviders
   private
   def provider_node(params)
     get_type_path_node(subservices_providers, params)
-    rescue StandardError => e
-      handle_exception(e)
   end
   
   def subservices_providers
@@ -55,7 +43,5 @@ module SubservicesProviders
       @registry << @providers
     end
     @providers
-    rescue StandardError => e
-      handle_exception(e)
   end
 end

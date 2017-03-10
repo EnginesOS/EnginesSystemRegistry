@@ -47,9 +47,9 @@ begin
    end
    
    
-  def process_result(result)
+  def process_result(result, s = 202)
     unless result.is_a?(EnginesRegistryError)
-      status(202)
+      status(s)
     else
       status(404)
     end

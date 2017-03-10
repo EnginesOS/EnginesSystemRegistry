@@ -32,7 +32,6 @@ class Registry < EnginesRegistryError
       type_path = type_path[:type_path]
     end
     
-    STDERR.puts('create_type_path string' + type_path.to_s)
     if type_path.include?('/')
       sub_paths = type_path.split('/')
       prior_node = parent_node
