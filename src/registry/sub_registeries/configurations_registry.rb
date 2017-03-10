@@ -1,5 +1,5 @@
 class ConfigurationsRegistry < SubRegistry
-  require_relative '../errors/engines_exception.rb'
+  require_relative '../../errors/engines_exception.rb'
   # @return [Array] of configurations registered against service_name
   # return empty [Array] if none
   def get_service_configurations_hashes(service_name)
