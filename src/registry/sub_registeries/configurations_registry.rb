@@ -15,7 +15,7 @@ class ConfigurationsRegistry < SubRegistry
   # required keys are :service_name :configurator_name :publisher_namespace :type_path :variables
   def add_service_configuration(config_hash)
     
-    add_to_tree_path(@registry, config_hash, [:service_name], :configurator_name)
+    add_to_tree_path(@registry, config_hash, [:service_name], config_hash[:configurator_name])
     
 #    configs_node = get_service_configurations(config_hash[:service_name])
 #    if !configs_node.is_a?(Tree::TreeNode)
