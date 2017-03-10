@@ -27,7 +27,7 @@ class SubRegistry < Registry
       tree_node = new_node
     end
     unless unique.nil?
-      STDERR.puts('Existing entry already exists ' + unique ,:error, address_keys) unless tree_node[unique].nil?
+      STDERR.puts('Existing entry already exists ' + unique.to_s + :error.to_s  + ':' + address_keys.to_s) unless tree_node[unique].nil?
       raise EnginesException.new('Existing entry already exists ' + unique ,:error, address_keys) unless tree_node[unique].nil?
       new_node = Tree::TreeNode.new( unique )
     end
@@ -42,7 +42,7 @@ class SubRegistry < Registry
     r = ''
     unless required.nil?
       required.each do |match|
-        STDERR.puts('Required key missing ' + match.to_s ,:error, params) unless params.key?(match)
+        STDERR.puts('Required key missing ' + match.to_s + :error.to_s + ':'  +  params.to_s) unless params.key?(match)
         raise EnginesException.new('Required key missing ' + match.to_s ,:error, params) unless params.key?(match)
         stn = stn[params[match]]
         return unless stn.is_a?(Tree::TreeNode)
