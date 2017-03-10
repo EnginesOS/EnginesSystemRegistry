@@ -41,6 +41,7 @@ class SystemRegistry < Registry
   # @ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
   def initialize
     # @service_tree root of the Service Registry Tree
+    ObjectSpace.trace_object_allocations_start
     @system_registry = initialize_tree
     @configuration_registry = ConfigurationsRegistry.new(service_configurations_registry_tree)
     @services_registry = ServicesRegistry.new(services_registry_tree)

@@ -14,8 +14,8 @@ begin
   set :logging, true
   set :run, true
   require 'objspace'
-  ObjectSpace.trace_object_allocations_start
-  $system_registry = SystemRegistry.new
+ 
+  $system_registry |= SystemRegistry.new
 
   after do
     GC::OOB.run()
