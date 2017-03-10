@@ -14,7 +14,7 @@ class EnginesRegistryError < EnginesError
     log_exception(e, *objs)
   end
   
-  def log_error_(mesg, *objects)
+  def log_error_mesg(mesg, *objects)
     obj_str = objects.to_s.slice(0, 256)
     @last_error = mesg + ':' + obj_str
     STDERR.puts @last_error.to_s
