@@ -42,6 +42,8 @@ class EnginesRegistryError < EnginesError
   end
 
   def engines_exception(e, *objs)    
+    STDERR.puts('Engines Exception')
+    log_exception(e, *objs)
     EnginesRegistryError.new(e, e.level, *objs)
   end
   
