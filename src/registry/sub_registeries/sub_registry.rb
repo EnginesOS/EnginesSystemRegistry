@@ -1,5 +1,5 @@
 class SubRegistry < Registry
-
+  require_relative '../../errors/engines_exception.rb'
   attr_accessor :registry
   def initialize(registry)
     @registry = registry
@@ -27,7 +27,8 @@ class SubRegistry < Registry
       tree_node = new_node
     end
     unless unique.nil?
-      raise EnginesException.new('Existing entry already exists ',:error, address_keys) unless tree_node[unique].nil?
+      STDERR.puts('Existing entry already exists ' + unique ,:error, address_keys) unless tree_node[unique].nil?
+      raise EnginesException.new('Existing entry already exists ' + unique ,:error, address_keys) unless tree_node[unique].nil?
       new_node = Tree::TreeNode.new( unique )
     end
     new_node.content = params
@@ -41,6 +42,7 @@ class SubRegistry < Registry
     r = ''
     unless required.nil?
       required.each do |match|
+        STDERR.puts('Required key missing ' + match.to_s ,:error, params) unless params.key?(match)
         raise EnginesException.new('Required key missing ' + match.to_s ,:error, params) unless params.key?(match)
         stn = stn[params[match]]
         return unless stn.is_a?(Tree::TreeNode)
