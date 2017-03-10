@@ -28,11 +28,11 @@ class SubRegistry < Registry
 
   def add_to_ns_tp_tree_path(tn, params, address_keys, node_name ,unique = true)
     tree_node = get_type_path_node(tn, params)
-    add_to_tree_path(tree_node, params, address_keys, unique )
+    add_to_tree_path(tree_node, params, address_keys, node_name ,unique )
   end
 
   # stn is already the branch publisher_ns,type_
-  # will not resolve a type path
+  # will not resolve a type pat
   def add_to_tree_path(tree_node, params, address_keys, node_name , unique = true)
     address_keys.each do |address_key|
       new_node = tree_node[params[address_key]]
