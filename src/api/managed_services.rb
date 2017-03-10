@@ -3,25 +3,25 @@ get '/v0/system_registry/services/tree' do
 end
 
 delete '/v0/system_registry/services/clear/:container_type/:parent_engine/:persistence' do
-  params = assemble_params(params, [:container_type,:parent_engine,:persistence], :all,:all)
-  process_result(system_registry.clear_service_from_registry(params))
+  cparams = assemble_params(params, [:container_type,:parent_engine,:persistence], :all,:all)
+  process_result(system_registry.clear_service_from_registry(cparams))
 end
 
 get '/v0/system_registry/service/registered/engines/:service_type' do
-  params = assemble_params(params, [:service_type], :all,:all)
-  process_result(system_registry.all_engines_registered_to(params ))#RegistryUtils.symbolize_keys(params)[:service_type]))
+  cparams = assemble_params(params, [:service_type], :all,:all)
+  process_result(system_registry.all_engines_registered_to(cparams ))#RegistryUtils.symbolize_keys(params)[:service_type]))
 end
 
 get '/v0/system_registry/service/consumers/:publisher_namespace/*' do
   params[:type_path] = params['splat'][0]
-  params = assemble_params(params, [:publisher_namespace,:type_path], :all,:all)
-  process_result(system_registry.find_service_consumers(params))
+  cparams = assemble_params(params, [:publisher_namespace,:type_path], :all,:all)
+  process_result(system_registry.find_service_consumers(cparams))
 end
 
 get '/v0/system_registry/service/registered/:publisher_namespace/*' do
   params[:type_path] = params['splat'][0]
-  params = assemble_params(params, [:publisher_namespace,:type_path], :all,:all)
-  process_result(system_registry.get_registered_against_service(params))
+  cparams = assemble_params(params, [:publisher_namespace,:type_path], :all,:all)
+  process_result(system_registry.get_registered_against_service(cparams))
 end
 
 get '/v0/system_registry/services/providers/in_use/' do
