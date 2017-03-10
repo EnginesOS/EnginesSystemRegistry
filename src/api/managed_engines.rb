@@ -18,7 +18,7 @@ end
 
 delete '/v0/system_registry/engine/services/del/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
   params[:type_path] = params['splat'][0]
-  cparams = assemble_params(params, [:container_type,:parent_engine,:publisher_namespace,:service_handle,:type_path], nil, :all)
+  cparams = assemble_params(params, [:container_type,:parent_engine,:publisher_namespace,:service_handle,:type_path])
   #STDERR.puts( ' DEL FRO managed engines ' )
   process_result( system_registry.remove_from_managed_engines_registry(cparams))
 end
@@ -55,14 +55,14 @@ end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
-  cparams = assemble_params(params, [:container_type,:parent_engine],  nil, nil)
+  cparams = assemble_params(params, [:container_type,:parent_engine,:type_path])
   process_result(system_registry.find_engine_services_hashes(cparams))
 end
 
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
   params[:type_path] = params['splat'][0]
-  cparams = assemble_params(params, [:container_type,:parent_engine,:type_path], nil, nil)
+  cparams = assemble_params(params, [:container_type,:parent_engine,:type_path] )
   STDERR.puts( ' GET FROM managed engines ' + cparams.to_s)
   process_result(system_registry.find_engine_services_hashes(cparams))
 end
