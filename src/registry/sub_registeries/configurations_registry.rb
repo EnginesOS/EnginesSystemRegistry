@@ -54,6 +54,7 @@ class ConfigurationsRegistry < SubRegistry
 #    end
 #    false
     st = match_node_keys(@registry, service_configuration_hash, [:service_name, :configurator_name])
+    return add_service_configuration(service_configuration_hash) unless st.is_a?(Tree::TreeNode)
     st.content = service_configuration_hash
     true
   end
