@@ -20,12 +20,15 @@ class Registry < EnginesRegistryError
     return log_error_mesg('parent node not a tree node ', parent_node) unless parent_node.is_a?(Tree::TreeNode)
 
     if type_path.is_a?(Hash)
-      p = parent_node[:publisher_namespace] if type_path.key?(:publisher_namespace)
+      if type_path.key?(:publisher_namespace)
+      p = parent_node[:publisher_namespace] 
       unless p.is_a?(Tree::TreeNode)
         p = Tree::TreeNode.new(service_hash[:publisher_namespace], 'Publisher:' + service_hash[:publisher_namespace] )
         parent_node << p
       end
-      parent_node = p
+        parent_node = p
+      end
+   
       STDERR.puts('create_type_path hash' + type_path.to_s)
       type_path = type_path[:type_path]
     end
