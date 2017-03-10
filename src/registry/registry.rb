@@ -27,11 +27,11 @@ class Registry < EnginesRegistryError
         parent_node << p
       end
         parent_node = p
-      end
-   
+    end
       STDERR.puts('create_type_path hash' + type_path.to_s)
       type_path = type_path[:type_path]
     end
+    
     STDERR.puts('create_type_path string' + type_path.to_s)
     if type_path.include?('/')
       sub_paths = type_path.split('/')
@@ -53,7 +53,7 @@ class Registry < EnginesRegistryError
         service_node = Tree::TreeNode.new(type_path, type_path)
         parent_node << service_node
       end
-      service_node
+  return service_node
     end
     log_error_mesg('create_type_path failed', type_path)
   end
