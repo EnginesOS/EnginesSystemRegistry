@@ -33,16 +33,16 @@ end
 
 get '/v0/system_registry/engine/services/nonpersistent/:container_type/:parent_engine' do
    STDERR.puts( ' NON PERS ' + params.to_s)
-  cparams =  assemble_params(params, [:parent_engine, :container_type])
-  STDERR.puts( ' NON PERS ' + cparams.to_s)
-  process_result(system_registry.get_engine_nonpersistent_services(cparams))
+  params =  assemble_params(params, [:parent_engine, :container_type])
+  STDERR.puts( ' NON PERS ' + params.to_s)
+  process_result(system_registry.get_engine_nonpersistent_services(params))
 end
 
 get '/v0/system_registry/engine/services/persistent/:container_type/:parent_engine' do
   STDERR.puts( ' PERS ' + params.to_s )
-  cparams =  assemble_params(params, [:parent_engine, :container_type])
-  STDERR.puts( ' PERS ' + cparams.to_s )
-  process_result(system_registry.get_engine_persistent_services(cparams))
+  params =  assemble_params(params, [:parent_engine, :container_type])
+  STDERR.puts( ' PERS ' + params.to_s )
+  process_result(system_registry.get_engine_persistent_services(params))
 end
 
 post '/v0/system_registry/engine/services/add/:container_type/:parent_engine/:service_handle/:publisher_namespace/*' do
