@@ -33,9 +33,9 @@ end
 
 get '/v0/system_registry/engine/services/nonpersistent/:container_type/:parent_engine' do
    STDERR.puts( ' NON PERS ' + params.to_s)
-  params =  assemble_params(params, [:parent_engine, :container_type])
-  STDERR.puts( ' NON PERS ' + params.to_s)
-  process_result(system_registry.get_engine_nonpersistent_services(params))
+  cparams =  assemble_params(params, [:parent_engine, :container_type])
+  STDERR.puts( ' NON PERS ' + cparams.to_s)
+  process_result(system_registry.get_engine_nonpersistent_services(cparams))
 end
 
 get '/v0/system_registry/engine/services/persistent/:container_type/:parent_engine' do
