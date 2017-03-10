@@ -13,8 +13,6 @@ class SubRegistry < Registry
     st = get_type_path_node(st, params)
     return unless st.is_a?(Tree::TreeNode)
     match_node_keys(st, params, keys, optional)
-  rescue StandardError => e
-    log_exception(e, params)
   end
 
   # stn is already the branch publisher_ns,type_
@@ -29,14 +27,12 @@ class SubRegistry < Registry
       tree_node = new_node
     end
     unless unique.nil?
-      return log_error('Existing entry already exists ', params) if tree_node.key?(unique)
+      raise EnginesException('Existing entry already exists ',:error, address_keys) if tree_node.key?(unique)
       new_node = Tree::TreeNode.new( unique )
     end
     new_node.content = params
     tree_node << new_node
     true
-  rescue StandardError => e
-    log_exception(e, params)
   end
 
   # stn is already the branch publisher_ns,type_
@@ -45,7 +41,7 @@ class SubRegistry < Registry
     r = ''
     unless required.nil?
       required.each do |match|
-        return unless params.key?(match)
+        raise EnginesException('Require key missing ',:error, match) unless params.key?(match)
         stn = stn[params[match]]
         return unless stn.is_a?(Tree::TreeNode)
       end
@@ -58,8 +54,6 @@ class SubRegistry < Registry
       end
     end
     stn
-  rescue StandardError => e
-    log_exception(e, params)
   end
 
   def reset_registry(registry)

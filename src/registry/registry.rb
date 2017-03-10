@@ -1,6 +1,6 @@
 require 'rubytree'
-
-class Registry
+require_relative '../errors/engines_registry_error.rb'
+class Registry < EnginesRegistryError
   attr_reader :last_error
   # handle missing persistent key as not persistence kludge to catch gui bug
   def is_persistent?(hash)
@@ -164,22 +164,5 @@ class Registry
     log_exception(e)
   end
 
-  def log_error_mesg(msg, *objects)
-    obj_str = objects.to_s.slice(0, 256)
-    @last_error = msg + ':' + obj_str
-    STDERR.puts @last_error.to_s
-    EnginesRegistryError.new(msg, :error, *objects)
-  end
-
-  def log_warning_mesg(msg, *objects)
-    obj_str = objects.to_s.slice(0, 256)
-    @last_error = msg + ':' + obj_str
-    EnginesRegistryError.new(msg, :warning, *objects)
-  end
-
-  def log_exception(e, *objs)
-    @last_error = e.to_s.slice(0, 256)
-    STDERR.puts @last_error.to_s
-    EnginesRegistryError.new(e.to_s, :exception, *objs)
-  end
+ 
 end
