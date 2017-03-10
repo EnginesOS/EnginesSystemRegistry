@@ -5,6 +5,7 @@ helpers do
        end
   
   def assemble_params(params, address_params, required_params=nil, accept_params=nil )
+    STDERR.puts( 'Address params ' + params + ' address keys required ' + address_params.to_s)
      return  nil if params.nil?
      params = RegistryUtils.symbolize_keys(params)
      a_params = address_params(params, address_params)
