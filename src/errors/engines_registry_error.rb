@@ -3,8 +3,8 @@ require_relative 'engines_exception.rb'
 
 class EnginesRegistryError < EnginesError
 
-  def initialize(message, type, *objs )
-    super(message, type, objs)
+  def initialize(mesg, type, *objs )
+    super(mesg, type, objs)
     @sub_system = 'engines_registry'
     @params = objs
   end
@@ -14,17 +14,17 @@ class EnginesRegistryError < EnginesError
     log_exception(e, *objs)
   end
   
-  def log_error_mesg(msg, *objects)
+  def log_error_(mesg, *objects)
     obj_str = objects.to_s.slice(0, 256)
-    @last_error = msg + ':' + obj_str
+    @last_error = mesg + ':' + obj_str
     STDERR.puts @last_error.to_s
-    EnginesRegistryError.new(msg, :error, *objects)
+    EnginesRegistryError.new(mesg, :error, *objects)
   end
 
-  def log_warning_mesg(msg, *objects)
+  def log_warning_mesg(mesg, *objects)
     obj_str = objects.to_s.slice(0, 256)
-    @last_error = msg + ':' + obj_str
-    EnginesRegistryError.new(msg, :warning, *objects)
+    @last_error = mesg + ':' + obj_str
+    EnginesRegistryError.new(mesg, :warning, *objects)
   end
 
   def log_exception(e, *objs)
@@ -33,16 +33,16 @@ class EnginesRegistryError < EnginesError
     EnginesRegistryError.new(e.to_s, :exception, *objs)
   end
 
-  def engines_error(msg, *objects)
-    EnginesRegistryError.new(msg, :error, *objs)
+  def engines_error(mesg, *objects)
+    EnginesRegistryError.new(mesg, :error, *objs)
   end
 
-  def engines_warning(msg, *objects)
-    EnginesRegistryError.new(msg, :warning, *objs)
+  def engines_warning(mesg, *objects)
+    EnginesRegistryError.new(mesg, :warning, *objs)
   end
 
   def engines_exception(e, *objs)    
-    EnginesRegistryError.new(msg, e.level, *objs)
+    EnginesRegistryError.new(e, e.level, *objs)
   end
   
 end
