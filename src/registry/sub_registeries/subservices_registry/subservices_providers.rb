@@ -30,10 +30,11 @@ module SubservicesProviders
   end
 
   private
+
   def provider_node(params)
     get_type_path_node(subservices_providers, params)
   end
-  
+
   def subservices_providers
     @providers ||=  create_providers_node
   end
