@@ -10,7 +10,7 @@ helpers do
     ps = RegistryUtils.symbolize_keys(ps)
      a_params = address_params(ps, address_params)
      return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + ps.to_s, :error,'api') if a_params == false
- 
+    STDERR.puts( 'assembled params Address params ' + a_params.to_s)
      unless  required_params.nil? || required_params.empty?
        if required_params == :all
          a_params.merge!(ps[:api_vars]) if ps.key?(:api_vars)
