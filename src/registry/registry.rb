@@ -1,9 +1,9 @@
 require 'rubytree'
 
-
+require_relative '../errors/engines_registry_error.rb'
 
 class Registry < EnginesRegistryError
-  require_relative '../errors/engines_registry_error.rb'
+  require_relative '../errors/engines_exception.rb'
   attr_reader :last_error
   # handle missing persistent key as not persistence kludge to catch gui bug
   def is_persistent?(hash)
