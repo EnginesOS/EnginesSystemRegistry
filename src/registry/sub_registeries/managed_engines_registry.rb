@@ -21,12 +21,14 @@ class ManagedEnginesRegistry < SubRegistry
     st = managed_engines_type_registry(params)
     pe = match_node_keys(st, params, [:parent_engine])
     raise EnginesException.new('Failed to find engine  service',:error, params)  unless pe.is_a?(Tree::TreeNode)
+    pe = match_tp_path_node_keys(pe, params[:type_path])
+      
     if params.key?(:service_handle)
-      engine_node = match_tp_path_node_keys(pe, params, [:service_handle])
+      engine_node = match_node_keys(pe, params, [:service_handle])
       raise EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
       return engine_node.content
     end
-    engine_node = match_tp_path_node_keys(pe, params[:type_path] )
+    engine_node = match_node_keys(pe, params[:type_path] )
     return order_hashes_in_priotity(get_all_leafs_service_hashes(pe)) unless params.key?(:persistent)
     return order_hashes_in_priotity(get_matched_leafs(pe, :persistent, params[:persistent]))
   end
@@ -154,7 +156,7 @@ class ManagedEnginesRegistry < SubRegistry
     pe = match_node_keys(st, params, [:parent_engine])
     STDERR.puts('match_node_keys:' + pe.to_s)
     return pe unless params.key(:type_path)
-    pe = match_tp_path_node_keys(pe, params)
+    pe = match_tp_path_node_keys(pe, params[:type_path])
     return pe unless params.key(:service_handle)
    match_node_keys(pe, params, [:service_handle])
 
