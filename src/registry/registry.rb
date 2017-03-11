@@ -22,7 +22,7 @@ class Registry < EnginesRegistryError
 
     if address.is_a?(Hash)
       if address.key?(:publisher_namespace)
-        p = parent_node[:publisher_namespace]
+        p = parent_node[address[:publisher_namespace]]
         unless p.is_a?(Tree::TreeNode)
           STDERR.puts('create_   publisher_namespace' + address.to_s)
           p = Tree::TreeNode.new(address[:publisher_namespace], 'Publisher:' + address[:publisher_namespace] )
