@@ -40,6 +40,7 @@ class ConfigurationsRegistry < SubRegistry
 
   def full_address
     @full_address ||= [:service_name, :configurator_name]
+
   end
 
 end

@@ -7,6 +7,7 @@ class ServicesRegistry < SubRegistry
 
   # @Boolean returns true | false if servcice hash is registered in service tree
   def service_is_registered?(service_hash)
+    STDERR.puts('add_service_configuration ' + @registry.to_s + ' ' + config_hash.to_s  + ':' + [:parent_engine, :service_handle].to_s)
     is_ns_tp_node_registered?(@registry, service_hash,[:parent_engine, :service_handle] )
 #    provider_node = service_provider_tree(service_hash[:publisher_namespace]) # managed_service_tree[service_hash[:publisher_namespace] ]
 #    return false unless provider_node.is_a?(Tree::TreeNode)
