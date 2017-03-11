@@ -53,6 +53,7 @@ begin
     unless result.is_a?(EnginesRegistryError)
       status(s)
     else
+      STDERR.puts("Error" + result.to_s)
       status(404)
     end
     #  FFI_Yajl::Encoder.encode(result)
