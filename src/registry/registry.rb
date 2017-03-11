@@ -83,9 +83,10 @@ class Registry < EnginesRegistryError
 
   def get_type_path_node(parent_node, type_path)
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
+    STDERR.puts('get_type_path NODE' + type_path.to_s)
     type_path = type_path[:type_path] if type_path.is_a?(Hash)
-      
-    return parent_node[type_path]  unless type_path.include?('/')
+
+    return parent_node[type_path] unless type_path.include?('/')
     sub_paths = type_path.split('/')
     sub_node = parent_node
     sub_paths.each do |sub_path|
