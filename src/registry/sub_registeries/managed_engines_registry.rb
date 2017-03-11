@@ -142,7 +142,9 @@ class ManagedEnginesRegistry < SubRegistry
 
   def find_engine_services(params)
     st = managed_engines_type_registry(params)
+    STDERR.puts('managed_engines_type_registry:' + st.t_so)
     pe = match_node_keys(st, params, [:parent_engine])
+    STDERR.puts('match_node_keys:' + pe.t_so)
     match_tp_path_node_keys(pe, params, nil, [:service_handle])
     
 #    return log_error_mesg('find_engine_services passed nil params', params) if params.nil?
