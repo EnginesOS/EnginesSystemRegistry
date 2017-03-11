@@ -37,6 +37,7 @@ class ManagedEnginesRegistry < SubRegistry
     pe = match_node_keys(st, params, [:parent_engine])
     STDERR.puts('match_node_keys:' + pe.to_s)
     engine_node = match_tp_path_node_keys(pe, params, [:service_handle])
+    raise  EnginesException.new('Registry Entry Not found', :warning, params ) if engine_node.nil?
     raise  EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
     return engine_node.content
     #    return log_error_mesg('missing parrameters parent_engine', params) unless params.key?(:parent_engine)
