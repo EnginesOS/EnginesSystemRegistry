@@ -24,16 +24,16 @@ class Registry < EnginesRegistryError
       if address.key?(:publisher_namespace)
         p = parent_node[address[:publisher_namespace]]
         unless p.is_a?(Tree::TreeNode)
-        #  STDERR.puts('create_   publisher_namespace' + address.to_s)
+          #  STDERR.puts('create_   publisher_namespace' + address.to_s)
           p = Tree::TreeNode.new(address[:publisher_namespace], 'Publisher:' + address[:publisher_namespace] )
           parent_node << p
         end
         parent_node = p
       end
-     # STDERR.puts('create_type_path hash' + address.to_s)
+      # STDERR.puts('create_type_path hash' + address.to_s)
       type_path = address[:type_path]
     else
-    #  STDERR.puts('create_type_path hash' + address.to_s)
+      #  STDERR.puts('create_type_path hash' + address.to_s)
       type_path = address
     end
 
@@ -79,8 +79,9 @@ class Registry < EnginesRegistryError
     parent_node = parent_node[publisher] unless publisher.nil?
     return false if parent_node.nil?
     get_type_path_node(parent_node, type_path)
-end
-def get_type_path_node(parent_node, type_path)
+  end
+
+  def get_type_path_node(parent_node, type_path)
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
     return parent_node[type_path]  unless type_path.include?('/')
     sub_paths = type_path.split('/')
@@ -100,7 +101,7 @@ def get_type_path_node(parent_node, type_path)
 
     if branch.children.count == 0
       return branch.content if branch.content.is_a?(Hash)
-      return 
+      return
     end
     ret_val = []
     # SystemUtils.debug_output('top node',branch.name)
