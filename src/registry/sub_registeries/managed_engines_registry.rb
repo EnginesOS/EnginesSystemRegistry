@@ -84,7 +84,12 @@ class ManagedEnginesRegistry < SubRegistry
     #  p :add_to_managed_engines_registry
     #  p service_hash.to_s
     tn = managed_engines_type_registry(params)
-    tn = match_node_keys(tn, params, [:parent_engine])
+    tb = match_node_keys(tn, params, [:parent_engine])
+      unless tb.is_a?(Tree::TreeNode)
+        tb = Tree::TreeNode.new(params[:parent_engine])
+          tn << tb               
+      end     
+      tn = tb
     add_to_tp_tree_path(tn, params, params[:type_path], params[:service_handle])
     
       
