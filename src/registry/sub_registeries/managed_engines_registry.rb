@@ -167,7 +167,7 @@ class ManagedEnginesRegistry < SubRegistry
     pe = match_node_keys(st, params, [:parent_engine])
     STDERR.puts('match_node_keys:' + pe.to_s)
     return pe unless params.key(:type_path)
-    pe = match_tp_path_node_keys(pe, params[:type_path])
+    pe =  get_type_path_node(st, params[:type_path])
     return pe unless params.key(:service_handle)
    match_node_keys(pe, params, [:service_handle])
 
