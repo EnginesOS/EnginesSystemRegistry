@@ -15,6 +15,11 @@ class SubRegistry < Registry
     is_node_registered?(st, params, keys)
   end
 
+def is_ns_tp_node_registered?(st, params, keys)
+  st = get_pns_type_path_node(st, params)
+  return false unless st.is_a?(Tree::TreeNode)
+  is_node_registered?(st, params, keys)
+end
   def is_node_registered?(st, params, keys)
     return false unless match_node_keys(st, params, keys).is_a?(Tree::TreeNode)
     true
