@@ -15,11 +15,12 @@ class SubRegistry < Registry
     is_node_registered?(st, params, keys)
   end
 
-def is_ns_tp_node_registered?(st, params, keys)
-  st = get_pns_type_path_node(st, params)
-  return false unless st.is_a?(Tree::TreeNode)
-  is_node_registered?(st, params, keys)
-end
+  def is_ns_tp_node_registered?(st, params, keys)
+    st = get_pns_type_path_node(st, params)
+    return false unless st.is_a?(Tree::TreeNode)
+    is_node_registered?(st, params, keys)
+  end
+
   def is_node_registered?(st, params, keys)
     return false unless match_node_keys(st, params, keys).is_a?(Tree::TreeNode)
     true
@@ -37,6 +38,11 @@ end
     STDERR.puts('get_type_path_node:' + st.to_s)
     match_node_keys(st, params, keys, optional)
   end
+add_to_tp_tree_path(tn, params, params[:type_path], params[:service_handle])
+  def add_to_tp_tree_path(tn, params, address, node_name ,unique = true)
+    tree_node = create_type_path_node(parent_node, address)
+    add_to_tree_path(tree_node, params, nil, node_name ,unique )
+  end
 
   def add_to_ns_tp_tree_path(tn, params, address_keys, node_name ,unique = true)
     tree_node = create_type_path_node(tn, params)
@@ -46,14 +52,16 @@ end
   # stn is already the branch publisher_ns,type_
   # will not resolve a type pat
   def add_to_tree_path(tree_node, params, address_keys, node_name , unique = true)
-    address_keys.each do |address_key|
-      new_node = tree_node[params[address_key]]
-      unless new_node.is_a?(Tree::TreeNode)
-        new_node = Tree::TreeNode.new(params[address_key])
-        #       STDERR.puts('creating node' + params[address_key])
-        tree_node << new_node
+    unless address_keys.nil?
+      address_keys.each do |address_key|
+        new_node = tree_node[params[address_key]]
+        unless new_node.is_a?(Tree::TreeNode)
+          new_node = Tree::TreeNode.new(params[address_key])
+          #       STDERR.puts('creating node' + params[address_key])
+          tree_node << new_node
+        end
+        tree_node = new_node
       end
-      tree_node = new_node
     end
     #STDERR.puts('Procedding to entry ' + node_name.to_s )
     new_node = tree_node[node_name]

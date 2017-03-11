@@ -35,9 +35,9 @@ class ManagedEnginesRegistry < SubRegistry
 
   def find_engine_service_hash(params)
     st = managed_engines_type_registry(params)
-    STDERR.puts('managed_engines_type_registry:' + st.to_s)
+    #   STDERR.puts('managed_engines_type_registry:' + st.to_s)
     pe = match_node_keys(st, params, [:parent_engine])
-    STDERR.puts('match_node_keys:' + pe.to_s)
+    #  STDERR.puts('match_node_keys:' + pe.to_s)
     engine_node = match_tp_path_node_keys(pe, params, [:service_handle])
     raise  EnginesException.new('Registry Entry Not found', :warning, params ) if engine_node.nil?
     raise  EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
@@ -83,32 +83,38 @@ class ManagedEnginesRegistry < SubRegistry
   def add_to_managed_engines_registry(service_hash)
     #  p :add_to_managed_engines_registry
     #  p service_hash.to_s
-    return log_error_mesg('no_parent_engine_key', service_hash) if service_hash[:parent_engine].nil? || !service_hash.key?(:parent_engine)
-    engines_type_tree = managed_engines_type_registry(service_hash)
-    return log_error_mesg('no_type tree ', service_hash) unless engines_type_tree.is_a?(Tree::TreeNode)
-    if !engines_type_tree[service_hash[:parent_engine]].nil?
-      engine_node = engines_type_tree[service_hash[:parent_engine]]
-    else
-      engine_node = Tree::TreeNode.new(service_hash[:parent_engine], service_hash[:parent_engine] + ' Engine Service Tree')
-      managed_engines_type_registry(service_hash) << engine_node
-    end
-    service_type_node = create_type_path_node(engine_node, service_hash[:type_path])
-    service_handle = get_service_handle(service_hash)
-    # service_handle = service_hash[:service_handle]
-    return log_error_mesg('no service type node', service_hash) unless service_type_node.is_a?(Tree::TreeNode)
-    return log_error_mesg('Service hash has nil handle', service_hash) if service_handle.nil?
-    service_node = service_type_node[service_handle]
-    if service_node.nil?
-      service_node = Tree::TreeNode.new(service_handle, service_hash)
-      service_type_node << service_node
-      service_node.content = service_hash
-    elsif !is_persistent?(service_hash)
-      service_node.content = service_hash
-    else
-      log_error_mesg('Engine Node existed', service_handle)
-      log_error_mesg('Cannot over write persistent service in managed engines tree' + service_node.content.to_s + ' with ', service_hash)
-    end
-    return true
+    tn = managed_engines_type_registry(service_hash)
+    tn = match_node_keys(tn, params, [:parent_engine])
+    add_to_tp_tree_path(tn, params, params[:type_path], params[:service_handle])
+    
+      
+         
+#    return log_error_mesg('no_parent_engine_key', service_hash) if service_hash[:parent_engine].nil? || !service_hash.key?(:parent_engine)
+#    engines_type_tree = managed_engines_type_registry(service_hash)
+#    return log_error_mesg('no_type tree ', service_hash) unless engines_type_tree.is_a?(Tree::TreeNode)
+#    if !engines_type_tree[service_hash[:parent_engine]].nil?
+#      engine_node = engines_type_tree[service_hash[:parent_engine]]
+#    else
+#      engine_node = Tree::TreeNode.new(service_hash[:parent_engine], service_hash[:parent_engine] + ' Engine Service Tree')
+#      managed_engines_type_registry(service_hash) << engine_node
+#    end
+#    service_type_node = create_type_path_node(engine_node, service_hash[:type_path])
+#    service_handle = get_service_handle(service_hash)
+#    # service_handle = service_hash[:service_handle]
+#    return log_error_mesg('no service type node', service_hash) unless service_type_node.is_a?(Tree::TreeNode)
+#    return log_error_mesg('Service hash has nil handle', service_hash) if service_handle.nil?
+#    service_node = service_type_node[service_handle]
+#    if service_node.nil?
+#      service_node = Tree::TreeNode.new(service_handle, service_hash)
+#      service_type_node << service_node
+#      service_node.content = service_hash
+#    elsif !is_persistent?(service_hash)
+#      service_node.content = service_hash
+#    else
+#      log_error_mesg('Engine Node existed', service_handle)
+#      log_error_mesg('Cannot over write persistent service in managed engines tree' + service_node.content.to_s + ' with ', service_hash)
+#    end
+#    return true
   rescue StandardError => e
     log_exception(e)
   end
