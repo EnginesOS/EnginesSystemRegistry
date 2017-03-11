@@ -38,16 +38,18 @@ class SubRegistry < Registry
       new_node = tree_node[params[address_key]]
       unless new_node.is_a?(Tree::TreeNode)
         new_node = Tree::TreeNode.new(params[address_key])
+        STDERR.puts('creating node' + params[address_key])
         tree_node << new_node
       end
       tree_node = new_node
     end
     new_node = tree_node[node_name]
     unless new_node.nil?
-      #  STDERR.puts('Existing entry already exists ' + node_name.to_s + ' ' + :error.to_s  + ':' + address_keys.to_s) if unique == true
+        STDERR.puts('Existing entry already exists ' + node_name.to_s + ' ' + :error.to_s  + ':' + address_keys.to_s)
       raise EnginesException.new('Existing entry already exists ' + node_name.to_s ,:error, address_keys) if unique == true
     else
       new_node = Tree::TreeNode.new( node_name )
+      STDERR.puts('creating leaf' + node_name)
       tree_node << new_node
     end
     new_node.content = params
