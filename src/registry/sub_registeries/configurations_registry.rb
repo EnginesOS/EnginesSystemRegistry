@@ -9,7 +9,7 @@ class ConfigurationsRegistry < SubRegistry
   # add the service configuration in the [Hash] service_configuration_hash
   # required keys are :service_name :configurator_name :publisher_namespace :type_path :variables
   def add_service_configuration(config_hash)
-    STDERR.puts('add_service_configuration ' + config_hash.to_s + ' ' + config_hash[:configurator_name].to_s  + ':' + [:service_name].to_s)
+  #  STDERR.puts('add_service_configuration ' + config_hash.to_s + ' ' + config_hash[:configurator_name].to_s  + ':' + [:service_name].to_s)
     add_to_tree_path(@registry, config_hash, [:service_name], config_hash[:configurator_name])
   end
 

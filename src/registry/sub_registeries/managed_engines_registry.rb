@@ -9,7 +9,7 @@ class ManagedEnginesRegistry < SubRegistry
     return log_error_mesg('Failed to find engine type node', params) unless engine_node.is_a?(Tree::TreeNode)
     engine_node = managed_engines_type_registry(params)[params[:parent_engine]]
     return log_error_mesg('Failed to find in managed service type tree', params) if !engine_node.is_a?(Tree::TreeNode)
-    engine_node = get_type_path_node(engine_node, params[:type_path]) if params.key?(:type_path)
+    engine_node = get_pns_type_path_node(engine_node, params[:type_path]) if params.key?(:type_path)
     return [] if !engine_node.is_a?(Tree::TreeNode)
     #log_error_mesg('Failed to find type_path ' + params[:type_path] + 'in managed service tree', params)
     if params.key?(:service_handle) && !params[:service_handle].nil?
@@ -33,7 +33,7 @@ class ManagedEnginesRegistry < SubRegistry
 
     return log_error_mesg('Failed to find parent engine in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
     #SystemUtils.debug_output('find_engine_services_hash', engine_node.content.to_s)
-    engine_node = get_type_path_node(engine_node, params[:type_path])
+    engine_node = get_pns_type_path_node(engine_node, params[:type_path])
     return log_error_mesg('Failed to find type_path ' + params[:type_path] + 'in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
     engine_node = engine_node[params[:service_handle]]
     return log_error_mesg('Failed to find service_handle ' + params[:service_handle] + 'in managed service tree', params) unless engine_node.is_a?(Tree::TreeNode)
@@ -141,23 +141,27 @@ class ManagedEnginesRegistry < SubRegistry
   end
 
   def find_engine_services(params)
-    return log_error_mesg('find_engine_services passed nil params', params) if params.nil?
-    engines_type_tree = managed_engines_type_registry(params)
-    return log_error_mesg('fail to find engine type tree', params) unless engines_type_tree.is_a?(Tree::TreeNode)
-    engine_node = engines_type_tree[params[:parent_engine]]
-    return log_error_mesg('fail to find engine in type tree', params)  unless engine_node.is_a?(Tree::TreeNode)
-    #  SystemUtils.debug_output(:find_engine_services_with_params, params)
-    if params.key?(:type_path) && !params[:type_path].nil?
-      services = get_type_path_node(engine_node, params[:type_path]) # engine_node[params[:type_path]]
-      if services.is_a?(Tree::TreeNode) && params.key?(:service_handle) && !params[:service_handle].nil?
-        service = services[params[:service_handle]]
-        return service
-      else
-        return services
-      end
-    else
-      return engine_node
-    end
+    st = managed_engines_type_registry(params)
+    pe = match_node_keys(st, params, [:parent_engine])
+    match_tp_path_node_keys(pe, params, nil, [:service_handle])
+    
+#    return log_error_mesg('find_engine_services passed nil params', params) if params.nil?
+#    engines_type_tree = managed_engines_type_registry(params)
+#    return log_error_mesg('fail to find engine type tree', params) unless engines_type_tree.is_a?(Tree::TreeNode)
+#    engine_node = engines_type_tree[params[:parent_engine]]
+#    return log_error_mesg('fail to find engine in type tree', params)  unless engine_node.is_a?(Tree::TreeNode)
+#    #  SystemUtils.debug_output(:find_engine_services_with_params, params)
+#    if params.key?(:type_path) && !params[:type_path].nil?
+#      services = get_type_path_node(engine_node, params[:type_path]) # engine_node[params[:type_path]]
+#      if services.is_a?(Tree::TreeNode) && params.key?(:service_handle) && !params[:service_handle].nil?
+#        service = services[params[:service_handle]]
+#        return service
+#      else
+#        return services
+#      end
+#    else
+#      return engine_node
+#    end
   end
 
 end

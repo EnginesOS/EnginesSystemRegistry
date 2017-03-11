@@ -66,7 +66,7 @@ class Registry < EnginesRegistryError
   # @return nil on error
   # @param parent_node the branch to search under
   # @param type_path the dir path format as in dns or database/sql/mysql
-  def get_type_path_node(parent_node, type_path, publisher = nil)
+  def get_pns_type_path_node(parent_node, type_path, publisher = nil)
 
     if type_path.nil? || !parent_node.is_a?(Tree::TreeNode)
       log_error_mesg('get_type_path_node_passed_a_nil path:' + type_path.to_s, parent_node.to_s)
@@ -78,6 +78,9 @@ class Registry < EnginesRegistryError
     end
     parent_node = parent_node[publisher] unless publisher.nil?
     return false if parent_node.nil?
+    get_type_path_node(parent_node, type_path)
+end
+def get_type_path_node(parent_node, type_path)
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
     return parent_node[type_path]  unless type_path.include?('/')
     sub_paths = type_path.split('/')

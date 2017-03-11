@@ -32,7 +32,7 @@ module SubservicesProviders
   private
 
   def provider_node(params)
-    get_type_path_node(subservices_providers, params)
+    get_pns_type_path_node(subservices_providers, params)
   end
 
   def subservices_providers
