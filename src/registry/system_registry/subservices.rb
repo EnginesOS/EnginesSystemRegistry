@@ -7,7 +7,7 @@ module Subservices
     system_registry_tree['SubServices']
   rescue StandardError => e
     log_exception(e)
-    return nil
+     nil
   end
 
   def all_subservices_registered_to(params)

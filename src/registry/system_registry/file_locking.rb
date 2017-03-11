@@ -14,7 +14,7 @@ def lock_tree
     return log_error_mesg("Failed to lock",registry_lock) if File.exist?(registry_lock)
   end
   FileUtils.touch(registry_lock)
-  return true
+   true
 end
 
 def unlock_tree

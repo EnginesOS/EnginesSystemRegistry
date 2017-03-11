@@ -74,6 +74,6 @@ begin
     f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
     f.puts(e_str)
     f.close
-    return false
+     false
   end
 end

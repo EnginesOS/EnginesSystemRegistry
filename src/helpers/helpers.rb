@@ -70,7 +70,7 @@ helpers do
      return true if params.key?(key)
      p :missing_key
      p key
-     return false
+      false
    end
 
 end

@@ -56,7 +56,7 @@ class SystemRegistry < Registry
     file = File.open("/var/log/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
-    return true
+     true
   end
   
   def update_attached_service(service_hash)
@@ -68,7 +68,7 @@ class SystemRegistry < Registry
       return save_tree
     end
     roll_back
-    return false
+     false
   end
 
   def orphanate_service(service_hash)
@@ -85,7 +85,7 @@ class SystemRegistry < Registry
       log_error_mesg('Failed to save orphan' + @orphan_server_registry.last_error.to_s, service_hash)
     end
     roll_back
-    return false
+     false
   end
 
   # Removes orphan and places in the managed_engine_registry
@@ -109,10 +109,10 @@ class SystemRegistry < Registry
       @system_registry = recovery_tree if @system_registry.nil?
       set_registries
     end
-    return @system_registry
+     @system_registry
   rescue StandardError => e
     log_exception(e)
-    return nil
+     nil
   end
 
   def sync
@@ -121,7 +121,7 @@ class SystemRegistry < Registry
 
   def update_managed_engine_service(service_query_hash)
     p :NYI
-    return false
+     false
   end
 
   def  registry_as_hash(tree)
@@ -155,7 +155,7 @@ class SystemRegistry < Registry
     unlock_tree
     @system_registry = load_tree
     set_registries
-    return @system_registry
+     @system_registry
   rescue StandardError => e
     log_exception(e)
   end

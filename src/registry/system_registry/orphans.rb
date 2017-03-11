@@ -7,7 +7,7 @@ module Orphans
     system_registry_tree['OphanedServices']
   rescue StandardError => e
     log_exception(e)
-    return nil
+     nil
   end
 
   # @params [Hash] Loads the varaibles from the matching orphan
@@ -29,7 +29,7 @@ module Orphans
     take_snap_shot
     return save_tree if test_orphans_registry_result(@orphan_server_registry.release_orphan(params))
     roll_back
-    return false
+     false
   end
 
   def rollback_orphaned_service(params)

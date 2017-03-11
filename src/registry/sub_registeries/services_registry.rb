@@ -30,14 +30,14 @@ class ServicesRegistry < SubRegistry
     providers.each do |provider|
       retval.push(provider.name)
     end
-    return retval
+     retval
   end
 
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
     services = find_service_consumers(params)
     return get_all_leafs_service_hashes(services) if services.is_a?(Tree::TreeNode)
-    return services
+     services
   end
 
   # remove the service matching the service_hash from the tree

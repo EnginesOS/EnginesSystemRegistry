@@ -6,7 +6,7 @@ class SubRegistry < Registry
   end
 
   def service_provider_tree(publisher)
-    return @registry[publisher] if @registry.is_a?(Tree::TreeNode)
+     @registry[publisher] if @registry.is_a?(Tree::TreeNode)
   end
 
   def is_tp_node_registered?(st, params, keys)

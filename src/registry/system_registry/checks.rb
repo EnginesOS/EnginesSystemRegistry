@@ -11,26 +11,26 @@ module Checks
 
   def test_subservices_registry_result(result)
     @last_error = @last_error.to_s + ':' + @subservices_registry.last_error.to_s  if result.is_a?(FalseClass) || result.nil?
-    return result
+     result
   end
 
   def test_orphans_registry_result(result)
     @last_error = @last_error.to_s + ':' + @orphan_server_registry.last_error.to_s  if result.is_a?(FalseClass) || result.nil?
-    return result
+     result
   end
 
   def test_engines_registry_result(result)
     @last_error = @last_error.to_s + ':' + @managed_engines_registry.last_error.to_s if result.is_a?(FalseClass) || result.nil?
-    return result
+     result
   end
 
   def test_services_registry_result(result)
     @last_error = @last_error.to_s + ':' + @services_registry.last_error.to_s if result.is_a?(FalseClass) || result.nil?
-    return result
+     result
   end
 
   def test_configurations_registry_result(result)
     @last_error = @last_error.to_s + ':' + @configuration_registry.last_error.to_s if result.is_a?(FalseClass) || result.nil?
-    return result
+     result
   end
 end
