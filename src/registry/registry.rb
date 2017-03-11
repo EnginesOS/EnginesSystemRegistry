@@ -102,7 +102,7 @@ class Registry < EnginesRegistryError
   # @return [Array] of all service_hash(s) below this branch
   def get_all_leafs_service_hashes(branch)
     return if branch.nil?
-    if branch.children.nil? || branch.children.count == 0
+    if branch.children.count == 0
       return branch.content if branch.content.is_a?(Hash)
       return
     end
@@ -147,6 +147,7 @@ class Registry < EnginesRegistryError
   # @return [Array] all service_hash(s) which contain the hash pair label=value
   # @return empty array if none
   def get_matched_leafs(branch, label, value)
+    return if branch.nil?
     return if branch.children.count == 0
     ret_val = []
     # SystemUtils.debug_output('top node',branch.name)
