@@ -16,21 +16,23 @@ class Registry < EnginesRegistryError
   # return nil on error
   # param parent_node the branch to create the node under
   # param type_path the dir path format as in dns or database/sql/mysql
-  def create_type_path_node(parent_node, type_path)
-    return log_error_mesg('create_type_path passed a nil type_path when adding to ', parent_node) if type_path.nil?
+  def create_type_path_node(parent_node, address)
+    return log_error_mesg('create_type_path passed a nil', parent_node) if address.nil?
     return log_error_mesg('parent node not a tree node ', parent_node) unless parent_node.is_a?(Tree::TreeNode)
 
-    if type_path.is_a?(Hash)
-      if type_path.key?(:publisher_namespace)
+    if address.is_a?(Hash)
+      if address.key?(:publisher_namespace)
       p = parent_node[:publisher_namespace] 
       unless p.is_a?(Tree::TreeNode)
-        p = Tree::TreeNode.new(service_hash[:publisher_namespace], 'Publisher:' + service_hash[:publisher_namespace] )
+        p = Tree::TreeNode.new(address[:publisher_namespace], 'Publisher:' + address[:publisher_namespace] )
         parent_node << p
       end
         parent_node = p
     end
       STDERR.puts('create_type_path hash' + type_path.to_s)
-      type_path = type_path[:type_path]
+      type_path = address[:type_path]
+    else
+      type_path = address
     end
     
     if type_path.include?('/')

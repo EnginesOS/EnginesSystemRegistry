@@ -17,21 +17,21 @@ class ConfigurationsRegistry < SubRegistry
   # required keys are :service_name :configurator_name
   # @return boolean indicating failure
   #
-  def rm_service_configuration(service_configuration_hash)
-    st = match_node_keys(@registry, service_configuration_hash, full_address)
+  def rm_service_configuration(config_hash)
+    st = match_node_keys(@registry, config_hash, full_address)
     return remove_tree_entry(st) if st.is_a?(Tree::TreeNode)
   end
 
-  def update_service_configuration(service_configuration_hash)
-    st = match_node_keys(@registry, service_configuration_hash, full_address)
-    return add_service_configuration(service_configuration_hash) unless st.is_a?(Tree::TreeNode)
-    st.content = service_configuration_hash
+  def update_service_configuration(config_hash)
+    st = match_node_keys(@registry, config_hash, full_address)
+    return add_service_configuration(config_hash) unless st.is_a?(Tree::TreeNode)
+    st.content = config_hash
     true
   end
 
   # @return a service_configuration_hash addressed by :service_name :configuration_name
-  def get_service_configuration(service_configuration_hash)
-    st = match_node_keys(@registry, service_configuration_hash, full_address)
+  def get_service_configuration(config_hash)
+    st = match_node_keys(@registry, config_hash, full_address)
     return false unless st.is_a?(Tree::TreeNode)
     st.content
   end
