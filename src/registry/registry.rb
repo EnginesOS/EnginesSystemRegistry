@@ -94,11 +94,12 @@ class Registry < EnginesRegistryError
 
   # @return [Array] of all service_hash(s) below this branch
   def get_all_leafs_service_hashes(branch)
-    ret_val = []
+
     if branch.children.count == 0
       return branch.content if branch.content.is_a?(Hash)
-      return ret_val
+      return 
     end
+    ret_val = []
     # SystemUtils.debug_output('top node',branch.name)
     branch.children.each do |sub_branch|
       #    SystemUtils.debug_output('on node',sub_branch.name)
@@ -114,6 +115,7 @@ class Registry < EnginesRegistryError
   end
 
   def order_hashes_in_priotity(hashes)
+    return hashes unless hashes.is_a?(Array)
     priority = []
     standard = []
     service_hash = nil
@@ -138,6 +140,7 @@ class Registry < EnginesRegistryError
   # @return [Array] all service_hash(s) which contain the hash pair label=value
   # @return empty array if none
   def get_matched_leafs(branch, label, value)
+    return if sub_branch.children.count == 0
     ret_val = []
     # SystemUtils.debug_output('top node',branch.name)
     branch.children.each do |sub_branch|
