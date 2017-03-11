@@ -22,19 +22,21 @@ class Registry < EnginesRegistryError
 
     if address.is_a?(Hash)
       if address.key?(:publisher_namespace)
-      p = parent_node[:publisher_namespace] 
-      unless p.is_a?(Tree::TreeNode)
-        p = Tree::TreeNode.new(address[:publisher_namespace], 'Publisher:' + address[:publisher_namespace] )
-        parent_node << p
-      end
+        p = parent_node[:publisher_namespace]
+        unless p.is_a?(Tree::TreeNode)
+          STDERR.puts('create_   publisher_namespace' + address.to_s)
+          p = Tree::TreeNode.new(address[:publisher_namespace], 'Publisher:' + address[:publisher_namespace] )
+          parent_node << p
+        end
         parent_node = p
-    end
-      STDERR.puts('create_type_path hash' + type_path.to_s)
+      end
+      STDERR.puts('create_type_path hash' + address.to_s)
       type_path = address[:type_path]
     else
+      STDERR.puts('create_type_path hash' + address.to_s)
       type_path = address
     end
-    
+
     if type_path.include?('/')
       sub_paths = type_path.split('/')
       prior_node = parent_node
@@ -55,7 +57,7 @@ class Registry < EnginesRegistryError
         service_node = Tree::TreeNode.new(type_path, type_path)
         parent_node << service_node
       end
-  return service_node
+      return service_node
     end
     log_error_mesg('create_type_path failed', type_path)
   end
