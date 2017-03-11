@@ -49,7 +49,16 @@ class SystemRegistry < Registry
     @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry_tree)
     @shares_registry = SharesRegistry.new(shares_registry_tree)
   end
-
+  
+  def dump_heap_stats
+    ObjectSpace.garbage_collect
+   # STDERR.puts('dumping heap')
+    file = File.open("/var/log/heap.dump", 'w')
+    ObjectSpace.dump_all(output: file)
+    file.close
+    return true
+  end
+  
   def update_attached_service(service_hash)
     take_snap_shot
     if test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) &&
@@ -152,15 +161,7 @@ class SystemRegistry < Registry
   end
 
  
-  def dump_heap_stats
-    ObjectSpace.garbage_collect
-   # STDERR.puts('dumping heap')
-    file = File.open("/var/log/heap.dump", 'w')
-    ObjectSpace.dump_all(output: file)
-    file.close
-    return true
-  end
-  
+
   # set @registry to the appropirate tree Node for eaach sub resgistry
   # creates node if nil via_xxx_yyy_tree
   def set_registries
