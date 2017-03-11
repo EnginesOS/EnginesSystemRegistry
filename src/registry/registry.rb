@@ -101,7 +101,7 @@ class Registry < EnginesRegistryError
 
   # @return [Array] of all service_hash(s) below this branch
   def get_all_leafs_service_hashes(branch)
-
+    return if branch.nil?
     if branch.children.nil? || branch.children.count == 0
       return branch.content if branch.content.is_a?(Hash)
       return
