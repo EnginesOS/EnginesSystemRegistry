@@ -24,16 +24,16 @@ class Registry < EnginesRegistryError
       if address.key?(:publisher_namespace)
         p = parent_node[address[:publisher_namespace]]
         unless p.is_a?(Tree::TreeNode)
-          STDERR.puts('create_   publisher_namespace' + address.to_s)
+        #  STDERR.puts('create_   publisher_namespace' + address.to_s)
           p = Tree::TreeNode.new(address[:publisher_namespace], 'Publisher:' + address[:publisher_namespace] )
           parent_node << p
         end
         parent_node = p
       end
-      STDERR.puts('create_type_path hash' + address.to_s)
+     # STDERR.puts('create_type_path hash' + address.to_s)
       type_path = address[:type_path]
     else
-      STDERR.puts('create_type_path hash' + address.to_s)
+    #  STDERR.puts('create_type_path hash' + address.to_s)
       type_path = address
     end
 
