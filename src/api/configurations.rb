@@ -15,6 +15,7 @@ end
 
 post '/v0/system_registry/services/configurations/add/:service_name/:configurator_name' do
   params.merge!(post_params(request))
+  STDERR.puts( ' add to configuration ' + params.to_s )
   cparams = assemble_params(params, [:service_name,:configurator_name],  nil, :all)
   cparams[:no_save] = false unless cparams.key?(:no_save) 
    STDERR.puts( ' add to configuration ' + cparams.to_s )
@@ -23,8 +24,9 @@ end
 
 post '/v0/system_registry/services/configuration/update/:service_name/:configurator_name' do
   params.merge!(post_params(request))
+  STDERR.puts( 'update to configuration ' + params.to_s )
   cparams =  assemble_params(params, [:service_name,:configurator_name],  nil,:all)
-  # STDERR.puts( ' update to configuration ' + cparams.to_s + ':' + params.to_s)
+   STDERR.puts( ' update to configuration ' + cparams.to_s )
   process_result(system_registry.update_service_configuration(cparams))
 end
 
