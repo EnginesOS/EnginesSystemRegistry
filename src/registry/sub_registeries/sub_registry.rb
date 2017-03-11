@@ -52,6 +52,7 @@ class SubRegistry < Registry
       STDERR.puts('creating leaf' + node_name)
       tree_node << new_node
     end
+STDERR.puts('set content ' + params )
     new_node.content = params
     true
   end
