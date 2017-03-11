@@ -28,9 +28,8 @@ class SubRegistry < Registry
 
   def match_tp_path_node_keys(st, params, keys, optional = nil)
     st = get_type_path_node(st, params)
-    STDERR.puts('get_type_path_node passws:' + st.to_s, + ' ' + keys.to_s + ' ' + optional.to_s)
     return unless st.is_a?(Tree::TreeNode)
-    STDERR.puts('get_type_path_node:' + pe.to_s)
+    STDERR.puts('get_type_path_node:' + st.to_s)
     match_node_keys(st, params, keys, optional)
   end
 
