@@ -38,9 +38,9 @@ class SubRegistry < Registry
     STDERR.puts('get_type_path_node:' + st.to_s)
     match_node_keys(st, params, keys, optional)
   end
-add_to_tp_tree_path(tn, params, params[:type_path], params[:service_handle])
+
   def add_to_tp_tree_path(tn, params, address, node_name ,unique = true)
-    tree_node = create_type_path_node(parent_node, address)
+    tree_node = create_type_path_node(tn, address)
     add_to_tree_path(tree_node, params, nil, node_name ,unique )
   end
 
