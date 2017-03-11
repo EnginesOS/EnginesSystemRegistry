@@ -80,10 +80,10 @@ class ManagedEnginesRegistry < SubRegistry
   # requires :parent_engine :type_path
   # @return boolean
   # overwrites
-  def add_to_managed_engines_registry(service_hash)
+  def add_to_managed_engines_registry(params)
     #  p :add_to_managed_engines_registry
     #  p service_hash.to_s
-    tn = managed_engines_type_registry(service_hash)
+    tn = managed_engines_type_registry(params)
     tn = match_node_keys(tn, params, [:parent_engine])
     add_to_tp_tree_path(tn, params, params[:type_path], params[:service_handle])
     
