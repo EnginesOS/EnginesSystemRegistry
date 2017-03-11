@@ -53,7 +53,7 @@ STDERR.puts('Procedding to entry ' + node_name.to_s )
       STDERR.puts('creating leaf' + node_name)
       tree_node << new_node
     end
-STDERR.puts('set content ' + params )
+STDERR.puts('set content ' + params.to_s )
     new_node.content = params
     true
   end
