@@ -18,9 +18,9 @@ class ManagedEnginesRegistry < SubRegistry
     #      return engine_node.content
     #    end
 
-    st = managed_engines_type_registry(params)
-    pe = match_node_keys(st, params, [:parent_engine])
-    raise EnginesException.new('Failed to find engine  service',:error, params)  unless pe.is_a?(Tree::TreeNode)
+    pe = managed_engines_type_registry(params)[params[:parent_engine]]
+    #pe = match_node_keys(st, params, [:parent_engine])
+    raise EnginesException.new('Failed to find node ' +  params[:parent_engine].to_s,:error, params)  unless pe.is_a?(Tree::TreeNode)
     pe = match_tp_path_node_keys(pe, params[:type_path])
       
     if params.key?(:service_handle)
