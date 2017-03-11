@@ -26,6 +26,7 @@ class ManagedEnginesRegistry < SubRegistry
       raise EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
       return engine_node.content
     end
+    engine_node = match_tp_path_node_keys(pe, params[:type_path] )
     return order_hashes_in_priotity(get_all_leafs_service_hashes(pe)) unless params.key?(:persistent)
     return order_hashes_in_priotity(get_matched_leafs(pe, :persistent, params[:persistent]))
   end
@@ -35,7 +36,6 @@ class ManagedEnginesRegistry < SubRegistry
     STDERR.puts('managed_engines_type_registry:' + st.to_s)
     pe = match_node_keys(st, params, [:parent_engine])
     STDERR.puts('match_node_keys:' + pe.to_s)
-
     engine_node = match_tp_path_node_keys(pe, params, [:service_handle])
     raise  EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
     return engine_node.content
