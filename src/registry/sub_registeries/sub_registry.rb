@@ -43,8 +43,9 @@ class SubRegistry < Registry
       end
       tree_node = new_node
     end
+STDERR.puts('Procedding to entry ' + node_name.to_s ) 
     new_node = tree_node[node_name]
-    unless new_node.nil?
+    if new_node.is_a?(Tree::TreeNode)
         STDERR.puts('Existing entry already exists ' + node_name.to_s + ' ' + :error.to_s  + ':' + address_keys.to_s)
       raise EnginesException.new('Existing entry already exists ' + node_name.to_s ,:error, address_keys) if unique == true
     else
