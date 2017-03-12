@@ -69,13 +69,6 @@ class ManagedEnginesRegistry < SubRegistry
 
   private
 
-  # @return the service_handle from the service_hash
-  # for backward compat (to be changed)
-  def get_service_handle(params)
-    return params[:service_handle] if params.key?(:service_handle) && !params[:service_handle].nil?
-    log_error_mesg('no :service_handle', params)
-  end
-
   # @return the appropriate tree under managedservices trees either engine or service
   def managed_engines_type_registry(site_hash)
     return false unless @registry.is_a?(Tree::TreeNode)
