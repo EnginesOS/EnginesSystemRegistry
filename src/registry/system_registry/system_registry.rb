@@ -1,4 +1,4 @@
-require_relative '../registry.rb'
+
 require 'yaml'
 require 'fileutils'
 require 'rubytree'
