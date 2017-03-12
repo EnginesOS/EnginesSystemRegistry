@@ -164,8 +164,8 @@ class OrphanServicesRegistry < SubRegistry
       return false
     else
       return types_for_engine[params[:service_handle]] unless types_for_engine[params[:service_handle]].nil?
-      log_error_mesg('No Matching Orphan', params)
-      return false
+return log_error_mesg('No Matching Orphan', params)
+
     end
   end
 end

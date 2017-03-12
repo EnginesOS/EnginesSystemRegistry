@@ -1,8 +1,10 @@
 require_relative '../registry.rb'
 require 'yaml'
 require 'fileutils'
+require 'rubytree'
 
-class SystemRegistry < Registry
+require_relative '../errors/engines_registry_error.rb'
+class SystemRegistry < EnginesRegistryError
   @@service_tree_file = '/opt/engines/run/service_manager/services.yaml'
 
   require_relative '../sub_registeries/sub_registry.rb'
