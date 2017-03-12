@@ -51,8 +51,6 @@ class ManagedEnginesRegistry < SubRegistry
     end
     tn = tb
     add_to_tp_tree_path(tn, params, params[:type_path], params[:service_handle])
-  rescue StandardError => e
-    log_exception(e)
   end
 
   # Remove Service from engine service registry matching :parent_engine :type_path :service_handle
@@ -72,7 +70,7 @@ class ManagedEnginesRegistry < SubRegistry
   # @return the appropriate tree under managedservices trees either engine or service
   def managed_engines_type_registry(site_hash)
     return false unless @registry.is_a?(Tree::TreeNode)
-    return log_error_mesg('Site hash missing :container_type', site_hash) unless site_hash.key?(:container_type)
+     raise EnginesException.new('Site hash missing :container_type', :error, site_hash) unless site_hash.key?(:container_type)
     if site_hash[:container_type] == 'service'
       @registry << Tree::TreeNode.new('Service', 'Managed Services register') if @registry['Service'].nil?
       return @registry['Service']

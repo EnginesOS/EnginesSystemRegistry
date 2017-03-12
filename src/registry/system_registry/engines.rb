@@ -5,8 +5,6 @@ module Engines
     @managed_engines_registry.find_engine_services_hashes(params)
   rescue StandardError => e
     handle_exception(e)
-    # STDERR.puts("FIND_engine_services_hashes " + r.to_s)
-    # test_engines_registry_result(r)
   end
 
   def find_engine_service_hash(params)
@@ -53,7 +51,6 @@ module Engines
   rescue StandardError => e
     roll_back
     handle_exception(e)
-
   end
 
 end

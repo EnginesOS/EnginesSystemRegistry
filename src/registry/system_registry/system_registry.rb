@@ -1,9 +1,9 @@
-
 require 'yaml'
 require 'fileutils'
 require 'rubytree'
 
 require_relative '../../errors/engines_registry_error.rb'
+
 class SystemRegistry < EnginesRegistryError
   @@service_tree_file = '/opt/engines/run/service_manager/services.yaml'
 
@@ -51,26 +51,28 @@ class SystemRegistry < EnginesRegistryError
     @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry_tree)
     @shares_registry = SharesRegistry.new(shares_registry_tree)
   end
-  
+
   def dump_heap_stats
     ObjectSpace.garbage_collect
-   # STDERR.puts('dumping heap')
+    # STDERR.puts('dumping heap')
     file = File.open("/var/log/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
-     true
+    true
   end
-  
+
   def update_attached_service(service_hash)
     take_snap_shot
-    if test_services_registry_result(@services_registry.remove_from_services_registry(service_hash)) &&
-    test_services_registry_result(@managed_engines_registry.remove_from_engine_registry(service_hash)) &&
-    test_engines_registry_result(@managed_engines_registry.add_to_managed_engines_registry(service_hash)) &&
-    test_engines_registry_result(@services_registry.add_to_services_registry(service_hash))
+    if @services_registry.remove_from_services_registry(service_hash) &&
+    @managed_engines_registry.remove_from_engine_registry(service_hash) &&
+    @managed_engines_registry.add_to_managed_engines_registry(service_hash) &&
+    @services_registry.add_to_services_registry(service_hash)
       return save_tree
     end
     roll_back
-     false
+  rescue StandardError => e
+    roll_back
+    handle_exception(e)
   end
 
   def orphanate_service(service_hash)
@@ -87,7 +89,7 @@ class SystemRegistry < EnginesRegistryError
       log_error_mesg('Failed to save orphan' + @orphan_server_registry.last_error.to_s, service_hash)
     end
     roll_back
-     false
+    false
   end
 
   # Removes orphan and places in the managed_engine_registry
@@ -111,10 +113,10 @@ class SystemRegistry < EnginesRegistryError
       @system_registry = recovery_tree if @system_registry.nil?
       set_registries
     end
-     @system_registry
+    @system_registry
   rescue StandardError => e
     log_exception(e)
-     nil
+    nil
   end
 
   def sync
@@ -123,14 +125,14 @@ class SystemRegistry < EnginesRegistryError
 
   def update_managed_engine_service(service_query_hash)
     p :NYI
-     false
+    false
   end
 
   def  registry_as_hash(tree)
-      @h = RegistryUtils.as_hash(tree)
-      @h
-      end
-      
+    @h = RegistryUtils.as_hash(tree)
+    @h
+  end
+
   private
 
   require_relative 'file_locking.rb'
@@ -157,12 +159,10 @@ class SystemRegistry < EnginesRegistryError
     unlock_tree
     @system_registry = load_tree
     set_registries
-     @system_registry
+    @system_registry
   rescue StandardError => e
     log_exception(e)
   end
-
- 
 
   # set @registry to the appropirate tree Node for eaach sub resgistry
   # creates node if nil via_xxx_yyy_tree
@@ -234,8 +234,6 @@ class SystemRegistry < EnginesRegistryError
     log_exception(e)
   end
 
- 
-  
   # @sets the service_tree and load mod time
   def load_tree
     clear_error
