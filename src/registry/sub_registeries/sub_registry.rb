@@ -1,4 +1,4 @@
-require_relative '../errors/engines_registry_error.rb'
+require_relative '../../errors/engines_registry_error.rb'
 
 class SubRegistry < EnginesRegistryError
   require_relative '../../errors/engines_exception.rb'
