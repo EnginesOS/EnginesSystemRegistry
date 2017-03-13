@@ -15,36 +15,31 @@ module Orphans
   # return boolean
   def reparent_orphan(params)
     clear_error
-    test_orphans_registry_result(@orphan_server_registry.reparent_orphan(params))
+    @orphan_server_registry.reparent_orphan(params)
   end
 
   # @params [Hash] of orphan matching the params
   # return boolean
   def retrieve_orphan(params)
     clear_error
-    test_orphans_registry_result(@orphan_server_registry.retrieve_orphan(params))
+    @orphan_server_registry.retrieve_orphan(params)
   end
 
   def release_orphan(params)
     take_snap_shot
-    return save_tree if test_orphans_registry_result(@orphan_server_registry.release_orphan(params))
+    @orphan_server_registry.release_orphan(params)
     roll_back
      false
   end
 
   def rollback_orphaned_service(params)
     clear_error
-    test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
+    @orphan_server_registry.rollback_orphaned_service(params)
   end
 
   def get_orphaned_services(params)
     clear_error
-    test_orphans_registry_result(@orphan_server_registry.get_orphaned_services(params))
+    @orphan_server_registry.get_orphaned_services(params)
   end
-  #
-  #  def find_orphan_consumers(params)
-  #    clear_error
-  #    test_orphans_registry_result(@orphan_server_registry.find_orphan_consumers(params))
-  #  end
-
+  
 end

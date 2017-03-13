@@ -28,8 +28,8 @@ class SystemRegistry < EnginesRegistryError
   include Services
   require_relative 'engines.rb'
   include Engines
-  require_relative 'checks.rb'
-  include Checks
+ # require_relative 'checks.rb'
+ #include Checks
   require_relative 'trees.rb'
   include Trees
   require_relative 'subservices.rb'
@@ -78,9 +78,9 @@ class SystemRegistry < EnginesRegistryError
   def orphanate_service(service_hash)
     take_snap_shot
 
-    if test_orphans_registry_result( @orphan_server_registry.orphanate_service(service_hash))
+    if @orphan_server_registry.orphanate_service(service_hash)
       save_tree
-      if test_services_registry_result(@services_registry.remove_from_services_registry(service_hash))
+      if @services_registry.remove_from_services_registry(service_hash)
         return save_tree
       else
         @orphan_server_registry.release_orphan(service_hash)
@@ -95,9 +95,9 @@ class SystemRegistry < EnginesRegistryError
   # Removes orphan and places in the managed_engine_registry
   def rebirth_orphan(params)
     take_snap_shot
-    if test_orphans_registry_result(@orphan_server_registry.release_orphan(params))
-      if test_services_registry_result(@services_registry.add_to_services_registry(params))
-        return save_tree if test_services_registry_result(@managed_engines_registry.add_to_managed_engines_registry(params))
+    if @orphan_server_registry.release_orphan(params)
+      if @services_registry.add_to_services_registry(params)
+        return save_tree if @managed_engines_registry.add_to_managed_engines_registry(params)
       end
     end
     roll_back

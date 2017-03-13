@@ -13,7 +13,7 @@ class OrphanServicesRegistry < SubRegistry
 
   def rollback_orphaned_service(params)
     clear_error
-    test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
+    @orphan_server_registry.rollback_orphaned_service(params)
   end
 
   # Saves the service_hash in the orphaned service registry

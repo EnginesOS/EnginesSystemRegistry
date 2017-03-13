@@ -31,5 +31,12 @@ module Trees
   rescue StandardError => e
     log_exception(e)
   end
-
+  def check_system_registry_tree
+    clear_error
+    st = system_registry_tree
+    return SystemUtils.log_error_mesg('Nil service tree ?', st) if !st.is_a?(Tree::TreeNode)
+    return true
+  rescue StandardError => e
+    log_exception(e)
+  end
 end
