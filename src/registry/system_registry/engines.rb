@@ -44,6 +44,15 @@ module Engines
     handle_exception(e)
   end
 
+#  def update_engine_service(service_hash)
+#    take_snap_shot
+#    return save_tree if @managed_engines_registry.update_engine_service(service_hash)
+#    roll_back
+#  rescue StandardError => e
+#    roll_back
+#    handle_exception(e)
+#  end
+
   def add_to_managed_engines_registry(service_hash)
     take_snap_shot
     return save_tree if @managed_engines_registry.add_to_managed_engines_registry(service_hash)

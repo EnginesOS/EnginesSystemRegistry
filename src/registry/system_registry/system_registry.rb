@@ -28,8 +28,6 @@ class SystemRegistry < EnginesRegistryError
   include Services
   require_relative 'engines.rb'
   include Engines
- # require_relative 'checks.rb'
- #include Checks
   require_relative 'trees.rb'
   include Trees
   require_relative 'subservices.rb'
@@ -42,7 +40,6 @@ class SystemRegistry < EnginesRegistryError
 
   # @ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
   def initialize
-    # @service_tree root of the Service Registry Tree
     ObjectSpace.trace_object_allocations_start
     @system_registry = initialize_tree
     @configuration_registry = ConfigurationsRegistry.new(service_configurations_registry_tree)
@@ -54,19 +51,19 @@ class SystemRegistry < EnginesRegistryError
 
   def dump_heap_stats
     ObjectSpace.garbage_collect
-    # STDERR.puts('dumping heap')
     file = File.open("/var/log/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
     true
+    rescue StandardError => e
+      roll_back
+      handle_exception(e)
   end
 
   def update_attached_service(service_hash)
     take_snap_shot
-    if @services_registry.remove_from_services_registry(service_hash) &&
-    @managed_engines_registry.remove_from_engine_registry(service_hash) &&
-    @managed_engines_registry.add_to_managed_engines_registry(service_hash) &&
-    @services_registry.add_to_services_registry(service_hash)
+    if @managed_engines_registry.update_engine_service(service_hash) &&
+    @services_registry.update_service(service_hash)
       return save_tree
     end
     roll_back
@@ -77,7 +74,6 @@ class SystemRegistry < EnginesRegistryError
 
   def orphanate_service(service_hash)
     take_snap_shot
-
     if @orphan_server_registry.orphanate_service(service_hash)
       save_tree
       if @services_registry.remove_from_services_registry(service_hash)
@@ -123,10 +119,10 @@ class SystemRegistry < EnginesRegistryError
     system_registry_tree
   end
 
-  def update_managed_engine_service(service_query_hash)
-    p :NYI
-    false
-  end
+#  def update_managed_engine_service(service_query_hash)
+#    p :NYI
+#    false
+#  end
 
   def  registry_as_hash(tree)
     @h = RegistryUtils.as_hash(tree)
@@ -199,7 +195,6 @@ class SystemRegistry < EnginesRegistryError
     rescue StandardError => e
       puts e.message + ' with ' + tree_data.to_s
       log_exception(e)
-
     end
   end
 
@@ -257,7 +252,6 @@ class SystemRegistry < EnginesRegistryError
   # @return boolean
   def save_tree
     clear_error
-
     FileUtils.copy(@@service_tree_file, @@service_tree_file + '.bak') if File.exist?(@@service_tree_file)
     serialized_object = YAML::dump(@system_registry)
     f = File.new(@@service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
