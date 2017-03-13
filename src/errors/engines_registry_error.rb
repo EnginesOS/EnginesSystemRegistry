@@ -10,8 +10,10 @@ class EnginesRegistryError < EnginesError
   end
 
   def handle_exception(e, *objs)
-    engines_exception(e, *objs) if e.is_a?(EnginesException)    
-    log_exception(e, *objs).to_json
+    @last_error = e.to_s.slice(0, 512)
+    STDERR.puts @last_error.to_s
+    return EnginesRegistryError.new(e.to_s, :exception, *objs) unless e.is_a?(EnginesException)
+    return EnginesRegistryError.new(e.to_s, e.level, e.params)   
   end
   
   def log_error_mesg(mesg, *objects)
@@ -28,10 +30,9 @@ class EnginesRegistryError < EnginesError
   end
 
   def log_exception(e, *objs)
+    EnginesRegistryError.new(mesg, :exception, *objects)
     @last_error = e.to_s.slice(0, 512)
     STDERR.puts @last_error.to_s
-    return EnginesRegistryError.new(e.to_s, :exception, *objs) unless e.is_a?(EnginesException)
-    EnginesRegistryError.new(e.to_s, e.level, e.params)
   end
 
   def engines_error(mesg, *objects)

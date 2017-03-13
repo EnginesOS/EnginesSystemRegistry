@@ -6,7 +6,6 @@ module Configurations
     system_registry_tree['Configurations']
   rescue StandardError => e
    handle_exception(e)
-    return nil
   end
 
   def get_service_configurations_hashes(service_hash)
