@@ -56,7 +56,9 @@ begin
     end
     STDERR.puts("Error "+ s.to_s + ' ' + result.to_s) if s > 399
     #  FFI_Yajl::Encoder.encode(result)
-    result.to_json
+   r =  result.to_json
+    STDERR.puts("OUT "+ r.to_s ) 
+    r
   rescue StandardError => e
     log_exception(e, result)
   end
