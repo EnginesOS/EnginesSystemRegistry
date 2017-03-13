@@ -46,7 +46,7 @@ post '/v0/system_registry/service/update/:parent_engine/:service_handle/:publish
   params[:type_path] = params['splat'][0]
   params.merge!(post_params(request))
   cparams = assemble_params(params, [:parent_engine,:service_handle,:publisher_namespace,:type_path], nil,:all)
-  # STDERR.puts( ' UPDATE to services parsed as ' )
+   STDERR.puts( ' UPDATE to services parsed as ' + cparams.to_s )
   process_result(system_registry.update_attached_service(cparams))
 end
 
