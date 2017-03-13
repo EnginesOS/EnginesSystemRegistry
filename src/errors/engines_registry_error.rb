@@ -7,6 +7,7 @@ class EnginesRegistryError < EnginesError
     super(mesg, type, objs)
     @sub_system = 'engines_registry'
     @params = objs
+    @source = nil
   end
 
   def handle_exception(e, *objs)
