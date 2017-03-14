@@ -66,13 +66,13 @@ class ManagedEnginesRegistry < SubRegistry
     get_matched_leafs(@registry, :type_path, service_path)
   end
 
-  def update_engine_service(config_hash)
+  def update_engine_service(params)
     pe = managed_engines_type_registry(params)[params[:parent_engine]]
     raise EnginesException.new('Failed to find node ' +  params[:parent_engine].to_s,:error, params)  unless pe.is_a?(Tree::TreeNode)
     pe =  get_type_path_node(pe, params[:type_path])
     engine_node = match_node_keys(pe, params, [:service_handle])
     raise EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
-    engine_node.content[:variables] = config_hash[:variables]
+    engine_node.content[:variables] = params[:variables]
     true
   end
   private
