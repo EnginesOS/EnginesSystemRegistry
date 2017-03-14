@@ -61,11 +61,11 @@ begin
     STDERR.puts("Error "+ s.to_s + ' ' + r.to_s) if s > 399
     
     if r.is_a?(TrueClass) || r.is_a?(FalseClass)
-      r = { BooleanResult: r }
+      r = { BooleanResult: r }.to_json
     elsif r.is_a?(String)
       content_type 'plain/text'
     else
-      r =  r.to_json
+      r = r.to_json
     end
     STDERR.puts("OUT "+ r.to_s ) 
     r
