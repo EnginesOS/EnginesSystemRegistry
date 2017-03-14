@@ -16,7 +16,10 @@ begin
   require 'objspace'
  
   $system_registry ||= SystemRegistry.new
-
+#  before do
+#     
+#  end
+  
   after do
     GC::OOB.run()
     
@@ -48,6 +51,7 @@ begin
    
    
   def process_result(result, s = 202)
+    content_type 'application/json'
     unless result.is_a?(EnginesRegistryError)
       status(s)
     else
