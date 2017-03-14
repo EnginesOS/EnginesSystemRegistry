@@ -18,14 +18,14 @@ class EnginesRegistryError < EnginesError
   end
   
   def log_error_mesg(mesg, *objs)
-    obj_str = objects.to_s.slice(0, 512)
+    obj_str = objs.to_s.slice(0, 512)
     @last_error = mesg + ':' + obj_str
     STDERR.puts @last_error.to_s
     EnginesRegistryError.new(mesg, :error, *objs)
   end
 
   def log_warning_mesg(mesg, *objs)
-    obj_str = objects.to_s.slice(0, 256)
+    obj_str = objs.to_s.slice(0, 256)
     @last_error = mesg + ':' + obj_str
     EnginesRegistryError.new(mesg, :warning, *objs)
   end
