@@ -1,6 +1,6 @@
 class RegistryUtils
   
-  require_relative 'params.rb'
+ # require_relative 'params.rb'
 
  
   def RegistryUtils.boolean_if_true_false_str(r)

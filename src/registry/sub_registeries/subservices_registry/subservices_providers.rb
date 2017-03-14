@@ -26,14 +26,15 @@ module SubservicesProviders
 
   # required[:publisher_namespace,:type_path ] optional [:engine_name,:service_handle]
   def all_subservices_registered_to(params)
-    match_nstp_path_node_keys(provider_node(params), params)
+    match_node_keys(provider_node(params), params)
   end
 
   private
+
   def provider_node(params)
-    get_type_path_node(subservices_providers, params)
+    get_pns_type_path_node(subservices_providers, params)
   end
-  
+
   def subservices_providers
     @providers ||=  create_providers_node
   end

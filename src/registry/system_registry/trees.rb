@@ -5,7 +5,7 @@ module Trees
     clear_error
     return false if !check_system_registry_tree
     system_registry_tree << Tree::TreeNode.new('Services', 'Service register') unless system_registry_tree['Services'].is_a?(Tree::TreeNode)
-    return system_registry_tree['Services']
+     system_registry_tree['Services']
   rescue StandardError => e
     log_exception(e)
     return false
@@ -15,7 +15,7 @@ module Trees
     clear_error
     return false if !check_system_registry_tree
     system_registry_tree << Tree::TreeNode.new('Shares', 'Service Shares') unless system_registry_tree['Shares'].is_a?(Tree::TreeNode)
-    return system_registry_tree['Shares']
+     system_registry_tree['Shares']
   rescue StandardError => e
     log_exception(e)
     return false
@@ -31,5 +31,12 @@ module Trees
   rescue StandardError => e
     log_exception(e)
   end
-
+  def check_system_registry_tree
+    clear_error
+    st = system_registry_tree
+    return SystemUtils.log_error_mesg('Nil service tree ?', st) if !st.is_a?(Tree::TreeNode)
+    return true
+  rescue StandardError => e
+    log_exception(e)
+  end
 end
