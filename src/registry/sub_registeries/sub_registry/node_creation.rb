@@ -96,6 +96,5 @@ end
       raise EnginesException.new("Failed to remove tree Entry", :error, parent_node) unless remove_tree_entry(parent_node)
     end
     true
-
   end
 end
