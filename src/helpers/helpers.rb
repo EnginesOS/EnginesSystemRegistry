@@ -1,6 +1,6 @@
 helpers do
   
-  require_relative `converts.rb`
+  require_relative 'converters.rb'
   
   def  registry_as_hash(tree)
         as_hash(tree)
