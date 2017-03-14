@@ -30,11 +30,11 @@ class EnginesRegistryError < EnginesError
     EnginesRegistryError.new(mesg, :warning, *objects)
   end
 
-  def log_exception(e, *objs)    
+  def log_exception(e, *objs)       
+    @last_error  = e.to_s
+    @last_error  += e.backtrace.to_s
     @last_error = e.to_s.slice(0, 512)
-    STDERR.puts e.to_s
-    STDERR.puts e.backtrace.to_s
-    EnginesRegistryError.new(mesg, :exception, *objects)
+    EnginesRegistryError.new(@last_error, :exception, *objects)
   end
 
   def engines_error(mesg, *objects)
