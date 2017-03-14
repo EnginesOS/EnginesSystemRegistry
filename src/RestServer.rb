@@ -50,17 +50,23 @@ begin
    end
    
    
-  def process_result(result, s = 202)
+  def process_result(r, s = 202)
     content_type 'application/json'
-    unless result.is_a?(EnginesRegistryError)
+    unless r.is_a?(EnginesRegistryError)
       status(s)
     else
-      STDERR.puts("Error" + result.to_s)
+      STDERR.puts("Error" + r.to_s)
       status(404)
     end
-    STDERR.puts("Error "+ s.to_s + ' ' + result.to_s) if s > 399
-    #  FFI_Yajl::Encoder.encode(result)
-   r =  result.to_json
+    STDERR.puts("Error "+ s.to_s + ' ' + r.to_s) if s > 399
+    
+    if r.is_a?(TrueClass) || r.is_a?(FalseClass)
+      r = { BooleanResult: r }
+    elsif r.is_a?(String)
+      content_type 'plain/text'
+    else
+      r =  r.to_json
+    end
     STDERR.puts("OUT "+ r.to_s ) 
     r
   rescue StandardError => e
