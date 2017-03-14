@@ -58,13 +58,13 @@ class ServicesRegistry < SubRegistry
   end
 
   def update_service(params)
-  tree_node = find_service_consumers(params)
-  raise EnginesException.new('Registry Entry Not found', :error, params) unless tree_node.is_a?(Tree::TreeNode)
-  raise EnginesException.new('Registry Entry Hash missing', :error, params) unless tree_node.content.is_a?(Hash)
-  engine_node.content[:variables] = params[:variables]
-  true
+    tree_node = find_service_consumers(params)
+    raise EnginesException.new('Registry Entry Not found', :error, params) unless tree_node.is_a?(Tree::TreeNode)
+    raise EnginesException.new('Registry Entry Hash missing', :error, params) unless tree_node.content.is_a?(Hash)
+    tree_node.content[:variables] = params[:variables]
+    true
   end
-  
+
   ## SystemUtils.debug_output(:find_service_consumers_, service_query_hash[:service_handle])
   #    service = services[service_query_hash[:service_handle]]
   #    return log_error_mesg('failed to find match in services tree', service_query_hash) if service.nil?
@@ -79,6 +79,5 @@ class ServicesRegistry < SubRegistry
     raise EnginesException.new('Registry Entry Hash missing', :warning, query_params) unless tree_node.content.is_a?(Hash)
     tree_node.content
   end
-  
 
 end
