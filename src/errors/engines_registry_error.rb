@@ -34,6 +34,7 @@ class EnginesRegistryError < EnginesError
     @last_error  = e.to_s
     @last_error  += e.backtrace.to_s
     @last_error = e.to_s.slice(0, 512)
+    STDERR.puts('EXCEPTION:' + @last_error.to_s)
     EnginesRegistryError.new(@last_error, :exception, *objs)
   end
 
