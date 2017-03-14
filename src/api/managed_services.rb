@@ -9,7 +9,7 @@ end
 
 get '/v0/system_registry/service/registered/engines/:service_type' do
   cparams = assemble_params(params, [:service_type], :all,:all)
-  process_result(system_registry.all_engines_registered_to(cparams ))#RegistryUtils.symbolize_keys(params)[:service_type]))
+  process_result(system_registry.all_engines_registered_to(cparams ))
 end
 
 get '/v0/system_registry/service/consumers/:publisher_namespace/*' do

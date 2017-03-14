@@ -1,13 +1,15 @@
 helpers do
   
+  require_relative `converts.rb`
+  
   def  registry_as_hash(tree)
-        RegistryUtils.as_hash(tree)
+        as_hash(tree)
        end
   
   def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
    # STDERR.puts( 'assemble_params Address params ' + ps.to_s + ' address keys required ' + address_params.to_s)
      return nil if ps.nil?
-    ps = RegistryUtils.symbolize_keys(ps)
+    ps = symbolize_keys(ps)
      a_params = address_params(ps, address_params)
      return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + ps.to_s, :error,'api') if a_params == false
    
@@ -16,7 +18,7 @@ helpers do
          a_params.merge!(ps[:api_vars]) if ps.key?(:api_vars)
          return a_params
        end
-       r_params = self.required_params(ps,required_params)
+       r_params = required_params(ps,required_params)
        return EnginesError.new('Missing Parameters ' + required_params.to_s + ' but only have:' + ps.to_s, :error,'api') if r_params == false
        a_params.merge!(r_params) unless r_params.nil?
      end
@@ -52,11 +54,11 @@ helpers do
      if keys.is_a?(Array)
        for key in keys
          # return missing_param key unless param.key?(key)
-         return false  unless self.check_required(params, key, is_required)
+         return false  unless check_required(params, key, is_required)
          cparams[key.to_sym] = params[key] unless params[key].nil?
        end
      else
-       return false unless self.check_required(params, keys, is_required)
+       return false unless check_required(params, keys, is_required)
        cparams[keys.to_sym] = params[keys]
      end
      cparams

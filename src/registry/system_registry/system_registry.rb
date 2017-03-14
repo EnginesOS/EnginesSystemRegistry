@@ -125,7 +125,7 @@ class SystemRegistry < EnginesRegistryError
 #  end
 
   def  registry_as_hash(tree)
-    @h = RegistryUtils.as_hash(tree)
+    @h = as_hash(tree)
     @h
   end
 

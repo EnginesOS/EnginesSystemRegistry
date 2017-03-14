@@ -1,5 +1,4 @@
 get '/v0/system_registry/services/orphans/tree' do
-  # process_result(RegistryUtils.as_hash(system_registry.orphaned_services_registry_tree))
   process_result($system_registry.registry_as_hash(system_registry.orphaned_services_registry_tree))
 end
 

@@ -1,5 +1,4 @@
 get '/v0/system_registry/sub_services/tree' do
-  # process_result(RegistryUtils.as_hash(system_registry.subservices_registry_tree))
   process_result(registry_as_hash(system_registry.subservices_registry_tree))
 end
 

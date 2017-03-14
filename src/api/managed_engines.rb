@@ -1,12 +1,7 @@
-get '/v0/system_registry/engines/tree' do
-  # process_result(RegistryUtils.as_hash(system_registry.managed_engines_registry_tree))
+get '/v0/system_registry/engines/tree' do 
   process_result(registry_as_hash(system_registry.managed_engines_registry_tree))
 end
 
-#get '/v0/system_registry/engine/service/' do
-# :publisher_namespace :type_path :parent_engine :service_handle
-# process_result(system_registry.find_engine_service_hash(RegistryUtils.symbolize_keys(params)))
-#end
 
 get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_handle/*' do
   params[:type_path] = params['splat'][0]
