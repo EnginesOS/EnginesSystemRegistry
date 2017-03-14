@@ -6,16 +6,23 @@ begin
   require 'gctools/oobgc'
   require 'ffi_yajl'
   require_relative 'registry/system_registry/system_registry.rb'
-  require_relative 'utils/registry_utils.rb'
+ # require_relative 'utils/registry_utils.rb'
   require_relative 'errors/engines_registry_error.rb'
+  require_relative 'helpers/helpers.rb'
+  
   set :sessions, true
   set :logging, true
   set :run, true
-
-  $system_registry = SystemRegistry.new
-
+  require 'objspace'
+ 
+  $system_registry ||= SystemRegistry.new
+#  before do
+#     
+#  end
+  
   after do
     GC::OOB.run()
+    
   end
 
   require_relative 'api/registry_info.rb'
@@ -32,27 +39,33 @@ begin
 
   def post_params(request)
     json_parser.parse(request.env["rack.input"].read)
-   # RegistryUtils.symbolize_keys( JSON.parse(request.env["rack.input"].read, :create_additons => true ))
   rescue StandardError => e
     log_error_mesg(request, e, e.backtrace.to_s)  
   end
   
-  
   def json_parser
-    #  @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
-    @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true})  if @json_parser.nil?
-     @json_parser
-   end
+    @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})  
+   end 
    
-   
-  def process_result(result)
-    unless result.is_a?(EnginesRegistryError)
-      status(202)
+  def process_result(r, s = 202)
+    content_type 'application/json'
+    unless r.is_a?(EnginesRegistryError)
+      status(s)
     else
+      STDERR.puts("Error" + r.to_s)
       status(404)
     end
-    #  FFI_Yajl::Encoder.encode(result)
-    result.to_json
+    STDERR.puts("Error "+ s.to_s + ' ' + r.to_s) if s > 399
+    
+    if r.is_a?(TrueClass) || r.is_a?(FalseClass)
+      r = { BooleanResult: r }.to_json
+    elsif r.is_a?(String)
+      content_type 'plain/text'
+    else
+      r = r.to_json
+    end
+  #  STDERR.puts("OUT "+ r.to_s ) 
+    r
   rescue StandardError => e
     log_exception(e, result)
   end
@@ -68,6 +81,6 @@ begin
     f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
     f.puts(e_str)
     f.close
-    return false
+     false
   end
 end

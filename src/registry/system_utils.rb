@@ -45,15 +45,15 @@ class SystemUtils
   end
 
   def self.last_error
-    return @@last_error
+     @@last_error
   end
 
   def self.level
-    return @@level
+     @@level
   end
 
   def self.debug
-    return @@debug
+     @@debug
   end
 
 end

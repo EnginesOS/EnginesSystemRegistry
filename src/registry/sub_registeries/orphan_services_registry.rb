@@ -13,7 +13,7 @@ class OrphanServicesRegistry < SubRegistry
 
   def rollback_orphaned_service(params)
     clear_error
-    test_orphans_registry_result(@orphan_server_registry.rollback_orphaned_service(params))
+    @orphan_server_registry.rollback_orphaned_service(params)
   end
 
   # Saves the service_hash in the orphaned service registry
@@ -122,7 +122,7 @@ class OrphanServicesRegistry < SubRegistry
     end
 #STDERR.puts :find_orpha      
 #STDERR.puts service_query_hash.to_s
-    service_path_tree = get_type_path_node(provider_tree, service_query_hash[:type_path])
+    service_path_tree = get_pns_type_path_node(provider_tree, service_query_hash[:type_path])
     unless service_path_tree.is_a?(Tree::TreeNode)
       log_error_mesg('Failed to find orphan matching service path', service_query_hash)
       return false
@@ -140,7 +140,7 @@ class OrphanServicesRegistry < SubRegistry
     provider_tree = orphaned_services_registry[params[:publisher_namespace]]
     return log_error_mesg('No Orphan Matching publisher_namespace', params) unless provider_tree.is_a?(Tree::TreeNode)
     type_path = params[:type_path]
-    type = get_type_path_node(provider_tree, type_path)
+    type = get_pns_type_path_node(provider_tree, type_path)
     return log_error_mesg('No Orphan Matching type_path', params) unless type.is_a?(Tree::TreeNode)
     return log_error_mesg('Missing parent engine to match to', params) unless params.key?(:parent_engine)
     types_for_engine = type[params[:parent_engine]]
@@ -164,8 +164,8 @@ class OrphanServicesRegistry < SubRegistry
       return false
     else
       return types_for_engine[params[:service_handle]] unless types_for_engine[params[:service_handle]].nil?
-      log_error_mesg('No Matching Orphan', params)
-      return false
+return log_error_mesg('No Matching Orphan', params)
+
     end
   end
 end
