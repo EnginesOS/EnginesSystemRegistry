@@ -13,6 +13,16 @@ class ManagedEnginesRegistry < SubRegistry
     order_hashes_in_priotity(get_matched_leafs(pe, :persistent, params[:persistent]))
   end
 
+  def find_engine_service_node(params)
+    st = managed_engines_type_registry(params)
+    pe = match_node_keys(st, params, [:parent_engine])
+    raise  EnginesException.new('Registry Entry Not found', :warning, params) if pe.nil?
+    engine_node = match_tp_path_node_keys(pe, params, [:service_handle])
+    raise  EnginesException.new('Registry Entry Not found', :warning, params) if engine_node.nil?
+    raise  EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
+    engine_node
+  end
+
   def find_engine_service_hash(params)
     st = managed_engines_type_registry(params)
     pe = match_node_keys(st, params, [:parent_engine])
@@ -57,7 +67,7 @@ class ManagedEnginesRegistry < SubRegistry
   # Remove Service from engine service registry matching :parent_engine :type_path :service_handle
   # @return boolean
   def remove_from_engine_registry(service_hash)
-    service_node = find_engine_services(service_hash)
+    service_node = find_engine_service_node(service_hash)
     return remove_tree_entry(service_node) if service_node.is_a?(Tree::TreeNode)
     false # failure to find ok
   end
@@ -93,13 +103,13 @@ class ManagedEnginesRegistry < SubRegistry
     end
   end
 
-    def find_engine_services(params)
-      st = managed_engines_type_registry(params)
-      pe = match_node_keys(st, params, [:parent_engine])
-      return pe unless params.key(:type_path)
-      pe =  get_type_path_node(st, params[:type_path])
-      return pe unless params.key(:service_handle)
-      match_node_keys(pe, params, [:service_handle])
-    end
+  def find_engine_services(params)
+    st = managed_engines_type_registry(params)
+    pe = match_node_keys(st, params, [:parent_engine])
+    return pe unless params.key(:type_path)
+    pe =  get_type_path_node(st, params[:type_path])
+    return pe unless params.key(:service_handle)
+    match_node_keys(pe, params, [:service_handle])
+  end
 
 end
