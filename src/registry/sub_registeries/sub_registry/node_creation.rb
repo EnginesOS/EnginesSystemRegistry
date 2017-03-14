@@ -36,8 +36,9 @@ unique = !params[:overwrite] if params.key?(:overwrite)
   else
     new_node = Tree::TreeNode.new( node_name )
     tree_node << new_node
+    unique = false
   end
-if params.key?(:overwrite)
+if unique
   new_node.content[:variables] = params[:variables]
 else
   new_node.content = params
