@@ -30,13 +30,18 @@ def add_to_tree_path(tree_node, params, address_keys, node_name , unique = true)
     end
   end
   new_node = tree_node[node_name]
+unique = !params[:overwrite] if params.key?(:overwrite)
   if new_node.is_a?(Tree::TreeNode)
     raise EnginesException.new('Existing entry already exists ' + node_name.to_s ,:error, address_keys) if unique == true
   else
     new_node = Tree::TreeNode.new( node_name )
     tree_node << new_node
   end
+if params.key?(:overwrite)
+  new_node.content[:variables] = params[:variables]
+else
   new_node.content = params
+end
   true
 end
   # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
