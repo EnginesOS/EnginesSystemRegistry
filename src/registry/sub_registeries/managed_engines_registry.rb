@@ -93,13 +93,13 @@ class ManagedEnginesRegistry < SubRegistry
     end
   end
 
-  #  def find_engine_services(params)
-  #    st = managed_engines_type_registry(params)
-  #    pe = match_node_keys(st, params, [:parent_engine])
-  #    return pe unless params.key(:type_path)
-  #    pe =  get_type_path_node(st, params[:type_path])
-  #    return pe unless params.key(:service_handle)
-  #    match_node_keys(pe, params, [:service_handle])
-  #  end
+    def find_engine_services(params)
+      st = managed_engines_type_registry(params)
+      pe = match_node_keys(st, params, [:parent_engine])
+      return pe unless params.key(:type_path)
+      pe =  get_type_path_node(st, params[:type_path])
+      return pe unless params.key(:service_handle)
+      match_node_keys(pe, params, [:service_handle])
+    end
 
 end
