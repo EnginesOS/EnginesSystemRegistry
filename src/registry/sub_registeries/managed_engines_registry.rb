@@ -54,7 +54,6 @@ class ManagedEnginesRegistry < SubRegistry
   # @return boolean
   # overwrites
   def add_to_managed_engines_registry(params)
-    STDERR.puts('add_to_managed_engines_registry ' + params.to_s)
     tn = managed_engines_type_registry(params)
     tb = match_node_keys(tn, params, [:parent_engine])
     unless tb.is_a?(Tree::TreeNode)
