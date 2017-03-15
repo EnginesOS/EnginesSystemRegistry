@@ -16,7 +16,7 @@ class OrphanServicesRegistry < SubRegistry
 
   # Saves the service_hash in the orphaned service registry
   # @return result
-  def orphanate_service(service_hash)
+  def orphanate_service(params)
     add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle])
 #    return service_hash unless service_hash.is_a?(Hash)
 #    # STDERR.puts :Orphanate  
@@ -52,13 +52,13 @@ class OrphanServicesRegistry < SubRegistry
     return params unless params.is_a?(Hash)
     orphan = retrieve_orphan_node(params)
     return orphan.content if orphan.is_a?(Tree::TreeNode)
-    return orphan
+     orphan
   end
 
   # @return  orphaned_services_tree
   # @wrapper for the gui
   def orphaned_services_registry
-    return @registry
+     @registry
   end
 
   # @ Assign a new parent to an orphan
@@ -76,7 +76,7 @@ class OrphanServicesRegistry < SubRegistry
   # @return an [Array] of service_hashs of Orphaned persistent services match @params [Hash]
   # :path_type :publisher_namespace
   def get_orphaned_services(params)   
-    services = match_nstp_path_node_keys(@registry, query_params, [], [:parent_engine, :service_handle])
+    services = match_nstp_path_node_keys(@registry, params, [], [:parent_engine, :service_handle])
         return get_all_leafs_service_hashes(services) if services.is_a?(Tree::TreeNode)
         services
 #    leafs = []
@@ -98,45 +98,45 @@ class OrphanServicesRegistry < SubRegistry
   # @service_query_hash :publisher_namespace
   # @service_query_hash :publisher_namespace , :type_path
   # @service_query_hash :publisher_namespace , :type_path , :service_handle
-  def find_orphan_consumers(service_query_hash)
-    return service_query_hash unless service_query_hash.is_a?(Hash)
-    #  STDERR.puts :find_orpha
-    if !service_query_hash.key?(:publisher_namespace) || service_query_hash[:publisher_namespace].nil?
-      log_error_mesg('no_publisher_namespace', service_query_hash)
-      return false
-    end
-    #   STDERR.puts :find_orpha
-    provider_tree = orphaned_services_registry[service_query_hash[:publisher_namespace]]
-    if !service_query_hash.key?(:type_path) || service_query_hash[:type_path].nil?
-      log_error_mesg('find_service_consumers_no_type_path', service_query_hash)
-      return provider_tree
-    end
-    #STDERR.puts :find_orpha
-    if provider_tree.nil?
-      log_error_mesg('found no match for provider in orphans', service_query_hash[:publisher_namespace])
-      return false
-    end
-    #STDERR.puts :find_orpha
-    #STDERR.puts service_query_hash.to_s
-    service_path_tree = get_pns_type_path_node(provider_tree, service_query_hash[:type_path])
-    unless service_path_tree.is_a?(Tree::TreeNode)
-      log_error_mesg('Failed to find orphan matching service path', service_query_hash)
-      return false
-    end
-    #STDERR.puts :find_orpha
-    #STDERR.puts service_path_tree.to_s
-    return service_path_tree
-  end
+  #  def find_orphan_consumers(service_query_hash)
+  #    return service_query_hash unless service_query_hash.is_a?(Hash)
+  #    #  STDERR.puts :find_orpha
+  #    if !service_query_hash.key?(:publisher_namespace) || service_query_hash[:publisher_namespace].nil?
+  #      log_error_mesg('no_publisher_namespace', service_query_hash)
+  #      return false
+  #    end
+  #    #   STDERR.puts :find_orpha
+  #    provider_tree = orphaned_services_registry[service_query_hash[:publisher_namespace]]
+  #    if !service_query_hash.key?(:type_path) || service_query_hash[:type_path].nil?
+  #      log_error_mesg('find_service_consumers_no_type_path', service_query_hash)
+  #      return provider_tree
+  #    end
+  #    #STDERR.puts :find_orpha
+  #    if provider_tree.nil?
+  #      log_error_mesg('found no match for provider in orphans', service_query_hash[:publisher_namespace])
+  #      return false
+  #    end
+  #    #STDERR.puts :find_orpha
+  #    #STDERR.puts service_query_hash.to_s
+  #    service_path_tree = get_pns_type_path_node(provider_tree, service_query_hash[:type_path])
+  #    unless service_path_tree.is_a?(Tree::TreeNode)
+  #      log_error_mesg('Failed to find orphan matching service path', service_query_hash)
+  #      return false
+  #    end
+  #    #STDERR.puts :find_orpha
+  #    #STDERR.puts service_path_tree.to_s
+  #    return service_path_tree
+  #  end
 
   # @return [TreeNode] of Oprhaned Serivce that matches the supplied params
   # @param params { :type_path , :service_handle}
   # @return nil on no match
   def retrieve_orphan_node(params)
-    return params unless params.is_a?(Hash)
+   # return params unless params.is_a?(Hash)
     #  provider_tree = orphaned_services_registry[params[:publisher_namespace]]
     # return log_error_mesg('No Orphan Matching publisher_namespace', params) unless provider_tree.is_a?(Tree::TreeNode)
     #  type_path = params[:type_path]
-    match_nstp_path_node_keys(@registry, query_params, [], [:parent_engine, :service_handle])
+    match_nstp_path_node_keys(@registry, params, [], [:parent_engine, :service_handle])
 #  #  tree_node = find_service_consumers(query_params)
 #       raise EnginesException.new('Registry Entry Not found', :warning, query_params) unless tree_node.is_a?(Tree::TreeNode)
 #       raise EnginesException.new('Registry Entry Hash missing', :warning, query_params) unless tree_node.content.is_a?(Hash)
