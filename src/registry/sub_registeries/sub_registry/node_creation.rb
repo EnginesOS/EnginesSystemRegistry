@@ -83,6 +83,10 @@ module NodeCreation
       return service_node
     end
     raise EnginesException.new('create_type_path failed', :error, type_path)
+    
+rescue RuntimeError =>e #catch - RuntimeError - Child ? already added!
+  STDERR.puts('RUNTIME ERR ' + e.class.name + ':' + e.to_s)
+raise EnginesException.new(e.to_s, :error, type_path)
   end
 
   # param remove [TreeNode] from the @servicetree

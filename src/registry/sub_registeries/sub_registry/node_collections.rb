@@ -17,7 +17,6 @@ module NodeCollections
       end
     end
     order_hashes_in_priotity(ret_val)
-
   end
 
   def order_hashes_in_priotity(hashes)
@@ -49,7 +48,9 @@ module NodeCollections
         if sub_branch.content.is_a?(Hash)
           ret_val.push(sub_branch.content) if sub_branch.content[label] == value
         else
-          raise EnginesException.new('Leaf Content not a hash ', :error, sub_branch.content)
+          # raise EnginesException.new('Leaf Content not a hash ', :error, sub_branch.content)
+          STDERR.puts('Leaf Content not a hash  :error' +  sub_branch.content.to_s)
+          next
         end
       else # children.count > 0
         ret_val.concat(get_matched_leafs(sub_branch, label, value))

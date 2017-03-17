@@ -90,6 +90,7 @@ class ManagedEnginesRegistry < SubRegistry
   # @return the appropriate tree under managedservices trees either engine or service
   def managed_engines_type_registry(site_hash)
     return false unless @registry.is_a?(Tree::TreeNode)
+    raise EnginesException.new('managed_engines_type_registry', :error, site_hash) unless site_hash.is_a?(Hash)
     raise EnginesException.new('Site hash missing :container_type', :error, site_hash) unless site_hash.key?(:container_type)
     if site_hash[:container_type] == 'service'
       @registry << Tree::TreeNode.new('Service', 'Managed Services register') if @registry['Service'].nil?
@@ -104,6 +105,7 @@ class ManagedEnginesRegistry < SubRegistry
   end
 
   def find_engine_services(params)
+    raise EnginesException.new('find_engine_services Invalid params ',:error, params)  unless params.is_a?(Hash)
     st = managed_engines_type_registry(params)
     pe = match_node_keys(st, params, [:parent_engine])
     return pe unless params.key(:type_path)

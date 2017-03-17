@@ -10,6 +10,7 @@ class ServicesRegistry < SubRegistry
   # @params :publisher_namespace . :type_path . :parent_engine
   # Wover writes
   def add_to_services_registry(params)
+    #overwrite if :persistent
     return add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle], false) unless params[:persistent]
     add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle])
   end

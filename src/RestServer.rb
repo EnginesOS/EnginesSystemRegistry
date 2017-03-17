@@ -56,9 +56,11 @@ begin
       status(404)
     end
     STDERR.puts("Error "+ s.to_s + ' ' + r.to_s) if s > 399
+    return {} if r.nil?
     
     if r.is_a?(TrueClass) || r.is_a?(FalseClass)
       r = { BooleanResult: r }.to_json
+        
     elsif r.is_a?(String)
       content_type 'plain/text'
     else
