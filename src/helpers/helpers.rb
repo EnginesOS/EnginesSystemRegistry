@@ -52,6 +52,7 @@ helpers do
     cparams =  {}
     if keys.is_a?(Array)
       for key in keys
+        next unless key.is_a?(Symbol)
         # return missing_param key unless param.key?(key)
         return false  unless check_required(params, key, is_required)
         cparams[key.to_sym] = params[key] unless params[key].nil?
