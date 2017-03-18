@@ -51,6 +51,7 @@ end
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
   cparams = assemble_params(params, [:container_type, :parent_engine])
+    STDERR.puts(' v0/system_registry/engine/services/:container_type/:parent_engine' + cparams.to_s)
   process_result(system_registry.find_engine_services_hashes(cparams))
 end
 
