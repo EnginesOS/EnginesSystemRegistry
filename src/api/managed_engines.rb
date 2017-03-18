@@ -5,7 +5,7 @@ end
 
 get '/v0/system_registry/engine/service/:container_type/:parent_engine/:service_handle/*' do
   params[:type_path] = params['splat'][0]
-  cparams = assemble_params(params, [:container_type, :parent_engine, :service_handle, :type_path])
+cparams = assemble_params(params, [:container_type, :parent_engine, {optional: [:service_handle, :type_path]} ])
  # STDERR.puts( ' GET FROM managed engines ' + cparams.to_s)
   process_result(system_registry.find_engine_service_hash(cparams))
 
@@ -57,7 +57,7 @@ end
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
   params[:type_path] = params['splat'][0]
-  cparams = assemble_params(params, [:container_type, :parent_engine,:type_path] )
+  cparams = assemble_params(params, [:container_type, :parent_engine], [:type_path] )
 #  STDERR.puts( ' GET FROM managed engines ' + cparams.to_s)
   process_result(system_registry.find_engine_services_hashes(cparams))
 end
