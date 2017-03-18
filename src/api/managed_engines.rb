@@ -58,9 +58,8 @@ end
 #/v0/system_registry/engine/services/:parent_engine/:type_path
 get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
   params[:type_path] = params['splat'][0]
+cparams = assemble_params(params, [:container_type, :parent_engine, :type_path] )
 STDERR.puts(' v0/system_registry/engine/services/:container_type/:parent_engine/*' + cparams.to_s)
-  cparams = assemble_params(params, [:container_type, :parent_engine, :type_path] )
-#  STDERR.puts( ' GET FROM managed engines ' + cparams.to_s)
   process_result(system_registry.find_engine_services_hashes(cparams))
 end
 
