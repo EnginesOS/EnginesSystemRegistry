@@ -18,32 +18,34 @@ module NodeCreation
     create_type_path_node(p, params)
   end
 
-def add_to_tree_path(tree_node, params, address_keys, node_name , unique = true)
-  unless address_keys.nil?
-    address_keys.each do |address_key|
-      new_node = tree_node[params[address_key]]
-      unless new_node.is_a?(Tree::TreeNode)
-        new_node = Tree::TreeNode.new(params[address_key])
-        tree_node << new_node
+  def add_to_tree_path(tree_node, params, address_keys, node_name , unique = true)
+    unless address_keys.nil?
+      address_keys.each do |address_key|
+        new_node = tree_node[params[address_key]]
+        unless new_node.is_a?(Tree::TreeNode)
+          new_node = Tree::TreeNode.new(params[address_key])
+          tree_node << new_node
+        end
+        tree_node = new_node
       end
-      tree_node = new_node
     end
+    new_node = tree_node[node_name]
+    unique = !params[:overwrite] if params.key?(:overwrite)
+    if new_node.is_a?(Tree::TreeNode)
+      raise EnginesException.new('Existing entry already exists ' + node_name.to_s ,:error, address_keys) if unique == true
+    else
+      new_node = Tree::TreeNode.new( node_name )
+      tree_node << new_node
+      unique = true
+    end
+    unless unique
+      new_node.content[:variables] = params[:variables]
+    else
+      new_node.content = params
+    end
+    true
   end
-  new_node = tree_node[node_name]
-unique = !params[:overwrite] if params.key?(:overwrite)
-  if new_node.is_a?(Tree::TreeNode)
-    raise EnginesException.new('Existing entry already exists ' + node_name.to_s ,:error, address_keys) if unique == true
-  else
-    new_node = Tree::TreeNode.new( node_name )
-    tree_node << new_node
-  end
-if params.key?(:overwrite)
-  new_node.content[:variables] = params[:variables]
-else
-  new_node.content = params
-end
-  true
-end
+
   # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
   # Creates new attached [TreeNode] with required parent path if none exists
   # return nil on error
@@ -81,6 +83,10 @@ end
       return service_node
     end
     raise EnginesException.new('create_type_path failed', :error, type_path)
+    
+rescue RuntimeError =>e #catch - RuntimeError - Child ? already added!
+  STDERR.puts('RUNTIME ERR ' + e.class.name + ':' + e.to_s)
+raise EnginesException.new(e.to_s, :error, type_path)
   end
 
   # param remove [TreeNode] from the @servicetree
