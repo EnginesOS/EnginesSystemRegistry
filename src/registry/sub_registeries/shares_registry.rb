@@ -49,7 +49,7 @@ class SharesRegistry < SubRegistry
   def remove_from_shares_registry(params)
     on = @registry[params[:service_owner]] 
     on =  match_nstp_path_node_keys(on, params, [:parent_engine,:service_handle])
-
+    remove_tree_entry(on)
 #    owner_node = service_provider_tree(service_hash[:service_owner]) # managed_service_tree[service_hash[:publisher_namespace] ]
 #    return log_error_mesg('Failed to find service_owner node to remove service from shares registry ', service_hash)  if owner_node.is_a?(Tree::TreeNode) == false
 #
@@ -66,7 +66,7 @@ class SharesRegistry < SubRegistry
 #
 #    return log_error_mesg('Failed to find service_handle node to remove service from shares registry ', service_hash)  if service_node.is_a?(Tree::TreeNode) == false
 
-     remove_tree_entry(on)
+   
 #   return log_error_mesg('FAILED to remove share service_node ' )
 #
 #  rescue StandardError => e
