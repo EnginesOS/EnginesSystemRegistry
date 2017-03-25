@@ -5,9 +5,6 @@ module Orphans
     orphans = system_registry_tree['OphanedServices']
     system_registry_tree << Tree::TreeNode.new('OphanedServices', 'Persistant Services left after Engine Deinstall') if !orphans.is_a?(Tree::TreeNode)
     system_registry_tree['OphanedServices']
-  rescue StandardError => e
-    log_exception(e)
-     nil
   end
 
   # @params [Hash] Loads the varaibles from the matching orphan
@@ -27,9 +24,12 @@ module Orphans
 
   def release_orphan(params)
     take_snap_shot
-    @orphan_server_registry.release_orphan(params)
-    roll_back
-     false
+    begin
+      @orphan_server_registry.release_orphan(params)
+    rescue StandardError => e
+      roll_back
+      raise e
+    end
   end
 
   def rollback_orphaned_service(params)
@@ -41,5 +41,5 @@ module Orphans
     clear_error
     @orphan_server_registry.get_orphaned_services(params)
   end
-  
+
 end
