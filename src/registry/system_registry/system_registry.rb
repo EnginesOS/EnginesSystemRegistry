@@ -80,9 +80,9 @@ class SystemRegistry < EnginesRegistryError
         return save_tree
       else
         @orphan_server_registry.release_orphan(service_hash)
-        log_error_mesg('Failed to save orphan in remove_from_services_registry de orphaning' + @services_registry.last_error.to_s, service_hash)
+        log_error_mesg('Failed to save orphan in remove_from_services_registry de orphaning', service_hash)
       end
-      log_error_mesg('Failed to save orphan' + @orphan_server_registry.last_error.to_s, service_hash)
+      log_error_mesg('Failed to save orphan' , service_hash)
     end
     roll_back
     false
@@ -140,12 +140,8 @@ class SystemRegistry < EnginesRegistryError
     @managed_engines_registry.take_snap_shot
     @orphan_server_registry.take_snap_shot
     @shares_registry.take_snap_shot
-    clear_error
   end
 
-  def clear_error
-    @last_error = ''
-  end
 
   def roll_back
     p ':++++++++++++++++++++++++++++++++++'
@@ -183,7 +179,6 @@ class SystemRegistry < EnginesRegistryError
   # calls [log_exception] on error and returns nil
   # @return service_tree [TreeNode]
   def tree_from_yaml
-    clear_error
     begin
       if File.exist?(@@service_tree_file)
         tree_data = File.read(@@service_tree_file)
@@ -231,7 +226,6 @@ class SystemRegistry < EnginesRegistryError
 
   # @sets the service_tree and load mod time
   def load_tree
-    clear_error
     unless lock_tree
       p :Failed_to_gain_lock
       #return nil
@@ -242,7 +236,7 @@ class SystemRegistry < EnginesRegistryError
     unlock_tree
     return registry
   rescue StandardError => e
-    @last_error = 'load tree'
+   
     log_exception(e)
     return false
   end
@@ -251,7 +245,6 @@ class SystemRegistry < EnginesRegistryError
   # calls [log_exception] on error and returns false
   # @return boolean
   def save_tree
-    clear_error
     FileUtils.copy(@@service_tree_file, @@service_tree_file + '.bak') if File.exist?(@@service_tree_file)
     serialized_object = YAML::dump(@system_registry)
     f = File.new(@@service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
@@ -262,7 +255,7 @@ class SystemRegistry < EnginesRegistryError
     unlock_tree
     return true
   rescue StandardError => e
-    @last_error = 'save error'
+ 
     FileUtils.copy(@@service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
     log_exception(e)
   end

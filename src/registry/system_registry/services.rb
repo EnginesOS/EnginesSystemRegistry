@@ -1,12 +1,10 @@
 module Services
   def find_service_consumers(service_query_hash)
-    clear_error
     @services_registry.find_service_consumers(service_query_hash)
 
   end
 
   def clear_service_from_registry(p)
-    clear_error
     #params[:parent_engine]  params :container_type] == 'service'
     #find  this services non persistent
     case p[:persistence]
@@ -27,7 +25,6 @@ module Services
   end
 
   def get_service_entry(service_query_hash)
-    clear_error
     tree_node = find_service_consumers(service_query_hash)
     return false  if !tree_node.is_a?(Tree::TreeNode)
     tree_node.content
@@ -55,21 +52,18 @@ module Services
 
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
-    clear_error
     @services_registry.get_registered_against_service(params)
   rescue StandardError => e
     handle_exception(e)
   end
 
   def list_providers_in_use
-    clear_error
     @services_registry.list_providers_in_use
   rescue StandardError => e
     handle_exception(e)
   end
 
   def service_is_registered?(service_hash)
-    clear_error
     @services_registry.service_is_registered?(service_hash)
   rescue StandardError => e
     handle_exception(e)

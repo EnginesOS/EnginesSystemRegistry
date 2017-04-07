@@ -2,7 +2,7 @@ class SystemUtils
   @@debug = true
   @@level = 5
 
-  attr_reader :debug, :level, :last_error
+  attr_reader :debug, :level
   def self.debug_output(label, object)
     if SystemUtils.debug
       STDERR.puts label.to_s
@@ -36,7 +36,7 @@ class SystemUtils
     e.backtrace.each do |bt|
       e_str += bt + ' \n'
     end
-    @@last_error = e_str
+   
     p e_str
     SystemUtils.log_output(e_str, 10)
     f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
@@ -44,9 +44,7 @@ class SystemUtils
     f.close
   end
 
-  def self.last_error
-     @@last_error
-  end
+  
 
   def self.level
      @@level

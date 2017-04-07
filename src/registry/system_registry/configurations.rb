@@ -1,6 +1,5 @@
 module Configurations
   def service_configurations_registry_tree
-    clear_error
     return false if !check_system_registry_tree
     system_registry_tree << Tree::TreeNode.new('Configurations', 'Service Configurations') if system_registry_tree['Configurations'].nil?
     system_registry_tree['Configurations']
@@ -9,7 +8,6 @@ module Configurations
   end
 
   def get_service_configurations_hashes(service_hash)
-    clear_error
     @configuration_registry.get_service_configurations_hashes(service_hash)
     rescue StandardError => e
      handle_exception(e)
@@ -33,7 +31,6 @@ module Configurations
   end
 
   def get_service_configuration(service_hash)
-    clear_error
     @configuration_registry.get_service_configuration(service_hash)
     rescue StandardError => e
      handle_exception(e)
