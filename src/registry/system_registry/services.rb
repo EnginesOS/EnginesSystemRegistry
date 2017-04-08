@@ -7,6 +7,7 @@ module Services
   def clear_service_from_registry(p)
     #params[:parent_engine]  params :container_type] == 'service'
     #find  this services non persistent
+    begin
     case p[:persistence]
     when 'non_persistent'
       services = get_engine_nonpersistent_services(p)
@@ -15,8 +16,10 @@ module Services
     when 'both'
       services = get_engine_services(p)
     end
-    return true if services.nil?
-    return services if services.is_a?(EnginesError)
+  rescue EnginesException => e
+    return true if e.level == :warning
+  end
+
     services.each do |service|
       remove_from_managed_engines_registry(service)
     end
