@@ -40,7 +40,6 @@ def is_persistent?(hash)
 
   def take_snap_shot
     @snap_shot = @registry.dup
-    clear_error
   end
 
   def roll_back
@@ -49,7 +48,4 @@ def is_persistent?(hash)
     false
   end
 
-  def clear_error
-    @last_error = ''
-  end
 end

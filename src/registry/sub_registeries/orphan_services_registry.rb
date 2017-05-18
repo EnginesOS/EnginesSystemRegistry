@@ -9,10 +9,6 @@ class OrphanServicesRegistry < SubRegistry
     log_error_mesg('failed to remove tree entry for ', orphan)
   end
 
-  def rollback_orphaned_service(params)
-    clear_error
-    @orphan_server_registry.rollback_orphaned_service(params)
-  end
 
   # Saves the service_hash in the orphaned service registry
   # @return result

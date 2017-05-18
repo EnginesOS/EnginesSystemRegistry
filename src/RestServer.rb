@@ -77,7 +77,7 @@ begin
     e.backtrace.each do |bt|
       e_str += bt + ' \n'
     end
-    @@last_error = e_str
+   
     STDERR.puts e_str
     SystemUtils.log_output(e_str, 10)
     f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
