@@ -8,20 +8,21 @@ module Services
     #params[:parent_engine]  params :container_type] == 'service'
     #find  this services non persistent
     begin
-    case p[:persistence]
-    when 'non_persistent'
-      services = get_engine_nonpersistent_services(p)
-    when 'persistent'
-      services = get_engine_persistent_services(p)
-    when 'both'
-      services = get_engine_services(p)
+      case p[:persistence]
+      when 'non_persistent'
+        services = get_engine_nonpersistent_services(p)
+      when 'persistent'
+        services = get_engine_persistent_services(p)
+      when 'both'
+        services = get_engine_services(p)
+      end
+    rescue EnginesException => e
+      return true if e.level == :warning
     end
-  rescue EnginesException => e
-    return true if e.level == :warning
-  end
-
-    services.each do |service|
-      remove_from_managed_engines_registry(service)
+    if services.is_a?(Array)
+      services.each do |service|
+        remove_from_managed_engines_registry(service)
+      end
     end
   rescue StandardError => e
     handle_exception(e)
