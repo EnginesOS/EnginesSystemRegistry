@@ -1,28 +1,24 @@
 module Engines
   # ENGINE STUFF
   def find_engine_services_hashes(params)
-    clear_error
     @managed_engines_registry.find_engine_services_hashes(params)
   rescue StandardError => e
     handle_exception(e)
   end
 
   def find_engine_service_hash(params)
-    clear_error
     @managed_engines_registry.find_engine_service_hash(params)
   rescue StandardError => e
     handle_exception(e)
   end
 
   def get_engine_nonpersistent_services(params)
-    clear_error
     @managed_engines_registry.get_engine_persistence_services(params, false)
   rescue StandardError => e
     handle_exception(e)
   end
 
   def get_engine_persistent_services(params)
-    clear_error
     @managed_engines_registry.get_engine_persistence_services(params, true)
   rescue StandardError => e
     handle_exception(e)
@@ -38,7 +34,6 @@ module Engines
   end
 
   def all_engines_registered_to(service_path)
-    clear_error
     @managed_engines_registry.all_engines_registered_to(service_path)
   rescue StandardError => e
     handle_exception(e)

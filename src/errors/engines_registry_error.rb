@@ -12,31 +12,28 @@ class EnginesRegistryError < EnginesError
 
   def handle_exception(e, *objs)
     return log_exception(e, *objs) unless e.is_a?(EnginesException)
-    @last_error = e.to_s.slice(0, 512)
-    STDERR.puts @last_error.to_s
+    STDERR.puts  e.to_s.slice(0, 512).to_s
     return EnginesRegistryError.new(e.to_s, e.level, e.params)   
   end
   
   def log_error_mesg(mesg, *objs)
     obj_str = objs.to_s.slice(0, 512)
-    @last_error = mesg + ':' + obj_str
-    STDERR.puts @last_error.to_s
+    STDERR.puts mesg + ':' + obj_str
     EnginesRegistryError.new(mesg, :error, *objs)
   end
 
   def log_warning_mesg(mesg, *objs)
     obj_str = objs.to_s.slice(0, 256)
-    @last_error = mesg + ':' + obj_str
     EnginesRegistryError.new(mesg, :warning, *objs)
   end
 
   def log_exception(e, *objs)       
-    @last_error  = e.to_s
-    @last_error  += e.backtrace.to_s
-    @last_error = e.to_s.slice(0, 512)
+    error  = e.to_s
+    error  += e.backtrace.to_s
+   error = e.to_s.slice(0, 512)
     STDERR.puts('EXCEPTION:' + e.to_s + ' ' + e.backtrace.to_s)
     
-    EnginesRegistryError.new(@last_error, :exception, *objs)
+    EnginesRegistryError.new(error, :exception, *objs)
   end
 
   def engines_error(mesg, *objs)
