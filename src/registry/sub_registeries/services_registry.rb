@@ -1,7 +1,7 @@
 class ServicesRegistry < SubRegistry
   # @Boolean returns true | false if servcice hash is registered in service tree
   def service_is_registered?(query_params)
-    STDERR.puts(' QUERY PARAS ' + query_params.to_s + ' for keys  ' + [:parent_engine, :service_handle].to_s)
+  #  STDERR.puts(' QUERY PARAS ' + query_params.to_s + ' for keys  ' + [:parent_engine, :service_handle].to_s)
     is_ns_tp_node_registered?(@registry, query_params, [:parent_engine, :service_handle] )
   end
 
