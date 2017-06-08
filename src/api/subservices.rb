@@ -9,13 +9,13 @@ get '/v0/system_registry/sub_service/consumers/is_registered/:service_name/:engi
 end
 
 get '/v0/system_registry/sub_service/consumers/:service_name/:engine_name/:service_handle/:sub_handle' do
-  cparams = assemble_params(params,  [:service_name, :engine_name, :service_handle, :sub_handle])
+  cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle])
   return cparams if cparams.is_a?(EnginesError)
   process_result(system_registry.get_subservice_entry(cparams))
 end
 
 post '/v0/system_registry/sub_service/consumers/:service_name/:engine_name/:service_handle/:sub_handle]' do
-  cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil ,:all)
+  cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
   return cparams if cparams.is_a?(EnginesError)
   process_result(system_registry.update_attached_subservice(cparams))
 end
@@ -33,7 +33,7 @@ delete '/v0/system_registry/sub_services/consumers/:service_name/:engine_name/:s
 end
 
 post '/v0/system_registry/sub_services/consumers/:service_name/:engine_name/:service_handle/:sub_handle' do
-  cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil ,:all)
+  cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
   return cparams if params.is_a?(EnginesError)
   process_result(system_registry.add_to_subservices_registry(cparams))
 end

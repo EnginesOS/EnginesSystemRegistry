@@ -45,7 +45,6 @@ module NodeAddressing
   # stn is already the branch publisher_ns,type_
   # will not resolve a type pat
 
-
   def get_type_path_node(parent_node, type_path)
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
     #  STDERR.puts('get_type_path NODE' + type_path.to_s)

@@ -31,7 +31,7 @@ class ManagedEnginesRegistry < SubRegistry
     raise EnginesException.new('Registry Entry Not found', :warning, params) if pe.nil?
     engine_node = match_tp_path_node_keys(pe, params, [:service_handle])
     raise EnginesException.new('Registry Entry Not found', :warning, params) if engine_node.nil?
-    raise EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
+    raise EnginesException.new('Registry Entry Invalid', :error, params) unless engine_node.content.is_a?(Hash)
     engine_node.content
   end
 
@@ -39,7 +39,7 @@ class ManagedEnginesRegistry < SubRegistry
   def get_engine_persistence_services(params, persistence) # params is :engine_name
     params[:parent_engine] = params[:engine_name] unless params.key?(:parent_engine)
     services = find_engine_services(params)
-    raise EnginesException.new('Failed to find engine in persistent service',:warning, params)  unless services.is_a?(Tree::TreeNode)
+    raise EnginesException.new('Failed to find engine in persistent service', :warning, params)  unless services.is_a?(Tree::TreeNode)
     leafs = []
     services.children.each do |service|
       matches = get_matched_leafs(service, :persistent, persistence)
@@ -107,7 +107,7 @@ class ManagedEnginesRegistry < SubRegistry
   end
 
   def find_engine_services(params)
-    raise EnginesException.new('find_engine_services Invalid params ',:error, params)  unless params.is_a?(Hash)
+    raise EnginesException.new('find_engine_services Invalid params ',:error, params) unless params.is_a?(Hash)
     st = managed_engines_type_registry(params)
     pe = match_node_keys(st, params, [:parent_engine])
     return pe unless params.key(:type_path)

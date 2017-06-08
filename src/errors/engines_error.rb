@@ -1,6 +1,6 @@
 class EnginesError # < FalseClass
   attr_accessor :source, :error_type, :error_mesg, :sub_system
-  def initialize(message, type, *objs  )
+  def initialize(message, type, *objs )
     @error_mesg = message
     @error_type = type
     @sub_system = 'global'
@@ -19,7 +19,7 @@ class EnginesError # < FalseClass
     @sub_system.to_s + ':' +  @error_type.to_s + ':'  + @error_mesg.to_s + ':' + @source.to_s
   end
 
-  def to_json(opt=nil)
+  def to_json(opt = nil)
     return self.to_h.to_json(opt)
   end
 

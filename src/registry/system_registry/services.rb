@@ -1,7 +1,6 @@
 module Services
   def find_service_consumers(service_query_hash)
     @services_registry.find_service_consumers(service_query_hash)
-
   end
 
   def clear_service_from_registry(p)

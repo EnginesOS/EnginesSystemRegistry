@@ -1,11 +1,11 @@
 module Params
-  def self.assemble_params(params, address_params, required_params=nil, accept_params=nil )
+  def self.assemble_params(params, address_params, required_params = nil, accept_params = nil )
     return  nil if params.nil?
     params = RegistryUtils.symbolize_keys(params)
     a_params = self.address_params(params, address_params)
     return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
 
-    unless  required_params.nil? || required_params.empty?
+    unless required_params.nil? || required_params.empty?
       if required_params == :all
         a_params.merge!(params[:api_vars]) if params.key?(:api_vars)
         return a_params
@@ -31,7 +31,7 @@ module Params
   def self.optional_params(params, keys)
     mparams = params[:api_vars]
     mparams = params if mparams.nil?
-    self.match_params(mparams, keys )
+    self.match_params(mparams, keys)
   end
 
   def self.address_params(params, keys)
@@ -39,7 +39,7 @@ module Params
   end
 
   def self.match_params(params, keys, required = false)
-    return  params if keys == :all
+    return params if keys == :all
     return nil if keys.nil?
     cparams =  {}
     if keys.is_a?(Array)
@@ -63,17 +63,7 @@ module Params
     return true if params.key?(key)
     p :missing_key
     p key
-    return false
+    false
   end
-
-  #  def accept_params(params , *keys)
-  #    cparams = {}
-  #    for key in keys
-  #      cparams[key] = params[key]
-  #    end
-  #    cparams
-  #    #  cparams = {}
-  #    #  cparams[:configurator_name] = params[:configurator_name]
-  #  end
 
 end
