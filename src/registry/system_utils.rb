@@ -30,13 +30,12 @@ class SystemUtils
     SystemUtils.log_output(object, 10)
   end
 
-
   def self.log_exception(e)
     e_str = e.to_s()
     e.backtrace.each do |bt|
       e_str += bt + ' \n'
     end
-   
+
     p e_str
     SystemUtils.log_output(e_str, 10)
     f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
@@ -44,14 +43,12 @@ class SystemUtils
     f.close
   end
 
-  
-
   def self.level
-     @@level
+    @@level
   end
 
   def self.debug
-     @@debug
+    @@debug
   end
 
 end

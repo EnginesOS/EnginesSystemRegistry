@@ -5,10 +5,9 @@ class OrphanServicesRegistry < SubRegistry
   # @param params { :type_path , :service_handle}
   def release_orphan(params)
     orphan = retrieve_orphan_node(params)
-    return true if remove_tree_entry(orphan)
-    log_error_mesg('failed to remove tree entry for ', orphan)
+    return log_error_mesg('failed to remove tree entry for ', orphan) unless remove_tree_entry(orphan)
+    true
   end
-
 
   # Saves the service_hash in the orphaned service registry
   # @return result

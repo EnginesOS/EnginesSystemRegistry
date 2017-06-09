@@ -2,7 +2,6 @@ require_relative 'engines_error.rb'
 require_relative 'engines_exception.rb'
 
 class EnginesRegistryError < EnginesError
-
   def initialize(mesg, type, *objs )
     super(mesg, type, objs)
     @sub_system = 'engines_registry'
@@ -13,9 +12,9 @@ class EnginesRegistryError < EnginesError
   def handle_exception(e, *objs)
     return log_exception(e, *objs) unless e.is_a?(EnginesException)
     STDERR.puts  e.to_s.slice(0, 512).to_s
-    return EnginesRegistryError.new(e.to_s, e.level, e.params)   
+    return EnginesRegistryError.new(e.to_s, e.level, e.params)
   end
-  
+
   def log_error_mesg(mesg, *objs)
     obj_str = objs.to_s.slice(0, 512)
     STDERR.puts mesg + ':' + obj_str
@@ -27,12 +26,12 @@ class EnginesRegistryError < EnginesError
     EnginesRegistryError.new(mesg, :warning, *objs)
   end
 
-  def log_exception(e, *objs)       
+  def log_exception(e, *objs)
     error  = e.to_s
     error  += e.backtrace.to_s
-   error = e.to_s.slice(0, 512)
+    error = e.to_s.slice(0, 512)
     STDERR.puts('EXCEPTION:' + e.to_s + ' ' + e.backtrace.to_s)
-    
+
     EnginesRegistryError.new(error, :exception, *objs)
   end
 
@@ -44,11 +43,11 @@ class EnginesRegistryError < EnginesError
     EnginesRegistryError.new(mesg, :warning, *objs)
   end
 
-  def engines_exception(e, *objs)    
+  def engines_exception(e, *objs)
     STDERR.puts('Engines Exception')
     log_exception(e, *objs)
     EnginesRegistryError.new(e, e.level, *objs)
   end
-  
+
 end
 

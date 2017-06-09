@@ -159,7 +159,6 @@ class SystemRegistry < EnginesRegistryError
   # set @registry to the appropirate tree Node for eaach sub resgistry
   # creates node if nil via_xxx_yyy_tree
   def set_registries
-
     configuration_registry_tree if @system_registry['Configurations'].nil?
     @configuration_registry.reset_registry(@system_registry['Configurations'])
     services_registry_tree if @system_registry['Services'].nil?
@@ -170,7 +169,6 @@ class SystemRegistry < EnginesRegistryError
     @managed_engines_registry.reset_registry(@system_registry['ManagedEngine'])
     shares_registry_tree  if @system_registry['Shares'].nil?
     @shares_registry.reset_registry(@system_registry['Shares'])
-
   rescue StandardError => e
     log_exception(e)
   end
@@ -186,7 +184,7 @@ class SystemRegistry < EnginesRegistryError
         tree_data = File.read(@@service_tree_file + '.bak')
       end
       registry = YAML::load(tree_data)
-      return registry
+      registry
     rescue StandardError => e
       puts e.message + ' with ' + tree_data.to_s
       log_exception(e)
@@ -234,11 +232,10 @@ class SystemRegistry < EnginesRegistryError
     @last_tree_mod_time = nil
     @last_tree_mod_time = File.mtime(@@service_tree_file) if File.exist?(@@service_tree_file)
     unlock_tree
-    return registry
+    registry
   rescue StandardError => e
-   
     log_exception(e)
-    return false
+     false
   end
 
   # saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree
@@ -253,7 +250,7 @@ class SystemRegistry < EnginesRegistryError
     FileUtils.mv(@@service_tree_file + '.tmp', @@service_tree_file)
     @last_tree_mod_time = File.mtime(@@service_tree_file)
     unlock_tree
-    return true
+    true
   rescue StandardError => e
  
     FileUtils.copy(@@service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
