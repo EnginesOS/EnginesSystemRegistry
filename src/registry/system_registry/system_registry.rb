@@ -234,6 +234,7 @@ class SystemRegistry < EnginesRegistryError
     unlock_tree
     registry
   rescue StandardError => e
+    unlock_tree
     log_exception(e)
      false
   end
@@ -250,9 +251,8 @@ class SystemRegistry < EnginesRegistryError
     FileUtils.mv(@@service_tree_file + '.tmp', @@service_tree_file)
     @last_tree_mod_time = File.mtime(@@service_tree_file)
     unlock_tree
-    true
   rescue StandardError => e
- 
+    unlock_tree
     FileUtils.copy(@@service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
     log_exception(e)
   end

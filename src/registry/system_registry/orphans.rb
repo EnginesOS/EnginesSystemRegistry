@@ -10,7 +10,12 @@ module Orphans
   # does not save bnut just populates the content/service variables in the hash
   # return boolean
   def reparent_orphan(params)
-    @orphan_server_registry.reparent_orphan(params)
+    take_snap_shot
+    save_tree if @orphan_server_registry.reparent_orphan(params)
+    unlock_tree
+  rescue StandardError => e
+    roll_back
+    handle_exception(e)
   end
 
   # @params [Hash] of orphan matching the params
@@ -21,17 +26,24 @@ module Orphans
 
   def release_orphan(params)
     take_snap_shot
-    begin
-      @orphan_server_registry.release_orphan(params)
-    rescue StandardError => e
-      roll_back
-      raise e
-    end
+    save_tree if @orphan_server_registry.release_orphan(params)
+    unlock_tree
+  rescue StandardError => e
+    roll_back
+    raise e
+    unlock_tree
   end
 
   def rollback_orphaned_service(params)
-    orphan = @orphan_server_registry.retrieve_orphan_node(params)    
-    @services_registry.remove_from_services_registry(orphan)
+    take_snap_shot
+    STDERR.puts(' ROLL BACK ' + params.to_s)
+    orphan = @orphan_server_registry.retrieve_orphan_node(params)
+    STDERR.puts(' Found ' + orphan.to_s)
+    save_tree if @services_registry.remove_from_services_registry(orphan)
+    unlock_tree
+  rescue StandardError => e
+    roll_back
+    raise e
   end
 
   def get_orphaned_services(params)
