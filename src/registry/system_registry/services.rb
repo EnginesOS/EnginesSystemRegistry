@@ -38,7 +38,7 @@ module Services
   def add_to_services_registry(service_hash)
     take_snap_shot
     return save_tree if @services_registry.add_to_services_registry(service_hash)
-    roll_back
+    unlock_tree
   rescue StandardError => e
     roll_back
     handle_exception(e)
@@ -47,7 +47,7 @@ module Services
   def remove_from_services_registry(service_hash)
     take_snap_shot
     return save_tree if @services_registry.remove_from_services_registry(service_hash)
-    roll_back
+    unlock_tree
   rescue StandardError => e
     roll_back
     handle_exception(e)

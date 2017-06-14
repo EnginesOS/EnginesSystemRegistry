@@ -16,7 +16,7 @@ module Configurations
   def add_service_configuration(service_hash)
     take_snap_shot
     return save_tree if @configuration_registry.add_service_configuration(service_hash)
-    roll_back
+    unlock_tree
   rescue StandardError => e
     roll_back
     handle_exception(e)
@@ -25,6 +25,7 @@ module Configurations
   def rm_service_configuration(service_hash)
     take_snap_shot
     save_tree if @configuration_registry.rm_service_configuration(service_hash)
+    unlock_tree
   rescue StandardError => e
     roll_back
     handle_exception(e)
@@ -39,8 +40,9 @@ module Configurations
   def update_service_configuration(config_hash)
     take_snap_shot
     return save_tree if @configuration_registry.update_service_configuration(config_hash)
-    roll_back
+    unlock_tree
   rescue StandardError => e
+    roll_back
     handle_exception(e)
   end
 
