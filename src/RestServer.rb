@@ -66,7 +66,7 @@ begin
     else
       r = r.to_json
     end
-    STDERR.puts("OUT "+ r.truncate(256))
+    STDERR.puts("OUT " + r[0.256]) unless r.nil?
     r
   rescue StandardError => e
     log_exception(e, r)
