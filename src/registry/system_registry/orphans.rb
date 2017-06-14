@@ -30,7 +30,9 @@ module Orphans
   end
 
   def rollback_orphaned_service(params)
+    STDERR.puts(' ROLL BACK ' + params.to_s) 
     orphan = @orphan_server_registry.retrieve_orphan_node(params)    
+    STDERR.puts(' Found ' + orphan.to_s) 
     @services_registry.remove_from_services_registry(orphan)
   end
 
