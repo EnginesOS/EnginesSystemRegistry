@@ -16,7 +16,7 @@ post '/v0/system_registry/services/orphans/return/:parent_engine/:service_handle
   process_result(system_registry.rollback_orphaned_service(cparams))
 end
 
-delete '/v0/system_registry/services/orphans/del/:service_handle/:parent_engine/:publisher_namespace/*' do
+delete '/v0/system_registry/services/orphans/del/:parent_engine/:service_handle/:publisher_namespace/*' do
   params[:type_path] = params['splat'][0]
   cparams = assemble_params(params, [:parent_engine, :service_handle, :type_path, :publisher_namespace])
   process_result(system_registry.release_orphan(cparams))
