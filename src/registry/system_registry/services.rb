@@ -6,6 +6,8 @@ module Services
   def clear_service_from_registry(p)
     #params[:parent_engine]  params :container_type] == 'service'
     #find  this services non persistent
+    unless p.nil?
+    
     begin
       case p[:persistence]
       when 'non_persistent'
@@ -22,6 +24,7 @@ module Services
       services.each do |service|
         remove_from_managed_engines_registry(service)
       end
+    end
     end
   rescue StandardError => e
     handle_exception(e)
