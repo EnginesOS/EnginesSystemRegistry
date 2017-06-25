@@ -1,7 +1,7 @@
 class ServicesRegistry < SubRegistry
   # @Boolean returns true | false if servcice hash is registered in service tree
   def service_is_registered?(query_params)
-  #  STDERR.puts(' QUERY PARAS ' + query_params.to_s + ' for keys  ' + [:parent_engine, :service_handle].to_s)
+    #  STDERR.puts(' QUERY PARAS ' + query_params.to_s + ' for keys  ' + [:parent_engine, :service_handle].to_s)
     is_ns_tp_node_registered?(@registry, query_params, [:parent_engine, :service_handle] )
   end
 
@@ -11,8 +11,11 @@ class ServicesRegistry < SubRegistry
   # Wover writes
   def add_to_services_registry(params)
     #overwrite if :persistent
-    return add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle], false) unless params[:persistent]
-    add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle])
+    unless params[:persistent]
+      add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle], false)
+    else
+      add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle])
+    end
   end
 
   def list_providers_in_use
@@ -20,10 +23,10 @@ class ServicesRegistry < SubRegistry
     retval = []
     if providers.nil?
       raise EnginesException.new('No providers', :warning, '')
-      return retval
-    end
-    providers.each do |provider|
-      retval.push(provider.name)
+    else
+      providers.each do |provider|
+        retval.push(provider.name)
+      end
     end
     retval
   end
@@ -31,8 +34,11 @@ class ServicesRegistry < SubRegistry
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
     services = find_service_consumers(params)
-    return get_all_leafs_service_hashes(services) if services.is_a?(Tree::TreeNode)
-    services
+    if services.is_a?(Tree::TreeNode)
+      get_all_leafs_service_hashes(services)
+    else
+      services
+    end
   end
 
   # remove the service matching the service_hash from the tree

@@ -55,18 +55,19 @@ class SystemRegistry < EnginesRegistryError
     ObjectSpace.dump_all(output: file)
     file.close
     true
-    rescue StandardError => e
-      roll_back
-      handle_exception(e)
+  rescue StandardError => e
+    roll_back
+    handle_exception(e)
   end
 
   def update_attached_service(service_hash)
     take_snap_shot
     if @managed_engines_registry.update_engine_service(service_hash) &&
     @services_registry.update_service(service_hash)
-      return save_tree
+      save_tree
+    else
+      roll_back
     end
-    roll_back
   rescue StandardError => e
     roll_back
     handle_exception(e)
@@ -77,15 +78,16 @@ class SystemRegistry < EnginesRegistryError
     if @orphan_server_registry.orphanate_service(service_hash)
       save_tree
       if @services_registry.remove_from_services_registry(service_hash)
-        return save_tree
+        save_tree
       else
         @orphan_server_registry.release_orphan(service_hash)
         log_error_mesg('Failed to save orphan in remove_from_services_registry de orphaning', service_hash)
+        roll_back
       end
+    else
       log_error_mesg('Failed to save orphan' , service_hash)
+      roll_back
     end
-    roll_back
-    false
   end
 
   # Removes orphan and places in the managed_engine_registry
@@ -93,10 +95,17 @@ class SystemRegistry < EnginesRegistryError
     take_snap_shot
     if @orphan_server_registry.release_orphan(params)
       if @services_registry.add_to_services_registry(params)
-        return save_tree if @managed_engines_registry.add_to_managed_engines_registry(params)
+        if @managed_engines_registry.add_to_managed_engines_registry(params)
+          save_tree
+        else
+          roll_back
+        end
+      else
+        roll_back
       end
+    else
+      roll_back
     end
-    roll_back
   end
 
   def system_registry_tree
@@ -119,10 +128,10 @@ class SystemRegistry < EnginesRegistryError
     system_registry_tree
   end
 
-#  def update_managed_engine_service(service_query_hash)
-#    p :NYI
-#    false
-#  end
+  #  def update_managed_engine_service(service_query_hash)
+  #    p :NYI
+  #    false
+  #  end
 
   def  registry_as_hash(tree)
     @h = as_hash(tree)
@@ -141,7 +150,6 @@ class SystemRegistry < EnginesRegistryError
     @orphan_server_registry.take_snap_shot
     @shares_registry.take_snap_shot
   end
-
 
   def roll_back
     p ':++++++++++++++++++++++++++++++++++'
@@ -194,15 +202,18 @@ class SystemRegistry < EnginesRegistryError
   # Load tree from file or create initial service tree
   # @return ServiceTree as a [TreeNode]
   def initialize_tree
-    return load_tree if File.exist?(@@service_tree_file)
-    lock_tree
-    @system_registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
-    @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
-    @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
-    @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
-    @system_registry << Tree::TreeNode.new('Shares', 'Shared Services ')
-    save_tree
-    @system_registry
+    if File.exist?(@@service_tree_file)
+      load_tree
+    else
+      lock_tree
+      @system_registry = Tree::TreeNode.new('Service Manager', 'Managed Services and Engines')
+      @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
+      @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
+      @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
+      @system_registry << Tree::TreeNode.new('Shares', 'Shared Services ')
+      save_tree
+      @system_registry
+    end
   rescue StandardError => e
     puts e.message
     log_exception(e)
@@ -236,7 +247,7 @@ class SystemRegistry < EnginesRegistryError
   rescue StandardError => e
     unlock_tree
     log_exception(e)
-     false
+    false
   end
 
   # saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree

@@ -2,8 +2,11 @@ class ConfigurationsRegistry < SubRegistry
   require_relative '../../errors/engines_exception.rb'
   def get_service_configurations_hashes(service_name)
     st = match_node_keys(@registry, {service_name: service_name}, [:service_name])
-    return false unless st.is_a?(Tree::TreeNode)
-    get_all_leafs_service_hashes(st)
+    unless st.is_a?(Tree::TreeNode)
+      false
+    else
+      get_all_leafs_service_hashes(st)
+    end
   end
 
   # add the service configuration in the [Hash] service_configuration_hash
@@ -24,16 +27,22 @@ class ConfigurationsRegistry < SubRegistry
 
   def update_service_configuration(config_hash)
     st = match_node_keys(@registry, config_hash, full_address)
-    return add_service_configuration(config_hash) unless st.is_a?(Tree::TreeNode)
-    st.content = config_hash
-    true
+    unless st.is_a?(Tree::TreeNode)
+      add_service_configuration(config_hash)
+    else
+      st.content = config_hash
+      true
+    end
   end
 
   # @return a service_configuration_hash addressed by :service_name :configuration_name
   def get_service_configuration(config_hash)
     st = match_node_keys(@registry, config_hash, full_address)
-    return false unless st.is_a?(Tree::TreeNode)
-    st.content
+    unless st.is_a?(Tree::TreeNode)
+      false
+    else
+      st.content
+    end
   end
 
   private

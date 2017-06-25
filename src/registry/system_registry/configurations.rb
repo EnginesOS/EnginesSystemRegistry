@@ -1,8 +1,11 @@
 module Configurations
   def service_configurations_registry_tree
-    return false if !check_system_registry_tree
-    system_registry_tree << Tree::TreeNode.new('Configurations', 'Service Configurations') if system_registry_tree['Configurations'].nil?
-    system_registry_tree['Configurations']
+    if check_system_registry_tree
+      system_registry_tree << Tree::TreeNode.new('Configurations', 'Service Configurations') if system_registry_tree['Configurations'].nil?
+      system_registry_tree['Configurations']
+    else
+      false
+    end
   rescue StandardError => e
     handle_exception(e)
   end
@@ -15,8 +18,11 @@ module Configurations
 
   def add_service_configuration(service_hash)
     take_snap_shot
-    return save_tree if @configuration_registry.add_service_configuration(service_hash)
-    unlock_tree
+    if @configuration_registry.add_service_configuration(service_hash)
+      save_tree
+    else
+      unlock_tree
+    end
   rescue StandardError => e
     roll_back
     handle_exception(e)
@@ -24,8 +30,11 @@ module Configurations
 
   def rm_service_configuration(service_hash)
     take_snap_shot
-    save_tree if @configuration_registry.rm_service_configuration(service_hash)
-    unlock_tree
+    if @configuration_registry.rm_service_configuration(service_hash)
+      save_tree
+    else
+      unlock_tree
+    end
   rescue StandardError => e
     roll_back
     handle_exception(e)
@@ -39,8 +48,11 @@ module Configurations
 
   def update_service_configuration(config_hash)
     take_snap_shot
-    return save_tree if @configuration_registry.update_service_configuration(config_hash)
-    unlock_tree
+    if @configuration_registry.update_service_configuration(config_hash)
+      save_tree
+    else
+      unlock_tree
+    end
   rescue StandardError => e
     roll_back
     handle_exception(e)

@@ -30,8 +30,7 @@ class SubservicesRegistry < SubRegistry
   # required[:publisher_namespace,:type_path ] optional
   def all_registered_to(stp, params)
     st = match_node_path(st, params,nil,[:engine_name, :service_handle])
-    return unless st.is_a?(Tree::TreeNode)
-    get_all_leafs_service_hashes(st)
+    get_all_leafs_service_hashes(st) if st.is_a?(Tree::TreeNode)
   end
 
   def add_to_subservices(spt,params)
