@@ -19,20 +19,12 @@ module NodeAddressing
 
   def match_nstp_path_node_keys(st, params, keys, optional = nil)
     st = get_pns_type_path_node(st, params)
-    if st.is_a?(Tree::TreeNode)
-      match_node_keys(st, params, keys, optional)
-    else
-      false
-    end
+    match_node_keys(st, params, keys, optional)  if st.is_a?(Tree::TreeNode)
   end
 
   def match_tp_path_node_keys(st, params, keys = nil, optional = nil)
     st = get_type_path_node(st, params)
-    if st.is_a?(Tree::TreeNode)
-      match_node_keys(st, params, keys, optional)
-    else
-      false
-    end
+    match_node_keys(st, params, keys, optional) if st.is_a?(Tree::TreeNode)
   end
 
   # @returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
@@ -49,12 +41,7 @@ module NodeAddressing
       type_path = type_path[:type_path] if type_path.key?(:type_path)
     end
     parent_node = parent_node[publisher] unless publisher.nil?
-    unless parent_node.nil?
-      get_type_path_node(parent_node, type_path)
-    else
-      false
-    end
-
+    get_type_path_node(parent_node, type_path) unless parent_node.nil?
   end
 
   # stn is already the branch publisher_ns,type_
@@ -65,18 +52,17 @@ module NodeAddressing
     #  STDERR.puts('get_type_path NODE' + type_path.to_s)
     type_path = type_path[:type_path] if type_path.is_a?(Hash)
 
-    return parent_node[type_path] unless type_path.include?('/')
-    sub_paths = type_path.split('/')
-    sub_node = parent_node
-    sub_paths.each do |sub_path|
-      sub_node = sub_node[sub_path]
-      break if sub_node.nil?
-      #     return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
-    end
-    unless sub_node.nil?
-      sub_node
+    unless type_path.include?('/')
+      parent_node[type_path]
     else
-      false
+      sub_paths = type_path.split('/')
+      sub_node = parent_node
+      sub_paths.each do |sub_path|
+        sub_node = sub_node[sub_path]
+        break if sub_node.nil?
+        #     return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
+      end
+      sub_node
     end
   end
 
