@@ -43,7 +43,6 @@ module NodeAddressing
 
     if type_path.nil? || !parent_node.is_a?(Tree::TreeNode)
       raise EnginesException.new('get_type_path_node_passed_a_nil path:' + type_path.to_s, :error, parent_node.to_s)
-
     end
     if type_path.is_a?(Hash)
       publisher = type_path[:publisher_namespace] if type_path.key?(:publisher_namespace)
