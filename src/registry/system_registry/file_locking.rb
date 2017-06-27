@@ -11,13 +11,17 @@ def lock_tree
     log_error_mesg("REGISTRY_LOCKED 1.1")
     sleep 0.5 if File.exist?(registry_lock)
     log_error_mesg("REGISTRY_LOCKED 1.6")
-    log_error_mesg("Failed to lock Retrying",registry_lock) if File.exist?(registry_lock) if File.exist?(registry_lock)   
-    sleep 0.5
+    log_error_mesg("Failed to lock Retrying",registry_lock) if File.exist?(registry_lock) if File.exist?(registry_lock)
+    sleep 0.5 if File.exist?(registry_lock)
     log_error_mesg("REGISTRY_LOCKED 2.1")
-    return log_error_mesg("Failed to lock",registry_lock) if File.exist?(registry_lock)
+
   end
-  FileUtils.touch(registry_lock)
-  true
+  if File.exist?(registry_lock)
+    log_error_mesg("Failed to lock",registry_lock)
+  else
+    FileUtils.touch(registry_lock)
+    true
+  end
 end
 
 def unlock_tree

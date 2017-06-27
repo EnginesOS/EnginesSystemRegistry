@@ -19,13 +19,19 @@ class SubRegistry < EnginesRegistryError
   end
 
   def is_node_registered?(st, params, keys)
-    return false unless match_node_keys(st, params, keys).is_a?(Tree::TreeNode)
-    true
+    unless match_node_keys(st, params, keys).is_a?(Tree::TreeNode)
+      false
+    else
+      true
+    end
   end
 
   def is_persistent?(hash)
-    return true if hash.key?(:persistent) && hash[:persistent]
-    false
+    if hash.key?(:persistent) && hash[:persistent]
+      true
+    else
+      false
+    end
   end
 
   def reset_registry(registry)

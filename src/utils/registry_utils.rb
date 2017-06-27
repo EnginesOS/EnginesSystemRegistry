@@ -1,9 +1,13 @@
 class RegistryUtils
   # require_relative 'params.rb'
   def RegistryUtils.boolean_if_true_false_str(r)
-    return true if r == 'true'
-    return false if r == 'false'
-    r
+    if r == 'true'
+      true
+    elsif r == 'false'
+      false
+    else
+      r
+    end
   end
 
   def RegistryUtils.symbolize_keys(hash)
@@ -31,16 +35,19 @@ class RegistryUtils
   end
 
   def  RegistryUtils.as_hash(tree)
-    return ({:name => 'No tree'}) if tree.nil?
-    h = {
-      name: tree.name,
-      content: tree.content,
-      children: []
-    }
-    tree.children do |child|
-      h[:children].push(as_hash(child))
+    unless tree.nil?
+      h = {
+        name: tree.name,
+        content: tree.content,
+        children: []
+      }
+      tree.children do |child|
+        h[:children].push(as_hash(child))
+      end
+      h
+    else
+      {:name => 'No tree'}
     end
-    h
   end
 
   def RegistryUtils.log_exception(e)

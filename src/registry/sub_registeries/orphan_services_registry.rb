@@ -5,8 +5,11 @@ class OrphanServicesRegistry < SubRegistry
   # @param params { :type_path , :service_handle}
   def release_orphan(params)
     orphan = retrieve_orphan_node(params)
-    return log_error_mesg('failed to remove tree entry for ', orphan) unless remove_tree_entry(orphan)
-    true
+    unless remove_tree_entry(orphan)
+      log_error_mesg('failed to remove tree entry for ', orphan)
+    else
+      true
+    end
   end
 
   # Saves the service_hash in the orphaned service registry
@@ -16,10 +19,16 @@ class OrphanServicesRegistry < SubRegistry
   end
 
   def retrieve_orphan(params)
-    return params unless params.is_a?(Hash)
-    orphan = retrieve_orphan_node(params)
-    return orphan.content if orphan.is_a?(Tree::TreeNode)
-    orphan
+    unless params.is_a?(Hash)
+      params
+    else
+      orphan = retrieve_orphan_node(params)
+      if orphan.is_a?(Tree::TreeNode)
+        orphan.content
+      else
+        orphan
+      end
+    end
   end
 
   # @return  orphaned_services_tree
@@ -32,20 +41,26 @@ class OrphanServicesRegistry < SubRegistry
   # @return new service_hash
   # does not modfiey the tree
   def reparent_orphan(params)
-    return params unless params.is_a?(Hash)
-    orphan = retrieve_orphan_node(params)
-    content = orphan.content
-    content[:variables][:parent_engine] = params[:parent_engine]
-    content[:parent_engine] = params[:parent_engine]
-    content
+    unless params.is_a?(Hash)
+      false
+    else
+      orphan = retrieve_orphan_node(params)
+      content = orphan.content
+      content[:variables][:parent_engine] = params[:parent_engine]
+      content[:parent_engine] = params[:parent_engine]
+      content
+    end
   end
 
   # @return an [Array] of service_hashs of Orphaned persistent services match @params [Hash]
   # :path_type :publisher_namespace
   def get_orphaned_services(params)
     services = match_nstp_path_node_keys(@registry, params, [], [:parent_engine, :service_handle])
-    return get_all_leafs_service_hashes(services) if services.is_a?(Tree::TreeNode)
-    services
+    if services.is_a?(Tree::TreeNode)
+      get_all_leafs_service_hashes(services)
+    else
+      services
+    end
   end
 
   private
