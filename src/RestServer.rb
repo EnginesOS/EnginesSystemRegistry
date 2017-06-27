@@ -53,8 +53,9 @@ begin
   end
 
   def process_result(r, s = 202)
-    content_type 'application/json'
     unless r.nil?
+      STDERR.puts("process_result" + r.to_s)
+      content_type 'application/json'
       if r.is_a?(EnginesRegistryError)
         STDERR.puts("Error" + r.to_s)
         status(404)
@@ -71,7 +72,8 @@ begin
         STDERR.puts("Error "+ s.to_s + ' ' + r.to_s) if s > 399
       end
     else
-      r = {}.to_json
+      content_type 'plain/text'
+      r = ''
     end
 
     STDERR.puts("OUT " + r[0..256]) unless r.nil?
