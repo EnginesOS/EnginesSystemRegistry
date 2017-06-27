@@ -1,7 +1,7 @@
 helpers do
   def authenticate
     STDERR.puts('tok ' + request.env['HTTP_ACCESS_TOKEN'].to_s)
-    if request.env['HTTP_ACCESS_TOKEN'].is_a?(String) && request.env['HTTP_ACCESS_TOKEN'] = 'test_randy'
+    if request.env['HTTP_ACCESS_TOKEN'].is_a?(String) && request.env['HTTP_ACCESS_TOKEN'] == 'test_randy'
       true
     else
       false
