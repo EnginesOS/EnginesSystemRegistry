@@ -1,20 +1,21 @@
 helpers do
   def authenticate
-    STDERR.puts('tok ' + request.env['HTTP_ACCESS_TOKEN'].to_s)
-    if request.env['HTTP_ACCESS_TOKEN'].is_a?(String) && request.env['HTTP_ACCESS_TOKEN'] == 'test_randy'
+    if request.env['HTTP_ACCESS_TOKEN'] == 'atest_randy'
       true
     else
       false
     end
   end
+  
   require_relative 'converters.rb'
+
   def  registry_as_hash(tree)
     as_hash(tree)
   end
 
   def assemble_params(ps, address_params, required_params = nil, accept_params = nil )
     # STDERR.puts( 'assemble_params Address params ' + ps.to_s + ' address keys required ' + address_params.to_s)
-   unless ps.nil?
+    unless ps.nil?
       ps = symbolize_keys(ps)
       a_params = address_params(ps, address_params)
       return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + ps.to_s, :error,'api') if a_params == false
