@@ -9,10 +9,20 @@ begin
   # require_relative 'utils/registry_utils.rb'
   require_relative 'errors/engines_registry_error.rb'
   require_relative 'helpers/helpers.rb'
-
-  set :sessions, true
-  set :logging, true
-  set :run, true
+  
+   require_relative 'api/registry_info.rb'
+   require_relative 'api/configurations.rb'
+   require_relative 'api/orphan_services.rb'
+   require_relative 'api/managed_services.rb'
+   require_relative 'api/managed_engines.rb'
+   require_relative 'api/subservices.rb'
+   require_relative 'api/shares.rb'
+   
+  class Application < Sinatra::Base
+      set :sessions, true
+      set :logging, true
+      set :run, true
+    end
   require 'objspace'
 
   $system_registry ||= SystemRegistry.new
@@ -26,13 +36,7 @@ begin
     GC::OOB.run()
   end
 
-  require_relative 'api/registry_info.rb'
-  require_relative 'api/configurations.rb'
-  require_relative 'api/orphan_services.rb'
-  require_relative 'api/managed_services.rb'
-  require_relative 'api/managed_engines.rb'
-  require_relative 'api/subservices.rb'
-  require_relative 'api/shares.rb'
+ 
 
   def system_registry
     $system_registry
