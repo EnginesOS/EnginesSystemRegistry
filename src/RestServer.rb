@@ -64,9 +64,8 @@ begin
       else
         r = r.to_json
       end
-    else
-      content_type 'plain/text'
-      r = ''
+    else      
+      r = {}.to_json
     end
     STDERR.puts("OUT " + r[0..256]) unless r.nil?
     r

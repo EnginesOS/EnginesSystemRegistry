@@ -10,9 +10,12 @@ class EnginesRegistryError < EnginesError
   end
 
   def handle_exception(e, *objs)
-    return log_exception(e, *objs) unless e.is_a?(EnginesException)
-    STDERR.puts  e.to_s.slice(0, 512).to_s
-    return EnginesRegistryError.new(e.to_s, e.level, e.params)
+    unless e.is_a?(EnginesException)
+      log_exception(e, *objs)
+    else
+      STDERR.puts  e.to_s.slice(0, 512).to_s
+      EnginesRegistryError.new(e.to_s, e.level, e.params)
+    end
   end
 
   def log_error_mesg(mesg, *objs)

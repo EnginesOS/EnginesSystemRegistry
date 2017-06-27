@@ -1,4 +1,3 @@
-
 def annouce_test(test_name)
   p @test_type.to_s + ':' + test_name
   @current_test = test_name
@@ -6,9 +5,9 @@ end
 
 def test_type(type)
   @test_type = type.to_s
-  puts ''  
   puts ''
-  
+  puts ''
+
   puts ('__________' + type + '___________')
 
 end
@@ -18,17 +17,21 @@ def test_failed(message, obj)
   p obj.to_s
 end
 
-
-def parse_rest_response(r)
-    return false if r.code > 399
-  return true if r.to_s   == '' ||  r.to_s   == 'true'
-  return false if r.to_s  == 'false' 
-   res = JSON.parse(r)     
-   return symbolize_keys(res) if res.is_a?(Hash)
-   return res 
- rescue
-   p "Failed to parse rest response _" + res.to_s + "_"
-     return false
+def parse_rest_response(response)
+  if response.code > 399
+    res = false
+  elsif response.to_s == '' || response.to_s  == 'true'
+    res = true
+  elsif response.to_s == 'false'
+    res = false
+  else
+    res = JSON.parse(response)
+    res = symbolize_keys(res) if res.is_a?(Hash)
+  end
+  res
+rescue
+  p "Failed to parse rest response _" + res.to_s + "_"
+  return false
 end
 
 def base_url
@@ -38,7 +41,7 @@ end
 require 'rest-client'
 
 def rest_get(path,params)
-  parse_rest_response(RestClient.get(base_url + path, params)) 
+  parse_rest_response(RestClient.get(base_url + path, params))
 end
 
 def rest_post(path,params)

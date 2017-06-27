@@ -6,6 +6,8 @@ module Services
   def clear_service_from_registry(p)
     #params[:parent_engine]  params :container_type] == 'service'
     #find  this services non persistent
+    unless p.nil?
+    
     begin
       case p[:persistence]
       when 'non_persistent'
@@ -16,12 +18,13 @@ module Services
         services = get_engine_services(p)
       end
     rescue EnginesException => e
-      return true if e.level == :warning
+      return  if e.level == :warning
     end
     if services.is_a?(Array)
       services.each do |service|
         remove_from_managed_engines_registry(service)
       end
+    end
     end
   rescue StandardError => e
     handle_exception(e)
@@ -29,16 +32,22 @@ module Services
 
   def get_service_entry(service_query_hash)
     tree_node = find_service_consumers(service_query_hash)
-    return false  if !tree_node.is_a?(Tree::TreeNode)
-    tree_node.content
+    if tree_node.is_a?(Tree::TreeNode)
+      tree_node.content
+    else
+      false
+    end
   rescue StandardError => e
     handle_exception(e)
   end
 
   def add_to_services_registry(service_hash)
     take_snap_shot
-    return save_tree if @services_registry.add_to_services_registry(service_hash)
-    unlock_tree
+    if @services_registry.add_to_services_registry(service_hash)
+      save_tree
+    else
+      unlock_tree
+    end
   rescue StandardError => e
     roll_back
     handle_exception(e)
@@ -46,8 +55,11 @@ module Services
 
   def remove_from_services_registry(service_hash)
     take_snap_shot
-    return save_tree if @services_registry.remove_from_services_registry(service_hash)
-    unlock_tree
+    if @services_registry.remove_from_services_registry(service_hash)
+      save_tree
+    else
+      unlock_tree
+    end
   rescue StandardError => e
     roll_back
     handle_exception(e)

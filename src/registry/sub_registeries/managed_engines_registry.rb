@@ -7,12 +7,15 @@ class ManagedEnginesRegistry < SubRegistry
       pe =  get_type_path_node(pe, params[:type_path])
       if params.key?(:service_handle)
         engine_node = match_node_keys(pe, params, [:service_handle])
-        raise EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
-        return engine_node.content
+        raise EnginesException.new('Registry Entry Invalid', :error, params, engine_node.content) unless engine_node.content.is_a?(Hash)
+        #return engine_node.content
       end
     end
-    return order_hashes_in_priotity(get_all_leafs_service_hashes(pe)) unless params.key?(:persistent)
-    order_hashes_in_priotity(get_matched_leafs(pe, :persistent, params[:persistent]))
+    unless params.key?(:persistent)
+      order_hashes_in_priotity(get_all_leafs_service_hashes(pe))
+    else
+      order_hashes_in_priotity(get_matched_leafs(pe, :persistent, params[:persistent]))
+    end
   end
 
   def find_engine_service_node(params)
@@ -21,7 +24,7 @@ class ManagedEnginesRegistry < SubRegistry
     raise EnginesException.new('Registry Entry Not found', :warning, params) if pe.nil?
     engine_node = match_tp_path_node_keys(pe, params, [:service_handle])
     raise EnginesException.new('Registry Entry Not found', :warning, params) if engine_node.nil?
-    raise EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
+    raise EnginesException.new('Registry Entry Invalid', :error, params) unless engine_node.content.is_a?(Hash)
     engine_node
   end
 
@@ -30,7 +33,7 @@ class ManagedEnginesRegistry < SubRegistry
     pe = match_node_keys(st, params, [:parent_engine])
     raise EnginesException.new('Registry Entry Not found', :warning, params) if pe.nil?
     engine_node = match_tp_path_node_keys(pe, params, [:service_handle])
-    raise EnginesException.new('Registry Entry Not found', :warning, params) if engine_node.nil?
+    raise EnginesException.new('Registry Entry Not found', :warning, params) if engine_node.nil? 
     raise EnginesException.new('Registry Entry Invalid', :error, params) unless engine_node.content.is_a?(Hash)
     engine_node.content
   end
@@ -70,8 +73,11 @@ class ManagedEnginesRegistry < SubRegistry
   # @return boolean
   def remove_from_engine_registry(service_hash)
     service_node = find_engine_service_node(service_hash)
-    return remove_tree_entry(service_node) if service_node.is_a?(Tree::TreeNode)
-    false # failure to find ok
+    if service_node.is_a?(Tree::TreeNode)
+      remove_tree_entry(service_node)
+    else
+      false # failure to find ok
+    end
   end
 
   def all_engines_registered_to(service_path)
@@ -91,18 +97,21 @@ class ManagedEnginesRegistry < SubRegistry
 
   # @return the appropriate tree under managedservices trees either engine or service
   def managed_engines_type_registry(site_hash)
-    return false unless @registry.is_a?(Tree::TreeNode)
-    raise EnginesException.new('managed_engines_type_registry', :error, site_hash) unless site_hash.is_a?(Hash)
-    raise EnginesException.new('Site hash missing :container_type', :error, site_hash) unless site_hash.key?(:container_type)
-    if site_hash[:container_type] == 'service'
-      @registry << Tree::TreeNode.new('Service', 'Managed Services register') if @registry['Service'].nil?
-      return @registry['Service']
-    elsif site_hash[:container_type] == 'system'
-      @registry << Tree::TreeNode.new('System', 'System Services register') if @registry['System'].nil?
-      return @registry['System']
+    if @registry.is_a?(Tree::TreeNode)
+      raise EnginesException.new('managed_engines_type_registry', :error, site_hash) unless site_hash.is_a?(Hash)
+      raise EnginesException.new('Site hash missing :container_type', :error, site_hash) unless site_hash.key?(:container_type)
+      if site_hash[:container_type] == 'service'
+        @registry << Tree::TreeNode.new('Service', 'Managed Services register') if @registry['Service'].nil?
+        @registry['Service']
+      elsif site_hash[:container_type] == 'system'
+        @registry << Tree::TreeNode.new('System', 'System Services register') if @registry['System'].nil?
+        @registry['System']
+      else
+        @registry << Tree::TreeNode.new('Application', 'Managed Application register') if @registry['Application'].nil?
+        @registry['Application']
+      end
     else
-      @registry << Tree::TreeNode.new('Application', 'Managed Application register') if @registry['Application'].nil?
-      return @registry['Application']
+      false
     end
   end
 
@@ -110,10 +119,16 @@ class ManagedEnginesRegistry < SubRegistry
     raise EnginesException.new('find_engine_services Invalid params ',:error, params) unless params.is_a?(Hash)
     st = managed_engines_type_registry(params)
     pe = match_node_keys(st, params, [:parent_engine])
-    return pe unless params.key(:type_path)
-    pe = get_type_path_node(st, params[:type_path])
-    return pe unless params.key(:service_handle)
-    match_node_keys(pe, params, [:service_handle])
+    unless params.key(:type_path)
+      pe
+    else
+      pe = get_type_path_node(st, params[:type_path])
+      unless params.key(:service_handle)
+        pe
+      else
+        match_node_keys(pe, params, [:service_handle])
+      end
+    end
   end
 
 end

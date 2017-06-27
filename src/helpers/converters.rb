@@ -1,7 +1,11 @@
 def boolean_if_true_false_str(r)
-  return true if r == 'true'
-  return false if r == 'false'
-  r
+  if r == 'true'
+    true
+  elsif r == 'false'
+    false
+  else
+    r
+  end
 end
 
 def symbolize_keys(hash)
@@ -29,15 +33,18 @@ def symbolize_keys(hash)
 end
 
 def as_hash(tree)
-  return ({:name => 'No tree'}) if tree.nil?
-  h = {
-    name: tree.name,
-    content: tree.content,
-    children:  []
-  }
-  tree.children do |child|
-    h[:children].push(as_hash(child))
+  unless tree.nil?
+    h = {
+      name: tree.name,
+      content: tree.content,
+      children:  []
+    }
+    tree.children do |child|
+      h[:children].push(as_hash(child))
+    end
+    h
+  else
+    {:name => 'No tree'}
   end
-  h
 end
 
