@@ -54,7 +54,7 @@ class SystemRegistry < EnginesRegistryError
     file = File.open("/var/log/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
-    true
+    
   rescue StandardError => e
     roll_back
     handle_exception(e)

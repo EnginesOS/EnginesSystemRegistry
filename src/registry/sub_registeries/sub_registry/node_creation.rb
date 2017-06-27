@@ -43,7 +43,6 @@ module NodeCreation
     else
       new_node.content = params
     end
-    true
   end
 
   # returns [TreeNode] under parent_node with the Directory path (in any) in type_path convert to tree branches
@@ -100,6 +99,5 @@ module NodeCreation
     unless parent_node.has_children?
       raise EnginesException.new("Failed to remove tree Entry", :error, parent_node) unless remove_tree_entry(parent_node)
     end
-    true
   end
 end

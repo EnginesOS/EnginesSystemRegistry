@@ -30,8 +30,7 @@ class ConfigurationsRegistry < SubRegistry
     unless st.is_a?(Tree::TreeNode)
       add_service_configuration(config_hash)
     else
-      st.content = config_hash
-      true
+      st.content = config_hash     
     end
   end
 

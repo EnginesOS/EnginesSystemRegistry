@@ -18,7 +18,7 @@ module Services
         services = get_engine_services(p)
       end
     rescue EnginesException => e
-      return true if e.level == :warning
+      return  if e.level == :warning
     end
     if services.is_a?(Array)
       services.each do |service|
