@@ -16,13 +16,15 @@ begin
   require 'objspace'
 
   $system_registry ||= SystemRegistry.new
-  #  before do
-  #
-  #  end
+    before do
+      redirect  '/v0/unauthenticated' unless authenticate
+  
+  # authenticate
+    end
+
 
   after do
     GC::OOB.run()
-
   end
 
   require_relative 'api/registry_info.rb'
