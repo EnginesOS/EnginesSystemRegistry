@@ -17,7 +17,8 @@ begin
 
   $system_registry ||= SystemRegistry.new
     before do
-   pass if authenticate
+      redirect  '/v0/unauthenticated' unless authenticate
+  
   # authenticate
     end
 
