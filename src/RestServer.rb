@@ -16,12 +16,11 @@ begin
   require 'objspace'
 
   $system_registry ||= SystemRegistry.new
-    before do
-      redirect  '/v0/unauthenticated' unless authenticate
-  
-  # authenticate
-    end
+  before do
+    redirect  '/v0/unauthenticated' unless authenticate
 
+    # authenticate
+  end
 
   after do
     GC::OOB.run()
@@ -51,24 +50,26 @@ begin
 
   def process_result(r, s = 202)
     content_type 'application/json'
-    unless r.is_a?(EnginesRegistryError)
-      status(s)
-    else
-      STDERR.puts("Error" + r.to_s)
-      status(404)
-    end
-    STDERR.puts("Error "+ s.to_s + ' ' + r.to_s) if s > 399
     unless r.nil?
-      if r.is_a?(TrueClass) || r.is_a?(FalseClass)
-        r = { BooleanResult: r }.to_json
-      elsif r.is_a?(String)
-        content_type 'plain/text'
-      else
+      if r.is_a?(EnginesRegistryError)
+        STDERR.puts("Error" + r.to_s)
+        status(404)
         r = r.to_json
+      else
+        status(s)
+        if r.is_a?(TrueClass) || r.is_a?(FalseClass)
+          r = { BooleanResult: r }.to_json
+        elsif r.is_a?(String)
+          content_type 'plain/text'
+        else
+          r = r.to_json
+        end
+        STDERR.puts("Error "+ s.to_s + ' ' + r.to_s) if s > 399
       end
-    else      
+    else
       r = {}.to_json
     end
+
     STDERR.puts("OUT " + r[0..256]) unless r.nil?
     r
   rescue StandardError => e
