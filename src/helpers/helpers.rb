@@ -1,5 +1,7 @@
 helpers do
-
+  def authenticate
+    request.env['HTTP_ACCESS_TOKEN'].is_a?(String) & request.env['HTTP_ACCESS_TOKEN'] = 'atest_randy'
+  end
   require_relative 'converters.rb'
   def  registry_as_hash(tree)
     as_hash(tree)

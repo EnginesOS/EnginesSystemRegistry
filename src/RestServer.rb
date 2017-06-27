@@ -16,9 +16,11 @@ begin
   require 'objspace'
 
   $system_registry ||= SystemRegistry.new
-  #  before do
-  #
-  #  end
+    before do
+   pass if authenticate
+  # authenticate
+    end
+
 
   after do
     GC::OOB.run()
