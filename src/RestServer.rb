@@ -66,7 +66,8 @@ begin
 
   def process_result(r, s = 202)
     unless r.nil?
-      STDERR.puts("process_result" + r.to_s)
+  
+      #  STDERR.puts("process_result" + r.to_s)
       content_type 'application/json'
       if r.is_a?(EnginesRegistryError) || r.is_a?(StandardError)
         STDERR.puts("Error" + r.to_s)
@@ -89,7 +90,7 @@ begin
       r = ''
     end
 
-    STDERR.puts("OUT " + r[0..256]) unless r.nil?
+    #STDERR.puts("OUT " + r[0..256]) unless r.nil?
     r
   rescue StandardError => e
     log_exception(e, r)
