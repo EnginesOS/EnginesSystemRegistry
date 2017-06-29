@@ -72,8 +72,7 @@ begin
       if r.is_a?(EnginesRegistryError) || r.is_a?(StandardError)
         STDERR.puts("Error" + r.to_s)
         s = 404 if s == 202
-        status(s)
-        log_exception(r)
+        status(s)        
         r = r.to_json
       else
         status(s)
