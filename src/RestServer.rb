@@ -9,20 +9,20 @@ begin
   # require_relative 'utils/registry_utils.rb'
   require_relative 'errors/engines_registry_error.rb'
   require_relative 'helpers/helpers.rb'
-  
-   require_relative 'api/registry_info.rb'
-   require_relative 'api/configurations.rb'
-   require_relative 'api/orphan_services.rb'
-   require_relative 'api/managed_services.rb'
-   require_relative 'api/managed_engines.rb'
-   require_relative 'api/subservices.rb'
-   require_relative 'api/shares.rb'
-   
+
+  require_relative 'api/registry_info.rb'
+  require_relative 'api/configurations.rb'
+  require_relative 'api/orphan_services.rb'
+  require_relative 'api/managed_services.rb'
+  require_relative 'api/managed_engines.rb'
+  require_relative 'api/subservices.rb'
+  require_relative 'api/shares.rb'
+
   class Application < Sinatra::Base
-      set :sessions, true
-      set :logging, true
-      set :run, true
-    end
+    set :sessions, true
+    set :logging, true
+    set :run, true
+  end
   require 'objspace'
 
   $system_registry ||= SystemRegistry.new
@@ -35,8 +35,6 @@ begin
   after do
     GC::OOB.run()
   end
-
- 
 
   def system_registry
     $system_registry
@@ -53,14 +51,24 @@ begin
   end
 
   def handle_exception(e)
-    process_result(e, 400)
+    unless e.is_a?(EnginesException) || e.is_a?(EnginesRegistryError)
+      process_result(e, 400)
+    else
+      STDERR.puts  e.to_s.slice(0, 512).to_s
+      if e.level == :warning
+        ec = 403
+      else
+        ec = 400
+      end
+      process_result(e, ec)
+    end
   end
-  
+
   def process_result(r, s = 202)
     unless r.nil?
       STDERR.puts("process_result" + r.to_s)
       content_type 'application/json'
-      if r.is_a?(EnginesRegistryError) || r.is_a?(StandardError) 
+      if r.is_a?(EnginesRegistryError) || r.is_a?(StandardError)
         STDERR.puts("Error" + r.to_s)
         s = 404 if s == 202
         status(s)
