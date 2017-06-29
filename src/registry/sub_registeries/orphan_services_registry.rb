@@ -13,6 +13,7 @@ class OrphanServicesRegistry < SubRegistry
     end
     else
       log_error_mesg('failed to find orphan for removal ', params)
+      false
     end
   end
 
