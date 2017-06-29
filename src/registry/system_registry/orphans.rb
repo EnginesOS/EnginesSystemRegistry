@@ -12,7 +12,8 @@ module Orphans
   def orphan_lost_services
     @services_registry.get_matched_leafs(services_registry_tree, :persistent, true).each do |service_hash| 
       begin
-        find_engine_service_node(service_hash)
+        STDERR.puts(' Check for Orphan' + service_hash.to_s)
+        find_engine_service_hash(service_hash)
         STDERR.puts(' Not Orphan' + service_hash.to_s)
       rescue
         STDERR.puts(' Found Orphan' + service_hash.to_s)
