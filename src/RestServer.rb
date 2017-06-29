@@ -73,6 +73,7 @@ begin
         STDERR.puts("Error" + r.to_s)
         s = 404 if s == 202
         status(s)
+        log_exception(r)
         r = r.to_json
       else
         status(s)
