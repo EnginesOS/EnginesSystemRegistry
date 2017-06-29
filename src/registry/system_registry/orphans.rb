@@ -14,11 +14,12 @@ module Orphans
     @services_registry.get_matched_leafs(services_registry_tree, :persistent, true).each do |service_hash|
       begin
         STDERR.puts(' Check for Orphan' + service_hash.to_s)
-        t = find_engine_service_hash(service_hash)
-        STDERR.puts(' Not Orphan' + t.to_s)
+         @managed_engines_registry.find_engine_service_hash(service_hash)
+        STDERR.puts(' Not Orphan')
       rescue EnginesException
         STDERR.puts(' Found Orphan' + service_hash.to_s)
         r.push(service_hash)
+        orphanate_service(service_hash)
         next
       end
     end
@@ -37,7 +38,7 @@ module Orphans
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
   # @params [Hash] of orphan matching the params
@@ -56,7 +57,6 @@ module Orphans
   rescue StandardError => e
     roll_back
     raise e
-    unlock_tree
   end
 
   def rollback_orphaned_service(params)

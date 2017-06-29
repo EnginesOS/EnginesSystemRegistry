@@ -37,8 +37,7 @@ module Services
     else
       false
     end
-  rescue StandardError => e
-    handle_exception(e)
+
   end
 
   def add_to_services_registry(service_hash)
@@ -50,7 +49,7 @@ module Services
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
   def remove_from_services_registry(service_hash)
