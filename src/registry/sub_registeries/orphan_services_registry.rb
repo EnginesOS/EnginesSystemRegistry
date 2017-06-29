@@ -71,6 +71,7 @@ class OrphanServicesRegistry < SubRegistry
   private
 
   def retrieve_orphan_node(params)
+    STDERR.puts("RET " +params.to_s)
     match_nstp_path_node_keys(@registry, params, [], [:parent_engine, :service_handle])
   end
 end
