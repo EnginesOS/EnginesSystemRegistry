@@ -5,12 +5,12 @@ class OrphanServicesRegistry < SubRegistry
   # @param params { :type_path , :service_handle}
   def release_orphan(params)
     orphan = retrieve_orphan_node(params)
-    unless orphan.nil?    
-    unless remove_tree_entry(orphan)
-      log_error_mesg('failed to remove tree entry for ', orphan)
-    else
-      true
-    end
+    unless orphan.nil?
+      unless remove_tree_entry(orphan)
+        log_error_mesg('failed to remove tree entry for ', orphan)
+      else
+        true
+      end
     else
       log_error_mesg('failed to find orphan for removal ', params)
       false
@@ -71,9 +71,6 @@ class OrphanServicesRegistry < SubRegistry
   private
 
   def retrieve_orphan_node(params)
-    STDERR.puts("RET " +params.to_s)
-   r = match_nstp_path_node_keys(@registry, params, [], [:parent_engine, :service_handle])
-     STDERR.puts("R " + r.to_s)
-     r
+    match_nstp_path_node_keys(@registry, params, [], [:parent_engine, :service_handle])
   end
 end

@@ -6,14 +6,14 @@ module Configurations
     else
       false
     end
-  rescue StandardError => e
-    handle_exception(e)
+#  rescue StandardError => e
+#    handle_exception(e)
   end
 
   def get_service_configurations_hashes(service_hash)
     @configuration_registry.get_service_configurations_hashes(service_hash)
-  rescue StandardError => e
-    handle_exception(e)
+#  rescue StandardError => e
+#    handle_exception(e)
   end
 
   def add_service_configuration(service_hash)
@@ -25,7 +25,7 @@ module Configurations
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
   def rm_service_configuration(service_hash)
@@ -37,13 +37,13 @@ module Configurations
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
   def get_service_configuration(service_hash)
     @configuration_registry.get_service_configuration(service_hash)
-  rescue StandardError => e
-    handle_exception(e)
+#  rescue StandardError => e
+#    handle_exception(e)
   end
 
   def update_service_configuration(config_hash)
@@ -55,7 +55,7 @@ module Configurations
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
 end

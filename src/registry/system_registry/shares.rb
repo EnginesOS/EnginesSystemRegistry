@@ -9,7 +9,7 @@ module Shares
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
   def remove_from_shares_registry(service_hash)
@@ -23,7 +23,7 @@ module Shares
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
 end
