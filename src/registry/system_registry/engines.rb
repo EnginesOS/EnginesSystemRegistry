@@ -8,8 +8,8 @@ module Engines
 
   def find_engine_service_hash(params)
     @managed_engines_registry.find_engine_service_hash(params)
-  rescue StandardError => e
-    handle_exception(e)
+#  rescue StandardError => e
+#    handle_exception(e)
   end
 
   def get_engine_nonpersistent_services(params)
