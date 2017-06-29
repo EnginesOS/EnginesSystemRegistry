@@ -52,13 +52,18 @@ begin
     @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
   end
 
+  def handle_exception(e)
+    process_result(e, 400)
+  end
+  
   def process_result(r, s = 202)
     unless r.nil?
       STDERR.puts("process_result" + r.to_s)
       content_type 'application/json'
-      if r.is_a?(EnginesRegistryError)
+      if r.is_a?(EnginesRegistryError) || r.is_a?(StandardError) 
         STDERR.puts("Error" + r.to_s)
-        status(404)
+        s = 404 if s == 202
+        status(s)
         r = r.to_json
       else
         status(s)
