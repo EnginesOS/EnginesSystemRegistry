@@ -8,7 +8,19 @@ module Orphans
       false
     end
   end
-
+  
+  def orphan_lost_services
+    @services_registry.get_matched_leafs(services_registry_tree, :persistent, true).each do |service_hash| 
+      begin
+        find_engine_service_node(service_hash)
+        STDERR.puts(' Not Orphan' + service_hash.to_s)
+      rescue
+        STDERR.puts(' Found Orphan' + service_hash.to_s)
+        next
+      end
+  end
+    
+  end
   # @params [Hash] Loads the varaibles from the matching orphan
   # does not save bnut just populates the content/service variables in the hash
   # return boolean

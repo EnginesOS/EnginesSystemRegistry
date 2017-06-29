@@ -22,6 +22,10 @@ delete '/v0/system_registry/services/orphans/del/:parent_engine/:service_handle/
   process_result(system_registry.release_orphan(cparams))
 end
 
+get '/v0/system_registry/services/orphan_lost' do
+  process_result(system_registry.orphan_lost_services)
+end
+
 get '/v0/system_registry/services/orphans/:publisher_namespace/*' do
   params[:type_path] = params['splat'][0]
   #  STDERR.puts('GET ORPHANS ' +   params.to_s)
@@ -35,6 +39,8 @@ get '/v0/system_registry/services/orphan/:parent_engine/:service_handle/:publish
   # STDERR.puts( 'ORPHAN get params ' + cparams.to_s)
   process_result(system_registry.retrieve_orphan(cparams))
 end
+
+
 #reparent_orphan
 
 #rebirth_orphan
