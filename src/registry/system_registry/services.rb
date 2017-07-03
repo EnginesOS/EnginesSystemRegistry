@@ -26,8 +26,8 @@ module Services
       end
     end
     end
-  rescue StandardError => e
-    handle_exception(e)
+#  rescue StandardError => e
+#    handle_exception(e)
   end
 
   def get_service_entry(service_query_hash)
@@ -37,8 +37,7 @@ module Services
     else
       false
     end
-  rescue StandardError => e
-    handle_exception(e)
+
   end
 
   def add_to_services_registry(service_hash)
@@ -50,7 +49,7 @@ module Services
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
   def remove_from_services_registry(service_hash)
@@ -62,26 +61,26 @@ module Services
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
     @services_registry.get_registered_against_service(params)
-  rescue StandardError => e
-    handle_exception(e)
+#  rescue StandardError => e
+#    handle_exception(e)
   end
 
   def list_providers_in_use
     @services_registry.list_providers_in_use
-  rescue StandardError => e
-    handle_exception(e)
+#  rescue StandardError => e
+#    handle_exception(e)
   end
 
   def service_is_registered?(service_hash)
     @services_registry.service_is_registered?(service_hash)
-  rescue StandardError => e
-    handle_exception(e)
+#  rescue StandardError => e
+#    handle_exception(e)
   end
 
 end
