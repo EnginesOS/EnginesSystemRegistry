@@ -93,11 +93,12 @@ module NodeCreation
   def remove_tree_entry(tree_node)
     raise EnginesException.new('Femove tree entry Nil treenode ?', :error, tree_node) unless tree_node.is_a?(Tree::TreeNode)
     raise EnginesException.new('No Parent Node on remove tree entry', :error, tree_node) unless tree_node.parent.is_a?(Tree::TreeNode)
-    raise EnginesException.new("Not removing a branch", :error, tree_node) if tree_node.has_children?
+    raise EnginesException.new('Not removing a branch', :error, tree_node) if tree_node.has_children?
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
     unless parent_node.has_children?
-      raise EnginesException.new("Failed to remove tree Entry", :error, parent_node) unless remove_tree_entry(parent_node)
+      raise EnginesException.new('Failed to remove tree Entry:' + parent_node.to_s, :error, parent_node) unless remove_tree_entry(parent_node)
     end
+    true
   end
 end

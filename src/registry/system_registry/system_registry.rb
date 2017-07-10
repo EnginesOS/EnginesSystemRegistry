@@ -54,10 +54,10 @@ class SystemRegistry < EnginesRegistryError
     file = File.open("/var/log/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
-    
+
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
   def update_attached_service(service_hash)
@@ -70,7 +70,7 @@ class SystemRegistry < EnginesRegistryError
     end
   rescue StandardError => e
     roll_back
-    handle_exception(e)
+    raise e
   end
 
   def orphanate_service(service_hash)
@@ -196,6 +196,7 @@ class SystemRegistry < EnginesRegistryError
     rescue StandardError => e
       puts e.message + ' with ' + tree_data.to_s
       log_exception(e)
+      raise e
     end
   end
 
@@ -231,6 +232,7 @@ class SystemRegistry < EnginesRegistryError
   rescue StandardError => e
     puts e.message
     log_exception(e)
+    raise e
   end
 
   # @sets the service_tree and load mod time
@@ -247,7 +249,7 @@ class SystemRegistry < EnginesRegistryError
   rescue StandardError => e
     unlock_tree
     log_exception(e)
-    false
+    raise e
   end
 
   # saves the Service tree to disk at [SysConfig.ServiceTreeFile] and returns tree
@@ -266,5 +268,6 @@ class SystemRegistry < EnginesRegistryError
     unlock_tree
     FileUtils.copy(@@service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
     log_exception(e)
+    raise e
   end
 end

@@ -8,9 +8,7 @@ module Trees
     else
       false
     end
-  rescue StandardError => e
-    log_exception(e)
-    false
+
   end
 
   def  shares_registry_tree
@@ -20,9 +18,7 @@ module Trees
     else
       false
     end
-  rescue StandardError => e
-    log_exception(e)
-    false
+
   end
 
   # @return the ManagedEngine Tree Branch
@@ -34,8 +30,7 @@ module Trees
     else
       false
     end
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def check_system_registry_tree
@@ -45,7 +40,6 @@ module Trees
     else
       true
     end
-  rescue StandardError => e
-    log_exception(e)
+  
   end
 end
