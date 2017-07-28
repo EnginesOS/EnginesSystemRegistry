@@ -40,6 +40,7 @@ class SystemRegistry < EnginesRegistryError
 
   # @ call initialise Service Registry Tree which loads it from disk or create a new one if none exits
   def initialize
+    trap_signals
     ObjectSpace.trace_object_allocations_start
     @system_registry = initialize_tree
     @configuration_registry = ConfigurationsRegistry.new(service_configurations_registry_tree)
@@ -269,5 +270,19 @@ class SystemRegistry < EnginesRegistryError
     FileUtils.copy(@@service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
     log_exception(e)
     raise e
+  end
+  
+  def trap_signals
+    Signal.trap("INT") {
+        shutdown
+        exit
+      }
+      Signal.trap("HUP") {
+        system_registry_tree
+      }
+      Signal.trap("TERM") {
+        shutdown
+        exit
+      }  
   end
 end
