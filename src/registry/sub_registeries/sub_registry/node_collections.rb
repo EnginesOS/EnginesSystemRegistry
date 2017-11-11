@@ -47,8 +47,7 @@ module NodeCollections
       ret_val = []
       branch.children.each do |sub_branch|
         if sub_branch.children.count == 0
-          if sub_branch.content.is_a?(Hash)
-            STDERR.puts(' check ' + sub_branch.content[label].to_s  + ' == ' + value.to_s)
+          if sub_branch.content.is_a?(Hash)        
             ret_val.push(sub_branch.content) if sub_branch.content[label] == value
           else
             # raise EnginesException.new('Leaf Content not a hash ', :error, sub_branch.content)
