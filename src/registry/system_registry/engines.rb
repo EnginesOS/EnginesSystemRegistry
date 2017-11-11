@@ -37,6 +37,9 @@ module Engines
   end
 
   def all_engines_registered_to(service_path)
+    if service_path.is_a?(Hash)
+      service_path = service_path[:service_type]
+    end
     @managed_engines_registry.all_engines_registered_to(service_path)
 #  rescue StandardError => e
 #    handle_exception(e)
