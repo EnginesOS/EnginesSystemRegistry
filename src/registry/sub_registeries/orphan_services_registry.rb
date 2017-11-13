@@ -20,7 +20,7 @@ class OrphanServicesRegistry < SubRegistry
   # Saves the service_hash in the orphaned service registry
   # @return result
   def orphanate_service(params)
-    raise EnginesException.new('Cannot Orphanate as Existing entry' +params.to_s)  if is_ns_tp_node_registered?(@registry, params, [params[:parent_engine], params[:service_handle]]) == true
+    raise EnginesException.new('Cannot Orphanate as Existing entry' +params.to_s)  if is_ns_tp_node_registered?(@registry, params, [params[:parent_engine]], params[:service_handle]) == true
     add_to_ns_tp_tree_path(@registry, params, [:parent_engine], params[:service_handle])
   end
 
