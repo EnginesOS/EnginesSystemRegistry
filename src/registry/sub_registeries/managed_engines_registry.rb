@@ -67,7 +67,7 @@ class ManagedEnginesRegistry < SubRegistry
     tn = managed_engines_type_registry(params)
     tb = match_node_keys(tn, params, [:parent_engine], params[:parent_engine])
     unless tb.is_a?(Tree::TreeNode)
-      tb = Tree::TreeNode.new(params[:parent_engine],params[:parent_engine])
+      tb = Tree::TreeNode.new(params[:parent_engine], params[:parent_engine])
       tn << tb
     end
     tn = tb
@@ -94,7 +94,7 @@ class ManagedEnginesRegistry < SubRegistry
     raise EnginesException.new('Failed to find node ' +  params[:parent_engine].to_s,:error, params)  unless pe.is_a?(Tree::TreeNode)
     pe = get_type_path_node(pe, params[:type_path])
     engine_node = match_node_keys(pe, params, [:service_handle])
-    raise EnginesException.new('Registry Entry Invalid', :error, params ) unless engine_node.content.is_a?(Hash)
+    raise EnginesException.new('Registry Entry Invalid', :error, params) unless engine_node.content.is_a?(Hash)
     engine_node.content[:variables] = params[:variables]
     true
   end
