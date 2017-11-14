@@ -82,6 +82,10 @@ module NodeAddressing
       end
     end
     unless optional.nil?
+      unless optional.is_a?(Array)
+             optional = [optional]
+             STDERR.puts('optional Keys is Not an Array ') # + caller.to_s)
+           end
       optional.each do |match|
         return stn unless params.key?(match)
         stn = stn[params[match]]
