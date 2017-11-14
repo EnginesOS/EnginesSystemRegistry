@@ -23,7 +23,7 @@ module NodeCreation
       address_keys.each do |address_key|
         new_node = tree_node[params[address_key]]
         unless new_node.is_a?(Tree::TreeNode)
-          new_node = Tree::TreeNode.new(params[address_key])
+          new_node = Tree::TreeNode.new(params[address_key], params[address_key])
           tree_node << new_node
         end
         tree_node = new_node
@@ -31,10 +31,11 @@ module NodeCreation
     end
     new_node = tree_node[node_name]
     unique = !params[:overwrite] if params.key?(:overwrite)
+ 
     if new_node.is_a?(Tree::TreeNode)
-      raise EnginesException.new('Existing entry already exists ' + node_name.to_s, :error, address_keys) if unique == true
+      raise EnginesException.new('Existing entry already exists ' + node_name.to_s + ':' + address_keys.to_s, :error, address_keys) if unique == true
     else
-      new_node = Tree::TreeNode.new(node_name)
+      new_node = Tree::TreeNode.new(node_name, node_name)
       tree_node << new_node
       unique = true
     end

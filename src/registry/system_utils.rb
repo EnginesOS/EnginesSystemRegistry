@@ -6,7 +6,7 @@ class SystemUtils
   def self.debug_output(label, object)
     if SystemUtils.debug
       STDERR.puts label.to_s
-      STDERR.puts  object.to_s
+      STDERR.puts  object.to_s.slice(0, 128)
     end
   end
 

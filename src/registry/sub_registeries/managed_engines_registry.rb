@@ -65,9 +65,9 @@ class ManagedEnginesRegistry < SubRegistry
   # overwrites
   def add_to_managed_engines_registry(params)
     tn = managed_engines_type_registry(params)
-    tb = match_node_keys(tn, params, [:parent_engine])
+    tb = match_node_keys(tn, params, [:parent_engine], params[:parent_engine])
     unless tb.is_a?(Tree::TreeNode)
-      tb = Tree::TreeNode.new(params[:parent_engine])
+      tb = Tree::TreeNode.new(params[:parent_engine],params[:parent_engine])
       tn << tb
     end
     tn = tb

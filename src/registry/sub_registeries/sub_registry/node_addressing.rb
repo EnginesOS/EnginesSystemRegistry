@@ -68,8 +68,12 @@ module NodeAddressing
 
   # stn is already the branch publisher_ns,type_
   # will not resolve a type path
-  def match_node_keys(stn, params,  required, optional = nil)
+  def match_node_keys(stn, params, required, optional = nil)    
     unless required.nil?
+      unless required.is_a?(Array)
+        required = [required]
+        STDERR.puts('required Keys is Not an Array ') # + caller.to_s)
+      end
       required.each do |match|
         #  STDERR.puts('Required key missing ' + match.to_s + :error.to_s + ':'  +  params.to_s) unless params.key?(match)
         raise EnginesException.new('Required key missing ' + match.to_s ,:error, params) unless params.key?(match)
@@ -78,6 +82,10 @@ module NodeAddressing
       end
     end
     unless optional.nil?
+      unless optional.is_a?(Array)
+             optional = [optional]
+             STDERR.puts('optional Keys is Not an Array ') # + caller.to_s)
+           end
       optional.each do |match|
         return stn unless params.key?(match)
         stn = stn[params[match]]
