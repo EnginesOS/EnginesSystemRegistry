@@ -72,7 +72,7 @@ module NodeAddressing
     unless required.nil?
       unless required.is_a?(Array)
         required = [required]
-        STDERR.puts('required Keys is Not an Array ') # + caller.to_s)
+        STDERR.puts('required Keys is Not an Array ' + caller.to_s)
       end
       required.each do |match|
         #  STDERR.puts('Required key missing ' + match.to_s + :error.to_s + ':'  +  params.to_s) unless params.key?(match)
@@ -84,7 +84,7 @@ module NodeAddressing
     unless optional.nil?
       unless optional.is_a?(Array)
              optional = [optional]
-             STDERR.puts('optional Keys is Not an Array ') # + caller.to_s)
+             STDERR.puts('optional Keys is Not an Array ' + caller.to_s)
            end
       optional.each do |match|
         return stn unless params.key?(match)
