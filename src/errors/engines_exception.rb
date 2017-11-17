@@ -3,6 +3,7 @@ class EnginesException <  StandardError
   def initialize(msg="Engines Exception", level = :error, *params)
     @level = level
     @params = params
+    @source = caller.to_s
     super(msg)
   end
 end
