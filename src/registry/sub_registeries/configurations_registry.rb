@@ -38,7 +38,8 @@ class ConfigurationsRegistry < SubRegistry
   def get_service_configuration(config_hash)
     st = match_node_keys(@registry, config_hash, full_address)
     unless st.is_a?(Tree::TreeNode)
-      {}
+      config_hash[:variables] = {}
+      config_hash  
     else
       st.content
     end
