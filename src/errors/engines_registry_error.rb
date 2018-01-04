@@ -14,7 +14,8 @@ class EnginesRegistryError < EnginesError
       log_exception(e, *objs)
     else
       STDERR.puts  e.to_s.slice(0, 512).to_s
-      EnginesRegistryError.new(e.to_s, e.level, e.params)
+      log_exception(e, *objs)
+     # EnginesRegistryError.new(e.to_s, e.level, e.params)
     end
   end
 
