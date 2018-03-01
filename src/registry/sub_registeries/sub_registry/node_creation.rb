@@ -33,7 +33,7 @@ module NodeCreation
     unique = !params[:overwrite] if params.key?(:overwrite)
  
     if new_node.is_a?(Tree::TreeNode)
-      raise EnginesException.new('Existing entry already exists ' + node_name.to_s + ':' + address_keys.to_s, :error, address_keys) if unique == true
+      raise EnginesException.new('Existing entry already exists ' + node_name.to_s + ':' + address_keys.to_s, :warning, address_keys) if unique == true
     else
       new_node = Tree::TreeNode.new(node_name, node_name)
       tree_node << new_node
