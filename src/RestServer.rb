@@ -22,6 +22,7 @@ begin
     set :sessions, true
     set :logging, true
     set :run, true
+    set :timeout, 60
   end
   require 'objspace'
 
