@@ -32,7 +32,7 @@ module Orphans
       rescue EnginesException
         STDERR.puts(' Found Orphan' + service_hash.to_s)
         r.push(service_hash)
-        orphanate_service(service_hash)
+        remove_from_services_registry(service_hash)
         next
       end
     end
