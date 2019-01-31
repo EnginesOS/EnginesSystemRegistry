@@ -24,7 +24,7 @@ module Orphans
       end
     end
 
-    @services_registry.get_matched_leafs(services_registry_tree, :non_persistent, true).each do |service_hash|
+    @services_registry.get_matched_leafs(services_registry_tree, :persistent, false).each do |service_hash|
       begin
         STDERR.puts(' Check for Orphan' + service_hash.to_s)
          @managed_engines_registry.find_engine_service_hash(service_hash)
