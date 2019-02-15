@@ -12,7 +12,7 @@ class SystemUtils
 
   def self.log_output(object, level)
     if SystemUtils.level < level
-      STDERR.puts 'Error'
+      STDERR.puts 'Error:'
       STDERR.puts  object.to_s
     end
   end

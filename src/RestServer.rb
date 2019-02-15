@@ -71,7 +71,7 @@ begin
       #  STDERR.puts("process_result" + r.to_s)
       content_type 'application/json'
       if r.is_a?(EnginesRegistryError) || r.is_a?(StandardError)
-        STDERR.puts("Error" + r.to_s)
+        STDERR.puts("Error:" + r.class.name  + ' ' + r.to_s)
         s = 404 if s == 202
         status(s)        
         r = r.to_json
@@ -84,7 +84,7 @@ begin
         else
           r = r.to_json
         end
-        STDERR.puts("Error "+ s.to_s + ' ' + r.to_s) if s > 399
+        STDERR.puts("Error e 400 or more"+ s.to_s + ' ' + r.to_s) if s > 399
       end
     else
       content_type 'plain/text'
