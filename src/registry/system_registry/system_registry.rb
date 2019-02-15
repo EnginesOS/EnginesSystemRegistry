@@ -48,7 +48,7 @@ class SystemRegistry < EnginesRegistryError
     @managed_engines_registry = ManagedEnginesRegistry.new(managed_engines_registry_tree)
     @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry_tree)
     @shares_registry = SharesRegistry.new(shares_registry_tree)
-    @subservices_registry = SubservicesRegistry.new(subservice_registry_tree)
+    @subservices_registry = SubservicesRegistry.new(subservices_registry_tree)
   end
 
   def dump_heap_stats
