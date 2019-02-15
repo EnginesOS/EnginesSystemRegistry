@@ -40,7 +40,8 @@ module SubservicesProviders
   end
 
   def create_providers_node
-    if @registry[:providers].nil? @providers = Tree::TreeNode.new("Providers")
+    if @registry[:providers].nil? 
+      @providers = Tree::TreeNode.new("Providers")
       @registry << @providers
     end
     @providers
