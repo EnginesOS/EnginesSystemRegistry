@@ -1,8 +1,8 @@
 module Subservices
   def subservices_registry_tree
     if check_system_registry_tree
-      orphans = system_registry_tree['SubServices']
-      system_registry_tree << Tree::TreeNode.new('SubServices', 'Services attached to Services') if !orphans.is_a?(Tree::TreeNode)
+      subservices = system_registry_tree['SubServices']
+      system_registry_tree << Tree::TreeNode.new('SubServices', 'Services attached to Services') if !subservices.is_a?(Tree::TreeNode)
       system_registry_tree['SubServices']
     else
       false

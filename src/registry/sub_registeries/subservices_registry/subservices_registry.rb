@@ -14,6 +14,10 @@ class SubservicesRegistry < SubRegistry
     @full_path ||= [:engine_name,:service_handle,:sub_handle]
   end
 
+  def initialize(registry)
+    super(registry)
+    
+  end
   #  # stn is already the branch publisher_ns,type_
   #  # will not resolve a type path
   #  def match_node(stn, params, keys = [:engine_name,:service_handle,:sub_handle])

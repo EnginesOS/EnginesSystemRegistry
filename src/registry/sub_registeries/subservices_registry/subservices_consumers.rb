@@ -41,6 +41,7 @@ module SubservicesConsumers
       @consumers = Tree::TreeNode.new("Consumers")
       @registry << @consumers
     end
+    @consumers = @registry[:consumers]
     @consumers
   end
 end

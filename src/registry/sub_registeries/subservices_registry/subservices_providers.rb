@@ -44,6 +44,7 @@ module SubservicesProviders
       @providers = Tree::TreeNode.new("Providers")
       @registry << @providers
     end
-    @providers
+    @providers = @registry[:providers]
+    @providers 
   end
 end
