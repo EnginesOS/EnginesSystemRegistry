@@ -18,8 +18,18 @@ module Trees
     else
       false
     end
+  end
+  
+  def  subservices_registry_tree
+    if check_system_registry_tree
+      system_registry_tree << Tree::TreeNode.new('SubServices', 'Sub Services') unless system_registry_tree['SubServices'].is_a?(Tree::TreeNode)
+      system_registry_tree['SubServices']
+    else
+      false
+    end
 
   end
+  
 
   # @return the ManagedEngine Tree Branch
   # creates if does not exist
