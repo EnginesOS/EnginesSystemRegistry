@@ -34,6 +34,7 @@ class SubservicesRegistry < SubRegistry
   end
 
   def add_to_subservices(spt,params)
+    STDERR.puts("\ndef add_to_subservices(spt,params" + params.to_s)
     add_to_tree_path(spt, params, [:engine_name,:service_handle], :sub_handle)
   end
 
