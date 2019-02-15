@@ -60,6 +60,7 @@ post '/v0/system_registry/sub_services/consumers/:service_name/:engine_name/:ser
     STDERR.puts("\n" + "cparams:" + cparams.to_s)
     process_result(system_registry.add_to_subservices_registry(cparams))
   rescue StandardError => e
+    STDERR.puts("\n" + e.to_s + "\n " +e.backtrace.to_s)
     handle_exception(e)
   end
 end
