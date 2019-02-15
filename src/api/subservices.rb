@@ -26,6 +26,7 @@ end
 
 post '/v0/system_registry/sub_service/consumers/:service_name/:engine_name/:service_handle/:sub_handle]' do
   begin
+    params.merge!(post_params(request))
     cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
     process_result(system_registry.update_attached_subservice(cparams))
   rescue StandardError => e
@@ -53,6 +54,7 @@ end
 
 post '/v0/system_registry/sub_services/consumers/:service_name/:engine_name/:service_handle/:sub_handle' do
   begin
+    params.merge!(post_params(request))
     cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
     process_result(system_registry.add_to_subservices_registry(cparams))
   rescue StandardError => e
