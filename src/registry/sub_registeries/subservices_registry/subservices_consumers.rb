@@ -6,6 +6,7 @@ module SubservicesConsumers
 
   # required[:service_name :engine_name,:service_handle,:sub_handle]
   def add_to_subservices_registry(params)
+    STDERR.puts("\ndef add_to_subservices(spt,params" + params.to_s)
     add_to_subservices(subservices_consumers, params)
   end
 
