@@ -37,11 +37,11 @@ module SubservicesConsumers
   end
 
   def create_consumers_node
-    if @registry[:consumers].nil? 
-      @consumers = Tree::TreeNode.new("Consumers")
+    if @registry['Consumers'].nil? 
+      @consumers = Tree::TreeNode.new('Consumers')
       @registry << @consumers
     end
-    @consumers = @registry[:consumers]
+    @consumers = @registry['Consumers']
     @consumers
   end
 end
