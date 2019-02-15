@@ -4,12 +4,17 @@ module SubservicesConsumers
     all_registered_to(subservices_consumers, params)
   end
 
-  # required[:service_name :engine_name,:service_handle,:sub_handle]
-  def add_to_subservices_registry(params)
-    STDERR.puts("\ndef add_to_subservices(spt,params" + params.to_s)
-    add_to_subservices(subservices_consumers, params)
-  end
+#  # required[:service_name :engine_name,:service_handle,:sub_handle]
+#  def add_to_subservices_registry(params)
+#    STDERR.puts("\ndef add_to_subservices(spt,params" + params.to_s)
+#    add_to_subservices(subservices_consumers, params)
+#  end
 
+  def add_to_subservices_consumers(params)
+    STDERR.puts("\ndef add_to_subservices(spt,params" + params.to_s)
+    add_to_tree_path(subservices_consumers, params, [:engine_name,:service_handle], params[:sub_handle])
+  end
+  
   # required[:service_name :engine_name,:service_handle,:sub_handle]
   def update_attached_subservice(params)
     update_attached(subservices_consumers, params)
