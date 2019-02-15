@@ -78,7 +78,7 @@ begin
           source[1] = caller[2].to_s
         source[2] = caller[3].to_s if caller.count >= 4
         source[3] = caller[4].to_s if caller.count >= 5
-        
+        STDERR.puts("Error:" + source.to_s)
         s = 404 if s == 202
         status(s)        
         r = r.to_json
