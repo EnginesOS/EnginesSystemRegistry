@@ -22,6 +22,7 @@ begin
     set :sessions, true
     set :logging, true
     set :run, true
+    set :timeout, 60
   end
   require 'objspace'
 
@@ -70,7 +71,14 @@ begin
       #  STDERR.puts("process_result" + r.to_s)
       content_type 'application/json'
       if r.is_a?(EnginesRegistryError) || r.is_a?(StandardError)
-        STDERR.puts("Error" + r.to_s)
+        STDERR.puts("Error:" + r.class.name  + ':' + r.to_s)
+        
+        source = []
+        source[0] = caller[1].to_s
+          source[1] = caller[2].to_s
+        source[2] = caller[3].to_s if caller.count >= 4
+        source[3] = caller[4].to_s if caller.count >= 5
+        
         s = 404 if s == 202
         status(s)        
         r = r.to_json
@@ -83,7 +91,7 @@ begin
         else
           r = r.to_json
         end
-        STDERR.puts("Error "+ s.to_s + ' ' + r.to_s) if s > 399
+        STDERR.puts("Error e 400 or more"+ s.to_s + ' ' + r.to_s) if s > 399
       end
     else
       content_type 'plain/text'
