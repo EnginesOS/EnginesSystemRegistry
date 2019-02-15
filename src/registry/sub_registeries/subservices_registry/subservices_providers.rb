@@ -4,22 +4,22 @@ module SubservicesProviders
     all_registered_to(provider_node(params), params)
   end
 
-  # required[:publisher_namespace,:type_path ]  optional [:engine_name,:service_handle,:sub_hand]
+  # required[:publisher_namespace,:type_path ]  optional [:engine_name,:service_handle,:sub_handle]
   def is_provider_registered?(params)
     is_registered?(provider_node(params), params)
   end
 
-  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
+  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_handle]
   def add_to_providers_registry(params)
     add_to_subservices(provider_node(params), params)
   end
 
-  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
+  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_handle]
   def update_attached_providers(params)
     update_attached(provider_node(params), params)
   end
 
-  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
+  # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_handle]
   def remove_from_providers_registry(params)
     remove_from_registry(provider_node(params), params)
   end

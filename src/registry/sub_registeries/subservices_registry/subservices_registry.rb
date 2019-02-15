@@ -11,12 +11,12 @@ class SubservicesRegistry < SubRegistry
     match_node_keys(st, params, keys, optional)
   end
   def full_path
-    @full_path ||= [:engine_name,:service_handle,:sub_hand]
+    @full_path ||= [:engine_name,:service_handle,:sub_handle]
   end
 
   #  # stn is already the branch publisher_ns,type_
   #  # will not resolve a type path
-  #  def match_node(stn, params, keys = [:engine_name,:service_handle,:sub_hand])
+  #  def match_node(stn, params, keys = [:engine_name,:service_handle,:sub_handle])
   #    match_node_keys(stn, params, keys)
   #  end
 
@@ -34,10 +34,10 @@ class SubservicesRegistry < SubRegistry
   end
 
   def add_to_subservices(spt,params)
-    add_to_tree_path(spt, params, [:engine_name,:service_handle], :sub_hand)
+    add_to_tree_path(spt, params, [:engine_name,:service_handle], :sub_handle)
   end
 
-  # required[:service_name:publisher_namespace,:type_path :engine_name,:service_handle,:sub_hand]
+  # required[:service_name:publisher_namespace,:type_path :engine_name,:service_handle,:sub_handle]
   def remove_from_registry(stn,params)
     stn = match_node_path(stn, params)
     raise EnginesException.new('Sub Service not found!', :error, params) unless stn.is_a?(Tree::TreeNode)
