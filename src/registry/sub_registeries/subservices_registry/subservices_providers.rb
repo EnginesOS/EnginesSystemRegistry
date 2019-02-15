@@ -35,6 +35,7 @@ module SubservicesProviders
 
   def provider_node(params)
     STDERR.puts("\n subservices_providers node " + subservices_providers.to_s)
+    STDERR.puts("\n params  " + params.to_s)
     get_pns_type_path_node(subservices_providers, params)
   end
 
