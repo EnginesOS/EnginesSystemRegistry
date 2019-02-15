@@ -11,7 +11,9 @@ module SubservicesProviders
 
   # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_handle]
   def add_to_providers_registry(params)
-    add_to_tree_path(provider_node(params), params, [:engine_name,:service_handle], params[:sub_handle])
+    pn = provider_node(params)
+    STDERR.puts("\n provider node " + pn.to_s)
+    add_to_tree_path(pn, params, [:engine_name,:service_handle], params[:sub_handle])
   end
 
   # required[:publisher_namespace,:type_path :engine_name,:service_handle,:sub_handle]
