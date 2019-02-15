@@ -71,7 +71,7 @@ begin
       #  STDERR.puts("process_result" + r.to_s)
       content_type 'application/json'
       if r.is_a?(EnginesRegistryError) || r.is_a?(StandardError)
-        STDERR.puts("Error:" + r.class.name  + ' ' + r.to_s)
+        STDERR.puts("Error:" + r.class.name  + ':' + r.to_s)
         s = 404 if s == 202
         status(s)        
         r = r.to_json
