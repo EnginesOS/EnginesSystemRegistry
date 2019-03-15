@@ -18,8 +18,8 @@ module Orphans
         STDERR.puts(' Not Orphan')
       rescue EnginesException
         STDERR.puts(' Found Orphan' + service_hash.to_s)
-        r.push(service_hash)
-        orphanate_service(service_hash)
+         orphanate_service(service_hash)
+         r.push(service_hash)        
         next
       end
     end
