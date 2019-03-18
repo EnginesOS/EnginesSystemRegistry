@@ -75,7 +75,7 @@ get '/v0/system_registry/sub_service/providers/:service_handle/:publisher_namesp
   end
 end
 
-get '/v0/system_registry/sub_services/providers/:publish_namespace/*' do
+get '/v0/system_registry/sub_services/providers/:publisher_namespace/*' do
   begin
     params[:type_path] = params['splat'][0]
     cparams = assemble_params(params, [:publisher_namespace, :type_path])
