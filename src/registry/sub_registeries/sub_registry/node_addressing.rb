@@ -51,25 +51,24 @@ module NodeAddressing
     # SystemUtils.debug_output(  :get_type_path_node, type_path.to_s)
     #  STDERR.puts('get_type_path NODE' + type_path.to_s)
     type_path = type_path[:type_path] if type_path.is_a?(Hash)
-    if type_path.is_a?(String)
-      unless type_path.include?('/')
-        parent_node[type_path]
-      else
-        sub_paths = type_path.split('/')
-        sub_node = parent_node
-        sub_paths.each do |sub_path|
-          sub_node = sub_node[sub_path]
-          break if sub_node.nil?
-          #     return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
-        end
-        sub_node
+
+    unless type_path.include?('/')
+      parent_node[type_path]
+    else
+      sub_paths = type_path.split('/')
+      sub_node = parent_node
+      sub_paths.each do |sub_path|
+        sub_node = sub_node[sub_path]
+        break if sub_node.nil?
+        #     return log_error_mesg('Subnode not found for ' + type_path + 'under node ', parent_node) if sub_node.nil?
       end
+      sub_node
     end
   end
 
   # stn is already the branch publisher_ns,type_
   # will not resolve a type path
-  def match_node_keys(stn, params, required, optional = nil)
+  def match_node_keys(stn, params, required, optional = nil)    
     unless required.nil?
       unless required.is_a?(Array)
         required = [required]
@@ -84,9 +83,9 @@ module NodeAddressing
     end
     unless optional.nil?
       unless optional.is_a?(Array)
-        optional = [optional]
-        STDERR.puts('optional Keys is Not an Array ' + caller.to_s)
-      end
+             optional = [optional]
+             STDERR.puts('optional Keys is Not an Array ' + caller.to_s)
+           end
       optional.each do |match|
         return stn unless params.key?(match)
         stn = stn[params[match]]
