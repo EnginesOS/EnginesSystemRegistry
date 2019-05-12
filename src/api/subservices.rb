@@ -26,6 +26,7 @@ end
 
 post '/v0/system_registry/sub_service/consumers/:service_name/:engine_name/:service_handle/:sub_handle]' do
   begin
+    params.merge!(post_params(request))
     cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
     process_result(system_registry.update_attached_subservice(cparams))
   rescue StandardError => e
@@ -53,9 +54,13 @@ end
 
 post '/v0/system_registry/sub_services/consumers/:service_name/:engine_name/:service_handle/:sub_handle' do
   begin
+    params.merge!(post_params(request))
+      STDERR.puts("\n" + "params:" + params.to_s)
     cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
+    STDERR.puts("\n" + "cparams:" + cparams.to_s)
     process_result(system_registry.add_to_subservices_registry(cparams))
   rescue StandardError => e
+    STDERR.puts("\n" + e.to_s + "\n " +e.backtrace.to_s)
     handle_exception(e)
   end
 end
@@ -70,7 +75,7 @@ get '/v0/system_registry/sub_service/providers/:service_handle/:publisher_namesp
   end
 end
 
-get '/v0/system_registry/sub_services/providers/:publish_namespace/*' do
+get '/v0/system_registry/sub_services/providers/:publisher_namespace/*' do
   begin
     params[:type_path] = params['splat'][0]
     cparams = assemble_params(params, [:publisher_namespace, :type_path])

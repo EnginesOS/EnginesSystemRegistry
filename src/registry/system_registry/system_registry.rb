@@ -48,6 +48,7 @@ class SystemRegistry < EnginesRegistryError
     @managed_engines_registry = ManagedEnginesRegistry.new(managed_engines_registry_tree)
     @orphan_server_registry = OrphanServicesRegistry.new(orphaned_services_registry_tree)
     @shares_registry = SharesRegistry.new(shares_registry_tree)
+    @subservices_registry = SubservicesRegistry.new(subservices_registry_tree)
   end
 
   def dump_heap_stats
@@ -178,6 +179,8 @@ class SystemRegistry < EnginesRegistryError
     @managed_engines_registry.reset_registry(@system_registry['ManagedEngine'])
     shares_registry_tree  if @system_registry['Shares'].nil?
     @shares_registry.reset_registry(@system_registry['Shares'])
+    subservices_registry_tree  if @system_registry['Shares'].nil?
+    @subservices_registry.reset_registry(@system_registry['SubServices'])
   rescue StandardError => e
     log_exception(e)
   end
@@ -212,7 +215,8 @@ class SystemRegistry < EnginesRegistryError
       @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
       @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
       @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
-      @system_registry << Tree::TreeNode.new('Shares', 'Shared Services ')
+      @system_registry << Tree::TreeNode.new('Shares', 'Shared Services')
+      @system_registry << Tree::TreeNode.new('SubServices', 'Sub Services')
       save_tree
       @system_registry
     end
@@ -227,7 +231,8 @@ class SystemRegistry < EnginesRegistryError
     @system_registry << Tree::TreeNode.new('ManagedEngine', 'Engines')
     @system_registry << Tree::TreeNode.new('Services', 'Managed Services')
     @system_registry << Tree::TreeNode.new('Configurations', 'Service Configurations')
-    @system_registry << Tree::TreeNode.new('Shares', 'Shared Services ')
+    @system_registry << Tree::TreeNode.new('Shares', 'Shared Services')
+    @system_registry << Tree::TreeNode.new('SubServices', 'Sub Services')
     save_tree
     @system_registry
   rescue StandardError => e
