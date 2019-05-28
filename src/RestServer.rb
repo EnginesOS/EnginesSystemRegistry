@@ -3,7 +3,7 @@ begin
   require 'sinatra'
   # require 'yajl'
   require 'rubytree'
-  require 'gctools/oobgc'
+
   require 'ffi_yajl'
   require_relative 'registry/system_registry/system_registry.rb'
   # require_relative 'utils/registry_utils.rb'
