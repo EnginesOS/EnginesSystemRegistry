@@ -19,7 +19,7 @@ module Orphans
       rescue EnginesException
         STDERR.puts(' Found Orphan' + service_hash.to_s)
        h = retrieve_orphan(service_hash)
-       if h.is_a?(hash)
+       if h.is_a?(Hash)
          @managed_engines_registry.remove_from_engine_registry(service_hash)
        else
          orphanate_service(service_hash)
