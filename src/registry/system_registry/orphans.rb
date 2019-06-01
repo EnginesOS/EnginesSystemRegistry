@@ -20,10 +20,12 @@ module Orphans
         STDERR.puts(' Found Orphan' + service_hash.to_s)
        begin
        h = retrieve_orphan(service_hash)
+         STDERR.puts(' Oprhan also in service' + service_hash.to_s)
        rescue
          h = false
        end
        if h.is_a?(Hash)         
+         STDERR.puts('remove Oprhan from service' + service_hash.to_s)
          @managed_engines_registry.remove_from_engine_registry(service_hash)
        else
          orphanate_service(service_hash)
