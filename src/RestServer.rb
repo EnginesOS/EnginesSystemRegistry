@@ -33,9 +33,9 @@ begin
     # authenticate
   end
 
-  after do
-    GC::OOB.run()
-  end
+#  after do
+#   GC::OOB.run()
+# end
 
   def system_registry
     $system_registry
