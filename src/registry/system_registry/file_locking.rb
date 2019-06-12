@@ -10,7 +10,7 @@ def lock_tree
         STDERR.puts('Registry is waiting lock release')
       end      
   end
-  @reg_locked = Thread.self
+  @reg_locked = Thread.current
   FileUtils.touch(registry_lock)
 #  
 #  if File.exist?(registry_lock)
