@@ -10,47 +10,51 @@ module Orphans
   end
 
   def orphan_lost_services
-    r = []
+    r = remove_lost_non_persistent_services
     @services_registry.get_matched_leafs(services_registry_tree, :persistent, true).each do |service_hash|
       begin
         STDERR.puts(' Check for Orphan' + service_hash.to_s)
-         @managed_engines_registry.find_engine_service_hash(service_hash)
+        @managed_engines_registry.find_engine_service_hash(service_hash)
         STDERR.puts(' Not Orphan')
       rescue EnginesException
         STDERR.puts(' Found Orphan' + service_hash.to_s)
-       begin
-       h = retrieve_orphan(service_hash)
-         STDERR.puts(' Oprhan Already exists ' + service_hash.to_s)
-       rescue
-         h = false
-       end
-       if h.is_a?(Hash)         
-         STDERR.puts('remove Oprhan from service' + service_hash.to_s)
-         begin
-         @managed_engines_registry.remove_from_engine_registry(service_hash)
-         rescue
-           STDERR.puts('failed to remove from engine ' + service_hash.to_s)
-         end
-       else
-         begin
-         orphanate_service(service_hash)
-           rescue
-             STDERR.puts('failed to orphanate ' + service_hash.to_s)
-           end
-       end  
-         r.push(service_hash)        
+        begin
+          h = retrieve_orphan(service_hash)
+          STDERR.puts(' Oprhan Already exists ' + service_hash.to_s)
+        rescue
+          h = false
+        end
+        if h.is_a?(Hash)
+          STDERR.puts('remove Oprhan from service' + service_hash.to_s)
+          begin
+            @managed_engines_registry.remove_from_engine_registry(service_hash)
+          rescue
+            STDERR.puts('failed to remove from engine ' + service_hash.to_s)
+          end
+        else
+          begin
+            orphanate_service(service_hash)
+          rescue
+            STDERR.puts('failed to orphanate ' + service_hash.to_s)
+          end
+        end
+        r.push(service_hash)
         next
       end
       r
     end
+    r
+  end
 
+  def remove_lost_non_persistent_services
+    r = []
     @services_registry.get_matched_leafs(services_registry_tree, :persistent, false).each do |service_hash|
       begin
-        STDERR.puts(' Check for Orphan' + service_hash.to_s)
-         @managed_engines_registry.find_engine_service_hash(service_hash)
-        STDERR.puts(' Not Orphan')
+        STDERR.puts(' Check for Non Persistent Orphan' + service_hash.to_s)
+        @managed_engines_registry.find_engine_service_hash(service_hash)
+        STDERR.puts(' Not an Orphan')
       rescue EnginesException
-        STDERR.puts(' Found Orphan' + service_hash.to_s)
+        STDERR.puts(' Found Non Persistent Orphan' + service_hash.to_s)
         r.push(service_hash)
         remove_from_services_registry(service_hash)
         next
@@ -58,7 +62,6 @@ module Orphans
     end
     r
   end
-
   # @params [Hash] Loads the varaibles from the matching orphan
   # does not save bnut just populates the content/service variables in the hash
   # return boolean
