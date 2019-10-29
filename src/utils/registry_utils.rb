@@ -57,7 +57,7 @@ class RegistryUtils
     end
 
     SystemUtils.log_output(e_str, 10)
-    f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
+    f = File.open("/opt/engines/run/service_manager/exceptions.#{Process.pid}", 'a+')
     f.puts(e_str)
     f.close
     false

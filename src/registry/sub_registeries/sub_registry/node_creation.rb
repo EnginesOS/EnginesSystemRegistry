@@ -12,7 +12,7 @@ module NodeCreation
   def create_ns_type_path_node(parent_node, params)
     p = parent_node[params[:publisher_namespace]]
     unless p.is_a?(Tree::TreeNode)
-      p = Tree::TreeNode.new(params[:publisher_namespace], 'Publisher:' + params[:publisher_namespace])
+      p = Tree::TreeNode.new(params[:publisher_namespace], "Publisher:#{params[:publisher_namespace]}")
       parent_node << p
     end
     create_type_path_node(p, params)

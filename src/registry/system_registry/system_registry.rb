@@ -192,8 +192,8 @@ class SystemRegistry < EnginesRegistryError
     begin
       if File.exist?(@@service_tree_file)
         tree_data = File.read(@@service_tree_file)
-      elsif File.exist?(@@service_tree_file + '.bak')
-        tree_data = File.read(@@service_tree_file + '.bak')
+      elsif File.exist?("#{@@service_tree_file}.bak")
+        tree_data = File.read("#{@@service_tree_file}.bak")
       end
       registry = YAML::load(tree_data)
       registry
@@ -264,17 +264,17 @@ class SystemRegistry < EnginesRegistryError
   def save_tree
     if File.exist?(@@service_tree_file)
       #FixMe dont blindly copy check valid first so dont corrupt a good backup
-      FileUtils.copy(@@service_tree_file, @@service_tree_file + '.bak')
+      FileUtils.copy(@@service_tree_file, "#{@@service_tree_file}.bak")
     end
     serialized_object = YAML::dump(@system_registry)
-    f = File.new(@@service_tree_file + '.tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new("#{@@service_tree_file}.tmp}", File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
-    FileUtils.mv(@@service_tree_file + '.tmp', @@service_tree_file)
+    FileUtils.mv("#{@@service_tree_file}.tmp}", @@service_tree_file)
     @last_tree_mod_time = File.mtime(@@service_tree_file)
     unlock_tree
   rescue StandardError => e
     unlock_tree
-    FileUtils.copy(@@service_tree_file + '.bak', @@service_tree_file) if !File.exist?(@@service_tree_file)
+    FileUtils.copy("#{@@service_tree_file}.bak", @@service_tree_file) if !File.exist?(@@service_tree_file)
     log_exception(e)
     raise e
   ensure
