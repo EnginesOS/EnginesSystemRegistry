@@ -18,13 +18,13 @@ helpers do
     unless ps.nil?
       ps = symbolize_keys(ps)
       a_params = address_params(ps, address_params)
-      return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + ps.to_s, :error,'api') if a_params == false
+      return EnginesError.new("Missing Address Parameters #{address_params} but only have: #{ps}", :error,'api') if a_params == false
       unless required_params.nil? || required_params.empty?
         if required_params == :all
           a_params.merge!(ps[:api_vars]) if ps.key?(:api_vars)
         else
           r_params = required_params(ps,required_params)
-          return EnginesError.new('Missing Parameters ' + required_params.to_s + ' but only have:' + ps.to_s, :error,'api') if r_params == false
+        return EnginesError.new("Missing Parameters #{required_params} but only have:#{ps}", :error,'api') if r_params == false
           a_params.merge!(r_params) unless r_params.nil?
         end
       end
@@ -89,7 +89,7 @@ helpers do
     r = false
     r = true unless is_required
     r = true if params.key?(key)
-    STDERR.puts('missing_key ' + key.to_s) unless r == true
+    STDERR.puts("missing_key #{key}") unless r == true
     r
   end
 

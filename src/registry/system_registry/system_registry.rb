@@ -198,7 +198,7 @@ class SystemRegistry < EnginesRegistryError
       registry = YAML::load(tree_data)
       registry
     rescue StandardError => e
-      puts e.message + ' with ' + tree_data.to_s
+      puts "#{e.message} with ' + #{tree_data}"
       log_exception(e)
       raise e
     end

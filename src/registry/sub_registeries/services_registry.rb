@@ -45,7 +45,7 @@ class ServicesRegistry < SubRegistry
   # @params :publisher_namespace :type_path :service_handle
   def remove_from_services_registry(params)
     service_node = find_service_consumers(params)
-    raise EnginesException.new('Fail to find service for removal' + params.to_s, :error, params) unless service_node.is_a?(Tree::TreeNode)
+    raise EnginesException.new("Fail to find service for removal #{params}", :error, params) unless service_node.is_a?(Tree::TreeNode)
     remove_tree_entry(service_node)
   end
 

@@ -6,7 +6,7 @@ class EnginesRegistryError < EnginesError
     super(mesg, type, objs)
     @sub_system = 'engines_registry'
     @params = objs
-    @source = caller.to_s
+    @source = "#{caller}"
   end
 
   def handle_exception(e, *objs)
@@ -31,11 +31,8 @@ class EnginesRegistryError < EnginesError
   end
 
   def log_exception(e, *objs)
-    error  = e.to_s
-    error  += e.backtrace.to_s
-    error = e.to_s.slice(0, 512)
-    STDERR.puts('EXCEPTION:' + e.to_s + ' ' + e.backtrace.to_s)
-
+    error  = "#{e} #{e.backtrace}"
+    STDERR.puts("EXCEPTION:#{e}\n #{e.backtrace}")
     EnginesRegistryError.new(error, :exception, *objs)
   end
 
