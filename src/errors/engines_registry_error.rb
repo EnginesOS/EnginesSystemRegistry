@@ -10,6 +10,7 @@ class EnginesRegistryError < EnginesError
   end
 
   def handle_exception(e, *objs)
+    STDERR.puts("#{e.backtrace}")
     unless e.is_a?(EnginesException)
       log_exception(e, *objs)
     else
