@@ -53,8 +53,8 @@ begin
   end
 
   def handle_exception(e)
-    STDERR.puts("#{e.backtrace}")
     unless e.is_a?(EnginesException) || e.is_a?(EnginesRegistryError)
+      STDERR.puts("#{e.backtrace}")
       process_result(e, 400)
     else
       STDERR.puts  e.to_s.slice(0, 512).to_s

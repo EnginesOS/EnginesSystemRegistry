@@ -10,8 +10,8 @@ class EnginesRegistryError < EnginesError
   end
 
   def handle_exception(e, *objs)
-    STDERR.puts("#{e.backtrace}")
     unless e.is_a?(EnginesException)
+      STDERR.puts("#{e.backtrace}")
       log_exception(e, *objs)
     else
       STDERR.puts  e.to_s.slice(0, 512).to_s
