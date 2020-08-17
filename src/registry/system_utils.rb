@@ -5,7 +5,7 @@ class SystemUtils
   attr_reader :debug, :level
   def self.debug_output(label, object)
     if SystemUtils.debug
-      STDERR.puts label.to_s
+    STDERR.puts "#{label}"
       STDERR.puts  object.to_s.slice(0, 128)
     end
   end
@@ -13,7 +13,7 @@ class SystemUtils
   def self.log_output(object, level)
     if SystemUtils.level < level
       STDERR.puts 'log_output Error:'
-      STDERR.puts  object.to_s
+    STDERR.puts  "#{object}"
     end
   end
 
@@ -23,7 +23,7 @@ class SystemUtils
   # returns nothing
   def self.log_error_mesg(msg, object)
     obj_str = object.to_s.slice(0, 512)
-    SystemUtils.log_output(msg + ':->:' + obj_str, 10)
+    SystemUtils.log_output("#{msg}:->:#{obj_str}", 10)
   end
 
   def self.log_error(object)
@@ -31,14 +31,14 @@ class SystemUtils
   end
 
   def self.log_exception(e)
-    e_str = e.to_s()
+    e_str = "#{e}"
     e.backtrace.each do |bt|
-      e_str += bt + ' \n'
+      e_str += "#{bt} \n"
     end
 
     p e_str
     SystemUtils.log_output(e_str, 10)
-    f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
+    f = File.open("/opt/engines/run/service_manager/exceptions.#{Process.pid}", 'a+')
     f.puts(e_str)
     f.close
   end

@@ -88,9 +88,8 @@ end
 
 delete '/v0/system_registry/services/del/:parent_engine/:service_handle/:publisher_namespace/*' do
   begin
-    params[:type_path] =    params['splat'][0]
+    params[:type_path] = params['splat'][0]
     cparams = assemble_params(params, [:parent_engine,:service_handle, :publisher_namespace, :type_path])
-    # STDERR.puts( ' ERM to services parsed as '  + params.to_s)
     process_result(system_registry.remove_from_services_registry(cparams))
   rescue StandardError => e
     handle_exception(e)

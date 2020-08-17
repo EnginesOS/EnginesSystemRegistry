@@ -12,7 +12,7 @@ module NodeCreation
   def create_ns_type_path_node(parent_node, params)
     p = parent_node[params[:publisher_namespace]]
     unless p.is_a?(Tree::TreeNode)
-      p = Tree::TreeNode.new(params[:publisher_namespace], 'Publisher:' + params[:publisher_namespace])
+      p = Tree::TreeNode.new(params[:publisher_namespace], "Publisher:#{params[:publisher_namespace]}")
       parent_node << p
     end
     create_type_path_node(p, params)
@@ -33,7 +33,7 @@ module NodeCreation
     unique = !params[:overwrite] if params.key?(:overwrite)
  
     if new_node.is_a?(Tree::TreeNode)
-      raise EnginesException.new('Existing entry already exists ' + node_name.to_s + ':' + address_keys.to_s, :warning, address_keys) if unique == true
+      raise EnginesException.new("Existing entry already exists #{node_name}:#{address_keys}", :warning, address_keys) if unique == true
     else
       new_node = Tree::TreeNode.new(node_name, node_name)
       tree_node << new_node
@@ -84,8 +84,8 @@ module NodeCreation
     end
     raise EnginesException.new('create_type_path failed', :error, type_path)
   rescue RuntimeError =>e #catch - RuntimeError - Child ? already added!
-    STDERR.puts('RUNTIME ERR ' + e.class.name + ':' + e.to_s)
-    raise EnginesException.new(e.to_s, :error, type_path)
+    STDERR.puts("RUNTIME ERR #{e.class.name}:#{e}")
+    raise EnginesException.new("#{e}", :error, type_path)
   end
 
   # param remove [TreeNode] from the @servicetree
@@ -98,7 +98,7 @@ module NodeCreation
     parent_node = tree_node.parent
     parent_node.remove!(tree_node)
     unless parent_node.has_children?
-      raise EnginesException.new('Failed to remove tree Entry:' + parent_node.to_s, :error, parent_node) unless remove_tree_entry(parent_node)
+      raise EnginesException.new("Failed to remove tree Entry: #{parent_node}", :error, parent_node) unless remove_tree_entry(parent_node)
     end
     true
   end

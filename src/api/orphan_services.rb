@@ -11,8 +11,9 @@ post '/v0/system_registry/services/orphans/add/:parent_engine/:service_handle/:p
     params[:type_path] = params['splat'][0]
     params.merge!(post_params(request))
     cparams = assemble_params(params, [:parent_engine, :service_handle, :publisher_namespace, :type_path], :all, :all)
-    process_result(system_registry.orphanate_service(cparams ))
+    process_result(system_registry.orphanate_service(cparams))
   rescue StandardError => e
+    STDERR.puts("Exception #{e} \n #{e.backtrace}")
     handle_exception(e)
   end
 end

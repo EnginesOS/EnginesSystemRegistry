@@ -1,13 +1,14 @@
 class EnginesError # < FalseClass
+  require 'yajl/json_gem'
   attr_accessor :source, :error_type, :error_mesg, :sub_system
   def initialize(message, type, *objs )
     @error_mesg = message
     @error_type = type
     @sub_system = 'global'
     @source = []
-    @source[0] = caller[2].to_s
-    @source[1] = caller[3].to_s if caller.count >= 4
-    @source[2] = caller[4].to_s if caller.count >= 5
+    @source[0] = "#{caller[2]}"
+    @source[1] = "#{caller[3]}" if caller.count >= 4
+    @source[2] = "#{caller[4]}" if caller.count >= 5
     @params = objs
   end
 
@@ -16,7 +17,7 @@ class EnginesError # < FalseClass
   end
 
   def to_s
-    @sub_system.to_s + ':' +  @error_type.to_s + ':'  + @error_mesg.to_s + ':' + @source.to_s
+    "#{@sub_system}:#{@error_type}:#{@error_mesg}:#{@source}"
   end
 
   def to_json(opt = nil)

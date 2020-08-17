@@ -34,7 +34,7 @@ module NodeAddressing
   def get_pns_type_path_node(parent_node, type_path, publisher = nil)
 
     if type_path.nil? || !parent_node.is_a?(Tree::TreeNode)
-      raise EnginesException.new('get_type_path_node_passed_a_nil path:' + type_path.to_s, :error, parent_node.to_s)
+      raise EnginesException.new("get_type_path_node_passed_a_nil path:#{type_path}", :error, parent_node.to_s)
     end
     if type_path.is_a?(Hash)
       publisher = type_path[:publisher_namespace] if type_path.key?(:publisher_namespace)
@@ -73,11 +73,11 @@ module NodeAddressing
     unless required.nil?
       unless required.is_a?(Array)
         required = [required]
-        STDERR.puts('required Keys is Not an Array ' + caller.to_s)
+    STDERR.puts("required Keys is Not an Array #{caller}")
       end
       required.each do |match|
         #  STDERR.puts('Required key missing ' + match.to_s + :error.to_s + ':'  +  params.to_s) unless params.key?(match)
-        raise EnginesException.new('Required key missing ' + match.to_s ,:error, params) unless params.key?(match)
+        raise EnginesException.new("Required key missing #{match}" ,:error, params) unless params.key?(match)
         stn = stn[params[match]]
         return unless stn.is_a?(Tree::TreeNode)
       end
@@ -85,7 +85,7 @@ module NodeAddressing
     unless optional.nil?
       unless optional.is_a?(Array)
         optional = [optional]
-        STDERR.puts('optional Keys is Not an Array ' + caller.to_s)
+    STDERR.puts("optional Keys is Not an Array #{caller}")
       end
       optional.each do |match|
         return stn unless params.key?(match)
