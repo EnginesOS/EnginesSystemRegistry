@@ -3,7 +3,7 @@ class ManagedEnginesRegistry < SubRegistry
   def find_engine_services_hashes(params)
     pe = managed_engines_type_registry(params)[params[:parent_engine]]
 
-    raise EnginesException.new("Failed to find node #{arams[:parent_engine]}", :warning, params)  unless pe.is_a?(Tree::TreeNode)
+    raise EnginesException.new("Failed to find node #{params[:parent_engine]}", :warning, params)  unless pe.is_a?(Tree::TreeNode)
     if params.key?(:type_path)
       pe =  get_type_path_node(pe, params[:type_path])
       if params.key?(:service_handle)
