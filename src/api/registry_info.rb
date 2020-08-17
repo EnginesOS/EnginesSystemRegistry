@@ -22,7 +22,7 @@ get '/v0/system_registry/heap_stats' do
     else
       status(202)
       content_type 'text/plain'
-      dump_stats.to_s
+      "#{dump_stats}"
     end
   rescue StandardError => e
     handle_exception(e)

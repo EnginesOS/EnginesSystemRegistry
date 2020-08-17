@@ -1,6 +1,7 @@
 begin
 
   require 'sinatra'
+  require 'yajl/json_gem'
   # require 'yajl'
   require 'rubytree'
 
@@ -33,9 +34,9 @@ begin
     # authenticate
   end
 
-#  after do
-#   GC::OOB.run()
-# end
+  #  after do
+  #   GC::OOB.run()
+  # end
 
   def system_registry
     $system_registry
@@ -44,7 +45,7 @@ begin
   def post_params(request)
     json_parser.parse(request.env["rack.input"].read)
   rescue StandardError => e
-    log_error_mesg(request, e, e.backtrace.to_s)
+    log_error_mesg(request, e, "#{e.backtrace}")
   end
 
   def json_parser
@@ -53,6 +54,7 @@ begin
 
   def handle_exception(e)
     unless e.is_a?(EnginesException) || e.is_a?(EnginesRegistryError)
+      STDERR.puts("#{e.backtrace}")
       process_result(e, 400)
     else
       STDERR.puts  e.to_s.slice(0, 512).to_s
@@ -67,20 +69,20 @@ begin
 
   def process_result(r, s = 202)
     unless r.nil?
-  
+
       #  STDERR.puts("process_result" + r.to_s)
       content_type 'application/json'
       if r.is_a?(EnginesRegistryError) || r.is_a?(StandardError)
-        STDERR.puts("Error:" + r.class.name  + ':' + r.to_s)
-        
+        STDERR.puts("Error #{r.class.name}:#{r}")
+
         source = []
         source[0] = caller[1].to_s
-          source[1] = caller[2].to_s
+        source[1] = caller[2].to_s
         source[2] = caller[3].to_s if caller.count >= 4
         source[3] = caller[4].to_s if caller.count >= 5
-        STDERR.puts("Error:" + source.to_s)
+        STDERR.puts("Error:#{source}")
         s = 404 if s == 202
-        status(s)        
+        status(s)
         r = r.to_json
       else
         status(s)
@@ -91,7 +93,7 @@ begin
         else
           r = r.to_json
         end
-        STDERR.puts("Error e 400 or more"+ s.to_s + ' ' + r.to_s) if s > 399
+        STDERR.puts("Error e 400 or more #{s} #{r}") if s > 399
       end
     else
       content_type 'plain/text'
@@ -105,14 +107,14 @@ begin
   end
 
   def log_exception(e, *obj)
-    e_str = e.to_s()
+    e_str = "#{e}"
     e.backtrace.each do |bt|
-      e_str += bt + ' \n'
+      e_str += "#{bt} \n"
     end
 
     STDERR.puts e_str
     SystemUtils.log_output(e_str, 10)
-    f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
+    f = File.open("/opt/engines/run/service_manager/exceptions.#{Process.pid}", 'a+')
     f.puts(e_str)
     f.close
     false

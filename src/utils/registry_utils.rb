@@ -51,13 +51,13 @@ class RegistryUtils
   end
 
   def RegistryUtils.log_exception(e)
-    e_str = e.to_s()
+  e_str = "#{e}"
     e.backtrace.each do |bt|
-      e_str += bt + ' \n'
+      e_str += "#{bt} \n"
     end
 
     SystemUtils.log_output(e_str, 10)
-    f = File.open('/opt/engines/run/service_manager/exceptions.' + Process.pid.to_s, 'a+')
+    f = File.open("/opt/engines/run/service_manager/exceptions.#{Process.pid}", 'a+')
     f.puts(e_str)
     f.close
     false

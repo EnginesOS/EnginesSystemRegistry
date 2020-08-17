@@ -3,7 +3,7 @@ module Params
     unless params.nil?
       params = RegistryUtils.symbolize_keys(params)
       a_params = self.address_params(params, address_params)
-      return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
+      return EnginesError.new("Missing Address Parameters #{address_params} but only have:#{params}", :error,'api') if a_params == false
 
       unless required_params.nil? || required_params.empty?
         if required_params == :all
@@ -11,7 +11,7 @@ module Params
           return a_params
         end
         r_params = self.required_params(params,required_params)
-        return EnginesError.new('Missing Parameters ' + required_params.to_s + ' but only have:' + params.to_s, :error,'api') if r_params == false
+        return EnginesError.new("Missing Address Parameters #{address_params} but only have:#{params}", :error,'api') if r_params == false
         a_params.merge!(r_params) unless r_params.nil?
       end
       unless accept_params.nil? || accept_params.empty?

@@ -68,7 +68,7 @@ post '/v0/system_registry/engine/services/add/:container_type/:parent_engine/:se
     params[:type_path] = params['splat'][0]
     params.merge!(post_params(request))
     cparams = assemble_params(params, [:parent_engine, :container_type, :service_handle, :publisher_namespace, :type_path], nil, :all)
-    STDERR.puts( ' ADD to managed engines ' + cparams.to_s )
+STDERR.puts(" ADD to managed engines #{cparams}" )
     process_result(system_registry.add_to_managed_engines_registry(cparams))
   rescue StandardError => e
     handle_exception(e)
@@ -79,7 +79,7 @@ end
 get '/v0/system_registry/engine/services/:container_type/:parent_engine' do
   begin
     cparams = assemble_params(params, [:container_type, :parent_engine])
-    STDERR.puts(' v0/system_registry/engine/services/:container_type/:parent_engine' + cparams.to_s)
+    STDERR.puts("/v0/system_registry/engine/services/:container_type/:parent_engine #{cparams}")
     process_result(system_registry.find_engine_services_hashes(cparams))
   rescue StandardError => e
     handle_exception(e)
@@ -91,7 +91,7 @@ get '/v0/system_registry/engine/services/:container_type/:parent_engine/*' do
   begin
     params[:type_path] = params['splat'][0]
     cparams = assemble_params(params, [:container_type, :parent_engine, :type_path] )
-    STDERR.puts(' v0/system_registry/engine/services/:container_type/:parent_engine/*' + cparams.to_s)
+    STDERR.puts("v0/system_registry/engine/services/:container_type/:parent_engine/*  #{cparams}")
     process_result(system_registry.find_engine_services_hashes(cparams))
 
   rescue StandardError => e

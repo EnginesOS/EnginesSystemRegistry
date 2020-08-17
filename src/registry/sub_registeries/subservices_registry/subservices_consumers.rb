@@ -11,7 +11,7 @@ module SubservicesConsumers
 #  end
 
   def add_to_subservices_consumers(params)
-    STDERR.puts("\ndef add_to_subservices(spt,params" + params.to_s)
+    STDERR.puts("\ndef add_to_subservices(spt,params #{params}")
     add_to_tree_path(subservices_consumers, params, [:engine_name,:service_handle], params[:sub_handle])
   end
   
