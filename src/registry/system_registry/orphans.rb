@@ -18,6 +18,7 @@ module Orphans
         STDERR.puts(' Not Orphan')
       rescue EnginesException
         STDERR.puts(' Found Orphan' + service_hash.to_s)
+        next if service_hash[:soft_service] == true
         begin
           h = retrieve_orphan(service_hash)
           STDERR.puts(' Oprhan Already exists ' + service_hash.to_s)
@@ -33,7 +34,7 @@ module Orphans
           end
         else
           begin
-            orphanate_service(service_hash)
+            orphanate_service(service_hash) 
           rescue
             STDERR.puts('failed to orphanate ' + service_hash.to_s)
           end
