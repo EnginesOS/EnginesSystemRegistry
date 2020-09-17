@@ -45,8 +45,8 @@ class ServicesRegistry < SubRegistry
   # @params :publisher_namespace :type_path :service_handle
   def remove_from_services_registry(params)
     service_node = find_service_consumers(params)
-    raise EnginesException.new("Fail to find service for removal #{params}", :error, params) unless service_node.is_a?(Tree::TreeNode)
-    remove_tree_entry(service_node)
+   # raise EnginesException.new("Fail to find service for removal #{params}", :error, params) unless service_node.is_a?(Tree::TreeNode)
+    remove_tree_entry(service_node) if service_node.is_a?(Tree::TreeNode)
   end
 
   # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
