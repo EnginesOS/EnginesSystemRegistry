@@ -264,12 +264,13 @@ class SystemRegistry < EnginesRegistryError
   def save_tree
     if File.exist?(@@service_tree_file)
       #FixMe dont blindly copy check valid first so dont corrupt a good backup
-      FileUtils.copy(@@service_tree_file, "#{@@service_tree_file}.bak")
+      FileUtils.copy(@@service_tree_file, "#{@@service_tree_file}.bak")  if is_reg_file_good?
     end
     serialized_object = YAML::dump(@system_registry)
     f = File.new("#{@@service_tree_file}.tmp}", File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
-    FileUtils.mv("#{@@service_tree_file}.tmp}", @@service_tree_file)
+    f.close
+    FileUtils.mv("#{@@service_tree_file}.tmp}", @@service_tree_file) if File.exist?("#{@@service_tree_file}.tmp}")
     @last_tree_mod_time = File.mtime(@@service_tree_file)
     unlock_tree
   rescue StandardError => e
@@ -278,7 +279,14 @@ class SystemRegistry < EnginesRegistryError
     log_exception(e)
     raise e
   ensure
-    f.close
+    f.close unless f.nil?
+  end
+  
+  def is_reg_file_good?
+    load_tree
+    true
+  rescue
+    false
   end
 
   def trap_signals
