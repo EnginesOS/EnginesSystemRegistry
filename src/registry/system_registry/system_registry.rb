@@ -281,9 +281,10 @@ class SystemRegistry < EnginesRegistryError
   ensure
     f.close unless f.nil?
   end
-  
+
   def is_reg_file_good?
-    load_tree
+    tree_data = File.read("#{@@service_tree_file}")
+    r = YAML::load(tree_data)
     true
   rescue
     false
